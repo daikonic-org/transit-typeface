@@ -13,10 +13,7 @@ def main():
     def load(key, weight, optical, variant):
         if variant == "production":
             return instance(
-                ACCEPTED
-                / key
-                / "fonts/VF"
-                / (proof.DATA["families"][key]["stem"] + "-VF.ttf"),
+                proof.ROOT / proof.DATA["families"][key]["font"],
                 weight,
                 optical,
             )
@@ -28,7 +25,7 @@ def main():
     proof.VARIANTS = [
         ("current", "PREVIOUS"),
         ("production", "ADOPTED VARIABLE FONT"),
-        ("0.72", "APPROVED 72% TRIAL"),
+        ("0.72", "APPROVED 72% LETTER TRIAL"),
     ]
     pages = [
         proof.proof(

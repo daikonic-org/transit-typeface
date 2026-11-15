@@ -8,6 +8,7 @@
     "preserve_counter_topology": true,
     "metrics": "matched_approved_instance",
     "locks": {
+      "unicode_categories": ["P", "S"],
       "roots": [
         "one",
         "i",

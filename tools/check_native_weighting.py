@@ -12,7 +12,9 @@ from validate import run, TOKENS
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("family", choices=["sans", "system", "code"])
-    key = parser.parse_args().family
+    parser.add_argument("--production", action="store_true")
+    args = parser.parse_args()
+    key = args.family
     cfg = json.loads((ROOT / "family.json").read_text())["families"][key]
     recipe = json.loads((ROOT / "recipes/weights.json").read_text())["families"][key]
     root = OUT / key
@@ -21,7 +23,13 @@ def main():
         for weight in recipe["target_H_stems"]:
             f = instance(root / "Native-VF.ttf", int(weight), optical)
             expected = instance(
-                root / "fonts/VF" / (cfg["stem"] + "-VF.ttf"), int(weight), optical
+                (
+                    ROOT / cfg["font"]
+                    if args.production
+                    else root / "fonts/VF" / (cfg["stem"] + "-VF.ttf")
+                ),
+                int(weight),
+                optical,
             )
             assert set(f.getBestCmap()) == set(expected.getBestCmap())
             advance_error = max(

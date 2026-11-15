@@ -111,9 +111,13 @@ def stem(font):
 
 def locked(font, config):
     roots = set(config["roots"])
+    categories = set(config.get("unicode_categories", []))
     names = set()
     for cp, name in font.getBestCmap().items():
-        if unicodedata.normalize("NFD", chr(cp))[0] in roots:
+        if (
+            unicodedata.normalize("NFD", chr(cp))[0] in roots
+            or unicodedata.category(chr(cp))[0] in categories
+        ):
             names.add(name)
     for name in font.getGlyphOrder():
         if name.split(".")[0] in roots or any(

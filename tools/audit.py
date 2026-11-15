@@ -60,8 +60,12 @@ class Samples(BasePen):
 
 
 def shape(font, name):
-    p = pathops.Path()
     glyphs = font.getGlyphSet()
+    return shape_from_glyphs(glyphs, name)
+
+
+def shape_from_glyphs(glyphs, name):
+    p = pathops.Path()
     glyphs[name].draw(p.getPen(glyphs))
     return pathops.simplify(p, fix_winding=True, clockwise=True)
 

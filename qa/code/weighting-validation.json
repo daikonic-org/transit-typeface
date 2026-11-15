@@ -31,21 +31,7 @@
   ],
   "metrics_and_layout": "passed",
   "counter_topology_controls": "passed",
-  "selected_glyphs": [
-    {
-      "wght": 300,
-      "opsz": null,
-      "selected_glyphs": "exact"
-    },
-    {
-      "wght": 350,
-      "opsz": null,
-      "selected_glyphs": "exact"
-    },
-    {
-      "wght": 400,
-      "opsz": null,
-      "selected_glyphs": "exact"
-    }
-  ]
+  "selected_glyph_variation_functions": "exact",
+  "selected_glyph_count": 148,
+  "evaluation": "Actual variable glyph sets and HarfBuzz at every location; full static snapshots/rebuilds checked by validate.py"
 }

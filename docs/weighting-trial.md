@@ -1,5 +1,6 @@
 # Weighting recommendations: all-weight trial, 2026-11-15
 
+> Historical trial before adoption. See [weighting-adoption.md](weighting-adoption.md) for the adopted variable fonts and preserved punctuation/symbols.
 The corrected PathOps implementation of the supplied weighting approach was run
 for every currently named weight: Sans and System 300/350/400/500/600, and Code
 300/350/400. System was generated separately at opsz 10, 14 and 36. That is 23

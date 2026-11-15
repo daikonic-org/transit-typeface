@@ -2,9 +2,9 @@
   "status": "LOCALLY_ACCEPTABLE within shown corpus",
   "browser": "Chromium157.0.8103.78",
   "production_files": {
-    "fonts/sans/VF/DaikonicTransitSans-VF.ttf": "134e845f542a4b1ee452b6e44f9c8a106f3391f10862a2017a586a9f87e3aeca",
-    "fonts/system/VF/DaikonicTransitSystem-VF.ttf": "be5eceb3a5f9ce9a1ea110435c65061acb2c953afcd007bbc5e1bb79c73ddc64",
-    "fonts/code/VF/DaikonicTransitCode600-VF.ttf": "9437ac8cef5b3b06520b7823532bde23f1deed66fe7846c09ba7ae4642729729"
+    "fonts/sans/VF/DaikonicTransitSans-VF.ttf": "3287eccea2cc7597ea69d8d8a9d2334b9d324b3b3a7fe172075a9f98fa69cd0e",
+    "fonts/system/VF/DaikonicTransitSystem-VF.ttf": "f0715dd84bb01ba259761338398825cad99ff531e82dbf97d5e68caa00c12c51",
+    "fonts/code/VF/DaikonicTransitCode600-VF.ttf": "6003ad0df4b9449e38a6b5cfa37c4f4e655d4ff609129e205b81bd30bf2d19f9"
   },
   "opened_images": [
     "Overview",
@@ -13,7 +13,8 @@
     "System-opsz14",
     "System-opsz36",
     "Code",
-    "Intermediates"
+    "Intermediates",
+    "OperatorConsistency"
   ],
   "font_sizes_css_px": [
     14,
@@ -26,28 +27,31 @@
     "cream on dark"
   ],
   "image_and_pdf_hashes": {
-    "specimens/weighting-adoption/Intermediates.svg": "d2a371dc29548b272ed0af2a1a04130352562ded838e78b3d8cf2be60e4530e6",
-    "specimens/weighting-adoption/System-opsz10.pdf": "d2fa329f81a693be38427196be64626dbd560b3a3591d76eaa09ae58ab815134",
-    "specimens/weighting-adoption/Code.pdf": "1168ddf4d1236a4cc8a26601d95226af9239aa3069d8fddfa7918ca1bc787bb7",
-    "specimens/weighting-adoption/System-opsz10.png": "5db6d4c61acad1728109b6f1760501cf249ddd117b347fa746f368a844dc6061",
-    "specimens/weighting-adoption/Code.png": "8e66defff50a0c1f6f07ee5fdf78ba71129089b6fbade0c33e5abd6bdbaa4dbd",
-    "specimens/weighting-adoption/Overview.svg": "2ab6e2dd8c6c0b029e0a950486920d673f3ee5f9cf9f5afc91d63069a77fdfdd",
-    "specimens/weighting-adoption/System-opsz14.png": "ec08eef4a17e0b7e94f0be9136ce0bf32afdd9aceecd3be2da7f9af1d76b1780",
-    "specimens/weighting-adoption/System-opsz14.pdf": "c074a2f17917615749cabc7fa98643cfb61d29dd3ff9380d55070f1ce3173914",
-    "specimens/weighting-adoption/Overview.pdf": "00254a54b86b9b120a3a88c0a9c8dceb6caee08fec6de02cc45731d050401c94",
-    "specimens/weighting-adoption/Overview.png": "6aede4f3fb9fd20c9f2c7d522b57b4665d9d1d87d9c5843d0e9beaa1740c37d4",
-    "specimens/weighting-adoption/System-opsz14.svg": "a57c758d4fbdffa625b8f4d50d817cfd0cb19792e193960f7401e9ca9437b2e9",
-    "specimens/weighting-adoption/Code.svg": "5ffbaaedec44cd3b02b74474b46013781acc82d7b2de74dc90b83e83c30058e3",
-    "specimens/weighting-adoption/System-opsz10.svg": "2f1650c0d93c14f6ab19f3d8ab08e8f77134498aae1a4efacd09c0439137c9a1",
-    "specimens/weighting-adoption/Intermediates.pdf": "a007cdd7fa021fabf15611cda2347da3c5093bf98c196e2512bacc6704615618",
-    "specimens/weighting-adoption/Intermediates.png": "50ba44890b97e785f5ca4efc7f40f6e583d25b10a154671f0874fce77a85a8ce",
-    "specimens/weighting-adoption/System-opsz36.svg": "d3847a7d5e43933125ff0bd2e98b4f36fa938593153226a6c9716c44be27c28d",
-    "specimens/weighting-adoption/Sans.svg": "480d6089b70fd73ba904ccfef54398bf6ae860488c8c8def05783434a7ae5459",
-    "specimens/weighting-adoption/Sans.pdf": "d54d821cc70fb97d43a59e23081469873514135648dc221ad9bfdef7a969cd24",
-    "specimens/weighting-adoption/Sans.png": "1b31af1d8eb3bfa641c85beaaab6b9eb21c58c226156ffb1b5dea2c115d70866",
-    "specimens/weighting-adoption/System-opsz36.pdf": "c490973afa39b138a93f00b9289e74fc947dd6ced245f3152e091c4e000145ae",
-    "specimens/weighting-adoption/pages.json": "6fb1383c95955ccfe563f78a3f85073aab53a6094266cbcb3416007c515cea45",
-    "specimens/weighting-adoption/System-opsz36.png": "e43a41ab80eb5cb1cc8968ac3b7aa0baf3ec58ab76eed096091f88033dd04e97"
+    "specimens/weighting-adoption/Intermediates.svg": "1bc353bc3c96373f564cb3c9eae12ccc0e5a536b7b8158afbae7939700edc33b",
+    "specimens/weighting-adoption/System-opsz10.pdf": "ab6078d67cfe645fa4aa279b5a49fc38c27fad2e061a4ea537afcedc034ce75d",
+    "specimens/weighting-adoption/Code.pdf": "92cfd92d3f3a0179458ad2446f9a1ae3505fe5b9524c395c027de9ff7de9e5b1",
+    "specimens/weighting-adoption/System-opsz10.png": "9981511702c4761bd2bfaebe9fbaea4a15d52b355d859b30b64c1569e93862d5",
+    "specimens/weighting-adoption/Code.png": "6e2980a57a213495ddf0cfa1bd85b5b05cb02916d1b169b32fa12708b4ae0d60",
+    "specimens/weighting-adoption/Overview.svg": "ec0f6a90d6b2ee7b9b2eb49871e0461a6ce74a112fe354e8b9c1cb20853d0286",
+    "specimens/weighting-adoption/System-opsz14.png": "ae185e8861a2cf38aac3475a93ed643c56ac2d9fc4558d72b7ff26770cf12f33",
+    "specimens/weighting-adoption/System-opsz14.pdf": "5f1789cf2f934f963da444ca25e61ad6a56ebe64d67422f5969a912fbc94f9f0",
+    "specimens/weighting-adoption/Overview.pdf": "9c39f55bf235f69ebb8f4fe5558969539a6c36140b2f18a40ece09460a277b17",
+    "specimens/weighting-adoption/Overview.png": "6cb829640c3fefa482c1b8511fdf1eb3e3152c22eb778abb3743ba7f6df70980",
+    "specimens/weighting-adoption/System-opsz14.svg": "c17a94374af3434dc6befaf8713b6a799a79a535db12ebf6623055871492b71b",
+    "specimens/weighting-adoption/Code.svg": "6dec569e77e305131b0b28415178224d861dcfbe3869d6e51500eff1a9e40986",
+    "specimens/weighting-adoption/System-opsz10.svg": "d78e468fe507cae3b5de8be61593a837e3ee18df26f8a3370f0b05d3ca3eab9e",
+    "specimens/weighting-adoption/Intermediates.pdf": "48f73d707e9d9fccb48759477f10b1d1079c3a8df1a38c0f2dc2d768f409f818",
+    "specimens/weighting-adoption/Intermediates.png": "cf4d14bb4da993474eb6b03a8d28946068ecf3a159febc4a56a1d16d1f678dba",
+    "specimens/weighting-adoption/System-opsz36.svg": "ea12c78f327fb4293f7972cad1840c288c249cf2f342aea4b6f4a9cf5fe5e789",
+    "specimens/weighting-adoption/OperatorConsistency.svg": "aa41dd16f7d865f841855191e73101020cc52abd48f5f96325b02909f237088f",
+    "specimens/weighting-adoption/Sans.svg": "eaaf2efa83a6317e199d0b48b8db3a64306733d5b08e1b1cfba1d41b0cd7848b",
+    "specimens/weighting-adoption/Sans.pdf": "5edb45ea8d140631536f1b0e9fbb10176513036e44b3a0c72ffc12503a1fd284",
+    "specimens/weighting-adoption/Sans.png": "1c88fc895d2e810f2a10759a3642ef138fa521b8b65cbdd2043639152e75b267",
+    "specimens/weighting-adoption/OperatorConsistency.png": "d54a36966fa7e26b9ebb0845f551989c6368b5a36ae4a6bc5404cdc8cbe94ddf",
+    "specimens/weighting-adoption/System-opsz36.pdf": "fe07bdc9897f06d3d92cc16431f90ebd9ab4efda1bd2e6e69635c88da7b559f0",
+    "specimens/weighting-adoption/pages.json": "60c4efabe4da093c32e023a24e4f92d3a1aa3325d18beeca15456a82a3a2398f",
+    "specimens/weighting-adoption/System-opsz36.png": "65d0fa8673a7a69a00c3858c2ce0269271101b4208404fa42b8db0fc47981f2b",
+    "specimens/weighting-adoption/OperatorConsistency.pdf": "6aa0434ff9d122a42fa3a5ee6c9fa197749a847d4a5461e264b808b21a61068f"
   },
-  "observations": "Adopted named weights retain the approved72% appearance. Intermediate samples change smoothly without observed counter collapse or collisions in the shown strings. Selected glyphs and production spacing retained. No reader performance or all-platform claims."
+  "observations": "Adopted letterforms retain the approved72% appearance. Punctuation/symbols retain original target-weight drawings. Standalone/ligature operator sheet inspected at300/325/350/375/400; equals-family thickness is consistent. Intermediate samples change smoothly without observed counter collapse or collisions in the shown strings. Production spacing and selected glyph variations retained."
 }

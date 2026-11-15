@@ -24,6 +24,14 @@ with actual per-glyph results in `qa/*/weighting-fidelity.json`.
 Selected glyphs retain the **original glyf and gvar data**, so their interpolation
 is preserved throughout the axes rather than merely matching at named weights.
 This includes the declared numeral, i/j/l/y and arrow/ligature overrides. The
+previously tuned Unicode punctuation and symbol drawings are also retained at
+each weight. A final standalone/ligature comparison caught a mismatch between
+the generic filter's `=` and the preserved `==`; single horizontal symbols can
+also lose intended weight changes when their height is refitted to Regular.
+Keeping the tuned symbol repertoire avoids both problems and preserves the
+diamond punctuation. The 72% letterforms remain the approved trial drawings.
+Code's interpolation regression compares `=`, `==` and `===` bar thicknesses.
+The
 original GSUB/GPOS/GDEF and metric variation functions are retained, preserving
 spacing even where adding rounded intermediate masters would introduce a
 one-unit advance difference. `tools/weighting_support.py` applies this shared
@@ -51,6 +59,11 @@ The uncompressed UFO/designspace sources remain directly editable.
   counter topology and all twelve arrow forms checked between masters.
 - Selected glyphs exactly match the original drawings at all 23 named profiles;
   the original selected-glyph variation functions are copied in full.
+- The ongoing interpolation check compares complete selected-glyph `glyf/gvar`
+  functions and retained layout/metric tables directly, then evaluates actual
+  variable glyph sets and HarfBuzz shaping at all 61 locations. Full named static
+  instances are checked separately. This avoids repeatedly instancing unused
+  glyphs while preserving the coverage of the interpolation checks.
 - Every Code operator ligature retains exact cell totals and caret metadata;
   System retains its selected tabular `1` substitution.
 - Independent fontmake builds of the editable UFO/designspaces cover every
@@ -61,7 +74,7 @@ The uncompressed UFO/designspace sources remain directly editable.
 The comparison corpus includes H/n/o/a/e/s/f/t, accented forms, selected glyphs,
 words, figures and punctuation, in both polarities at 14–43px, plus intermediate
 weight/optical-size samples. Proofs use actual VF outlines and HarfBuzz shaping.
-Observed drawings retain the approved 72% trial appearance at named locations;
+Observed letterforms retain the approved 72% trial appearance at named locations;
 intermediate controls are reviewed for smooth visual changes. This is a bounded
 local visual review, not a measured reading-performance or all-platform claim.
 

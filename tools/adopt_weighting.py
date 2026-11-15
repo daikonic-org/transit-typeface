@@ -203,7 +203,9 @@ def family(key, cfg, recipe, defaults, skip_native=False):
     design.sources = []
     for (weight, optical, _), font in zip(rows, fonts):
         style = STYLES[weight] + (" " + OPTICAL[optical] if optical else "")
-        stamp(font, cfg["version"], VERSIONS[key])
+        stamp(
+            font, cfg.get("weighting_baseline_version", cfg["version"]), VERSIONS[key]
+        )
         path = source_dir / ("Master-" + style.replace(" ", "-") + ".ttf")
         font.save(path)
         source = SourceDescriptor()
@@ -226,7 +228,7 @@ def family(key, cfg, recipe, defaults, skip_native=False):
     for tag in ("name", "fvar", "STAT"):
         vf[tag] = deepcopy(old[tag])
     preserve_layout(vf, old, protected)
-    stamp(vf, cfg["version"], VERSIONS[key])
+    stamp(vf, cfg.get("weighting_baseline_version", cfg["version"]), VERSIONS[key])
     vfpath = dest / "fonts/VF" / (cfg["stem"] + "-VF.ttf")
     vfpath.parent.mkdir(parents=True, exist_ok=True)
     vf.save(vfpath)

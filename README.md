@@ -28,7 +28,7 @@ All three share the approved concave, acute, extended-wing arrow family, includi
 
 ## Accepted weighting
 
-The current versions adopt the reviewed **72% horizontal-expansion** approach across all named weights and System optical profiles. Selected glyphs, spacing and layout are preserved. [Construction and interpolation checks](docs/weighting-adoption.md) document the frozen inputs, compatible masters and independent editor-source rebuilds.
+The current versions adopt the reviewed **72% horizontal-expansion** approach across all named weights and System optical profiles. Selected glyphs, tuned punctuation/symbols, spacing and layout are preserved. [Construction and interpolation checks](docs/weighting-adoption.md) document the frozen inputs, compatible masters and independent editor-source rebuilds.
 
 ## Specimens and design notes
 
