@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Idieresis" format="2">
+  <advance width="221"/>
+  <unicode hex="00CF"/>
+  <anchor x="111" y="0" name="bottom"/>
+  <anchor x="166" y="0" name="ogonek"/>
+  <anchor x="111" y="838" name="top"/>
+  <anchor x="55.5" y="700" name="topleft"/>
+  <outline>
+    <contour>
+      <point x="68" y="700" type="line"/>
+      <point x="89" y="700"/>
+      <point x="132" y="700"/>
+      <point x="153" y="700" type="qcurve"/>
+      <point x="153" y="525"/>
+      <point x="153" y="175"/>
+      <point x="153" y="0" type="qcurve"/>
+      <point x="132" y="0"/>
+      <point x="89" y="0"/>
+      <point x="68" y="0" type="qcurve"/>
+      <point x="68" y="175"/>
+      <point x="68" y="525"/>
+      <point x="68" y="700" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="24" y="881" type="line"/>
+      <point x="38" y="867"/>
+      <point x="67" y="838"/>
+      <point x="81" y="824" type="qcurve"/>
+      <point x="67" y="809"/>
+      <point x="38" y="781"/>
+      <point x="24" y="766" type="qcurve"/>
+      <point x="10" y="781"/>
+      <point x="-19" y="809"/>
+      <point x="-34" y="824" type="qcurve"/>
+      <point x="-19" y="838"/>
+      <point x="9" y="867"/>
+      <point x="24" y="881" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="197" y="881" type="line"/>
+      <point x="211" y="867"/>
+      <point x="240" y="838"/>
+      <point x="254" y="824" type="qcurve"/>
+      <point x="240" y="809"/>
+      <point x="211" y="781"/>
+      <point x="197" y="766" type="qcurve"/>
+      <point x="182" y="781"/>
+      <point x="154" y="809"/>
+      <point x="139" y="824" type="qcurve"/>
+      <point x="154" y="838"/>
+      <point x="182" y="867"/>
+      <point x="197" y="881" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

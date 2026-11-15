@@ -1,0 +1,31 @@
+{
+  "version": "1.015",
+  "base": "trials/variable-600-v1.014",
+  "approved_trial": "trials/concave-arrow-extended-wings",
+  "changed": [
+    "arrowleft",
+    "arrowright",
+    "code.arrow",
+    "code.arrowDouble",
+    "code.fatArrow",
+    "code.leftArrow",
+    "code.leftDouble",
+    "uni2191",
+    "uni2193",
+    "uni2194",
+    "uni2195",
+    "uni21D0",
+    "uni21D1",
+    "uni21D2",
+    "uni21D3",
+    "uni21D4",
+    "uni21D5"
+  ],
+  "sources": {
+    "sources/Master-Light.ttf": "f74984df61217b1ab5fb598b3112ac829c607aa8910f34c395744920b2f64b06",
+    "sources/Master-Book.ttf": "2b5d2fe564496034adbbfeffcae1ab32040c3c26218d2be36db9d6a3ab59d658",
+    "sources/Master-Regular.ttf": "429d60fec320bb857dea4d8784baac140180472cd099983ea18503ba65daf752"
+  },
+  "fontTools": "4.68.0",
+  "glyphsLib": "6.17.2"
+}

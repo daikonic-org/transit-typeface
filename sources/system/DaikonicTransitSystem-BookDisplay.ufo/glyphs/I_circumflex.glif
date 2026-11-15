@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Icircumflex" format="2">
+  <advance width="222"/>
+  <unicode hex="00CE"/>
+  <anchor x="111" y="0" name="bottom"/>
+  <anchor x="166" y="0" name="ogonek"/>
+  <anchor x="111" y="859" name="top"/>
+  <anchor x="56.0" y="700" name="topleft"/>
+  <outline>
+    <contour>
+      <point x="62" y="700" type="line"/>
+      <point x="87" y="700"/>
+      <point x="136" y="700"/>
+      <point x="160" y="700" type="qcurve"/>
+      <point x="160" y="525"/>
+      <point x="160" y="175"/>
+      <point x="160" y="0" type="qcurve"/>
+      <point x="135" y="0"/>
+      <point x="86" y="0"/>
+      <point x="62" y="0" type="qcurve"/>
+      <point x="62" y="175"/>
+      <point x="62" y="525"/>
+      <point x="62" y="700" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="111" y="919" type="line"/>
+      <point x="144" y="880"/>
+      <point x="209" y="801"/>
+      <point x="242" y="762" type="qcurve"/>
+      <point x="224" y="762"/>
+      <point x="189" y="762"/>
+      <point x="172" y="762" type="qcurve"/>
+      <point x="156" y="781"/>
+      <point x="127" y="818"/>
+      <point x="111" y="837" type="qcurve"/>
+      <point x="111" y="837"/>
+      <point x="111" y="837"/>
+      <point x="111" y="837" type="qcurve"/>
+      <point x="96" y="818"/>
+      <point x="65" y="781"/>
+      <point x="50" y="762" type="qcurve"/>
+      <point x="33" y="762"/>
+      <point x="-2" y="762"/>
+      <point x="-20" y="762" type="qcurve"/>
+      <point x="-13" y="771"/>
+      <point x="2" y="788"/>
+      <point x="9" y="796" type="qcurve"/>
+      <point x="34" y="827"/>
+      <point x="86" y="888"/>
+      <point x="111" y="919" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

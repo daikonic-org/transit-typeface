@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "purpose": "Experimental Regular-anchored weight generation. Current releases rebuild separately from approved compatible masters.",
+  "defaults": {
+    "anchor_weight": 400,
+    "horizontal_growth_ratio": 1.0,
+    "miter_limit": 3,
+    "preserve_counter_topology": true,
+    "metrics": "matched_approved_instance",
+    "locks": {
+      "roots": [
+        "one",
+        "i",
+        "j",
+        "l",
+        "zero",
+        "y"
+      ],
+      "prefixes": [
+        "code.",
+        "arrow",
+        "uni219",
+        "uni21D"
+      ]
+    }
+  },
+  "families": {
+    "sans": {
+      "target_H_stems": {
+        "300": 85,
+        "350": 97.5,
+        "400": 110,
+        "600": 150
+      },
+      "optical_sizes": [
+        null
+      ]
+    },
+    "system": {
+      "target_H_stems": {
+        "300": 85,
+        "350": 98,
+        "400": 110,
+        "600": 150
+      },
+      "optical_sizes": [
+        10,
+        14,
+        36
+      ]
+    },
+    "code": {
+      "target_H_stems": {
+        "300": 84,
+        "350": 102,
+        "400": 120
+      },
+      "optical_sizes": [
+        null
+      ]
+    }
+  },
+  "historical_geometry": {
+    "sans": {
+      "source": "Metropolitan Line Regular",
+      "weight_offsets": {
+        "Light300": -25,
+        "Regular400": 0,
+        "formerBold700": 60
+      },
+      "counter_check": "topology with reduced-offset fallback; not constant counter area"
+    },
+    "system": {
+      "source": "each Sans weight master, not Book alone",
+      "lowercase_uniform_scale": 1.12,
+      "stem_compensation": "negative offset -(scale-1)*measured n stem in each weight",
+      "later_operations": [
+        "independent weight/optical profiles",
+        "ascender/mark fitting",
+        "selected drawing edits"
+      ]
+    },
+    "code": {
+      "initial_inputs": "frozen edited Light/Book drawings; earliest upstream reduction not fully replayable from preserved scripts",
+      "Regular400": "Book drawing plus nominal18-unit stroke growth before fitting/polish",
+      "600_cells": "later advance/translation changes; only w widened in that stage"
+    }
+  }
+}

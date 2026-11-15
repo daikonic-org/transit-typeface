@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Lacute" format="2">
+  <advance width="459"/>
+  <unicode hex="0139"/>
+  <anchor x="249" y="0" name="bottom"/>
+  <anchor x="287" y="382" name="center"/>
+  <anchor x="129" y="859" name="top"/>
+  <anchor x="326" y="700" name="topright"/>
+  <outline>
+    <contour>
+      <point x="52" y="700" type="line"/>
+      <point x="73" y="700"/>
+      <point x="116" y="700"/>
+      <point x="137" y="700" type="qcurve"/>
+      <point x="137" y="544"/>
+      <point x="137" y="234"/>
+      <point x="137" y="78" type="qcurve"/>
+      <point x="214" y="78"/>
+      <point x="368" y="78"/>
+      <point x="445" y="78" type="qcurve"/>
+      <point x="445" y="59"/>
+      <point x="445" y="20"/>
+      <point x="445" y="0" type="qcurve"/>
+      <point x="347" y="0"/>
+      <point x="150" y="0"/>
+      <point x="52" y="0" type="qcurve"/>
+      <point x="52" y="175"/>
+      <point x="52" y="525"/>
+      <point x="52" y="700" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="129" y="902" type="line"/>
+      <point x="150" y="902"/>
+      <point x="193" y="902"/>
+      <point x="214" y="902" type="qcurve"/>
+      <point x="189" y="868"/>
+      <point x="140" y="800"/>
+      <point x="115" y="766" type="qcurve"/>
+      <point x="100" y="766"/>
+      <point x="70" y="766"/>
+      <point x="55" y="766" type="qcurve"/>
+      <point x="74" y="800"/>
+      <point x="111" y="868"/>
+      <point x="129" y="902" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

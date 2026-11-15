@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="emdash" format="2">
+  <advance width="600"/>
+  <unicode hex="2014"/>
+  <outline>
+    <contour>
+      <point x="26" y="316" type="qcurve"/>
+      <point x="95" y="316"/>
+      <point x="232" y="316"/>
+      <point x="301" y="316" type="qcurve"/>
+      <point x="301" y="316"/>
+      <point x="301" y="316"/>
+      <point x="302" y="316" type="qcurve" smooth="yes"/>
+      <point x="370" y="316"/>
+      <point x="507" y="316"/>
+      <point x="576" y="316" type="qcurve"/>
+      <point x="576" y="307"/>
+      <point x="576" y="288"/>
+      <point x="576" y="278" type="qcurve" smooth="yes"/>
+      <point x="576" y="268"/>
+      <point x="576" y="249"/>
+      <point x="576" y="240" type="qcurve"/>
+      <point x="507" y="240"/>
+      <point x="370" y="240"/>
+      <point x="302" y="240" type="qcurve" smooth="yes"/>
+      <point x="301" y="240"/>
+      <point x="301" y="240"/>
+      <point x="301" y="240" type="qcurve"/>
+      <point x="232" y="240"/>
+      <point x="95" y="240"/>
+      <point x="26" y="240" type="qcurve"/>
+      <point x="26" y="249"/>
+      <point x="26" y="268"/>
+      <point x="26" y="278" type="qcurve" smooth="yes"/>
+      <point x="26" y="288"/>
+      <point x="26" y="307"/>
+    </contour>
+  </outline>
+</glyph>

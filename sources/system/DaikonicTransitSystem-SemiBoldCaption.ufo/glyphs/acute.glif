@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="acute" format="2">
+  <advance width="268.0"/>
+  <unicode hex="00B4"/>
+  <anchor x="75.0" y="475.0" name="_top"/>
+  <anchor x="141.0" y="659.0" name="top"/>
+  <outline>
+    <contour>
+      <point x="99.33333333333333" y="710.0" type="line"/>
+      <point x="143.33333333333334" y="710.0"/>
+      <point x="230.0" y="710.0"/>
+      <point x="274.0" y="710.0" type="qcurve"/>
+      <point x="232.33333333333331" y="672.0"/>
+      <point x="148.0" y="595.0"/>
+      <point x="106.33333333333333" y="557.0" type="qcurve"/>
+      <point x="72.33333333333333" y="557.0"/>
+      <point x="4.666666666666668" y="557.0"/>
+      <point x="-29.33333333333333" y="557.0" type="qcurve"/>
+      <point x="3.0" y="595.0"/>
+      <point x="66.66666666666667" y="672.0"/>
+      <point x="99.33333333333333" y="710.0" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

@@ -1,0 +1,78 @@
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+lookup Form_leftDouble { sub less less hyphen by code.leftDouble; } Form_leftDouble;
+lookup Form_arrowDouble { sub hyphen greater greater by code.arrowDouble; } Form_arrowDouble;
+lookup Form_notStrict { sub exclam equal equal by code.notStrict; } Form_notStrict;
+lookup Form_strictEqual { sub equal equal equal by code.strictEqual; } Form_strictEqual;
+lookup Form_arrow { sub hyphen greater by code.arrow; } Form_arrow;
+lookup Form_leftArrow { sub less hyphen by code.leftArrow; } Form_leftArrow;
+lookup Form_lessEqual { sub less equal by code.lessEqual; } Form_lessEqual;
+lookup Form_greaterEqual { sub greater equal by code.greaterEqual; } Form_greaterEqual;
+lookup Form_scope { sub colon colon by code.scope; } Form_scope;
+lookup Form_fatArrow { sub equal greater by code.fatArrow; } Form_fatArrow;
+lookup Form_equal { sub equal equal by code.equal; } Form_equal;
+lookup Form_notEqual { sub exclam equal by code.notEqual; } Form_notEqual;
+feature calt {
+ lookup Match_0 {
+  ignore sub [hyphen less] less' less hyphen, less' less hyphen [hyphen greater equal];
+  sub less' lookup Form_leftDouble less hyphen;
+ } Match_0;
+ lookup Match_1 {
+  ignore sub [hyphen less] hyphen' greater greater, hyphen' greater greater [greater equal];
+  sub hyphen' lookup Form_arrowDouble greater greater;
+ } Match_1;
+ lookup Match_2 {
+  ignore sub [exclam equal less greater] exclam' equal equal, exclam' equal equal [equal greater];
+  sub exclam' lookup Form_notStrict equal equal;
+ } Match_2;
+ lookup Match_3 {
+  ignore sub [exclam equal less greater] equal' equal equal, equal' equal equal [equal greater];
+  sub equal' lookup Form_strictEqual equal equal;
+ } Match_3;
+ lookup Match_4 {
+  ignore sub [hyphen less] hyphen' greater, hyphen' greater [greater equal];
+  sub hyphen' lookup Form_arrow greater;
+ } Match_4;
+ lookup Match_5 {
+  ignore sub [hyphen less] less' hyphen, less' hyphen [hyphen greater equal];
+  sub less' lookup Form_leftArrow hyphen;
+ } Match_5;
+ lookup Match_6 {
+  ignore sub [exclam equal less greater] less' equal, less' equal [equal greater less];
+  sub less' lookup Form_lessEqual equal;
+ } Match_6;
+ lookup Match_7 {
+  ignore sub [exclam equal less greater] greater' equal, greater' equal [equal greater less];
+  sub greater' lookup Form_greaterEqual equal;
+ } Match_7;
+ lookup Match_8 {
+  ignore sub colon colon' colon, colon' colon colon;
+  sub colon' lookup Form_scope colon;
+ } Match_8;
+ lookup Match_9 {
+  ignore sub [exclam equal less greater] equal' greater, equal' greater [greater equal];
+  sub equal' lookup Form_fatArrow greater;
+ } Match_9;
+ lookup Match_10 {
+  ignore sub [exclam equal less greater] equal' equal, equal' equal [equal greater];
+  sub equal' lookup Form_equal equal;
+ } Match_10;
+ lookup Match_11 {
+  ignore sub [exclam equal less greater] exclam' equal, exclam' equal [equal greater];
+  sub exclam' lookup Form_notEqual equal;
+ } Match_11;
+} calt;
+table GDEF {
+  LigatureCaretByPos code.leftDouble 600 1200;
+  LigatureCaretByPos code.arrowDouble 600 1200;
+  LigatureCaretByPos code.notStrict 600 1200;
+  LigatureCaretByPos code.strictEqual 600 1200;
+  LigatureCaretByPos code.arrow 600;
+  LigatureCaretByPos code.leftArrow 600;
+  LigatureCaretByPos code.lessEqual 600;
+  LigatureCaretByPos code.greaterEqual 600;
+  LigatureCaretByPos code.scope 600;
+  LigatureCaretByPos code.fatArrow 600;
+  LigatureCaretByPos code.equal 600;
+  LigatureCaretByPos code.notEqual 600;
+} GDEF;

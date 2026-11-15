@@ -1,0 +1,47 @@
+{
+  "published_date": "2026-11-15",
+  "palette": {
+    "cream": "#EEECD9",
+    "navy": "#194454",
+    "orange": "#FA994A",
+    "red": "#F03630"
+  },
+  "families": {
+    "sans": {
+      "name": "Daikonic Transit Sans",
+      "title": "Transit Sans",
+      "version": "0.106",
+      "stem": "DaikonicTransitSans",
+      "color": "#194454",
+      "light": 300,
+      "heavy": 600,
+      "display": 400,
+      "tag": "Sans-0.106R",
+      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf"
+    },
+    "system": {
+      "name": "Daikonic Transit System",
+      "title": "Transit System",
+      "version": "0.115",
+      "stem": "DaikonicTransitSystem",
+      "color": "#FA994A",
+      "light": 300,
+      "heavy": 600,
+      "display": 350,
+      "tag": "System-0.115R",
+      "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf"
+    },
+    "code": {
+      "name": "Daikonic Transit Code 600",
+      "title": "Transit Code",
+      "version": "1.015",
+      "stem": "DaikonicTransitCode600",
+      "color": "#F03630",
+      "light": 300,
+      "heavy": 400,
+      "display": 350,
+      "tag": "Code-1.015R",
+      "font": "fonts/code/VF/DaikonicTransitCode600-VF.ttf"
+    }
+  }
+}

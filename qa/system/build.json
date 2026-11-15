@@ -1,0 +1,40 @@
+{
+  "version": "0.115",
+  "base": "families/transit-system/v0.113",
+  "approved_trial": "trials/concave-arrow-extended-wings",
+  "changed": [
+    "arrowleft",
+    "arrowright",
+    "uni2191",
+    "uni2193",
+    "uni2194",
+    "uni2195",
+    "uni21D0",
+    "uni21D1",
+    "uni21D2",
+    "uni21D3",
+    "uni21D4",
+    "uni21D5",
+    "y",
+    "yacute",
+    "ycircumflex",
+    "ydieresis",
+    "ygrave"
+  ],
+  "sources": {
+    "sources/Master-Light-Caption.ttf": "6832d0e69da9c4f12b7bdb4799847a3d2cf745f6134162487a11ea6d8d7bb851",
+    "sources/Master-Book-Caption.ttf": "a2edd429fd576fc03e6ec0aeac227d1f8fe7c726382f3eb5f84cea8575283c4d",
+    "sources/Master-Regular-Caption.ttf": "50db9bbca6abfa382ee86add015ebf85affa1cf313f78956252281f03ed4a4e7",
+    "sources/Master-SemiBold-Caption.ttf": "1a3c8e426b1b819a5078f9c12975fc0be8ce1850d7e85690b1c0bb47e366b0c3",
+    "sources/Master-Light-Text.ttf": "1de25fefb28125f45abcdad7ae5e1b60c6894f0b4373af8044cde64bee62e994",
+    "sources/Master-Book-Text.ttf": "ab40cd327a3c027514ede9a117d9678c1a82f878be0c2d4b79095f1b01d143e4",
+    "sources/Master-Regular-Text.ttf": "4b1bb735a2acc96b225e0e9af0c1fe99a5a4fae47956bce3f11c6d05ff7f16cf",
+    "sources/Master-SemiBold-Text.ttf": "734e206ee5d9feb00b8f41c92ca8b527b7dafd2c651de9e698292ed5930e7695",
+    "sources/Master-Light-Display.ttf": "ec28f9b6ceef50ed8ef68047973b968b0f204fa9cde504783d4ae5fbace4269f",
+    "sources/Master-Book-Display.ttf": "f5daa2d8c3cfdafe8aa1aabdcf1f9a8dae741d549b28d4e1f287baa27e90b82d",
+    "sources/Master-Regular-Display.ttf": "181b63307271f488196d5c716393e3bed705a7293ce2a590d8342aabf76658c0",
+    "sources/Master-SemiBold-Display.ttf": "e0775f0d2e812749fe4f40bb2afde9fb92ba484a9e242147d0bc98e920de2448"
+  },
+  "fontTools": "4.68.0",
+  "glyphsLib": "6.17.2"
+}

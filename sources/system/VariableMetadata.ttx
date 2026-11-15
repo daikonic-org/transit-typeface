@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ttFont sfntVersion="\x00\x01\x00\x00" ttLibVersion="4.68">
+
+  <name>
+    <namerecord nameID="272" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Weight
+    </namerecord>
+    <namerecord nameID="274" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Book
+    </namerecord>
+    <namerecord nameID="275" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Optical Size
+    </namerecord>
+    <namerecord nameID="276" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Light Caption
+    </namerecord>
+    <namerecord nameID="277" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Book Caption
+    </namerecord>
+    <namerecord nameID="278" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Regular Caption
+    </namerecord>
+    <namerecord nameID="279" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Medium Caption
+    </namerecord>
+    <namerecord nameID="280" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      SemiBold Caption
+    </namerecord>
+    <namerecord nameID="282" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Light Text
+    </namerecord>
+    <namerecord nameID="283" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Book Text
+    </namerecord>
+    <namerecord nameID="284" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Regular Text
+    </namerecord>
+    <namerecord nameID="285" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Medium Text
+    </namerecord>
+    <namerecord nameID="286" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      SemiBold Text
+    </namerecord>
+    <namerecord nameID="288" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Light Display
+    </namerecord>
+    <namerecord nameID="289" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Book Display
+    </namerecord>
+    <namerecord nameID="290" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Regular Display
+    </namerecord>
+    <namerecord nameID="291" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Medium Display
+    </namerecord>
+    <namerecord nameID="292" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      SemiBold Display
+    </namerecord>
+    <namerecord nameID="294" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Light
+    </namerecord>
+    <namerecord nameID="295" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Regular
+    </namerecord>
+    <namerecord nameID="296" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Medium
+    </namerecord>
+    <namerecord nameID="297" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      SemiBold
+    </namerecord>
+    <namerecord nameID="299" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Caption
+    </namerecord>
+    <namerecord nameID="300" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Text
+    </namerecord>
+    <namerecord nameID="301" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      Display
+    </namerecord>
+    <namerecord nameID="302" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-LightCaption
+    </namerecord>
+    <namerecord nameID="303" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-BookCaption
+    </namerecord>
+    <namerecord nameID="304" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-RegularCaption
+    </namerecord>
+    <namerecord nameID="305" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-MediumCaption
+    </namerecord>
+    <namerecord nameID="306" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-SemiBoldCaption
+    </namerecord>
+    <namerecord nameID="308" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-LightText
+    </namerecord>
+    <namerecord nameID="309" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-BookText
+    </namerecord>
+    <namerecord nameID="310" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-RegularText
+    </namerecord>
+    <namerecord nameID="311" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-MediumText
+    </namerecord>
+    <namerecord nameID="312" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-SemiBoldText
+    </namerecord>
+    <namerecord nameID="314" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-LightDisplay
+    </namerecord>
+    <namerecord nameID="315" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-BookDisplay
+    </namerecord>
+    <namerecord nameID="316" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-RegularDisplay
+    </namerecord>
+    <namerecord nameID="317" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-MediumDisplay
+    </namerecord>
+    <namerecord nameID="318" platformID="1" platEncID="0" langID="0x0" unicode="True">
+      DaikonicTransitSystem-SemiBoldDisplay
+    </namerecord>
+    <namerecord nameID="0" platformID="3" platEncID="1" langID="0x409">
+      Copyright 2026 The Metropolitan Line Project authors (https://github.com/cyrealtype/metropolitan-line)
+    </namerecord>
+    <namerecord nameID="1" platformID="3" platEncID="1" langID="0x409">
+      Daikonic Transit System
+    </namerecord>
+    <namerecord nameID="2" platformID="3" platEncID="1" langID="0x409">
+      Book Text
+    </namerecord>
+    <namerecord nameID="3" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem 0.115 Book Text
+    </namerecord>
+    <namerecord nameID="4" platformID="3" platEncID="1" langID="0x409">
+      Daikonic Transit System Book Text
+    </namerecord>
+    <namerecord nameID="5" platformID="3" platEncID="1" langID="0x409">
+      Version 0.115
+    </namerecord>
+    <namerecord nameID="6" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-VF
+    </namerecord>
+    <namerecord nameID="8" platformID="3" platEncID="1" langID="0x409">
+      Cyreal
+    </namerecord>
+    <namerecord nameID="9" platformID="3" platEncID="1" langID="0x409">
+      Cyreal, Alexei Vanyashin, Michael Voronin
+    </namerecord>
+    <namerecord nameID="10" platformID="3" platEncID="1" langID="0x409">
+      Approved concave open-head arrows with acute points and extended wings; parallel double rails match equals clearance. Code ligatures retain cell advances.
+    </namerecord>
+    <namerecord nameID="11" platformID="3" platEncID="1" langID="0x409">
+      https://cyreal.org
+    </namerecord>
+    <namerecord nameID="12" platformID="3" platEncID="1" langID="0x409">
+      https://cyreal.org
+    </namerecord>
+    <namerecord nameID="13" platformID="3" platEncID="1" langID="0x409">
+      This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org
+    </namerecord>
+    <namerecord nameID="14" platformID="3" platEncID="1" langID="0x409">
+      https://openfontlicense.org
+    </namerecord>
+    <namerecord nameID="16" platformID="3" platEncID="1" langID="0x409">
+      Daikonic Transit System
+    </namerecord>
+    <namerecord nameID="17" platformID="3" platEncID="1" langID="0x409">
+      Book Text
+    </namerecord>
+    <namerecord nameID="25" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem
+    </namerecord>
+    <namerecord nameID="256" platformID="3" platEncID="1" langID="0x409">
+      G,H,K,W,X,a,q,g alternates
+    </namerecord>
+    <namerecord nameID="257" platformID="3" platEncID="1" langID="0x409">
+      W, g, arrows set 2
+    </namerecord>
+    <namerecord nameID="258" platformID="3" platEncID="1" langID="0x409">
+      W, arrows set 3
+    </namerecord>
+    <namerecord nameID="259" platformID="3" platEncID="1" langID="0x409">
+      W, arrows set 4
+    </namerecord>
+    <namerecord nameID="272" platformID="3" platEncID="1" langID="0x409">
+      Weight
+    </namerecord>
+    <namerecord nameID="274" platformID="3" platEncID="1" langID="0x409">
+      Book
+    </namerecord>
+    <namerecord nameID="275" platformID="3" platEncID="1" langID="0x409">
+      Optical Size
+    </namerecord>
+    <namerecord nameID="276" platformID="3" platEncID="1" langID="0x409">
+      Light Caption
+    </namerecord>
+    <namerecord nameID="277" platformID="3" platEncID="1" langID="0x409">
+      Book Caption
+    </namerecord>
+    <namerecord nameID="278" platformID="3" platEncID="1" langID="0x409">
+      Regular Caption
+    </namerecord>
+    <namerecord nameID="279" platformID="3" platEncID="1" langID="0x409">
+      Medium Caption
+    </namerecord>
+    <namerecord nameID="280" platformID="3" platEncID="1" langID="0x409">
+      SemiBold Caption
+    </namerecord>
+    <namerecord nameID="282" platformID="3" platEncID="1" langID="0x409">
+      Light Text
+    </namerecord>
+    <namerecord nameID="283" platformID="3" platEncID="1" langID="0x409">
+      Book Text
+    </namerecord>
+    <namerecord nameID="284" platformID="3" platEncID="1" langID="0x409">
+      Regular Text
+    </namerecord>
+    <namerecord nameID="285" platformID="3" platEncID="1" langID="0x409">
+      Medium Text
+    </namerecord>
+    <namerecord nameID="286" platformID="3" platEncID="1" langID="0x409">
+      SemiBold Text
+    </namerecord>
+    <namerecord nameID="288" platformID="3" platEncID="1" langID="0x409">
+      Light Display
+    </namerecord>
+    <namerecord nameID="289" platformID="3" platEncID="1" langID="0x409">
+      Book Display
+    </namerecord>
+    <namerecord nameID="290" platformID="3" platEncID="1" langID="0x409">
+      Regular Display
+    </namerecord>
+    <namerecord nameID="291" platformID="3" platEncID="1" langID="0x409">
+      Medium Display
+    </namerecord>
+    <namerecord nameID="292" platformID="3" platEncID="1" langID="0x409">
+      SemiBold Display
+    </namerecord>
+    <namerecord nameID="294" platformID="3" platEncID="1" langID="0x409">
+      Light
+    </namerecord>
+    <namerecord nameID="295" platformID="3" platEncID="1" langID="0x409">
+      Regular
+    </namerecord>
+    <namerecord nameID="296" platformID="3" platEncID="1" langID="0x409">
+      Medium
+    </namerecord>
+    <namerecord nameID="297" platformID="3" platEncID="1" langID="0x409">
+      SemiBold
+    </namerecord>
+    <namerecord nameID="299" platformID="3" platEncID="1" langID="0x409">
+      Caption
+    </namerecord>
+    <namerecord nameID="300" platformID="3" platEncID="1" langID="0x409">
+      Text
+    </namerecord>
+    <namerecord nameID="301" platformID="3" platEncID="1" langID="0x409">
+      Display
+    </namerecord>
+    <namerecord nameID="302" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-LightCaption
+    </namerecord>
+    <namerecord nameID="303" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-BookCaption
+    </namerecord>
+    <namerecord nameID="304" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-RegularCaption
+    </namerecord>
+    <namerecord nameID="305" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-MediumCaption
+    </namerecord>
+    <namerecord nameID="306" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-SemiBoldCaption
+    </namerecord>
+    <namerecord nameID="308" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-LightText
+    </namerecord>
+    <namerecord nameID="309" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-BookText
+    </namerecord>
+    <namerecord nameID="310" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-RegularText
+    </namerecord>
+    <namerecord nameID="311" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-MediumText
+    </namerecord>
+    <namerecord nameID="312" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-SemiBoldText
+    </namerecord>
+    <namerecord nameID="314" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-LightDisplay
+    </namerecord>
+    <namerecord nameID="315" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-BookDisplay
+    </namerecord>
+    <namerecord nameID="316" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-RegularDisplay
+    </namerecord>
+    <namerecord nameID="317" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-MediumDisplay
+    </namerecord>
+    <namerecord nameID="318" platformID="3" platEncID="1" langID="0x409">
+      DaikonicTransitSystem-SemiBoldDisplay
+    </namerecord>
+  </name>
+
+  <fvar>
+
+    <!-- Weight -->
+    <Axis>
+      <AxisTag>wght</AxisTag>
+      <Flags>0x0</Flags>
+      <MinValue>300.0</MinValue>
+      <DefaultValue>350.0</DefaultValue>
+      <MaxValue>600.0</MaxValue>
+      <AxisNameID>272</AxisNameID>
+    </Axis>
+
+    <!-- Optical Size -->
+    <Axis>
+      <AxisTag>opsz</AxisTag>
+      <Flags>0x0</Flags>
+      <MinValue>10.0</MinValue>
+      <DefaultValue>14.0</DefaultValue>
+      <MaxValue>36.0</MaxValue>
+      <AxisNameID>275</AxisNameID>
+    </Axis>
+
+    <!-- Light Caption -->
+    <!-- PostScript: DaikonicTransitSystem-LightCaption -->
+    <NamedInstance flags="0x0" postscriptNameID="302" subfamilyNameID="276">
+      <coord axis="wght" value="300.0"/>
+      <coord axis="opsz" value="10.0"/>
+    </NamedInstance>
+
+    <!-- Book Caption -->
+    <!-- PostScript: DaikonicTransitSystem-BookCaption -->
+    <NamedInstance flags="0x0" postscriptNameID="303" subfamilyNameID="277">
+      <coord axis="wght" value="350.0"/>
+      <coord axis="opsz" value="10.0"/>
+    </NamedInstance>
+
+    <!-- Regular Caption -->
+    <!-- PostScript: DaikonicTransitSystem-RegularCaption -->
+    <NamedInstance flags="0x0" postscriptNameID="304" subfamilyNameID="278">
+      <coord axis="wght" value="400.0"/>
+      <coord axis="opsz" value="10.0"/>
+    </NamedInstance>
+
+    <!-- Medium Caption -->
+    <!-- PostScript: DaikonicTransitSystem-MediumCaption -->
+    <NamedInstance flags="0x0" postscriptNameID="305" subfamilyNameID="279">
+      <coord axis="wght" value="500.0"/>
+      <coord axis="opsz" value="10.0"/>
+    </NamedInstance>
+
+    <!-- SemiBold Caption -->
+    <!-- PostScript: DaikonicTransitSystem-SemiBoldCaption -->
+    <NamedInstance flags="0x0" postscriptNameID="306" subfamilyNameID="280">
+      <coord axis="wght" value="600.0"/>
+      <coord axis="opsz" value="10.0"/>
+    </NamedInstance>
+
+    <!-- Light Text -->
+    <!-- PostScript: DaikonicTransitSystem-LightText -->
+    <NamedInstance flags="0x0" postscriptNameID="308" subfamilyNameID="282">
+      <coord axis="wght" value="300.0"/>
+      <coord axis="opsz" value="14.0"/>
+    </NamedInstance>
+
+    <!-- Book Text -->
+    <!-- PostScript: DaikonicTransitSystem-BookText -->
+    <NamedInstance flags="0x0" postscriptNameID="309" subfamilyNameID="283">
+      <coord axis="wght" value="350.0"/>
+      <coord axis="opsz" value="14.0"/>
+    </NamedInstance>
+
+    <!-- Regular Text -->
+    <!-- PostScript: DaikonicTransitSystem-RegularText -->
+    <NamedInstance flags="0x0" postscriptNameID="310" subfamilyNameID="284">
+      <coord axis="wght" value="400.0"/>
+      <coord axis="opsz" value="14.0"/>
+    </NamedInstance>
+
+    <!-- Medium Text -->
+    <!-- PostScript: DaikonicTransitSystem-MediumText -->
+    <NamedInstance flags="0x0" postscriptNameID="311" subfamilyNameID="285">
+      <coord axis="wght" value="500.0"/>
+      <coord axis="opsz" value="14.0"/>
+    </NamedInstance>
+
+    <!-- SemiBold Text -->
+    <!-- PostScript: DaikonicTransitSystem-SemiBoldText -->
+    <NamedInstance flags="0x0" postscriptNameID="312" subfamilyNameID="286">
+      <coord axis="wght" value="600.0"/>
+      <coord axis="opsz" value="14.0"/>
+    </NamedInstance>
+
+    <!-- Light Display -->
+    <!-- PostScript: DaikonicTransitSystem-LightDisplay -->
+    <NamedInstance flags="0x0" postscriptNameID="314" subfamilyNameID="288">
+      <coord axis="wght" value="300.0"/>
+      <coord axis="opsz" value="36.0"/>
+    </NamedInstance>
+
+    <!-- Book Display -->
+    <!-- PostScript: DaikonicTransitSystem-BookDisplay -->
+    <NamedInstance flags="0x0" postscriptNameID="315" subfamilyNameID="289">
+      <coord axis="wght" value="350.0"/>
+      <coord axis="opsz" value="36.0"/>
+    </NamedInstance>
+
+    <!-- Regular Display -->
+    <!-- PostScript: DaikonicTransitSystem-RegularDisplay -->
+    <NamedInstance flags="0x0" postscriptNameID="316" subfamilyNameID="290">
+      <coord axis="wght" value="400.0"/>
+      <coord axis="opsz" value="36.0"/>
+    </NamedInstance>
+
+    <!-- Medium Display -->
+    <!-- PostScript: DaikonicTransitSystem-MediumDisplay -->
+    <NamedInstance flags="0x0" postscriptNameID="317" subfamilyNameID="291">
+      <coord axis="wght" value="500.0"/>
+      <coord axis="opsz" value="36.0"/>
+    </NamedInstance>
+
+    <!-- SemiBold Display -->
+    <!-- PostScript: DaikonicTransitSystem-SemiBoldDisplay -->
+    <NamedInstance flags="0x0" postscriptNameID="318" subfamilyNameID="292">
+      <coord axis="wght" value="600.0"/>
+      <coord axis="opsz" value="36.0"/>
+    </NamedInstance>
+  </fvar>
+
+  <STAT>
+    <Version value="0x00010001"/>
+    <DesignAxisRecordSize value="8"/>
+    <!-- DesignAxisCount=2 -->
+    <DesignAxisRecord>
+      <Axis index="0">
+        <AxisTag value="wght"/>
+        <AxisNameID value="272"/>  <!-- Weight -->
+        <AxisOrdering value="0"/>
+      </Axis>
+      <Axis index="1">
+        <AxisTag value="opsz"/>
+        <AxisNameID value="275"/>  <!-- Optical Size -->
+        <AxisOrdering value="1"/>
+      </Axis>
+    </DesignAxisRecord>
+    <!-- AxisValueCount=8 -->
+    <AxisValueArray>
+      <AxisValue index="0" Format="1">
+        <AxisIndex value="0"/>
+        <Flags value="0"/>
+        <ValueNameID value="294"/>  <!-- Light -->
+        <Value value="300.0"/>
+      </AxisValue>
+      <AxisValue index="1" Format="1">
+        <AxisIndex value="0"/>
+        <Flags value="2"/>  <!-- ElidableAxisValueName -->
+        <ValueNameID value="274"/>  <!-- Book -->
+        <Value value="350.0"/>
+      </AxisValue>
+      <AxisValue index="2" Format="1">
+        <AxisIndex value="0"/>
+        <Flags value="0"/>
+        <ValueNameID value="295"/>  <!-- Regular -->
+        <Value value="400.0"/>
+      </AxisValue>
+      <AxisValue index="3" Format="1">
+        <AxisIndex value="0"/>
+        <Flags value="0"/>
+        <ValueNameID value="296"/>  <!-- Medium -->
+        <Value value="500.0"/>
+      </AxisValue>
+      <AxisValue index="4" Format="1">
+        <AxisIndex value="0"/>
+        <Flags value="0"/>
+        <ValueNameID value="297"/>  <!-- SemiBold -->
+        <Value value="600.0"/>
+      </AxisValue>
+      <AxisValue index="5" Format="1">
+        <AxisIndex value="1"/>
+        <Flags value="0"/>
+        <ValueNameID value="299"/>  <!-- Caption -->
+        <Value value="10.0"/>
+      </AxisValue>
+      <AxisValue index="6" Format="1">
+        <AxisIndex value="1"/>
+        <Flags value="2"/>  <!-- ElidableAxisValueName -->
+        <ValueNameID value="300"/>  <!-- Text -->
+        <Value value="14.0"/>
+      </AxisValue>
+      <AxisValue index="7" Format="1">
+        <AxisIndex value="1"/>
+        <Flags value="0"/>
+        <ValueNameID value="301"/>  <!-- Display -->
+        <Value value="36.0"/>
+      </AxisValue>
+    </AxisValueArray>
+    <ElidedFallbackNameID value="2"/>  <!-- Book Text -->
+  </STAT>
+
+</ttFont>

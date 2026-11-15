@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="endash" format="2">
+  <advance width="485"/>
+  <unicode hex="2013"/>
+  <outline>
+    <contour>
+      <point x="5" y="328" type="line"/>
+      <point x="124" y="328"/>
+      <point x="361" y="328"/>
+      <point x="480" y="328" type="qcurve"/>
+      <point x="480" y="303"/>
+      <point x="480" y="253"/>
+      <point x="480" y="228" type="qcurve"/>
+      <point x="361" y="228"/>
+      <point x="124" y="228"/>
+      <point x="5" y="228" type="qcurve"/>
+      <point x="5" y="253"/>
+      <point x="5" y="303"/>
+      <point x="5" y="328" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="idotless" format="2">
+  <advance width="270.0"/>
+  <unicode hex="0131"/>
+  <anchor x="135.0" y="0.0" name="bottom"/>
+  <anchor x="191.0" y="0.0" name="ogonek"/>
+  <anchor x="135.0" y="510.0" name="top"/>
+  <outline>
+    <contour>
+      <point x="65.0" y="532.0" type="line"/>
+      <point x="82.66666666666667" y="532.0"/>
+      <point x="117.33333333333333" y="532.0"/>
+      <point x="135.0" y="532.0" type="qcurve"/>
+      <point x="152.66666666666666" y="532.0"/>
+      <point x="187.66666666666666" y="532.0"/>
+      <point x="205.0" y="532.0" type="qcurve"/>
+      <point x="205.0" y="465.0"/>
+      <point x="205.0" y="333.0"/>
+      <point x="205.0" y="266.0" type="qcurve"/>
+      <point x="205.0" y="200.0"/>
+      <point x="205.0" y="67.0"/>
+      <point x="205.0" y="0.0" type="qcurve"/>
+      <point x="187.66666666666666" y="0.0"/>
+      <point x="152.66666666666666" y="0.0"/>
+      <point x="135.0" y="0.0" type="qcurve"/>
+      <point x="117.66666666666667" y="0.0"/>
+      <point x="82.66666666666667" y="0.0"/>
+      <point x="65.0" y="0.0" type="qcurve"/>
+      <point x="65.0" y="67.0"/>
+      <point x="65.0" y="200.0"/>
+      <point x="65.0" y="266.0" type="qcurve"/>
+      <point x="65.0" y="333.0"/>
+      <point x="65.0" y="465.0"/>
+      <point x="65.0" y="532.0" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

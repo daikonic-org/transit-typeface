@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="300" maximum="600" default="400"/>
+  </axes>
+  <sources>
+    <source filename="Master-Light.ttf" name="Light" familyname="Daikonic Transit Sans" stylename="Light">
+      <location>
+        <dimension name="Weight" xvalue="300"/>
+      </location>
+    </source>
+    <source filename="Master-Regular.ttf" name="Regular" familyname="Daikonic Transit Sans" stylename="Regular">
+      <lib copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="Master-SemiBold.ttf" name="SemiBold" familyname="Daikonic Transit Sans" stylename="SemiBold">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Light" familyname="Daikonic Transit Sans" stylename="Light">
+      <location>
+        <dimension name="Weight" xvalue="300"/>
+      </location>
+    </instance>
+    <instance name="Book" familyname="Daikonic Transit Sans" stylename="Book">
+      <location>
+        <dimension name="Weight" xvalue="350"/>
+      </location>
+    </instance>
+    <instance name="Regular" familyname="Daikonic Transit Sans" stylename="Regular">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Medium" familyname="Daikonic Transit Sans" stylename="Medium">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="SemiBold" familyname="Daikonic Transit Sans" stylename="SemiBold">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

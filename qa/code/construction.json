@@ -1,0 +1,23 @@
+{
+  "Light": {
+    "stroke": 76.0,
+    "clear_double_rail_gap": 142.0,
+    "math_axis": 300.0,
+    "head_half_height": 250,
+    "head_depth_ratio": 0.6
+  },
+  "Book": {
+    "stroke": 89.0,
+    "clear_double_rail_gap": 116.0,
+    "math_axis": 300.0,
+    "head_half_height": 250,
+    "head_depth_ratio": 0.6
+  },
+  "Regular": {
+    "stroke": 101.0,
+    "clear_double_rail_gap": 92.0,
+    "math_axis": 300.0,
+    "head_half_height": 250,
+    "head_depth_ratio": 0.6
+  }
+}

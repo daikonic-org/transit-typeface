@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="dieresiscomb.case" format="2">
+  <anchor x="188.0" y="700" name="_top"/>
+  <anchor x="188.0" y="838" name="top"/>
+  <outline>
+    <contour>
+      <point x="101" y="894" type="line"/>
+      <point x="118" y="876"/>
+      <point x="153" y="841"/>
+      <point x="171" y="823" type="qcurve"/>
+      <point x="153" y="805"/>
+      <point x="119" y="771"/>
+      <point x="101" y="753" type="qcurve"/>
+      <point x="84" y="771"/>
+      <point x="49" y="805"/>
+      <point x="31" y="823" type="qcurve"/>
+      <point x="49" y="841"/>
+      <point x="84" y="876"/>
+      <point x="101" y="894" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="274" y="894" type="line"/>
+      <point x="291" y="876"/>
+      <point x="327" y="841"/>
+      <point x="344" y="823" type="qcurve"/>
+      <point x="327" y="805"/>
+      <point x="291" y="771"/>
+      <point x="274" y="753" type="qcurve"/>
+      <point x="257" y="771"/>
+      <point x="222" y="805"/>
+      <point x="204" y="823" type="qcurve"/>
+      <point x="222" y="841"/>
+      <point x="257" y="876"/>
+      <point x="274" y="894" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

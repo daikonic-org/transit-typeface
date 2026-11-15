@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="caron" format="2">
+  <advance width="389"/>
+  <unicode hex="02C7"/>
+  <anchor x="194.0" y="475" name="_top"/>
+  <anchor x="194" y="659" name="top"/>
+  <outline>
+    <contour>
+      <point x="32" y="710" type="line"/>
+      <point x="56" y="710"/>
+      <point x="105" y="710"/>
+      <point x="129" y="710" type="qcurve"/>
+      <point x="145" y="692"/>
+      <point x="177" y="656"/>
+      <point x="194" y="638" type="qcurve"/>
+      <point x="194" y="638"/>
+      <point x="194" y="638"/>
+      <point x="194" y="638" type="qcurve"/>
+      <point x="210" y="656"/>
+      <point x="244" y="692"/>
+      <point x="260" y="710" type="qcurve"/>
+      <point x="284" y="710"/>
+      <point x="333" y="710"/>
+      <point x="357" y="710" type="qcurve"/>
+      <point x="349" y="701"/>
+      <point x="333" y="684"/>
+      <point x="325" y="675" type="qcurve"/>
+      <point x="292" y="639"/>
+      <point x="227" y="568"/>
+      <point x="194" y="533" type="qcurve"/>
+      <point x="154" y="577"/>
+      <point x="73" y="666"/>
+      <point x="32" y="710" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

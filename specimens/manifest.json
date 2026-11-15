@@ -1,0 +1,41 @@
+{
+  "sans": {
+    "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+    "sha256": "1eed0dc6bfdd5cda0240c758b3252ec296f33e0b9317632754bdc9f6df91a850",
+    "version": "0.106",
+    "weights": [
+      300,
+      400,
+      600
+    ],
+    "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
+    "synthetic_styles": false,
+    "background": "#194454"
+  },
+  "system": {
+    "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+    "sha256": "a376a3e333e0de4b32f5202dd200c7bc0e244eb560eaa528df30ff9feaf2cfd4",
+    "version": "0.115",
+    "weights": [
+      300,
+      350,
+      600
+    ],
+    "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
+    "synthetic_styles": false,
+    "background": "#FA994A"
+  },
+  "code": {
+    "font": "fonts/code/VF/DaikonicTransitCode600-VF.ttf",
+    "sha256": "86e550ceb8cf2d38364f1d707c4876240170813a48fb8c3327f378313fe2e056",
+    "version": "1.015",
+    "weights": [
+      300,
+      350,
+      400
+    ],
+    "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
+    "synthetic_styles": false,
+    "background": "#F03630"
+  }
+}

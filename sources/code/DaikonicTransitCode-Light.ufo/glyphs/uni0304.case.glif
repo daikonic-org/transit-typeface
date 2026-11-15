@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni0304.case" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="159" y="860" type="qcurve"/>
+      <point x="195" y="860"/>
+      <point x="265" y="860"/>
+      <point x="301" y="860" type="qcurve" smooth="yes"/>
+      <point x="336" y="860"/>
+      <point x="407" y="860"/>
+      <point x="442" y="860" type="qcurve"/>
+      <point x="442" y="852"/>
+      <point x="442" y="836"/>
+      <point x="442" y="828" type="qcurve" smooth="yes"/>
+      <point x="442" y="819"/>
+      <point x="442" y="803"/>
+      <point x="442" y="794" type="qcurve"/>
+      <point x="407" y="794"/>
+      <point x="336" y="794"/>
+      <point x="301" y="794" type="qcurve" smooth="yes"/>
+      <point x="265" y="794"/>
+      <point x="195" y="794"/>
+      <point x="159" y="794" type="qcurve"/>
+      <point x="159" y="803"/>
+      <point x="159" y="819"/>
+      <point x="159" y="828" type="qcurve" smooth="yes"/>
+      <point x="159" y="836"/>
+      <point x="159" y="852"/>
+    </contour>
+  </outline>
+  <lib>
+    <dict>
+      <key>com.schriftgestaltung.Glyphs.category</key>
+      <string>Mark</string>
+      <key>com.schriftgestaltung.Glyphs.subCategory</key>
+      <string>Spacing Combining</string>
+    </dict>
+  </lib>
+</glyph>

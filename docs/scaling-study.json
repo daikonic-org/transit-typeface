@@ -1,0 +1,510 @@
+{
+  "scope": "controlled Regular-based glyph probes, not reconstruction of all manual choices",
+  "uniform_size_factor": 1.12,
+  "source_n_stem": 100.0,
+  "order_probes": [
+    {
+      "glyph": "n",
+      "nominal_weight_delta": -25,
+      "actual_weight_before_size": -25,
+      "actual_weight_after_size": -25,
+      "coverage_difference": 0.00022317816028020793,
+      "bounds_weight_then_size": [
+        63.5,
+        0.0,
+        510.34002685546875,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        63.5,
+        -9.5367431640625e-07,
+        510.34002685546875,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "n",
+      "nominal_weight_delta": -12.5,
+      "actual_weight_before_size": -12.5,
+      "actual_weight_after_size": -12.5,
+      "coverage_difference": 1.5054945695353946e-05,
+      "bounds_weight_then_size": [
+        57.25,
+        4.76837158203125e-07,
+        516.5900268554688,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        57.25,
+        4.76837158203125e-07,
+        516.5900268554688,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "n",
+      "nominal_weight_delta": 40,
+      "actual_weight_before_size": 40,
+      "actual_weight_after_size": 40,
+      "coverage_difference": 0.0004663076906013592,
+      "bounds_weight_then_size": [
+        31.0,
+        0.0,
+        542.8399658203125,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        31.0,
+        0.0,
+        542.8400268554688,
+        543.199951171875
+      ]
+    },
+    {
+      "glyph": "o",
+      "nominal_weight_delta": -25,
+      "actual_weight_before_size": -25,
+      "actual_weight_after_size": -25,
+      "coverage_difference": 0.00043998960460442783,
+      "bounds_weight_then_size": [
+        43.5,
+        -11.200000762939453,
+        553.06005859375,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        43.5,
+        -11.200000762939453,
+        553.06005859375,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "o",
+      "nominal_weight_delta": -12.5,
+      "actual_weight_before_size": -12.5,
+      "actual_weight_after_size": -12.5,
+      "coverage_difference": 3.4284116085937947e-05,
+      "bounds_weight_then_size": [
+        37.25,
+        -11.199999809265137,
+        559.31005859375,
+        543.199951171875
+      ],
+      "bounds_size_then_weight": [
+        37.25,
+        -11.200000762939453,
+        559.31005859375,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "o",
+      "nominal_weight_delta": 40,
+      "actual_weight_before_size": 40,
+      "actual_weight_after_size": 40,
+      "coverage_difference": 0.0009695604419728218,
+      "bounds_weight_then_size": [
+        11.0,
+        -11.19999885559082,
+        585.5599975585938,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        11.0,
+        -11.19999885559082,
+        585.56005859375,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "a",
+      "nominal_weight_delta": -25,
+      "actual_weight_before_size": -25,
+      "actual_weight_after_size": -25,
+      "coverage_difference": 0.0006239296379062905,
+      "bounds_weight_then_size": [
+        50.5,
+        -11.199999809265137,
+        437.9800109863281,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        50.5,
+        -11.200000762939453,
+        437.9800109863281,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "a",
+      "nominal_weight_delta": -12.5,
+      "actual_weight_before_size": -12.5,
+      "actual_weight_after_size": -12.5,
+      "coverage_difference": 3.8944405148973444e-05,
+      "bounds_weight_then_size": [
+        44.25,
+        -11.19999885559082,
+        444.2300109863281,
+        543.199951171875
+      ],
+      "bounds_size_then_weight": [
+        44.25,
+        -11.200000762939453,
+        444.2300109863281,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "a",
+      "nominal_weight_delta": 40,
+      "actual_weight_before_size": 40,
+      "actual_weight_after_size": 40,
+      "coverage_difference": 0.001438146487403397,
+      "bounds_weight_then_size": [
+        18.0,
+        -11.19999885559082,
+        470.4800109863281,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        18.0,
+        -11.19999885559082,
+        470.4800109863281,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "e",
+      "nominal_weight_delta": -25,
+      "actual_weight_before_size": -25,
+      "actual_weight_after_size": -25,
+      "coverage_difference": 0.0006934957920646242,
+      "bounds_weight_then_size": [
+        43.5,
+        -11.200000762939453,
+        546.8093872070312,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        43.5,
+        -11.200000762939453,
+        546.8092651367188,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "e",
+      "nominal_weight_delta": -12.5,
+      "actual_weight_before_size": -12.5,
+      "actual_weight_after_size": -12.5,
+      "coverage_difference": 3.848973360292235e-05,
+      "bounds_weight_then_size": [
+        37.25,
+        -11.199999809265137,
+        553.0578002929688,
+        543.199951171875
+      ],
+      "bounds_size_then_weight": [
+        37.25,
+        -11.200000762939453,
+        553.0578002929688,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "e",
+      "nominal_weight_delta": 40,
+      "actual_weight_before_size": 30.0,
+      "actual_weight_after_size": 40,
+      "coverage_difference": 0.07977336547868336,
+      "bounds_weight_then_size": [
+        16.0,
+        -11.199996948242188,
+        573.1028442382812,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        16.0,
+        -11.19999885559082,
+        584.3026733398438,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "s",
+      "nominal_weight_delta": -25,
+      "actual_weight_before_size": -25,
+      "actual_weight_after_size": -25,
+      "coverage_difference": 0.0007212588113493936,
+      "bounds_weight_then_size": [
+        51.5,
+        -11.200000762939453,
+        433.3800048828125,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        51.5,
+        -11.200000762939453,
+        433.3800048828125,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "s",
+      "nominal_weight_delta": -12.5,
+      "actual_weight_before_size": -12.5,
+      "actual_weight_after_size": -12.5,
+      "coverage_difference": 4.332062041178378e-05,
+      "bounds_weight_then_size": [
+        45.25,
+        -11.199999809265137,
+        439.6300048828125,
+        543.199951171875
+      ],
+      "bounds_size_then_weight": [
+        45.25,
+        -11.200000762939453,
+        439.6300048828125,
+        543.2000122070312
+      ]
+    },
+    {
+      "glyph": "s",
+      "nominal_weight_delta": 40,
+      "actual_weight_before_size": 40,
+      "actual_weight_after_size": 40,
+      "coverage_difference": 0.001918257460121309,
+      "bounds_weight_then_size": [
+        19.0,
+        -11.19999885559082,
+        465.8800048828125,
+        543.2000122070312
+      ],
+      "bounds_size_then_weight": [
+        19.0,
+        -11.19999885559082,
+        465.8800048828125,
+        543.2000122070312
+      ]
+    }
+  ],
+  "width_probe": {
+    "glyph": "H",
+    "source_ink_width": 577.0,
+    "target_ink_width": 528,
+    "source_vertical_stem": 110.0,
+    "naively_scaled_vertical_stem": 100.65857696533203,
+    "compensated_vertical_stem": 110.0,
+    "topology_preserved": true
+  },
+  "current_regular_profiles": {
+    "sans": {
+      "declared_x_height": 475,
+      "declared_cap_height": 700,
+      "glyphs": {
+        "H": {
+          "bounds": [
+            50.0,
+            0.0,
+            627.0,
+            700.0
+          ],
+          "advance": 677
+        },
+        "x": {
+          "bounds": [
+            5.0,
+            0.0,
+            490.0,
+            475.0
+          ],
+          "advance": 490
+        },
+        "n": {
+          "bounds": [
+            51.0,
+            0.0,
+            483.0,
+            485.0
+          ],
+          "advance": 523
+        },
+        "o": {
+          "bounds": [
+            31.0,
+            -10.0,
+            519.0,
+            485.0
+          ],
+          "advance": 550
+        },
+        "w": {
+          "bounds": [
+            12.0,
+            0.0,
+            768.0,
+            475.0
+          ],
+          "advance": 779
+        },
+        "M": {
+          "bounds": [
+            50.0,
+            0.0,
+            764.0,
+            700.0
+          ],
+          "advance": 814
+        },
+        "W": {
+          "bounds": [
+            12.0,
+            0.0,
+            984.0,
+            700.0
+          ],
+          "advance": 996
+        }
+      }
+    },
+    "system": {
+      "declared_x_height": 532,
+      "declared_cap_height": 700,
+      "glyphs": {
+        "H": {
+          "bounds": [
+            55.0,
+            0.0,
+            632.0,
+            700.0
+          ],
+          "advance": 687
+        },
+        "x": {
+          "bounds": [
+            10.0,
+            0.0,
+            529.0,
+            532.0
+          ],
+          "advance": 534
+        },
+        "n": {
+          "bounds": [
+            52.0,
+            0.0,
+            524.0,
+            543.0
+          ],
+          "advance": 573
+        },
+        "o": {
+          "bounds": [
+            36.0,
+            -11.0,
+            571.0,
+            543.0
+          ],
+          "advance": 607
+        },
+        "w": {
+          "bounds": [
+            17.0,
+            0.0,
+            847.0,
+            532.0
+          ],
+          "advance": 863
+        },
+        "M": {
+          "bounds": [
+            55.0,
+            0.0,
+            769.0,
+            700.0
+          ],
+          "advance": 824
+        },
+        "W": {
+          "bounds": [
+            17.0,
+            0.0,
+            989.0,
+            700.0
+          ],
+          "advance": 1006
+        }
+      }
+    },
+    "code": {
+      "declared_x_height": 530,
+      "declared_cap_height": 700,
+      "glyphs": {
+        "H": {
+          "bounds": [
+            24.0,
+            12.0,
+            577.0,
+            688.0
+          ],
+          "advance": 600
+        },
+        "x": {
+          "bounds": [
+            21.0,
+            12.0,
+            581.0,
+            518.0
+          ],
+          "advance": 600
+        },
+        "n": {
+          "bounds": [
+            55.0,
+            13.0,
+            547.0,
+            528.0
+          ],
+          "advance": 600
+        },
+        "o": {
+          "bounds": [
+            31.0,
+            2.0,
+            569.0,
+            528.0
+          ],
+          "advance": 600
+        },
+        "w": {
+          "bounds": [
+            8.0,
+            13.0,
+            592.0,
+            517.0
+          ],
+          "advance": 600
+        },
+        "M": {
+          "bounds": [
+            25.0,
+            12.0,
+            577.0,
+            688.0
+          ],
+          "advance": 600
+        },
+        "W": {
+          "bounds": [
+            22.0,
+            12.0,
+            580.0,
+            688.0
+          ],
+          "advance": 600
+        }
+      }
+    }
+  }
+}

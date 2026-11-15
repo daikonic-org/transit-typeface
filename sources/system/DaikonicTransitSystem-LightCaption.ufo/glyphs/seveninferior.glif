@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="seveninferior" format="2">
+  <advance width="310"/>
+  <unicode hex="2087"/>
+  <outline>
+    <contour>
+      <point x="43" y="268" type="line"/>
+      <point x="102" y="268"/>
+      <point x="221" y="268"/>
+      <point x="280" y="268" type="qcurve"/>
+      <point x="241" y="178"/>
+      <point x="164" y="0"/>
+      <point x="125" y="-90" type="qcurve"/>
+      <point x="108" y="-90"/>
+      <point x="73" y="-90"/>
+      <point x="55" y="-90" type="qcurve"/>
+      <point x="87" y="-16"/>
+      <point x="152" y="131"/>
+      <point x="184" y="205" type="qcurve"/>
+      <point x="149" y="205"/>
+      <point x="78" y="205"/>
+      <point x="43" y="205" type="qcurve"/>
+      <point x="43" y="221"/>
+      <point x="43" y="252"/>
+      <point x="43" y="268" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

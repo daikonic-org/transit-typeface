@@ -1,0 +1,31 @@
+{
+  "viewport_per_panel": [
+    500,
+    620
+  ],
+  "device_scale": 3,
+  "reviewed": "2026-11-15",
+  "renderer": "Chromium; SVG contains actual font outlines",
+  "artifacts": {
+    "TransitSans": {
+      "svg": "09a256676df9c91dffc688e56e2b0dcb6326a98f72e62e22440ac3ce6a6e0df8",
+      "png": "1e379d2ab7b00adc62873da5bbab2b5add1eacc61900aa9ab8a9db0ecc4affcd",
+      "pdf": "b106422bcb0da764f1c1ac84c4f7e44985241d200281d85ca1d43d073f056db2"
+    },
+    "TransitSystem": {
+      "svg": "6e4ca577908db16c5cda2149507cb826339204c53314bd3e92a0a961a52030ed",
+      "png": "3a184ca64ec135c988f3c78dec9d19d5baa34143032a5e40b5831352a62fefb0",
+      "pdf": "cdf8cd6fd4946c49d2790d4d8e2d65b04f031126f32c3dc8358ee9bf9e12d645"
+    },
+    "TransitCode": {
+      "svg": "60b4c81cbfc32b0ab86a3bd52d6ba8195b701bd429f51d4dd868cad0997ca2f7",
+      "png": "ee9cf109f4b4fe325ba851540df8939ba3af3659b96307ae6ce2a0554134e07f",
+      "pdf": "b99c8277fe86754e063a53d40c44682510b4197a1db5a9050555e4af01e4c70c"
+    },
+    "Transit-Family": {
+      "svg": "699f26cf1ae837c2ffd08480926d2be76df6f3104e9a8cb3479a1372a49b9c5d",
+      "png": "d3c0d31edf5b6f76f474578ccddc9b2b37702786052d7602cc61275ee885a70d",
+      "pdf": "98c6b30a498cbe04e862802bb62c1b7d0fe3ded1076802b5e547b1d30f1ff236"
+    }
+  }
+}

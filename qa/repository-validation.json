@@ -1,0 +1,116 @@
+{
+  "sans": {
+    "version": "0.106",
+    "sanitizer": "passed",
+    "static_snapshot_parity": "exact",
+    "binary_source_rebuild": "exact",
+    "locations": [
+      {
+        "wght": 300
+      },
+      {
+        "wght": 350
+      },
+      {
+        "wght": 400
+      },
+      {
+        "wght": 500
+      },
+      {
+        "wght": 600
+      }
+    ]
+  },
+  "system": {
+    "version": "0.115",
+    "sanitizer": "passed",
+    "static_snapshot_parity": "exact",
+    "binary_source_rebuild": "exact",
+    "locations": [
+      {
+        "wght": 300,
+        "opsz": 10
+      },
+      {
+        "wght": 300,
+        "opsz": 14
+      },
+      {
+        "wght": 300,
+        "opsz": 36
+      },
+      {
+        "wght": 350,
+        "opsz": 10
+      },
+      {
+        "wght": 350,
+        "opsz": 14
+      },
+      {
+        "wght": 350,
+        "opsz": 36
+      },
+      {
+        "wght": 400,
+        "opsz": 10
+      },
+      {
+        "wght": 400,
+        "opsz": 14
+      },
+      {
+        "wght": 400,
+        "opsz": 36
+      },
+      {
+        "wght": 500,
+        "opsz": 10
+      },
+      {
+        "wght": 500,
+        "opsz": 14
+      },
+      {
+        "wght": 500,
+        "opsz": 36
+      },
+      {
+        "wght": 600,
+        "opsz": 10
+      },
+      {
+        "wght": 600,
+        "opsz": 14
+      },
+      {
+        "wght": 600,
+        "opsz": 36
+      }
+    ]
+  },
+  "code": {
+    "version": "1.015",
+    "sanitizer": "passed",
+    "static_snapshot_parity": "exact",
+    "binary_source_rebuild": "exact",
+    "locations": [
+      {
+        "wght": 300
+      },
+      {
+        "wght": 325
+      },
+      {
+        "wght": 350
+      },
+      {
+        "wght": 375
+      },
+      {
+        "wght": 400
+      }
+    ]
+  }
+}

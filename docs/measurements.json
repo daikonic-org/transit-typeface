@@ -1,0 +1,462 @@
+{
+  "sans": {
+    "version": "0.106",
+    "upm": 1000,
+    "axes": {
+      "wght": [
+        300.0,
+        400.0,
+        600.0
+      ]
+    },
+    "isFixedPitch": 0,
+    "panoseFamilyType": 0,
+    "panoseProportion": 0,
+    "averageWidth": 544,
+    "hasGPOS": true,
+    "GPOSLookupTypes": [
+      2,
+      2,
+      2,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6
+    ],
+    "caretPositions": {
+      "Q_U": [
+        748
+      ],
+      "fi": [
+        253
+      ],
+      "fl": [
+        315
+      ],
+      "a_i": [],
+      "l_i": [
+        163
+      ]
+    },
+    "zeroContourCount": 2,
+    "OContourCount": 2,
+    "measurements": [
+      {
+        "weight": 300,
+        "H_vertical_stem_mean": 85.0,
+        "H_horizontal_bar_mean": 77.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 30456.17
+          },
+          "e": {
+            "count": 1,
+            "area": 29696.42
+          },
+          "o": {
+            "count": 1,
+            "area": 85872.67
+          }
+        }
+      },
+      {
+        "weight": 350,
+        "H_vertical_stem_mean": 97.5,
+        "H_horizontal_bar_mean": 88.5,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 25760.02
+          },
+          "e": {
+            "count": 1,
+            "area": 24464.54
+          },
+          "o": {
+            "count": 1,
+            "area": 77406.83
+          }
+        }
+      },
+      {
+        "weight": 400,
+        "H_vertical_stem_mean": 110.0,
+        "H_horizontal_bar_mean": 100.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 21461.67
+          },
+          "e": {
+            "count": 1,
+            "area": 19705.33
+          },
+          "o": {
+            "count": 1,
+            "area": 69371.83
+          }
+        }
+      },
+      {
+        "weight": 600,
+        "H_vertical_stem_mean": 150.0,
+        "H_horizontal_bar_mean": 132.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 11015.67
+          },
+          "e": {
+            "count": 1,
+            "area": 8010.67
+          },
+          "o": {
+            "count": 1,
+            "area": 48490.17
+          }
+        }
+      }
+    ],
+    "combiningExamples": {
+      "a\u0301": [
+        {
+          "glyph": "aacute",
+          "advance": 458,
+          "offset": [
+            0,
+            0
+          ]
+        }
+      ],
+      "q\u0301": [
+        {
+          "glyph": "q",
+          "advance": 555,
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": "acutecomb",
+          "advance": 0,
+          "offset": [
+            -344,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "system": {
+    "version": "0.115",
+    "upm": 1000,
+    "axes": {
+      "wght": [
+        300.0,
+        350.0,
+        600.0
+      ],
+      "opsz": [
+        10.0,
+        14.0,
+        36.0
+      ]
+    },
+    "isFixedPitch": 0,
+    "panoseFamilyType": 0,
+    "panoseProportion": 0,
+    "averageWidth": 555,
+    "hasGPOS": true,
+    "GPOSLookupTypes": [
+      2,
+      2,
+      2,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6
+    ],
+    "caretPositions": {
+      "fi": [],
+      "fl": []
+    },
+    "zeroContourCount": 2,
+    "OContourCount": 2,
+    "measurements": [
+      {
+        "weight": 300,
+        "H_vertical_stem_mean": 85.0,
+        "H_horizontal_bar_mean": 77.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 42151.17
+          },
+          "e": {
+            "count": 1,
+            "area": 41858.92
+          },
+          "o": {
+            "count": 1,
+            "area": 115025.42
+          }
+        }
+      },
+      {
+        "weight": 350,
+        "H_vertical_stem_mean": 98.0,
+        "H_horizontal_bar_mean": 89.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 36539.92
+          },
+          "e": {
+            "count": 1,
+            "area": 35487.58
+          },
+          "o": {
+            "count": 1,
+            "area": 105037.58
+          }
+        }
+      },
+      {
+        "weight": 400,
+        "H_vertical_stem_mean": 110.0,
+        "H_horizontal_bar_mean": 100.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 31380.75
+          },
+          "e": {
+            "count": 1,
+            "area": 29665.33
+          },
+          "o": {
+            "count": 1,
+            "area": 95736.17
+          }
+        }
+      },
+      {
+        "weight": 600,
+        "H_vertical_stem_mean": 150.0,
+        "H_horizontal_bar_mean": 132.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 18372.67
+          },
+          "e": {
+            "count": 1,
+            "area": 15370.75
+          },
+          "o": {
+            "count": 1,
+            "area": 70750.92
+          }
+        }
+      }
+    ],
+    "combiningExamples": {
+      "a\u0301": [
+        {
+          "glyph": "aacute",
+          "advance": 489,
+          "offset": [
+            0,
+            0
+          ]
+        }
+      ],
+      "q\u0301": [
+        {
+          "glyph": "q",
+          "advance": 598,
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": "acutecomb",
+          "advance": 0,
+          "offset": [
+            -360,
+            46
+          ]
+        }
+      ]
+    }
+  },
+  "code": {
+    "version": "1.015",
+    "upm": 1000,
+    "axes": {
+      "wght": [
+        300.0,
+        350.0,
+        400.0
+      ]
+    },
+    "isFixedPitch": 1,
+    "panoseFamilyType": 0,
+    "panoseProportion": 0,
+    "averageWidth": 600,
+    "hasGPOS": false,
+    "GPOSLookupTypes": [],
+    "caretPositions": {
+      "code.arrowDouble": [
+        600,
+        1200
+      ],
+      "code.notStrict": [
+        600,
+        1200
+      ],
+      "code.strictEqual": [
+        600,
+        1200
+      ],
+      "code.arrow": [
+        600
+      ],
+      "code.fatArrow": [
+        600
+      ],
+      "code.equal": [
+        600
+      ],
+      "code.notEqual": [
+        600
+      ],
+      "code.leftDouble": [
+        600,
+        1200
+      ],
+      "code.leftArrow": [
+        600
+      ],
+      "code.lessEqual": [
+        600
+      ],
+      "code.scope": [
+        600
+      ],
+      "code.greaterEqual": [
+        600
+      ]
+    },
+    "zeroContourCount": 3,
+    "OContourCount": 2,
+    "measurements": [
+      {
+        "weight": 300,
+        "H_vertical_stem_mean": 84.0,
+        "H_horizontal_bar_mean": 76.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 45571.92
+          },
+          "e": {
+            "count": 1,
+            "area": 38953.0
+          },
+          "o": {
+            "count": 1,
+            "area": 106555.92
+          }
+        }
+      },
+      {
+        "weight": 350,
+        "H_vertical_stem_mean": 102.0,
+        "H_horizontal_bar_mean": 91.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 37195.25
+          },
+          "e": {
+            "count": 1,
+            "area": 30568.58
+          },
+          "o": {
+            "count": 1,
+            "area": 92265.33
+          }
+        }
+      },
+      {
+        "weight": 400,
+        "H_vertical_stem_mean": 120.0,
+        "H_horizontal_bar_mean": 106.0,
+        "counters": {
+          "a": {
+            "count": 1,
+            "area": 29839.75
+          },
+          "e": {
+            "count": 1,
+            "area": 23018.92
+          },
+          "o": {
+            "count": 1,
+            "area": 80062.0
+          }
+        }
+      }
+    ],
+    "combiningExamples": {
+      "a\u0301": [
+        {
+          "glyph": "aacute",
+          "advance": 600,
+          "offset": [
+            0,
+            0
+          ]
+        }
+      ],
+      "q\u0301": [
+        {
+          "glyph": "q",
+          "advance": 600,
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "glyph": "acutecomb",
+          "advance": 0,
+          "offset": [
+            -602,
+            22
+          ]
+        }
+      ]
+    }
+  }
+}

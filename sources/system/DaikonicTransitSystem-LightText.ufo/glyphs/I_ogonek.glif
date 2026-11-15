@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Iogonek" format="2">
+  <advance width="215"/>
+  <unicode hex="012E"/>
+  <anchor x="108" y="0" name="bottom"/>
+  <anchor x="163" y="0" name="ogonek"/>
+  <anchor x="108" y="700" name="top"/>
+  <anchor x="52.5" y="700" name="topleft"/>
+  <outline>
+    <contour>
+      <point x="65" y="700" type="line"/>
+      <point x="86" y="700"/>
+      <point x="129" y="700"/>
+      <point x="150" y="700" type="qcurve"/>
+      <point x="150" y="555"/>
+      <point x="150" y="266"/>
+      <point x="150" y="122" type="qcurve"/>
+      <point x="150" y="113"/>
+      <point x="150" y="96"/>
+      <point x="150" y="87" type="qcurve"/>
+      <point x="150" y="74"/>
+      <point x="150" y="47"/>
+      <point x="150" y="34" type="qcurve"/>
+      <point x="150" y="27"/>
+      <point x="150" y="13"/>
+      <point x="150" y="6" type="qcurve"/>
+      <point x="150" y="5"/>
+      <point x="150" y="2"/>
+      <point x="150" y="0" type="qcurve"/>
+      <point x="148" y="0"/>
+      <point x="143" y="0"/>
+      <point x="141" y="0" type="qcurve"/>
+      <point x="140" y="0"/>
+      <point x="137" y="0"/>
+      <point x="135" y="0" type="qcurve"/>
+      <point x="133" y="-3"/>
+      <point x="130" y="-7" type="qcurve"/>
+      <point x="126" y="-13"/>
+      <point x="123" y="-20" type="qcurve"/>
+      <point x="120" y="-25"/>
+      <point x="118" y="-30" type="qcurve"/>
+      <point x="117" y="-33"/>
+      <point x="116" y="-35" type="qcurve"/>
+      <point x="111" y="-51"/>
+      <point x="111" y="-69" type="qcurve"/>
+      <point x="111" y="-70"/>
+      <point x="111" y="-71" type="qcurve"/>
+      <point x="111" y="-92"/>
+      <point x="120" y="-106" type="qcurve"/>
+      <point x="123" y="-110"/>
+      <point x="125" y="-113" type="qcurve"/>
+      <point x="126" y="-114"/>
+      <point x="127" y="-115" type="qcurve"/>
+      <point x="133" y="-121"/>
+      <point x="148" y="-129"/>
+      <point x="157" y="-130" type="qcurve"/>
+      <point x="162" y="-131"/>
+      <point x="171" y="-132"/>
+      <point x="176" y="-132" type="qcurve"/>
+      <point x="187" y="-132"/>
+      <point x="208" y="-127"/>
+      <point x="218" y="-123" type="qcurve"/>
+      <point x="218" y="-139"/>
+      <point x="218" y="-171"/>
+      <point x="218" y="-187" type="qcurve"/>
+      <point x="215" y="-189"/>
+      <point x="209" y="-192"/>
+      <point x="206" y="-193" type="qcurve"/>
+      <point x="201" y="-194"/>
+      <point x="196" y="-195" type="qcurve"/>
+      <point x="192" y="-196"/>
+      <point x="189" y="-197" type="qcurve"/>
+      <point x="181" y="-198"/>
+      <point x="175" y="-199" type="qcurve"/>
+      <point x="171" y="-199"/>
+      <point x="168" y="-199" type="qcurve"/>
+      <point x="164" y="-199"/>
+      <point x="159" y="-199" type="qcurve"/>
+      <point x="152" y="-198"/>
+      <point x="145" y="-197" type="qcurve"/>
+      <point x="114" y="-192"/>
+      <point x="90" y="-173" type="qcurve"/>
+      <point x="87" y="-171"/>
+      <point x="84" y="-168" type="qcurve"/>
+      <point x="79" y="-163"/>
+      <point x="75" y="-158" type="qcurve"/>
+      <point x="59" y="-135"/>
+      <point x="59" y="-98" type="qcurve"/>
+      <point x="59" y="-96"/>
+      <point x="59" y="-93" type="qcurve"/>
+      <point x="59" y="-89"/>
+      <point x="59" y="-85" type="qcurve"/>
+      <point x="61" y="-65"/>
+      <point x="68" y="-45" type="qcurve"/>
+      <point x="68" y="-44"/>
+      <point x="68" y="-43" type="qcurve"/>
+      <point x="69" y="-43"/>
+      <point x="69" y="-42" type="qcurve"/>
+      <point x="76" y="-22"/>
+      <point x="88" y="-6" type="qcurve"/>
+      <point x="89" y="-5"/>
+      <point x="92" y="-2"/>
+      <point x="93" y="0" type="qcurve"/>
+      <point x="86" y="0"/>
+      <point x="72" y="0"/>
+      <point x="65" y="0" type="qcurve"/>
+      <point x="65" y="175"/>
+      <point x="65" y="525"/>
+      <point x="65" y="700" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

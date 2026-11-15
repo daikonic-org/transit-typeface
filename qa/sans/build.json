@@ -1,0 +1,26 @@
+{
+  "version": "0.106",
+  "base": "families/transit-sans/v0.105",
+  "approved_trial": "trials/concave-arrow-extended-wings",
+  "changed": [
+    "arrowleft",
+    "arrowright",
+    "uni2191",
+    "uni2193",
+    "uni2194",
+    "uni2195",
+    "uni21D0",
+    "uni21D1",
+    "uni21D2",
+    "uni21D3",
+    "uni21D4",
+    "uni21D5"
+  ],
+  "sources": {
+    "sources/Master-Light.ttf": "487a9222c63bbdb349abbd151863b1e0071e060cc573b4ec406f7cace1da52f7",
+    "sources/Master-Regular.ttf": "978ac635304cb6a713429c19c92b89bd19ce1a4fba1a8cb2b3a2a4d84afbc59c",
+    "sources/Master-SemiBold.ttf": "e0835564e15a55e06c04e15dc865c54b0a5086a286c4af5ee1ed9a7f4c65dc22"
+  },
+  "fontTools": "4.68.0",
+  "glyphsLib": "6.17.2"
+}
