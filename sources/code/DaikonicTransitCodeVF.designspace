@@ -4,12 +4,12 @@
     <axis tag="wght" name="Weight" minimum="300" maximum="400" default="350"/>
   </axes>
   <sources>
-    <source filename="Master-Light.ttf" name="Light" familyname="Daikonic Transit Code 600" stylename="Light">
+    <source filename="Master-Light.ttf" name="Light" familyname="Daikonic Transit Code" stylename="Light">
       <location>
         <dimension name="Weight" xvalue="300"/>
       </location>
     </source>
-    <source filename="Master-Book.ttf" name="Book" familyname="Daikonic Transit Code 600" stylename="Book">
+    <source filename="Master-Book.ttf" name="Book" familyname="Daikonic Transit Code" stylename="Book">
       <lib copy="1"/>
       <features copy="1"/>
       <info copy="1"/>
@@ -17,24 +17,24 @@
         <dimension name="Weight" xvalue="350"/>
       </location>
     </source>
-    <source filename="Master-Regular.ttf" name="Regular" familyname="Daikonic Transit Code 600" stylename="Regular">
+    <source filename="Master-Regular.ttf" name="Regular" familyname="Daikonic Transit Code" stylename="Regular">
       <location>
         <dimension name="Weight" xvalue="400"/>
       </location>
     </source>
   </sources>
   <instances>
-    <instance name="Light" familyname="Daikonic Transit Code 600" stylename="Light">
+    <instance name="Light" familyname="Daikonic Transit Code" stylename="Light">
       <location>
         <dimension name="Weight" xvalue="300"/>
       </location>
     </instance>
-    <instance name="Book" familyname="Daikonic Transit Code 600" stylename="Book">
+    <instance name="Book" familyname="Daikonic Transit Code" stylename="Book">
       <location>
         <dimension name="Weight" xvalue="350"/>
       </location>
     </instance>
-    <instance name="Regular" familyname="Daikonic Transit Code 600" stylename="Regular">
+    <instance name="Regular" familyname="Daikonic Transit Code" stylename="Regular">
       <location>
         <dimension name="Weight" xvalue="400"/>
       </location>

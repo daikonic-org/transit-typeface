@@ -4,12 +4,12 @@
     <axis tag="wght" name="Weight" minimum="300" maximum="400" default="350"/>
   </axes>
   <sources>
-    <source filename="DaikonicTransitCode-Light.ufo" name="Light" familyname="Daikonic Transit Code 600" stylename="Light">
+    <source filename="DaikonicTransitCode-Light.ufo" name="Light" familyname="Daikonic Transit Code" stylename="Light">
       <location>
         <dimension name="Weight" xvalue="300"/>
       </location>
     </source>
-    <source filename="DaikonicTransitCode-Book.ufo" name="Book" familyname="Daikonic Transit Code 600" stylename="Book">
+    <source filename="DaikonicTransitCode-Book.ufo" name="Book" familyname="Daikonic Transit Code" stylename="Book">
       <lib copy="1"/>
       <features copy="1"/>
       <info copy="1"/>
@@ -17,7 +17,7 @@
         <dimension name="Weight" xvalue="350"/>
       </location>
     </source>
-    <source filename="DaikonicTransitCode-Regular.ufo" name="Regular" familyname="Daikonic Transit Code 600" stylename="Regular">
+    <source filename="DaikonicTransitCode-Regular.ufo" name="Regular" familyname="Daikonic Transit Code" stylename="Regular">
       <location>
         <dimension name="Weight" xvalue="400"/>
       </location>

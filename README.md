@@ -1,48 +1,80 @@
 # Daikonic Transit
 
-Three related Johnston-inspired typefaces derived from Metropolitan Line: **Transit Sans** for proportional text, **Transit System** for interfaces, and **Transit Code** for source code and terminals.
+Three companion typefaces for text, interfaces and code. Daikonic Transit brings the humanist proportions and diamond details of Johnston-inspired lettering into a shared family: **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
-![Transit Sans, System and Code specimen panels](specimens/Transit-Family.png)
+![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-| Family | Current version | Variable axes | Default | Installed family name |
-| --- | --- | --- | --- | --- |
-| Transit Sans | 0.107 | Weight 300–600 | Regular 400 | Daikonic Transit Sans |
-| Transit System | 0.116 | Weight 300–600; optical size 10–36 | Book 350 / Text 14 | Daikonic Transit System |
-| Transit Code | 1.016 | Weight 300–400; 600-unit cells | Book 350 | Daikonic Transit Code 600 |
+[Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-## Download
+## Daikonic Transit Sans
 
-[Releases](https://github.com/daikonic-org/transit-typeface/releases) provide separate **TTF**, **VF**, **WOFF2**, **SOURCE** and **SPECIMEN** archives, following the format-based layout used by Adobe Source Sans. Family-specific tags avoid collisions between the independently versioned faces: `Sans-0.107R`, `System-0.116R`, `Code-1.016R`.
+The proportional foundation of the family. Based on [Metropolitan Line](https://github.com/cyrealtype/metropolitan-line), an open-source interpretation of Edward Johnston’s London Underground lettering, Sans retains its humanist character, rounded forms and distinctive diamond details while extending it into a range of weights.
 
-Install the variable TTF for a family **or** its static TTF snapshots. Installing both can produce duplicate styles. The current releases contain upright styles; there are no italic or 700-weight faces. No OTF or legacy WOFF builds are advertised.
+Use it for identity, headings, signage, editorial work and general proportional text.
 
-The versioned releases and files in this repository contain the same reviewed drawings. The original development workspace retains earlier studies and versions.
+- Five named weights: **Light, Book, Regular, Medium and SemiBold**, available individually or through a variable weight range of 300–600.
+- Proportional spacing, kerning and accented-character positioning.
+- Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. The custom forms bring the letters into a closer optical relationship while keeping their identities distinct.
+- Shared diamond details and the Transit arrow family.
 
-## The families
+## Daikonic Transit System
 
-- **Sans** retains the proportional Metropolitan/Johnston character, including its accepted `ai` and `li` ligatures. Named weights: Light 300, Book 350, Regular 400, Medium 500, SemiBold 600.
-- **System** enlarges the lowercase and adjusts spacing for UI text while retaining the capitals. Its independent optical-size axis and optional `tnum` figures include the selected curved, pedestal-free tabular `1`. The selected `y` with its clean hook connection extends across weights, optical sizes and accented forms. `ai`/`li` are separate letters.
-- **Code** preserves 600-unit cells, a diamond-dotted zero, distinct `I/l/1`, enlarged lowercase and reviewed punctuation. Twelve coding ligatures retain exact cell totals and carry GDEF caret positions: `->`, `->>`, `=>`, `<-`, `<<-`, `==`, `===`, `!=`, `!==`, `<=`, `>=`, `::`.
+The interface companion to Daikonic Transit Sans. System develops Sans’s forms with a larger lowercase, adjusted spacing and an optical-size range for smaller interface text. Its capital-height proportions remain consistent with Sans.
 
-All three share the approved concave, acute, extended-wing arrow family, including `← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕`. Font-specific letter, numeral and spacing decisions are retained.
+Use it for application interfaces, navigation, controls, dashboards and short passages of screen text.
 
-## Accepted weighting
+- Five named weights: **Light, Book, Regular, Medium and SemiBold**, with a variable weight range of 300–600.
+- An independent **optical-size axis, 10–36**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
+- Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` has a curved hook and no pedestal.
+- `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
+- The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-The current versions adopt the reviewed **72% horizontal-expansion** approach across all named weights and System optical profiles. Selected glyphs, tuned punctuation/symbols, spacing and layout are preserved. [Construction and interpolation checks](docs/weighting-adoption.md) document the frozen inputs, compatible masters and independent editor-source rebuilds.
+## Daikonic Transit Code
 
-## Specimens and design notes
+The monospaced companion to Daikonic Transit Sans. Code carries Sans’s Johnston-derived character into a fixed-width design, with reworked letters, numerals and operators for programming and aligned text.
 
-[Individual PNG, PDF and outlined SVG panels](specimens/) use the actual exported fonts. Their lower sections use the existing Daikonic palette: Sans deep blue `#194454`, System orange `#FA994A`, Code red `#F03630`. Panel headings show real available weights, never synthetic bold. System’s second numeral row uses tabular figures.
+Use it in source editors, terminals, code examples and other settings where character columns need to line up.
 
-- [Review of the supplied Gemini generation guidance](docs/generation-audit.md)
-- [Deep scaling lineage and configurable generation](docs/scaling-lineage.md)
-- [Measured stems, counters and metadata](docs/measurements.md) · [complete data](docs/measurements.json)
-- [Build and validation](docs/build.md)
-- [Release format and packaging](docs/releases.md)
-- [Editor configuration examples](docs/editor-setup.md)
+- Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
+- Fixed-width characters and coding ligatures that occupy the same total width as their original character sequences.
+- Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
+- Arrow ligatures: `->`, `->>`, `=>`, `<-`, `<<-`.
+- Comparison ligatures: `==`, `===`, `!=`, `!==`, `<=`, `>=`.
+- A balanced `::` ligature. Contextual alternates (`calt`) provide all twelve coding ligatures; enable font ligatures in your editor to use them.
+- Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
-## Source and license
+All three typefaces include the same family of pointed, concave arrowheads, including the Unicode arrows **← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕**.
 
-`sources/` contains editable Glyphs/UFO/designspace sources (extract System’s `.glyphs.zip` before opening) and compatible TTF masters. `upstream/` preserves the original Metropolitan Line inputs and author records. Build scripts reconstruct the current variable fonts from the compatible masters; named static weights are snapshots of those VFs.
+## Downloads and release packages
 
-The fonts are licensed under the [SIL Open Font License 1.1](OFL.txt), with original notices retained in [NOTICE.txt](NOTICE.txt). Daikonic Transit is a modified derivative, not an upstream Metropolitan Line release. The TfL screenshot was stylistic reference only; no proprietary Johnston100 font binaries or outlines were used. Brand artwork and documents do not become font software merely by using an OFL font.
+Each typeface has its own [release](https://github.com/daikonic-org/transit-typeface/releases) and version number. Download the package for the format you need:
+
+| Package | Contents | Use |
+| --- | --- | --- |
+| **VF** | One variable TrueType font | Adjustable weights in applications that support variable fonts; System also includes optical size. |
+| **TTF** | Individual named-weight TrueType fonts | Applications that use separate font styles. System includes Caption, Text and Display cuts. |
+| **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
+| **SOURCE** | Editable Glyphs and UFO sources, designspaces and rebuild inputs | Editing or building the typefaces. System’s large Glyphs file is supplied inside a ZIP. |
+| **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
+| **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
+
+Archives are named by format, family and version—for example, `VF-daikonic-transit-code-1.017R.zip`. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+
+Choose either the variable font or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
+
+## Credits and tools
+
+Daikonic Transit is a Daikonic typeface project, based on the open-source work of the **Metropolitan Line authors**. Its lineage includes **Justin Howes, Greg Fleming, Alexei Vanyashin and Michael Voronin**, and ultimately Edward Johnston’s original lettering. Original author records are preserved in [AUTHORS.txt](upstream/AUTHORS.txt) and [NOTICE.txt](NOTICE.txt).
+
+The project uses:
+
+- [Glyphs Mini](https://glyphsapp.com/glyphs-mini) for font editing.
+- [Python](https://www.python.org/), [FontTools](https://github.com/fonttools/fonttools), [fontmake](https://github.com/googlefonts/fontmake), [glyphsLib](https://github.com/googlefonts/glyphsLib) and [ufoLib2](https://github.com/fonttools/ufoLib2) for scripted transformations, editable-source conversion and font builds.
+- [Skia PathOps](https://github.com/fonttools/skia-pathops) for outline geometry, [HarfBuzz](https://github.com/harfbuzz/harfbuzz) for text shaping, and [OpenType Sanitizer](https://github.com/khaledhosny/ots) for font-file validation.
+- [FreeType](https://freetype.org/), [Pillow](https://python-pillow.org/), [ReportLab](https://www.reportlab.com/), [Chromium](https://www.chromium.org/) and [Playwright](https://playwright.dev/) for proofs, comparisons and specimen exports.
+
+Development, scripting and documentation were assisted by OpenAI ChatGPT/Codex. Additional weighting guidance was explored from Google Gemini. The format-based release layout takes inspiration from [Adobe Source Sans](https://github.com/adobe-fonts/source-sans/releases).
+
+## License
+
+The fonts are distributed under the [SIL Open Font License 1.1](OFL.txt). Original copyright and reserved-name notices are retained in [NOTICE.txt](NOTICE.txt).

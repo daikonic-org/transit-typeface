@@ -1,17 +1,20 @@
 [
   {
-    "family": "sans",
-    "version": "0.107",
-    "source_archive_rebuild": "exact"
+    "family": "Daikonic Transit Sans",
+    "version": "0.108",
+    "source_archive_rebuild": "exact",
+    "package_names": "canonical"
   },
   {
-    "family": "system",
-    "version": "0.116",
-    "source_archive_rebuild": "exact"
+    "family": "Daikonic Transit System",
+    "version": "0.117",
+    "source_archive_rebuild": "exact",
+    "package_names": "canonical"
   },
   {
-    "family": "code",
-    "version": "1.016",
-    "source_archive_rebuild": "exact"
+    "family": "Daikonic Transit Code",
+    "version": "1.017",
+    "source_archive_rebuild": "exact",
+    "package_names": "canonical"
   }
 ]

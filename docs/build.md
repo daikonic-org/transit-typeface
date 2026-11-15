@@ -34,7 +34,7 @@ fontmake -g sources/sans/DaikonicTransitSans.glyphs -o variable \
   --output-path .build/sans/Native-VF.ttf
 ```
 
-Equivalent inputs exist for System and Code. System’s source is large because it preserves compatible outlines across twelve weight/optical-size masters. Code's font-file stem includes `600` for its fixed cell width; its editable Glyphs file is `DaikonicTransitCode.glyphs`.
+Equivalent inputs exist for System and Code. System’s source is large because it preserves compatible outlines across twelve weight/optical-size masters. Code's font-file stem is `DaikonicTransitCode`; its editable Glyphs file is `DaikonicTransitCode.glyphs`.
 
 The existing `qa/<family>/native-source-rebuild.json` records the prior independent Glyphs/fontmake comparisons. `qa/repository-validation.json` records the portable master rebuild check in this repository. Native rebuilds can change point ordering or curve approximations slightly; do not require binary identity with an editor/compiler that uses a different conversion path.
 

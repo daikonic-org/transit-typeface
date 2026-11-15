@@ -14,7 +14,7 @@ def main():
     families = json.loads((ROOT / "family.json").read_text())["families"]
     for key, cfg in families.items():
         version = cfg["version"] + "R"
-        slug = f"transit-{key}-{version}"
+        slug = f"daikonic-transit-{key}-{version}"
         out = ROOT / ".dist" / key / cfg["version"]
         out.mkdir(parents=True, exist_ok=True)
         groups = {
@@ -35,7 +35,11 @@ def main():
                     name = (
                         p.relative_to(ROOT / "sources" / key)
                         if fmt == "SOURCE"
-                        else Path(p.name)
+                        else (
+                            Path(cfg["stem"] + p.suffix)
+                            if fmt == "SPECIMEN"
+                            else Path(p.name)
+                        )
                     )
                     z.write(p, prefix / name)
                 for notice in ["OFL.txt", "NOTICE.txt"]:
@@ -89,7 +93,7 @@ def main():
         title = f"Fonts version {cfg['version']} — {cfg['title']} (TTF, VF, WOFF2)"
         notes = f"""{cfg['title']}, version {cfg['version']}.
 
-{'Adopts the reviewed 72% horizontal-expansion weighting approach at all named weights, preserving the original Regular anchor proportions and selected glyph details. Includes compatible variable masters, named snapshots and editable sources. System applies the approach across Caption, Text and Display optical profiles.' if cfg.get('weighting_ratio') else 'Initial public release of the current reviewed upright family.'} Format-separated downloads follow Adobe Source Sans's release layout. All named static weights are snapshots of the variable font.
+This release standardizes the public names and download packages as Daikonic Transit Sans, Daikonic Transit System and Daikonic Transit Code. Code no longer includes a cell-width suffix in font menus or filenames. Letterforms, weights, spacing and ligatures are unchanged from the preceding releases.
 
 - **TTF**: named static weights ({len(groups['TTF'])} files).
 - **VF**: installable variable TrueType font, weight{cfg['light']}–{cfg['heavy']}, default{cfg['display']}.
@@ -98,10 +102,10 @@ def main():
 - **SPECIMEN**: PNG, vector PDF and outlined SVG panel.
 - **SHA256SUMS**: archive checksums.
 
-Concave acute arrows with extended wings and matching double-rail clearance are included. {'Code preserves600-unit cells and twelve operator ligatures with caret positions.' if key=='code'else 'The proportional family and its reviewed letter/numeral choices are retained.'}
-{'System also has opsz10–36, separate ai/li letters, optional tabular figures and the selected clean y.'if key=='system'else ''}
+{'A monospaced companion for code and terminals, with Light, Book and Regular weights, twelve coding ligatures and ligature caret positions.' if key=='code'else 'A proportional typeface with Light, Book, Regular, Medium and SemiBold weights.'}
+{'System includes an optical-size range of 10–36 and optional tabular figures.'if key=='system'else ''}
 
-No italic,700-weight,OTF or legacy WOFF files are claimed. Install VF or static TTFs as alternatives. See the repository's generation audit for measured counter/weight behavior and current Code mark-positioning limitations.
+Install either the variable font or the static styles. These releases contain upright styles. See the [README](https://github.com/daikonic-org/transit-typeface#readme) for family descriptions, features and credits.
 
 Validation: OpenType Sanitizer, static/VF parity, source rebuilds and HarfBuzz shaping. Weighting validation covers intermediate positions and independent editable-source rebuilds. Earlier native Core Text checks describe prior releases; they were not repeated for this update. Font files retain OFL1.1 and original notices.
 """

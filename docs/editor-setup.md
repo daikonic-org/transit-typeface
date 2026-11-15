@@ -1,11 +1,11 @@
 # Editor setup
 
-Install `fonts/code/VF/DaikonicTransitCode600-VF.ttf`. The installed family name is **Daikonic Transit Code 600**; the final number is the cell width, not a font weight. Book is weight 350.
+Install `fonts/code/VF/DaikonicTransitCode-VF.ttf`. The installed family name is **Daikonic Transit Code**. Book is weight 350.
 
 ## WezTerm
 
 ```lua
-config.font = wezterm.font('Daikonic Transit Code 600', { weight = 'DemiLight' })
+config.font = wezterm.font('Daikonic Transit Code', { weight = 'DemiLight' })
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
 ```
 
@@ -15,11 +15,11 @@ WezTerm calls the350 weight DemiLight; the font’s named instance is Book.
 
 ```json
 {
-  "editor.fontFamily": "'Daikonic Transit Code 600', monospace",
+  "editor.fontFamily": "'Daikonic Transit Code', monospace",
   "editor.fontWeight": "350",
   "editor.fontVariations": true,
   "editor.fontLigatures": true,
-  "terminal.integrated.fontFamily": "'Daikonic Transit Code 600', monospace",
+  "terminal.integrated.fontFamily": "'Daikonic Transit Code', monospace",
   "terminal.integrated.fontWeight": 350,
   "terminal.integrated.fontLigatures.enabled": true
 }
@@ -29,11 +29,11 @@ WezTerm calls the350 weight DemiLight; the font’s named instance is Book.
 
 ```json
 {
-  "buffer_font_family": "Daikonic Transit Code 600",
+  "buffer_font_family": "Daikonic Transit Code",
   "buffer_font_weight": 350,
   "buffer_font_features": { "calt": true, "clig": true, "liga": true },
   "terminal": {
-    "font_family": "Daikonic Transit Code 600",
+    "font_family": "Daikonic Transit Code",
     "font_weight": 350,
     "font_features": { "calt": true, "clig": true, "liga": true }
   }

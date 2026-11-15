@@ -2,9 +2,9 @@
   "status": "LOCALLY_ACCEPTABLE within shown corpus",
   "browser": "Chromium157.0.8103.78",
   "production_files": {
-    "fonts/sans/VF/DaikonicTransitSans-VF.ttf": "3287eccea2cc7597ea69d8d8a9d2334b9d324b3b3a7fe172075a9f98fa69cd0e",
-    "fonts/system/VF/DaikonicTransitSystem-VF.ttf": "f0715dd84bb01ba259761338398825cad99ff531e82dbf97d5e68caa00c12c51",
-    "fonts/code/VF/DaikonicTransitCode600-VF.ttf": "6003ad0df4b9449e38a6b5cfa37c4f4e655d4ff609129e205b81bd30bf2d19f9"
+    "fonts/sans/VF/DaikonicTransitSans-VF.ttf": "23ff5886d938dc9f9b19968b2a9d81fa9cfaf74c442741a41e77438542e56dc4",
+    "fonts/system/VF/DaikonicTransitSystem-VF.ttf": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+    "fonts/code/VF/DaikonicTransitCode-VF.ttf": "73fd30503413da6b12d0c6d42a75a3e4aafd3475e23a28c8120d3e47d8fff7d9"
   },
   "opened_images": [
     "Overview",
@@ -53,5 +53,6 @@
     "specimens/weighting-adoption/System-opsz36.png": "65d0fa8673a7a69a00c3858c2ce0269271101b4208404fa42b8db0fc47981f2b",
     "specimens/weighting-adoption/OperatorConsistency.pdf": "6aa0434ff9d122a42fa3a5ee6c9fa197749a847d4a5461e264b808b21a61068f"
   },
-  "observations": "Adopted letterforms retain the approved72% appearance. Punctuation/symbols retain original target-weight drawings. Standalone/ligature operator sheet inspected at300/325/350/375/400; equals-family thickness is consistent. Intermediate samples change smoothly without observed counter collapse or collisions in the shown strings. Production spacing and selected glyph variations retained."
+  "observations": "Adopted letterforms retain the approved72% appearance. Punctuation/symbols retain original target-weight drawings. Standalone/ligature operator sheet inspected at300/325/350/375/400; equals-family thickness is consistent. Intermediate samples change smoothly without observed counter collapse or collisions in the shown strings. Production spacing and selected glyph variations retained.",
+  "naming_release": "Names standardized; drawing, variation, metric and layout tables verified unchanged in canonical-names.json."
 }

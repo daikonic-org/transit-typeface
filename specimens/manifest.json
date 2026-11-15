@@ -1,8 +1,8 @@
 {
   "sans": {
     "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
-    "sha256": "3287eccea2cc7597ea69d8d8a9d2334b9d324b3b3a7fe172075a9f98fa69cd0e",
-    "version": "0.107",
+    "sha256": "23ff5886d938dc9f9b19968b2a9d81fa9cfaf74c442741a41e77438542e56dc4",
+    "version": "0.108",
     "weights": [
       300,
       400,
@@ -14,8 +14,8 @@
   },
   "system": {
     "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
-    "sha256": "f0715dd84bb01ba259761338398825cad99ff531e82dbf97d5e68caa00c12c51",
-    "version": "0.116",
+    "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+    "version": "0.117",
     "weights": [
       300,
       350,
@@ -26,9 +26,9 @@
     "background": "#FA994A"
   },
   "code": {
-    "font": "fonts/code/VF/DaikonicTransitCode600-VF.ttf",
-    "sha256": "6003ad0df4b9449e38a6b5cfa37c4f4e655d4ff609129e205b81bd30bf2d19f9",
-    "version": "1.016",
+    "font": "fonts/code/VF/DaikonicTransitCode-VF.ttf",
+    "sha256": "73fd30503413da6b12d0c6d42a75a3e4aafd3475e23a28c8120d3e47d8fff7d9",
+    "version": "1.017",
     "weights": [
       300,
       350,

@@ -36,7 +36,7 @@ value = "https://openfontlicense.org";
 },
 {
 name = postscriptFontName;
-value = "DaikonicTransitCode600-Light";
+value = "DaikonicTransitCode-Light";
 },
 {
 name = winAscent;
@@ -563,7 +563,7 @@ name = "Variable Font Origin";
 value = "C65BFB7C-774E-4C21-8B24-8F7F6D62B7AD";
 }
 );
-familyName = "Daikonic Transit Code 600";
+familyName = "Daikonic Transit Code";
 featurePrefixes = (
 {
 code = "languagesystem DFLT dflt;\012languagesystem latn dflt;\012lookup Form_leftDouble { sub less less hyphen by code.leftDouble; } Form_leftDouble;\012lookup Form_arrowDouble { sub hyphen greater greater by code.arrowDouble; } Form_arrowDouble;\012lookup Form_notStrict { sub exclam equal equal by code.notStrict; } Form_notStrict;\012lookup Form_strictEqual { sub equal equal equal by code.strictEqual; } Form_strictEqual;\012lookup Form_arrow { sub hyphen greater by code.arrow; } Form_arrow;\012lookup Form_leftArrow { sub less hyphen by code.leftArrow; } Form_leftArrow;\012lookup Form_lessEqual { sub less equal by code.lessEqual; } Form_lessEqual;\012lookup Form_greaterEqual { sub greater equal by code.greaterEqual; } Form_greaterEqual;\012lookup Form_scope { sub colon colon by code.scope; } Form_scope;\012lookup Form_fatArrow { sub equal greater by code.fatArrow; } Form_fatArrow;\012lookup Form_equal { sub equal equal by code.equal; } Form_equal;\012lookup Form_notEqual { sub exclam equal by code.notEqual; } Form_notEqual;";
@@ -619,7 +619,7 @@ value = "https://openfontlicense.org";
 },
 {
 name = postscriptFontName;
-value = "DaikonicTransitCode600-Light";
+value = "DaikonicTransitCode-Light";
 },
 {
 name = winAscent;
@@ -698,7 +698,7 @@ value = "https://openfontlicense.org";
 },
 {
 name = postscriptFontName;
-value = "DaikonicTransitCode600-Book";
+value = "DaikonicTransitCode-Book";
 },
 {
 name = winAscent;
@@ -777,7 +777,7 @@ value = "https://openfontlicense.org";
 },
 {
 name = postscriptFontName;
-value = "DaikonicTransitCode600-Regular";
+value = "DaikonicTransitCode-Regular";
 },
 {
 name = winAscent;
@@ -663780,5 +663780,5 @@ instances = (
 );
 unitsPerEm = 1000;
 versionMajor = 1;
-versionMinor = 16;
+versionMinor = 17;
 }

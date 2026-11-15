@@ -1,0 +1,239 @@
+{
+  "versions": {
+    "sans": [
+      "0.107",
+      "0.108"
+    ],
+    "system": [
+      "0.116",
+      "0.117"
+    ],
+    "code": [
+      "1.016",
+      "1.017"
+    ]
+  },
+  "tables_compared": [
+    "glyf",
+    "gvar",
+    "hmtx",
+    "cmap",
+    "GSUB",
+    "GPOS",
+    "GDEF",
+    "fvar",
+    "STAT",
+    "HVAR",
+    "MVAR"
+  ],
+  "files": [
+    {
+      "file": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/TTF/DaikonicTransitSans-Regular.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/TTF/DaikonicTransitSans-Book.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/TTF/DaikonicTransitSans-Medium.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/TTF/DaikonicTransitSans-SemiBold.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/TTF/DaikonicTransitSans-Light.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/sans/WOFF2/DaikonicTransitSans-VF.woff2",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/sans/Master-Medium.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/sans/Master-SemiBold.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/sans/Master-Light.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/sans/Master-Regular.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/sans/Master-Book.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-BookCaption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-SemiBoldCaption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-RegularText.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-LightText.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-BookText.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-BookDisplay.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-SemiBoldDisplay.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-LightDisplay.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-MediumDisplay.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-RegularCaption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-MediumCaption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-LightCaption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-RegularDisplay.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-SemiBoldText.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/TTF/DaikonicTransitSystem-MediumText.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/system/WOFF2/DaikonicTransitSystem-VF.woff2",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Book-Display.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Regular-Display.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-SemiBold-Text.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Book-Caption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Regular-Caption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Book-Text.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Light-Text.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-SemiBold-Display.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Medium-Caption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Light-Display.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Regular-Text.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-SemiBold-Caption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Medium-Display.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Light-Caption.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/system/Master-Medium-Text.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/code/VF/DaikonicTransitCode-VF.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/code/TTF/DaikonicTransitCode-Regular.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/code/TTF/DaikonicTransitCode-Light.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/code/TTF/DaikonicTransitCode-Book.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "fonts/code/WOFF2/DaikonicTransitCode-VF.woff2",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/code/Master-Light.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/code/Master-Regular.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    },
+    {
+      "file": "sources/code/Master-Book.ttf",
+      "outline_variation_metrics_layout": "unchanged"
+    }
+  ]
+}

@@ -24,34 +24,34 @@
       DaikonicTransitCodeVF-Regular
     </namerecord>
     <namerecord nameID="270" platformID="1" platEncID="0" langID="0x0" unicode="True">
-      DaikonicTransitCode600-Light
+      DaikonicTransitCode-Light
     </namerecord>
     <namerecord nameID="271" platformID="1" platEncID="0" langID="0x0" unicode="True">
-      DaikonicTransitCode600-Book
+      DaikonicTransitCode-Book
     </namerecord>
     <namerecord nameID="272" platformID="1" platEncID="0" langID="0x0" unicode="True">
-      DaikonicTransitCode600-Regular
+      DaikonicTransitCode-Regular
     </namerecord>
     <namerecord nameID="0" platformID="3" platEncID="1" langID="0x409">
       Copyright 2026 The Metropolitan Line Project authors (https://github.com/cyrealtype/metropolitan-line)
     </namerecord>
     <namerecord nameID="1" platformID="3" platEncID="1" langID="0x409">
-      Daikonic Transit Code 600
+      Daikonic Transit Code
     </namerecord>
     <namerecord nameID="2" platformID="3" platEncID="1" langID="0x409">
       Regular
     </namerecord>
     <namerecord nameID="3" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600-VF 1.016
+      DaikonicTransitCode-VF 1.017
     </namerecord>
     <namerecord nameID="4" platformID="3" platEncID="1" langID="0x409">
-      Daikonic Transit Code 600
+      Daikonic Transit Code
     </namerecord>
     <namerecord nameID="5" platformID="3" platEncID="1" langID="0x409">
-      Version 1.016
+      Version 1.017
     </namerecord>
     <namerecord nameID="6" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600-VF
+      DaikonicTransitCode-VF
     </namerecord>
     <namerecord nameID="8" platformID="3" platEncID="1" langID="0x409">
       Daikonic project
@@ -72,13 +72,13 @@
       https://openfontlicense.org
     </namerecord>
     <namerecord nameID="16" platformID="3" platEncID="1" langID="0x409">
-      Daikonic Transit Code 600
+      Daikonic Transit Code
     </namerecord>
     <namerecord nameID="17" platformID="3" platEncID="1" langID="0x409">
       Book
     </namerecord>
     <namerecord nameID="25" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600
+      DaikonicTransitCode
     </namerecord>
     <namerecord nameID="256" platformID="3" platEncID="1" langID="0x409">
       G,H,K,W,X,a,q,g alternates
@@ -123,13 +123,13 @@
       DaikonicTransitCodeVF-Regular
     </namerecord>
     <namerecord nameID="270" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600-Light
+      DaikonicTransitCode-Light
     </namerecord>
     <namerecord nameID="271" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600-Book
+      DaikonicTransitCode-Book
     </namerecord>
     <namerecord nameID="272" platformID="3" platEncID="1" langID="0x409">
-      DaikonicTransitCode600-Regular
+      DaikonicTransitCode-Regular
     </namerecord>
   </name>
 
@@ -146,19 +146,19 @@
     </Axis>
 
     <!-- Light -->
-    <!-- PostScript: DaikonicTransitCode600-Light -->
+    <!-- PostScript: DaikonicTransitCode-Light -->
     <NamedInstance flags="0x0" postscriptNameID="270" subfamilyNameID="261">
       <coord axis="wght" value="300.0"/>
     </NamedInstance>
 
     <!-- Book -->
-    <!-- PostScript: DaikonicTransitCode600-Book -->
+    <!-- PostScript: DaikonicTransitCode-Book -->
     <NamedInstance flags="0x0" postscriptNameID="271" subfamilyNameID="17">
       <coord axis="wght" value="350.0"/>
     </NamedInstance>
 
     <!-- Regular -->
-    <!-- PostScript: DaikonicTransitCode600-Regular -->
+    <!-- PostScript: DaikonicTransitCode-Regular -->
     <NamedInstance flags="0x0" postscriptNameID="272" subfamilyNameID="262">
       <coord axis="wght" value="400.0"/>
     </NamedInstance>

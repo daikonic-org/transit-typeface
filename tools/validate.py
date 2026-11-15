@@ -60,6 +60,11 @@ def main():
         for path in (ROOT / "fonts" / key).rglob("*"):
             if path.suffix not in [".ttf", ".woff2"]:
                 continue
+            with TTFont(path) as metadata:
+                assert metadata["name"].getDebugName(16) == cfg["name"], (
+                    path,
+                    "font-menu family name",
+                )
             with tempfile.TemporaryDirectory() as tmp:
                 r = subprocess.run(
                     [ots.OTS_SANITIZE, str(path), str(Path(tmp) / "sanitized.ttf")],
