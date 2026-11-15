@@ -9,12 +9,22 @@
         <dimension name="Weight" xvalue="300"/>
       </location>
     </source>
+    <source filename="Master-Book.ttf" name="Book" familyname="Daikonic Transit Sans" stylename="Book">
+      <location>
+        <dimension name="Weight" xvalue="350"/>
+      </location>
+    </source>
     <source filename="Master-Regular.ttf" name="Regular" familyname="Daikonic Transit Sans" stylename="Regular">
       <lib copy="1"/>
       <features copy="1"/>
       <info copy="1"/>
       <location>
         <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="Master-Medium.ttf" name="Medium" familyname="Daikonic Transit Sans" stylename="Medium">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
       </location>
     </source>
     <source filename="Master-SemiBold.ttf" name="SemiBold" familyname="Daikonic Transit Sans" stylename="SemiBold">

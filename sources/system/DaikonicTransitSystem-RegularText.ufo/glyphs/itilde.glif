@@ -2,9 +2,9 @@
 <glyph name="itilde" format="2">
   <advance width="249"/>
   <unicode hex="0129"/>
-  <anchor x="125" y="0" name="bottom"/>
-  <anchor x="181" y="0" name="ogonek"/>
-  <anchor x="125" y="506" name="top"/>
+  <anchor x="125.0" y="0.0" name="bottom"/>
+  <anchor x="181.0" y="0.0" name="ogonek"/>
+  <anchor x="125.0" y="506.0" name="top"/>
   <outline>
     <contour>
       <point x="75" y="528" type="line"/>

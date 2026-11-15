@@ -1,23 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <glyph name="H.ss01" format="2">
   <advance width="715"/>
-  <anchor x="358" y="0" name="bottom"/>
-  <anchor x="358" y="560" name="center"/>
-  <anchor x="358" y="700" name="top"/>
-  <anchor x="49.0" y="700" name="topleft"/>
+  <anchor x="358.0" y="0.0" name="bottom"/>
+  <anchor x="358.0" y="560.0" name="center"/>
+  <anchor x="358.0" y="700.0" name="top"/>
+  <anchor x="49.0" y="700.0" name="topleft"/>
   <outline>
     <contour>
       <point x="55" y="700" type="line"/>
-      <point x="80" y="700"/>
+      <point x="79" y="700"/>
       <point x="129" y="700"/>
       <point x="153" y="700" type="qcurve"/>
       <point x="153" y="627"/>
-      <point x="153" y="479"/>
-      <point x="153" y="406" type="qcurve"/>
-      <point x="255" y="406"/>
-      <point x="460" y="406"/>
-      <point x="562" y="406" type="qcurve"/>
-      <point x="562" y="479"/>
+      <point x="153" y="480"/>
+      <point x="153" y="407" type="qcurve"/>
+      <point x="255" y="407"/>
+      <point x="460" y="407"/>
+      <point x="562" y="407" type="qcurve"/>
+      <point x="562" y="480"/>
       <point x="562" y="627"/>
       <point x="562" y="700" type="qcurve"/>
       <point x="586" y="700"/>
@@ -29,14 +29,14 @@
       <point x="636" y="0"/>
       <point x="587" y="0"/>
       <point x="562" y="0" type="qcurve"/>
-      <point x="562" y="80"/>
-      <point x="562" y="238"/>
-      <point x="562" y="317" type="qcurve"/>
-      <point x="460" y="317"/>
-      <point x="255" y="317"/>
-      <point x="153" y="317" type="qcurve"/>
-      <point x="153" y="238"/>
-      <point x="153" y="80"/>
+      <point x="562" y="79"/>
+      <point x="562" y="236"/>
+      <point x="562" y="315" type="qcurve"/>
+      <point x="460" y="315"/>
+      <point x="255" y="315"/>
+      <point x="153" y="315" type="qcurve"/>
+      <point x="153" y="236"/>
+      <point x="153" y="79"/>
       <point x="153" y="0" type="qcurve"/>
       <point x="129" y="0"/>
       <point x="80" y="0"/>

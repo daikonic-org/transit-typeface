@@ -2,8 +2,8 @@
 <glyph name="ydieresis" format="2">
   <advance width="552"/>
   <unicode hex="00FF"/>
-  <anchor x="267.5" y="-225" name="bottom"/>
-  <anchor x="268.5" y="628" name="top"/>
+  <anchor x="267.5" y="-225.0" name="bottom"/>
+  <anchor x="268.5" y="628.0" name="top"/>
   <outline>
     <contour>
       <point x="20" y="475" type="line"/>

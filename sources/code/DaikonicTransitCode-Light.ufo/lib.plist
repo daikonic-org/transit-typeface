@@ -3,7 +3,13 @@
 <plist version="1.0">
   <dict>
     <key>com.github.googlei18n.ufo2ft.useProductionNames</key>
-    <false/>
+    <true/>
+    <key>com.schriftgestaltung.customParameter.GSFontMaster.weightClass</key>
+    <integer>300</integer>
+    <key>com.schriftgestaltung.weight</key>
+    <string>Light</string>
+    <key>com.schriftgestaltung.weightValue</key>
+    <integer>300</integer>
     <key>public.glyphOrder</key>
     <array>
       <string>.notdef</string>

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="twodotenleader" format="2">
+  <advance width="441"/>
+  <unicode hex="2025"/>
+  <outline>
+    <contour>
+      <point x="68" y="97" type="line"/>
+      <point x="98" y="97"/>
+      <point x="158" y="97"/>
+      <point x="188" y="97" type="qcurve"/>
+      <point x="188" y="73"/>
+      <point x="188" y="24"/>
+      <point x="188" y="0" type="qcurve"/>
+      <point x="158" y="0"/>
+      <point x="98" y="0"/>
+      <point x="68" y="0" type="qcurve"/>
+      <point x="68" y="24"/>
+      <point x="68" y="73"/>
+      <point x="68" y="97" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="253" y="97" type="line"/>
+      <point x="283" y="97"/>
+      <point x="343" y="97"/>
+      <point x="373" y="97" type="qcurve"/>
+      <point x="373" y="73"/>
+      <point x="373" y="24"/>
+      <point x="373" y="0" type="qcurve"/>
+      <point x="343" y="0"/>
+      <point x="283" y="0"/>
+      <point x="253" y="0" type="qcurve"/>
+      <point x="253" y="24"/>
+      <point x="253" y="73"/>
+      <point x="253" y="97" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

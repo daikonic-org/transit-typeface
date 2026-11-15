@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <glyph name="idotaccent" format="2">
   <advance width="195"/>
-  <anchor x="97.5" y="0" name="bottom"/>
-  <anchor x="147.5" y="0" name="ogonek"/>
-  <anchor x="97.5" y="628" name="top"/>
+  <anchor x="97.5" y="0.0" name="bottom"/>
+  <anchor x="147.5" y="0.0" name="ogonek"/>
+  <anchor x="97.5" y="628.0" name="top"/>
   <outline>
     <contour>
       <point x="60" y="475" type="line"/>

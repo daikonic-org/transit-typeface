@@ -5,17 +5,29 @@
   <outline>
     <contour>
       <point x="97" y="393" type="line"/>
-      <point x="204" y="393"/>
-      <point x="417" y="393"/>
+      <point x="151" y="393"/>
+      <point x="257" y="393"/>
+      <point x="311" y="393" type="qcurve"/>
+      <point x="364" y="393"/>
+      <point x="470" y="393"/>
       <point x="523" y="393" type="qcurve"/>
-      <point x="523" y="368"/>
-      <point x="523" y="318"/>
+      <point x="523" y="380"/>
+      <point x="523" y="356"/>
+      <point x="523" y="343" type="qcurve"/>
+      <point x="523" y="330"/>
+      <point x="523" y="306"/>
       <point x="523" y="293" type="qcurve"/>
-      <point x="417" y="293"/>
-      <point x="204" y="293"/>
+      <point x="470" y="293"/>
+      <point x="364" y="293"/>
+      <point x="311" y="293" type="qcurve"/>
+      <point x="257" y="293"/>
+      <point x="151" y="293"/>
       <point x="97" y="293" type="qcurve"/>
-      <point x="97" y="318"/>
-      <point x="97" y="368"/>
+      <point x="97" y="306"/>
+      <point x="97" y="330"/>
+      <point x="97" y="343" type="qcurve"/>
+      <point x="97" y="356"/>
+      <point x="97" y="380"/>
       <point x="97" y="393" type="qcurve"/>
     </contour>
   </outline>

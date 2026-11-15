@@ -14,14 +14,16 @@ def main():
     parser.add_argument(
         "--family", choices=["all", "sans", "system", "code"], default="all"
     )
-    parser.add_argument("--ratio-y", type=float, default=1.0)
+    parser.add_argument("--ratio-y", type=float)
     args = parser.parse_args()
     if args.mode in ["approved", "release"]:
         steps = [["build.py"], ["validate.py", "--rebuilt"]]
         if args.mode == "release":
             steps.append(["release.py"])
     elif args.mode == "study":
-        steps = [["derive_weights.py", args.family, "--ratio-y", str(args.ratio_y)]]
+        steps = [["derive_weights.py", args.family]]
+        if args.ratio_y is not None:
+            steps[0] += ["--ratio-y", str(args.ratio_y)]
     else:
         steps = [["audit.py"], ["scaling_study.py"]]
     for script, *options in steps:

@@ -4,7 +4,7 @@
   <unicode hex="2194"/>
   <outline>
     <contour>
-      <point x="184" y="504" type="qcurve"/>
+      <point x="184" y="504" type="line"/>
       <point x="201" y="497"/>
       <point x="236" y="482"/>
       <point x="253" y="474" type="qcurve"/>
@@ -22,13 +22,13 @@
       <point x="528" y="350" type="qcurve"/>
       <point x="530" y="349"/>
       <point x="533" y="346"/>
-      <point x="535" y="344" type="qcurve" smooth="yes"/>
+      <point x="535" y="344" type="qcurve"/>
       <point x="536" y="343"/>
       <point x="539" y="341"/>
       <point x="540" y="340" type="qcurve"/>
       <point x="541" y="340"/>
       <point x="542" y="339"/>
-      <point x="543" y="338" type="qcurve" smooth="yes"/>
+      <point x="543" y="338" type="qcurve"/>
       <point x="544" y="337"/>
       <point x="545" y="336"/>
       <point x="546" y="336" type="qcurve"/>
@@ -46,7 +46,7 @@
       <point x="546" y="264" type="qcurve"/>
       <point x="545" y="264"/>
       <point x="544" y="263"/>
-      <point x="543" y="262" type="qcurve" smooth="yes"/>
+      <point x="543" y="262" type="qcurve"/>
       <point x="542" y="261"/>
       <point x="541" y="260"/>
       <point x="540" y="260" type="qcurve"/>
@@ -80,7 +80,7 @@
       <point x="60" y="260" type="qcurve"/>
       <point x="59" y="260"/>
       <point x="58" y="261"/>
-      <point x="57" y="262" type="qcurve" smooth="yes"/>
+      <point x="57" y="262" type="qcurve"/>
       <point x="56" y="263"/>
       <point x="55" y="264"/>
       <point x="54" y="264" type="qcurve"/>
@@ -98,7 +98,7 @@
       <point x="54" y="336" type="qcurve"/>
       <point x="55" y="336"/>
       <point x="56" y="337"/>
-      <point x="57" y="338" type="qcurve" smooth="yes"/>
+      <point x="57" y="338" type="qcurve"/>
       <point x="58" y="339"/>
       <point x="59" y="340"/>
       <point x="60" y="340" type="qcurve"/>
@@ -112,6 +112,7 @@
       <point x="71" y="350"/>
       <point x="72" y="350" type="qcurve"/>
       <point x="142" y="411"/>
+      <point x="184" y="504" type="qcurve"/>
     </contour>
   </outline>
 </glyph>

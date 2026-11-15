@@ -1,5 +1,6 @@
 # Scaling, weight lineage and scriptable generation
 
+> Historical audit of the pre-adoption versions. The accepted 72% weighting and current versions are documented in [weighting-adoption.md](weighting-adoption.md).
 This deeper review answers the concern that Light/Book may have been reduced from Regular and subsequently enlarged or emboldened back into Regular. It separates verified dependencies, measured current outlines, and new controlled studies. No approved font binaries were changed.
 
 ## What actually depended on what

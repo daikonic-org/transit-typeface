@@ -1,31 +1,19 @@
 {
-  "viewport_per_panel": [
-    500,
-    620
-  ],
-  "device_scale": 3,
-  "reviewed": "2026-11-15",
-  "renderer": "Chromium; SVG contains actual font outlines",
-  "artifacts": {
-    "TransitSans": {
-      "svg": "09a256676df9c91dffc688e56e2b0dcb6326a98f72e62e22440ac3ce6a6e0df8",
-      "png": "1e379d2ab7b00adc62873da5bbab2b5add1eacc61900aa9ab8a9db0ecc4affcd",
-      "pdf": "b106422bcb0da764f1c1ac84c4f7e44985241d200281d85ca1d43d073f056db2"
-    },
-    "TransitSystem": {
-      "svg": "6e4ca577908db16c5cda2149507cb826339204c53314bd3e92a0a961a52030ed",
-      "png": "3a184ca64ec135c988f3c78dec9d19d5baa34143032a5e40b5831352a62fefb0",
-      "pdf": "cdf8cd6fd4946c49d2790d4d8e2d65b04f031126f32c3dc8358ee9bf9e12d645"
-    },
-    "TransitCode": {
-      "svg": "60b4c81cbfc32b0ab86a3bd52d6ba8195b701bd429f51d4dd868cad0997ca2f7",
-      "png": "ee9cf109f4b4fe325ba851540df8939ba3af3659b96307ae6ce2a0554134e07f",
-      "pdf": "b99c8277fe86754e063a53d40c44682510b4197a1db5a9050555e4af01e4c70c"
-    },
-    "Transit-Family": {
-      "svg": "699f26cf1ae837c2ffd08480926d2be76df6f3104e9a8cb3479a1372a49b9c5d",
-      "png": "d3c0d31edf5b6f76f474578ccddc9b2b37702786052d7602cc61275ee885a70d",
-      "pdf": "98c6b30a498cbe04e862802bb62c1b7d0fe3ded1076802b5e547b1d30f1ff236"
-    }
+  "browser": "Chromium157.0.8103.78",
+  "device_scale_factor": 3,
+  "fonts": "current family.json versions; actual outlined font paths",
+  "files": {
+    "TransitSans.pdf": "8d06dfcae6102dcc062df62beb40a89edae31a129a7cd3c508bbfb92c8f458da",
+    "TransitSans.png": "36f922a53749f8637ea88ac21a8a416f165f263bc39561d6c266adccf6b30d2b",
+    "TransitSans.svg": "d4f2d2a24f891549ab0405ddec2728634bd962535bb50ead391f5ad51a312a12",
+    "TransitSystem.pdf": "1a6abb920b4659badbd834d21731ab7ca96cdf653ace4f14b8e4ca15be263af6",
+    "TransitCode.svg": "5aa92de358408d8d61e7a97b63a2c2eb0b997c9fb2068187af2b0156d1bef626",
+    "TransitSystem.png": "09ba203cd86f8dc814cc7830e45a600cc42f8d6433c36faf65b3a627b3e06d94",
+    "Transit-Family.pdf": "ccac61e018b53b5a21b421f8f51effda6cd35fd6bcf846b5a697e59390e53737",
+    "Transit-Family.png": "adc8ebfe67ddcd8042e4e7bdd11669d187998331c2dc651a13492af3e3aa2f4b",
+    "Transit-Family.svg": "31666df93f81c53df996ad55be482a4f4fa0dbebe584e51a22c2e35cae13f2b5",
+    "TransitSystem.svg": "4631b2acfe9bc488ab6c269110fb79038108b6f0f6ef91b0a6991bd47643cd09",
+    "TransitCode.pdf": "d88a411de48cac8a3d050b1747a4ce5c102e659dd90fbdd49c566ae7d74348bd",
+    "TransitCode.png": "402121e99a5b5553891ea451377ffe30c75193fd6ab8deab252b2a01f3df2aaf"
   }
 }

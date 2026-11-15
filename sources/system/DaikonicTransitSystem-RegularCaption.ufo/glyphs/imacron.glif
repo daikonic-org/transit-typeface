@@ -2,9 +2,9 @@
 <glyph name="imacron" format="2">
   <advance width="249"/>
   <unicode hex="012B"/>
-  <anchor x="124" y="0" name="bottom"/>
-  <anchor x="180" y="0" name="ogonek"/>
-  <anchor x="124" y="506" name="top"/>
+  <anchor x="124.0" y="0.0" name="bottom"/>
+  <anchor x="180.0" y="0.0" name="ogonek"/>
+  <anchor x="124.0" y="506.0" name="top"/>
   <outline>
     <contour>
       <point x="74" y="528" type="line"/>

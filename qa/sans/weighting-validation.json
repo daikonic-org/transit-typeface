@@ -1,0 +1,69 @@
+{
+  "sanitized": [
+    "DaikonicTransitSans-VF.ttf",
+    "DaikonicTransitSans-Regular.ttf",
+    "DaikonicTransitSans-Book.ttf",
+    "DaikonicTransitSans-Medium.ttf",
+    "DaikonicTransitSans-SemiBold.ttf",
+    "DaikonicTransitSans-Light.ttf",
+    "DaikonicTransitSans-VF.woff2"
+  ],
+  "sampled_locations": [
+    {
+      "wght": 300
+    },
+    {
+      "wght": 325
+    },
+    {
+      "wght": 350
+    },
+    {
+      "wght": 375
+    },
+    {
+      "wght": 400
+    },
+    {
+      "wght": 450
+    },
+    {
+      "wght": 500
+    },
+    {
+      "wght": 550
+    },
+    {
+      "wght": 600
+    }
+  ],
+  "metrics_and_layout": "passed",
+  "counter_topology_controls": "passed",
+  "selected_glyphs": [
+    {
+      "wght": 300,
+      "opsz": null,
+      "selected_glyphs": "exact"
+    },
+    {
+      "wght": 350,
+      "opsz": null,
+      "selected_glyphs": "exact"
+    },
+    {
+      "wght": 400,
+      "opsz": null,
+      "selected_glyphs": "exact"
+    },
+    {
+      "wght": 500,
+      "opsz": null,
+      "selected_glyphs": "exact"
+    },
+    {
+      "wght": 600,
+      "opsz": null,
+      "selected_glyphs": "exact"
+    }
+  ]
+}

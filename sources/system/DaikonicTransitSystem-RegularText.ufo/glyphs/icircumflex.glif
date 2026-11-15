@@ -2,9 +2,9 @@
 <glyph name="icircumflex" format="2">
   <advance width="239"/>
   <unicode hex="00EE"/>
-  <anchor x="119" y="0" name="bottom"/>
-  <anchor x="175" y="0" name="ogonek"/>
-  <anchor x="119" y="508" name="top"/>
+  <anchor x="119.0" y="0.0" name="bottom"/>
+  <anchor x="175.0" y="0.0" name="ogonek"/>
+  <anchor x="119.0" y="508.0" name="top"/>
   <outline>
     <contour>
       <point x="69" y="530" type="line"/>

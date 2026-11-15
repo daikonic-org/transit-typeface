@@ -23,3 +23,5 @@ jobs:
         run: python -m pip install -r requirements.lock
       - name: Rebuild and verify approved fonts
         run: python tools/pipeline.py approved
+      - name: Verify weighting interpolation and retained designs
+        run: python tools/check_weighting.py all --production

@@ -2,9 +2,9 @@
 <glyph name="ibreve" format="2">
   <advance width="221"/>
   <unicode hex="012D"/>
-  <anchor x="111" y="0" name="bottom"/>
-  <anchor x="167" y="0" name="ogonek"/>
-  <anchor x="111" y="507" name="top"/>
+  <anchor x="111.0" y="0.0" name="bottom"/>
+  <anchor x="167.0" y="0.0" name="ogonek"/>
+  <anchor x="111.0" y="507.0" name="top"/>
   <outline>
     <contour>
       <point x="73" y="529" type="line"/>

@@ -21,6 +21,11 @@ The binary masters are the direct reproducible inputs for the current approved d
 
 Each `sources/<family>/` includes a `.glyphs` file, UFO masters and a native designspace. Open the Glyphs file directly, or independently compile it:
 
+For the accepted weighting update, System's full Glyphs file is compressed as
+`DaikonicTransitSystem.glyphs.zip`; extract it before opening. Its UFO/designspace
+files are uncompressed. See [weighting-adoption.md](weighting-adoption.md) for
+the frozen baseline and layout/metric preservation used by production rebuilds.
+
 ```sh
 fontmake -g sources/sans/DaikonicTransitSans.glyphs -o variable \
   --production-names --overlaps-backend pathops \

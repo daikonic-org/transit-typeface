@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "purpose": "Experimental Regular-anchored weight generation. Current releases rebuild separately from approved compatible masters.",
+  "purpose": "Accepted 72% Regular-anchored generation from frozen pre-adoption baselines, with explicit selected-glyph overrides. Compatible production masters rebuild separately.",
   "defaults": {
     "anchor_weight": 400,
-    "horizontal_growth_ratio": 1.0,
+    "horizontal_growth_ratio": 0.72,
     "miter_limit": 3,
     "preserve_counter_topology": true,
     "metrics": "matched_approved_instance",
@@ -30,6 +30,7 @@
         "300": 85,
         "350": 97.5,
         "400": 110,
+        "500": 130,
         "600": 150
       },
       "optical_sizes": [
@@ -41,6 +42,7 @@
         "300": 85,
         "350": 98,
         "400": 110,
+        "500": 130,
         "600": 150
       },
       "optical_sizes": [

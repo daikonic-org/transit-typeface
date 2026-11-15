@@ -1,24 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <glyph name="H.ss01" format="2">
   <advance width="696"/>
-  <anchor x="349" y="0" name="bottom"/>
-  <anchor x="349" y="560" name="center"/>
-  <anchor x="349" y="700" name="top"/>
-  <anchor x="39.5" y="700" name="topleft"/>
+  <anchor x="349.0" y="0.0" name="bottom"/>
+  <anchor x="349.0" y="560.0" name="center"/>
+  <anchor x="349.0" y="700.0" name="top"/>
+  <anchor x="39.5" y="700.0" name="topleft"/>
   <outline>
     <contour>
       <point x="52" y="700" type="line"/>
       <point x="73" y="700"/>
       <point x="116" y="700"/>
       <point x="137" y="700" type="qcurve"/>
-      <point x="137" y="625"/>
-      <point x="137" y="475"/>
-      <point x="137" y="400" type="qcurve"/>
-      <point x="242" y="400"/>
-      <point x="453" y="400"/>
-      <point x="559" y="400" type="qcurve"/>
-      <point x="559" y="475"/>
-      <point x="559" y="625"/>
+      <point x="137" y="626"/>
+      <point x="137" y="477"/>
+      <point x="137" y="403" type="qcurve"/>
+      <point x="242" y="403"/>
+      <point x="453" y="403"/>
+      <point x="559" y="403" type="qcurve"/>
+      <point x="559" y="477"/>
+      <point x="559" y="626"/>
       <point x="559" y="700" type="qcurve"/>
       <point x="580" y="700"/>
       <point x="623" y="700"/>
@@ -29,14 +29,14 @@
       <point x="623" y="0"/>
       <point x="580" y="0"/>
       <point x="559" y="0" type="qcurve"/>
-      <point x="559" y="81"/>
-      <point x="559" y="242"/>
-      <point x="559" y="323" type="qcurve"/>
-      <point x="454" y="323"/>
-      <point x="243" y="323"/>
-      <point x="137" y="323" type="qcurve"/>
-      <point x="137" y="242"/>
-      <point x="137" y="81"/>
+      <point x="559" y="80"/>
+      <point x="559" y="239"/>
+      <point x="559" y="319" type="qcurve"/>
+      <point x="454" y="319"/>
+      <point x="243" y="319"/>
+      <point x="137" y="319" type="qcurve"/>
+      <point x="137" y="239"/>
+      <point x="137" y="80"/>
       <point x="137" y="0" type="qcurve"/>
       <point x="116" y="0"/>
       <point x="73" y="0"/>

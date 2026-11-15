@@ -1,5 +1,6 @@
 # Review of the supplied Gemini guidance
 
+> Historical audit of the pre-adoption versions. The accepted 72% weighting and current versions are documented in [weighting-adoption.md](weighting-adoption.md).
 Reviewed against the actual source pipeline and the distributed Sans 0.106, System 0.115 and Code 1.015 files on2026-11-15. This is an audit, not an instruction to regenerate or replace the approved drawings. Font versions and outlines are unchanged by this repository/specimen publication.
 
 ## Main finding

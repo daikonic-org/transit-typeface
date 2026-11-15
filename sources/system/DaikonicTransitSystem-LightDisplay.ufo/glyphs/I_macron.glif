@@ -2,39 +2,39 @@
 <glyph name="Imacron" format="2">
   <advance width="209"/>
   <unicode hex="012A"/>
-  <anchor x="105" y="0" name="bottom"/>
-  <anchor x="160" y="0" name="ogonek"/>
-  <anchor x="105" y="859" name="top"/>
-  <anchor x="49.5" y="700" name="topleft"/>
+  <anchor x="105.0" y="0.0" name="bottom"/>
+  <anchor x="160.0" y="0.0" name="ogonek"/>
+  <anchor x="105.0" y="859.0" name="top"/>
+  <anchor x="49.5" y="700.0" name="topleft"/>
   <outline>
     <contour>
-      <point x="62" y="700" type="line"/>
-      <point x="83" y="700"/>
-      <point x="126" y="700"/>
-      <point x="147" y="700" type="qcurve"/>
-      <point x="147" y="525"/>
-      <point x="147" y="175"/>
+      <point x="62" y="696" type="line"/>
+      <point x="83" y="696"/>
+      <point x="126" y="696"/>
+      <point x="147" y="696" type="qcurve"/>
+      <point x="147" y="522"/>
+      <point x="147" y="174"/>
       <point x="147" y="0" type="qcurve"/>
       <point x="126" y="0"/>
       <point x="83" y="0"/>
       <point x="62" y="0" type="qcurve"/>
-      <point x="62" y="175"/>
-      <point x="62" y="525"/>
-      <point x="62" y="700" type="qcurve"/>
+      <point x="62" y="174"/>
+      <point x="62" y="522"/>
+      <point x="62" y="696" type="qcurve"/>
     </contour>
     <contour>
       <point x="13" y="872" type="line"/>
       <point x="58" y="872"/>
       <point x="150" y="872"/>
       <point x="195" y="872" type="qcurve"/>
-      <point x="195" y="850"/>
-      <point x="195" y="805"/>
-      <point x="195" y="782" type="qcurve"/>
-      <point x="150" y="782"/>
-      <point x="59" y="782"/>
-      <point x="13" y="782" type="qcurve"/>
-      <point x="13" y="805"/>
-      <point x="13" y="850"/>
+      <point x="195" y="854"/>
+      <point x="195" y="816"/>
+      <point x="195" y="798" type="qcurve"/>
+      <point x="150" y="798"/>
+      <point x="59" y="798"/>
+      <point x="13" y="798" type="qcurve"/>
+      <point x="13" y="816"/>
+      <point x="13" y="854"/>
       <point x="13" y="872" type="qcurve"/>
     </contour>
   </outline>

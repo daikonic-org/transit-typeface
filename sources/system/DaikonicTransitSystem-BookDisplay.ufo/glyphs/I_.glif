@@ -2,24 +2,36 @@
 <glyph name="I" format="2">
   <advance width="222"/>
   <unicode hex="0049"/>
-  <anchor x="111" y="0" name="bottom"/>
-  <anchor x="166" y="0" name="ogonek"/>
-  <anchor x="111" y="700" name="top"/>
-  <anchor x="56.0" y="700" name="topleft"/>
+  <anchor x="111.0" y="0.0" name="bottom"/>
+  <anchor x="166.0" y="0.0" name="ogonek"/>
+  <anchor x="111.0" y="700.0" name="top"/>
+  <anchor x="56.0" y="700.0" name="topleft"/>
   <outline>
     <contour>
       <point x="62" y="700" type="line"/>
-      <point x="87" y="700"/>
-      <point x="136" y="700"/>
+      <point x="74" y="700"/>
+      <point x="99" y="700"/>
+      <point x="111" y="700" type="qcurve"/>
+      <point x="124" y="700"/>
+      <point x="148" y="700"/>
       <point x="160" y="700" type="qcurve"/>
-      <point x="160" y="525"/>
-      <point x="160" y="175"/>
+      <point x="160" y="613"/>
+      <point x="160" y="438"/>
+      <point x="160" y="350" type="qcurve"/>
+      <point x="160" y="262"/>
+      <point x="160" y="88"/>
       <point x="160" y="0" type="qcurve"/>
-      <point x="135" y="0"/>
-      <point x="86" y="0"/>
+      <point x="148" y="0"/>
+      <point x="123" y="0"/>
+      <point x="111" y="0" type="qcurve"/>
+      <point x="98" y="0"/>
+      <point x="74" y="0"/>
       <point x="62" y="0" type="qcurve"/>
-      <point x="62" y="175"/>
-      <point x="62" y="525"/>
+      <point x="62" y="88"/>
+      <point x="62" y="263"/>
+      <point x="62" y="350" type="qcurve"/>
+      <point x="62" y="438"/>
+      <point x="62" y="613"/>
       <point x="62" y="700" type="qcurve"/>
     </contour>
   </outline>

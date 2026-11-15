@@ -2,9 +2,9 @@
 <glyph name="igrave" format="2">
   <advance width="232"/>
   <unicode hex="00EC"/>
-  <anchor x="120" y="0" name="bottom"/>
-  <anchor x="176" y="0" name="ogonek"/>
-  <anchor x="79" y="506" name="top"/>
+  <anchor x="120.0" y="0.0" name="bottom"/>
+  <anchor x="176.0" y="0.0" name="ogonek"/>
+  <anchor x="79.0" y="506.0" name="top"/>
   <outline>
     <contour>
       <point x="70" y="528" type="line"/>

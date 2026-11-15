@@ -23,6 +23,12 @@
         <dimension name="Optical Size" xvalue="10"/>
       </location>
     </source>
+    <source filename="DaikonicTransitSystem-MediumCaption.ufo" name="Medium Caption" familyname="Daikonic Transit System" stylename="Medium Caption">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+        <dimension name="Optical Size" xvalue="10"/>
+      </location>
+    </source>
     <source filename="DaikonicTransitSystem-SemiBoldCaption.ufo" name="SemiBold Caption" familyname="Daikonic Transit System" stylename="SemiBold Caption">
       <location>
         <dimension name="Weight" xvalue="600"/>
@@ -50,6 +56,12 @@
         <dimension name="Optical Size" xvalue="14"/>
       </location>
     </source>
+    <source filename="DaikonicTransitSystem-MediumText.ufo" name="Medium Text" familyname="Daikonic Transit System" stylename="Medium Text">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+        <dimension name="Optical Size" xvalue="14"/>
+      </location>
+    </source>
     <source filename="DaikonicTransitSystem-SemiBoldText.ufo" name="SemiBold Text" familyname="Daikonic Transit System" stylename="SemiBold Text">
       <location>
         <dimension name="Weight" xvalue="600"/>
@@ -71,6 +83,12 @@
     <source filename="DaikonicTransitSystem-RegularDisplay.ufo" name="Regular Display" familyname="Daikonic Transit System" stylename="Regular Display">
       <location>
         <dimension name="Weight" xvalue="400"/>
+        <dimension name="Optical Size" xvalue="36"/>
+      </location>
+    </source>
+    <source filename="DaikonicTransitSystem-MediumDisplay.ufo" name="Medium Display" familyname="Daikonic Transit System" stylename="Medium Display">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
         <dimension name="Optical Size" xvalue="36"/>
       </location>
     </source>

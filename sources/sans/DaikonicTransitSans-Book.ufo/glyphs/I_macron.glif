@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Imacron" format="2">
+  <advance width="218"/>
+  <unicode hex="012A"/>
+  <anchor x="108.75" y="0.0" name="bottom"/>
+  <anchor x="163.75" y="0.0" name="ogonek"/>
+  <anchor x="108.75" y="859.0" name="top"/>
+  <anchor x="53.75" y="700.0" name="topleft"/>
+  <outline>
+    <contour>
+      <point x="60" y="698" type="line"/>
+      <point x="85" y="698"/>
+      <point x="134" y="698"/>
+      <point x="158" y="698" type="qcurve"/>
+      <point x="158" y="524"/>
+      <point x="158" y="175"/>
+      <point x="158" y="0" type="qcurve"/>
+      <point x="134" y="0"/>
+      <point x="85" y="0"/>
+      <point x="60" y="0" type="qcurve"/>
+      <point x="60" y="175"/>
+      <point x="60" y="524"/>
+      <point x="60" y="698" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="11" y="872" type="line"/>
+      <point x="60" y="872"/>
+      <point x="157" y="872"/>
+      <point x="206" y="872" type="qcurve"/>
+      <point x="206" y="851"/>
+      <point x="206" y="811"/>
+      <point x="206" y="790" type="qcurve"/>
+      <point x="157" y="790"/>
+      <point x="60" y="790"/>
+      <point x="11" y="790" type="qcurve"/>
+      <point x="11" y="811"/>
+      <point x="11" y="851"/>
+      <point x="11" y="872" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

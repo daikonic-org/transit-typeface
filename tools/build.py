@@ -4,6 +4,9 @@ from pathlib import Path
 import argparse
 import json
 from fontTools.varLib import build
+from fontTools.ttLib import TTFont
+from derive_weights import locked
+from weighting_support import preserve_layout
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,6 +28,12 @@ def main():
         )
         font, _, _ = build(design, optimize=False)
         font.importXML(sources / "VariableMetadata.ttx")
+        if cfg.get("weighting_baseline"):
+            baseline = TTFont(ROOT / cfg["weighting_baseline"])
+            locks = json.loads((ROOT / "recipes/weights.json").read_text())["defaults"][
+                "locks"
+            ]
+            preserve_layout(font, baseline, locked(baseline, locks))
         out = ROOT / ".build" / key
         out.mkdir(parents=True, exist_ok=True)
         dest = out / (cfg["stem"] + "-VF.ttf")

@@ -4,6 +4,8 @@ from pathlib import Path
 import hashlib
 import json
 import zipfile
+from fontTools.ttLib import TTFont
+from derive_weights import locked
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -13,7 +15,7 @@ def main():
     for key, cfg in families.items():
         version = cfg["version"] + "R"
         slug = f"transit-{key}-{version}"
-        out = ROOT / ".dist" / key
+        out = ROOT / ".dist" / key / cfg["version"]
         out.mkdir(parents=True, exist_ok=True)
         groups = {
             "TTF": list((ROOT / "fonts" / key / "TTF").glob("*.ttf")),
@@ -45,9 +47,32 @@ def main():
                 if fmt == "SOURCE":
                     z.write(ROOT / "requirements.lock", prefix / "requirements.lock")
                     z.write(ROOT / "docs/build.md", prefix / "BUILD.md")
+                    extra = ""
+                    if cfg.get("weighting_baseline"):
+                        z.write(
+                            ROOT / cfg["weighting_baseline"],
+                            prefix / "WeightingBaseline.ttf",
+                        )
+                        z.write(
+                            ROOT / "tools/weighting_support.py",
+                            prefix / "weighting_support.py",
+                        )
+                        config = json.loads((ROOT / "recipes/weights.json").read_text())
+                        protected = sorted(
+                            locked(
+                                TTFont(ROOT / cfg["weighting_baseline"]),
+                                config["defaults"]["locks"],
+                            )
+                        )
+                        z.writestr(
+                            str(prefix / "SelectedGlyphs.json"), json.dumps(protected)
+                        )
+                        extra = "from fontTools.ttLib import TTFont\nimport json\nfrom weighting_support import preserve_layout\npreserve_layout(f,TTFont(r/'WeightingBaseline.ttf'),set(json.loads((r/'SelectedGlyphs.json').read_text())))\n"
                     z.writestr(
                         str(prefix / "rebuild.py"),
-                        "from pathlib import Path\nfrom fontTools.varLib import build\nr=Path(__file__).resolve().parent\nd=next(r.glob('*TTF.designspace'),None) or r/'DaikonicTransitCodeVF.designspace'\nf,_,_=build(d,optimize=False)\nf.importXML(r/'VariableMetadata.ttx')\nf.save(r/'Rebuilt-VF.ttf')\n",
+                        "from pathlib import Path\nfrom fontTools.varLib import build\nr=Path(__file__).resolve().parent\nd=next(r.glob('*TTF.designspace'),None) or r/'DaikonicTransitCodeVF.designspace'\nf,_,_=build(d,optimize=False)\nf.importXML(r/'VariableMetadata.ttx')\n"
+                        + extra
+                        + "f.save(r/'Rebuilt-VF.ttf')\n",
                     )
                 if fmt == "WOFF2":
                     z.writestr(
@@ -64,7 +89,7 @@ def main():
         title = f"Fonts version {cfg['version']} — {cfg['title']} (TTF, VF, WOFF2)"
         notes = f"""{cfg['title']}, version {cfg['version']}.
 
-Initial public release of the current reviewed upright family. Format-separated downloads follow Adobe Source Sans's release layout. All named static weights are snapshots of the variable font.
+{'Adopts the reviewed 72% horizontal-expansion weighting approach at all named weights, preserving the original Regular anchor proportions and selected glyph details. Includes compatible variable masters, named snapshots and editable sources. System applies the approach across Caption, Text and Display optical profiles.' if cfg.get('weighting_ratio') else 'Initial public release of the current reviewed upright family.'} Format-separated downloads follow Adobe Source Sans's release layout. All named static weights are snapshots of the variable font.
 
 - **TTF**: named static weights ({len(groups['TTF'])} files).
 - **VF**: installable variable TrueType font, weight{cfg['light']}–{cfg['heavy']}, default{cfg['display']}.
@@ -78,7 +103,7 @@ Concave acute arrows with extended wings and matching double-rail clearance are 
 
 No italic,700-weight,OTF or legacy WOFF files are claimed. Install VF or static TTFs as alternatives. See the repository's generation audit for measured counter/weight behavior and current Code mark-positioning limitations.
 
-Validation: OpenType Sanitizer, static/VF parity, source rebuilds and HarfBuzz shaping. Earlier native Core Text/Glyphs checks are recorded in qa/. Font files retain OFL1.1 and original notices.
+Validation: OpenType Sanitizer, static/VF parity, source rebuilds and HarfBuzz shaping. Weighting validation covers intermediate positions and independent editable-source rebuilds. Earlier native Core Text checks describe prior releases; they were not repeated for this update. Font files retain OFL1.1 and original notices.
 """
         (out / "Release.md").write_text(notes)
         (out / "release.json").write_text(

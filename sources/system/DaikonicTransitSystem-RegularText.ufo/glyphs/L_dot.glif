@@ -2,10 +2,10 @@
 <glyph name="Ldot" format="2">
   <advance width="490"/>
   <unicode hex="013F"/>
-  <anchor x="264" y="0" name="bottom"/>
-  <anchor x="302" y="382" name="center"/>
-  <anchor x="110" y="700" name="top"/>
-  <anchor x="341" y="700" name="topright"/>
+  <anchor x="264.0" y="0.0" name="bottom"/>
+  <anchor x="302.0" y="382.0" name="center"/>
+  <anchor x="110.0" y="700.0" name="top"/>
+  <anchor x="341.0" y="700.0" name="topright"/>
   <outline>
     <contour>
       <point x="55" y="700" type="line"/>

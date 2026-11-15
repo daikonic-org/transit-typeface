@@ -2,9 +2,9 @@
 <glyph name="iacute" format="2">
   <advance width="238"/>
   <unicode hex="00ED"/>
-  <anchor x="115" y="0" name="bottom"/>
-  <anchor x="171" y="0" name="ogonek"/>
-  <anchor x="189" y="506" name="top"/>
+  <anchor x="115.0" y="0.0" name="bottom"/>
+  <anchor x="171.0" y="0.0" name="ogonek"/>
+  <anchor x="189.0" y="506.0" name="top"/>
   <outline>
     <contour>
       <point x="65" y="528" type="line"/>

@@ -5,17 +5,29 @@
   <outline>
     <contour>
       <point x="52" y="740" type="line"/>
-      <point x="74" y="740"/>
-      <point x="118" y="740"/>
+      <point x="63" y="740"/>
+      <point x="85" y="740"/>
+      <point x="96" y="740" type="qcurve"/>
+      <point x="107" y="740"/>
+      <point x="129" y="740"/>
       <point x="140" y="740" type="qcurve"/>
-      <point x="140" y="514"/>
-      <point x="140" y="63"/>
+      <point x="140" y="627"/>
+      <point x="140" y="401"/>
+      <point x="140" y="288" type="qcurve"/>
+      <point x="140" y="176"/>
+      <point x="140" y="-50"/>
       <point x="140" y="-163" type="qcurve"/>
-      <point x="118" y="-163"/>
-      <point x="74" y="-163"/>
+      <point x="129" y="-163"/>
+      <point x="107" y="-163"/>
+      <point x="96" y="-163" type="qcurve"/>
+      <point x="85" y="-163"/>
+      <point x="63" y="-163"/>
       <point x="52" y="-163" type="qcurve"/>
-      <point x="52" y="63"/>
-      <point x="52" y="514"/>
+      <point x="52" y="-50"/>
+      <point x="52" y="176"/>
+      <point x="52" y="289" type="qcurve"/>
+      <point x="52" y="401"/>
+      <point x="52" y="627"/>
       <point x="52" y="740" type="qcurve"/>
     </contour>
   </outline>

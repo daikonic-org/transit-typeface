@@ -2,10 +2,10 @@
 <glyph name="lacute" format="2">
   <advance width="340"/>
   <unicode hex="013A"/>
-  <anchor x="160" y="0" name="bottom"/>
-  <anchor x="259" y="400" name="center"/>
-  <anchor x="159" y="678" name="top"/>
-  <anchor x="254" y="784" name="topright"/>
+  <anchor x="160.0" y="0.0" name="bottom"/>
+  <anchor x="259.0" y="400.0" name="center"/>
+  <anchor x="159.0" y="678.0" name="top"/>
+  <anchor x="254.0" y="784.0" name="topright"/>
   <outline>
     <contour>
       <point x="47" y="700" type="line"/>

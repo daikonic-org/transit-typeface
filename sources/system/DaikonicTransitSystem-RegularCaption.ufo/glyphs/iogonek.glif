@@ -2,9 +2,9 @@
 <glyph name="iogonek" format="2">
   <advance width="244"/>
   <unicode hex="012F"/>
-  <anchor x="118" y="0" name="bottom"/>
-  <anchor x="174" y="0" name="ogonek"/>
-  <anchor x="118" y="509" name="top"/>
+  <anchor x="118.0" y="0.0" name="bottom"/>
+  <anchor x="174.0" y="0.0" name="ogonek"/>
+  <anchor x="118.0" y="509.0" name="top"/>
   <outline>
     <contour>
       <point x="68" y="531" type="line"/>

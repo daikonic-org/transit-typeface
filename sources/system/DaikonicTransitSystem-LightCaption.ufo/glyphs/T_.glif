@@ -2,35 +2,35 @@
 <glyph name="T" format="2">
   <advance width="567"/>
   <unicode hex="0054"/>
-  <anchor x="284" y="0" name="bottom"/>
-  <anchor x="284" y="350" name="center"/>
-  <anchor x="284" y="700" name="top"/>
+  <anchor x="284.0" y="0.0" name="bottom"/>
+  <anchor x="284.0" y="350.0" name="center"/>
+  <anchor x="284.0" y="700.0" name="top"/>
   <outline>
     <contour>
       <point x="28" y="700" type="line"/>
       <point x="156" y="700"/>
       <point x="411" y="700"/>
       <point x="539" y="700" type="qcurve"/>
-      <point x="539" y="681"/>
-      <point x="539" y="642"/>
-      <point x="539" y="622" type="qcurve"/>
-      <point x="486" y="622"/>
-      <point x="379" y="622"/>
-      <point x="326" y="622" type="qcurve"/>
-      <point x="326" y="466"/>
-      <point x="326" y="156"/>
+      <point x="539" y="679"/>
+      <point x="539" y="637"/>
+      <point x="539" y="616" type="qcurve"/>
+      <point x="486" y="616"/>
+      <point x="379" y="616"/>
+      <point x="326" y="616" type="qcurve"/>
+      <point x="326" y="462"/>
+      <point x="326" y="154"/>
       <point x="326" y="0" type="qcurve"/>
       <point x="305" y="0"/>
       <point x="262" y="0"/>
       <point x="241" y="0" type="qcurve"/>
-      <point x="241" y="156"/>
-      <point x="241" y="467"/>
-      <point x="241" y="622" type="qcurve"/>
-      <point x="188" y="622"/>
-      <point x="81" y="622"/>
-      <point x="28" y="622" type="qcurve"/>
-      <point x="28" y="642"/>
-      <point x="28" y="681"/>
+      <point x="241" y="154"/>
+      <point x="241" y="462"/>
+      <point x="241" y="616" type="qcurve"/>
+      <point x="188" y="616"/>
+      <point x="81" y="616"/>
+      <point x="28" y="616" type="qcurve"/>
+      <point x="28" y="637"/>
+      <point x="28" y="679"/>
       <point x="28" y="700" type="qcurve"/>
     </contour>
   </outline>

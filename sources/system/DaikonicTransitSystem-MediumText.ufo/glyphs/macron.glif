@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="macron" format="2">
+  <advance width="377"/>
+  <unicode hex="00AF"/>
+  <anchor x="189.0" y="475.0" name="_top"/>
+  <anchor x="189.0" y="659.0" name="top"/>
+  <outline>
+    <contour>
+      <point x="25" y="672" type="line"/>
+      <point x="66" y="672"/>
+      <point x="148" y="672"/>
+      <point x="189" y="672" type="qcurve"/>
+      <point x="229" y="672"/>
+      <point x="311" y="672"/>
+      <point x="352" y="672" type="qcurve"/>
+      <point x="352" y="661"/>
+      <point x="352" y="639"/>
+      <point x="352" y="628" type="qcurve"/>
+      <point x="352" y="616"/>
+      <point x="352" y="593"/>
+      <point x="352" y="582" type="qcurve"/>
+      <point x="311" y="582"/>
+      <point x="229" y="582"/>
+      <point x="189" y="582" type="qcurve"/>
+      <point x="148" y="582"/>
+      <point x="66" y="582"/>
+      <point x="25" y="582" type="qcurve"/>
+      <point x="25" y="593"/>
+      <point x="25" y="616"/>
+      <point x="25" y="628" type="qcurve"/>
+      <point x="25" y="639"/>
+      <point x="25" y="661"/>
+      <point x="25" y="672" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

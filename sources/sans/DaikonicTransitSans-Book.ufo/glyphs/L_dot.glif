@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Ldot" format="2">
+  <advance width="455"/>
+  <unicode hex="013F"/>
+  <anchor x="246.5" y="0.0" name="bottom"/>
+  <anchor x="284.5" y="382.0" name="center"/>
+  <anchor x="92.5" y="700.0" name="top"/>
+  <anchor x="323.5" y="700.0" name="topright"/>
+  <outline>
+    <contour>
+      <point x="50" y="700" type="line"/>
+      <point x="75" y="700"/>
+      <point x="123" y="700"/>
+      <point x="148" y="700" type="qcurve"/>
+      <point x="148" y="548"/>
+      <point x="148" y="244"/>
+      <point x="148" y="92" type="qcurve"/>
+      <point x="225" y="92"/>
+      <point x="379" y="92"/>
+      <point x="456" y="92" type="qcurve"/>
+      <point x="456" y="69"/>
+      <point x="456" y="23"/>
+      <point x="456" y="0" type="qcurve"/>
+      <point x="355" y="0"/>
+      <point x="152" y="0"/>
+      <point x="50" y="0" type="qcurve"/>
+      <point x="50" y="175"/>
+      <point x="50" y="525"/>
+      <point x="50" y="700" type="qcurve"/>
+    </contour>
+    <contour>
+      <point x="249" y="427" type="line"/>
+      <point x="271" y="427"/>
+      <point x="315" y="427"/>
+      <point x="337" y="427" type="qcurve"/>
+      <point x="337" y="405"/>
+      <point x="337" y="360"/>
+      <point x="337" y="338" type="qcurve"/>
+      <point x="315" y="338"/>
+      <point x="271" y="338"/>
+      <point x="249" y="338" type="qcurve"/>
+      <point x="249" y="360"/>
+      <point x="249" y="405"/>
+      <point x="249" y="427" type="qcurve"/>
+    </contour>
+  </outline>
+</glyph>

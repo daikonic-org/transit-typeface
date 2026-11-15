@@ -1,6 +1,6 @@
 {
   "sans": {
-    "version": "0.106",
+    "version": "0.107",
     "sanitizer": "passed",
     "static_snapshot_parity": "exact",
     "binary_source_rebuild": "exact",
@@ -23,7 +23,7 @@
     ]
   },
   "system": {
-    "version": "0.115",
+    "version": "0.116",
     "sanitizer": "passed",
     "static_snapshot_parity": "exact",
     "binary_source_rebuild": "exact",
@@ -91,7 +91,7 @@
     ]
   },
   "code": {
-    "version": "1.015",
+    "version": "1.016",
     "sanitizer": "passed",
     "static_snapshot_parity": "exact",
     "binary_source_rebuild": "exact",

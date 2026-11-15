@@ -130,7 +130,9 @@ def names(font, key, weight, optical, source, ratio):
         + str(ratio).replace(".", "p")
     )
     family = f"Daikonic Transit {key.title()} Study {model}"
-    style = {300: "Light", 350: "Book", 400: "Regular", 600: "SemiBold"}[weight]
+    style = {300: "Light", 350: "Book", 400: "Regular", 500: "Medium", 600: "SemiBold"}[
+        weight
+    ]
     if optical is not None:
         style += " " + str(optical)
     ps = family.replace(" ", "") + "-" + style.replace(" ", "")
@@ -193,7 +195,7 @@ def main():
         records = []
         for optical in recipe["optical_sizes"]:
             source = (
-                ROOT / cfg["font"]
+                ROOT / cfg.get("weighting_baseline", cfg["font"])
                 if args.source == "approved-regular"
                 else ROOT / "upstream/MetropolitanLine-Regular.ttf"
             )
@@ -222,7 +224,7 @@ def main():
                 amount = target - baseline
                 reference = (
                     instantiateVariableFont(
-                        TTFont(ROOT / cfg["font"]),
+                        TTFont(ROOT / cfg.get("weighting_baseline", cfg["font"])),
                         {
                             "wght": weight,
                             **({"opsz": optical} if optical is not None else {}),

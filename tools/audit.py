@@ -103,7 +103,7 @@ def main():
     for key, cfg in DATA["families"].items():
         original = TTFont(ROOT / cfg["font"])
         records = []
-        for weight in [300, 350, 400] if key == "code" else [300, 350, 400, 600]:
+        for weight in [300, 350, 400] if key == "code" else [300, 350, 400, 500, 600]:
             font = instantiateVariableFont(
                 TTFont(ROOT / cfg["font"]),
                 {"wght": weight, **({"opsz": 14} if key == "system" else {})},
