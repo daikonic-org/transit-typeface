@@ -38,6 +38,10 @@
     }
   ],
   "metrics_and_layout": "passed",
+  "explicit_metric_revisions": [
+    "a_i",
+    "l_i"
+  ],
   "counter_topology_controls": "passed",
   "selected_glyph_variation_functions": "exact",
   "selected_glyph_count": 136,

@@ -172,6 +172,7 @@ def bind(panel, font, weight):
 def preserve_boundary_kerning(font):
     """Give each replacement the left class of a/l and right class of i."""
     corrections = {}
+    desired_pairs = {}
     stream = BytesIO()
     font.save(stream)
     h = hb.Font(hb.Face(stream.getvalue()))
@@ -195,10 +196,14 @@ def preserve_boundary_kerning(font):
                 desired = measured(ordinary, False)
                 current = measured(trial, True)
                 delta = desired - current
+                desired_pairs[(glyph, lig) if left else (lig, glyph)] = desired
                 if delta:
                     corrections[(glyph, lig) if left else (lig, glyph)] = delta
     for first in ("ai", "li"):
         for second in ("ai", "li"):
+            desired_pairs[(first[0] + "_i", second[0] + "_i")] = measured(
+                "i" + second[0], False
+            )
             corrections[(first[0] + "_i", second[0] + "_i")] = measured(
                 "i" + second[0], False
             ) - measured(first + second, True)
@@ -235,18 +240,27 @@ def preserve_boundary_kerning(font):
         if record.FeatureTag == "kern":
             record.Feature.LookupListIndex.append(index)
             record.Feature.LookupCount += 1
+    return desired_pairs
 
 
-def proof(fonts, source):
+def proof(
+    fonts,
+    source,
+    reference=None,
+    title="SANS / CLEAN ai FOOT + MATCHED li GAP",
+    columns=None,
+    weights=(350, 400, 500, 600),
+):
     cfg = DATA["families"]["sans"]
     labels = Panel("hook-labels", cfg)
-    labels.text("SANS / CLEAN ai FOOT + MATCHED li GAP", 24, 34, 22, 400, "#194454")
+    labels.text(title, 24, 34, 22, 400, "#194454")
     for col, title in enumerate(
-        ["PREVIOUS HOOK STUDY", "ORDINARY LETTERS", "REVISED / MATCHED STEM GAPS"]
+        columns
+        or ["PREVIOUS HOOK STUDY", "ORDINARY LETTERS", "REVISED / MATCHED STEM GAPS"]
     ):
         labels.text(title, 24 + 400 * col, 70, 12, 400, "#194454")
     fragments = []
-    for row, w in enumerate([350, 400, 500, 600]):
+    for row, w in enumerate(weights):
         y = 103 + row * 210
         labels.text("Weight " + str(w), 24, y, 12, 400, "#194454")
         for col in range(3):
@@ -255,8 +269,7 @@ def proof(fonts, source):
                 if col == 2
                 else (
                     TTFont(
-                        ROOT
-                        / "trials/2026-11-16-sans-hooks"
+                        (reference or ROOT / "trials/2026-11-16-sans-hooks")
                         / f"DaikonicTransitSansHookStudy-{w}.ttf"
                     )
                     if col == 0
@@ -290,7 +303,7 @@ def proof(fonts, source):
             )
             fragments.append(p.body())
     fragments.insert(0, labels.body())
-    height = 955
+    height = 115 + len(weights) * 210
     (OUT / "Comparison.svg").write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="{height}" viewBox="0 0 1200 {height}"><rect width="1200" height="{height}" fill="#EEECD9"/>'
         + "".join(fragments)
@@ -301,7 +314,7 @@ def proof(fonts, source):
 def main():
     OUT.mkdir(exist_ok=True)
     cfg = DATA["families"]["sans"]
-    source = ROOT / cfg["font"]
+    source = ROOT / cfg.get("ligature_baseline", cfg["font"])
     fonts = {}
     reports = []
     for w in (300, 350, 400, 500, 600):

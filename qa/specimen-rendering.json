@@ -3,20 +3,20 @@
   "device_scale_factor": 3,
   "fonts": "current family.json versions; actual outlined font paths",
   "files": {
-    "TransitSans.pdf": "0d454f288ae205440eedae7ad0d8e91dde3c0e608648e6ad84a77b886eab0c57",
-    "TransitSans.png": "4d2ad6562eb003d5f80b6b2ef719c69b4356a34de153137db948ea71781cad2d",
-    "TransitSans.svg": "34e328d49baf1c99e2126db7ce788e319ebb3b1031168ee44696d038492487e3",
+    "TransitSans.pdf": "af815d83bca9f74a950702a4b77ecb2b0d1e904d1b0d40c3917862ae77339f79",
+    "TransitSans.png": "63ebc41042e8c80d827edea125f5c8c8cd85c5f9f80f8d8318e94afadee3836f",
+    "TransitSans.svg": "4178088adfd9f26e2f7b57c46a7e1838039b27aeb4bd54ca2e51ef0d898c99c1",
     "TransitSystem.pdf": "1fdbad294b0dacca50bbd758f2a3b322e1a7631ab0fa26f89afc964c1ddc5082",
     "TransitCode.svg": "ced27ee8b3ae8ff7f250150eff9b6859bc603feb0c686afb894a396706d267c2",
     "TransitSystem.png": "5fedb2b58adf6cb9cee8bca7cc7beeb9b1b58b1edcac3385b278bcd073b3fdb7",
-    "Transit-Family.pdf": "29ee0db52064677dbb0a0c4898dd8d454d7f80a57242819df5f100c02d028e8e",
-    "Transit-Family.png": "ce64b55441c7a62716853b1ba041d9df6669a7b42f9ce2a8f08e84205a2372ed",
-    "Transit-Family.svg": "e1abf4caeaa18567746da87c84203a75ee71364ea71925e468465d438bfcb632",
+    "Transit-Family.pdf": "e7d3d3a3bff6988f91057caad73c005b76f097431df4d92f5136007a029fcbe2",
+    "Transit-Family.png": "9d9cf8cdc10fd5c4be8f6f0da573367d3c786032cc1430753e8b336fafe89979",
+    "Transit-Family.svg": "241633c9e2b706707fa755672e1bfea183652500c37ec486f310b16205c09e34",
     "TransitSystem.svg": "8e32ca1edce31d5151380a7a06767450a90015eff1001a44926478221ea015f4",
     "TransitCode.pdf": "0523573920734f6820b683cade2a9de612e2f0ea654f766099d5c3158f4061ba",
     "TransitCode.png": "34cdebe35b48e9b63bffc2fc3f5bd347dfa1221d7f22471eb90ade121ee0974c"
   },
-  "revision": "2026-11-16-r2",
+  "revision": "Sans-0.109R",
   "system_figures": [
     {
       "weight": 300,
@@ -35,5 +35,5 @@
     }
   ],
   "main_system_numeral_rows": "tnum disabled; default proportional figures",
-  "visual_review": "Opened updated System panel: Book350 heading, Context Menu word, default figures and labeled optional tabular1. Hook trial separately reviewed across Book\u2013Semibold."
+  "visual_review": "Reviewed release-VF hook proofs at five named and four intermediate weights, in display and text samples; refreshed Sans panel and family board. System and Code panels unchanged."
 }

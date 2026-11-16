@@ -39,12 +39,16 @@ def main():
         baseline = TTFont(ROOT / cfg.get("weighting_baseline", cfg["font"]))
         assert font.getGlyphOrder() == baseline.getGlyphOrder()
         assert font.getBestCmap() == baseline.getBestCmap()
+        revised = set(cfg.get("layout_revision", {}).get("metric_overrides", []))
         for tag in ("GSUB", "GPOS", "GDEF", "HVAR", "MVAR"):
+            if revised and tag in ("GPOS", "HVAR"):
+                continue  # Explicitly checked by check_sans_hooks.py.
             if tag in baseline:
                 assert font.getTableData(tag) == baseline.getTableData(tag), (key, tag)
         assert all(
             font["hmtx"][n][0] == baseline["hmtx"][n][0]
             for n in baseline.getGlyphOrder()
+            if n not in revised
         )
         assert [
             (a.axisTag, a.minValue, a.defaultValue, a.maxValue)
@@ -89,7 +93,9 @@ def main():
                 glyphs = font.getGlyphSet(location=location)
                 old = baseline.getGlyphSet(location=location)
                 assert all(
-                    glyphs[n].width == old[n].width for n in font.getGlyphOrder()
+                    glyphs[n].width == old[n].width
+                    for n in font.getGlyphOrder()
+                    if n not in revised
                 ), (key, location, "advance")
                 for name in ["H", "n", "o", "a", "e", "s", "f", "t"] + [
                     font.getBestCmap()[ord(c)] for c in "←↑→↓↔↕⇐⇑⇒⇓⇔⇕"
@@ -138,6 +144,7 @@ def main():
             "sanitized": sanitized,
             "sampled_locations": samples,
             "metrics_and_layout": "passed",
+            "explicit_metric_revisions": sorted(revised),
             "counter_topology_controls": "passed",
             "selected_glyph_variation_functions": "exact",
             "selected_glyph_count": len(protected),

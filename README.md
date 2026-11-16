@@ -14,7 +14,7 @@ Use it for identity, headings, signage, editorial work and general proportional 
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, available individually or through a variable weight range of 300–600.
 - Proportional spacing, kerning and accented-character positioning.
-- Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. The custom forms bring the letters into a closer optical relationship while keeping their identities distinct.
+- Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
 ## Daikonic Transit System

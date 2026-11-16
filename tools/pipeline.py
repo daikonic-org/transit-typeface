@@ -17,7 +17,7 @@ def main():
     parser.add_argument("--ratio-y", type=float)
     args = parser.parse_args()
     if args.mode in ["approved", "release"]:
-        steps = [["build.py"], ["validate.py", "--rebuilt"]]
+        steps = [["build.py"], ["validate.py", "--rebuilt"], ["check_sans_hooks.py"]]
         if args.mode == "release":
             steps.append(["release.py"])
     elif args.mode == "study":

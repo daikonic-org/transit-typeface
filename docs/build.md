@@ -17,6 +17,10 @@ python tools/release.py
 
 The binary masters are the direct reproducible inputs for the current approved drawings. The preserved upstream Regular alone does not reproduce all subsequent manual letter, spacing, numeral, punctuation and arrow decisions.
 
+Sans 0.109 adopts the selected hook ligatures with two explicit metric exceptions;
+see [Sans hook sources and validation](sans-hooks.md). Its SOURCE archive includes
+the same exceptions in the portable rebuild script.
+
 ## Editing in Glyphs or UFO tools
 
 Each `sources/<family>/` includes a `.glyphs` file, UFO masters and a native designspace. Open the Glyphs file directly, or independently compile it:

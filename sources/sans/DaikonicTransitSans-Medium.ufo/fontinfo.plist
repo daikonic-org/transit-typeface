@@ -1,94 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>ascender</key>
-	<integer>700</integer>
-	<key>capHeight</key>
-	<integer>700</integer>
-	<key>copyright</key>
-	<string>Copyright 2026 The Metropolitan Line Project authors (https://github.com/cyrealtype/metropolitan-line)</string>
-	<key>descender</key>
-	<integer>-225</integer>
-	<key>familyName</key>
-	<string>Daikonic Transit Sans</string>
-	<key>italicAngle</key>
-	<integer>0</integer>
-	<key>openTypeHeadCreated</key>
-	<string>2026/07/08 12:27:20</string>
-	<key>openTypeHheaAscender</key>
-	<integer>950</integer>
-	<key>openTypeHheaDescender</key>
-	<integer>-250</integer>
-	<key>openTypeHheaLineGap</key>
-	<integer>0</integer>
-	<key>openTypeNameDesigner</key>
-	<string>Cyreal, Alexei Vanyashin, Michael Voronin</string>
-	<key>openTypeNameDesignerURL</key>
-	<string>https://cyreal.org</string>
-	<key>openTypeNameLicense</key>
-	<string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL</string>
-	<key>openTypeNameLicenseURL</key>
-	<string>http://scripts.sil.org/OFL</string>
-	<key>openTypeNameManufacturer</key>
-	<string>Cyreal</string>
-	<key>openTypeNameManufacturerURL</key>
-	<string>https://cyreal.org</string>
-	<key>openTypeOS2Selection</key>
-	<array>
-		<integer>7</integer>
-	</array>
-	<key>openTypeOS2Type</key>
-	<array/>
-	<key>openTypeOS2TypoAscender</key>
-	<integer>950</integer>
-	<key>openTypeOS2TypoDescender</key>
-	<integer>-250</integer>
-	<key>openTypeOS2TypoLineGap</key>
-	<integer>0</integer>
-	<key>openTypeOS2VendorID</key>
-	<string>CYRE</string>
-	<key>openTypeOS2WeightClass</key>
-	<integer>500</integer>
-	<key>openTypeOS2WinAscent</key>
-	<integer>940</integer>
-	<key>openTypeOS2WinDescent</key>
-	<integer>250</integer>
-	<key>postscriptBlueValues</key>
-	<array>
-		<integer>-10</integer>
-		<integer>0</integer>
-		<integer>475</integer>
-		<integer>485</integer>
-		<integer>700</integer>
-		<integer>710</integer>
-		<integer>700</integer>
-		<integer>712</integer>
-	</array>
-	<key>postscriptFontName</key>
-	<string>DaikonicTransitSans-Medium</string>
-	<key>postscriptOtherBlues</key>
-	<array>
-		<integer>-235</integer>
-		<integer>-225</integer>
-	</array>
-	<key>postscriptUnderlinePosition</key>
-	<integer>-100</integer>
-	<key>postscriptUnderlineThickness</key>
-	<integer>50</integer>
-	<key>styleMapFamilyName</key>
-	<string>Metropolitan Line</string>
-	<key>styleMapStyleName</key>
-	<string>regular</string>
-	<key>styleName</key>
-	<string>Medium</string>
-	<key>unitsPerEm</key>
-	<integer>1000</integer>
-	<key>versionMajor</key>
-	<integer>0</integer>
-	<key>versionMinor</key>
-	<integer>108</integer>
-	<key>xHeight</key>
-	<integer>475</integer>
-</dict>
+  <dict>
+    <key>ascender</key>
+    <integer>700</integer>
+    <key>capHeight</key>
+    <integer>700</integer>
+    <key>copyright</key>
+    <string>Copyright 2026 The Metropolitan Line Project authors (https://github.com/cyrealtype/metropolitan-line)</string>
+    <key>descender</key>
+    <integer>-225</integer>
+    <key>familyName</key>
+    <string>Daikonic Transit Sans</string>
+    <key>italicAngle</key>
+    <integer>0</integer>
+    <key>openTypeHeadCreated</key>
+    <string>2026/07/08 12:27:20</string>
+    <key>openTypeHheaAscender</key>
+    <integer>950</integer>
+    <key>openTypeHheaDescender</key>
+    <integer>-250</integer>
+    <key>openTypeHheaLineGap</key>
+    <integer>0</integer>
+    <key>openTypeNameDesigner</key>
+    <string>Cyreal, Alexei Vanyashin, Michael Voronin</string>
+    <key>openTypeNameDesignerURL</key>
+    <string>https://cyreal.org</string>
+    <key>openTypeNameLicense</key>
+    <string>This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL</string>
+    <key>openTypeNameLicenseURL</key>
+    <string>http://scripts.sil.org/OFL</string>
+    <key>openTypeNameManufacturer</key>
+    <string>Cyreal</string>
+    <key>openTypeNameManufacturerURL</key>
+    <string>https://cyreal.org</string>
+    <key>openTypeOS2Selection</key>
+    <array>
+      <integer>7</integer>
+    </array>
+    <key>openTypeOS2Type</key>
+    <array/>
+    <key>openTypeOS2TypoAscender</key>
+    <integer>950</integer>
+    <key>openTypeOS2TypoDescender</key>
+    <integer>-250</integer>
+    <key>openTypeOS2TypoLineGap</key>
+    <integer>0</integer>
+    <key>openTypeOS2VendorID</key>
+    <string>CYRE</string>
+    <key>openTypeOS2WeightClass</key>
+    <integer>500</integer>
+    <key>openTypeOS2WinAscent</key>
+    <integer>940</integer>
+    <key>openTypeOS2WinDescent</key>
+    <integer>250</integer>
+    <key>postscriptBlueValues</key>
+    <array>
+      <integer>-10</integer>
+      <integer>0</integer>
+      <integer>475</integer>
+      <integer>485</integer>
+      <integer>700</integer>
+      <integer>710</integer>
+      <integer>700</integer>
+      <integer>712</integer>
+    </array>
+    <key>postscriptFontName</key>
+    <string>DaikonicTransitSans-Medium</string>
+    <key>postscriptOtherBlues</key>
+    <array>
+      <integer>-235</integer>
+      <integer>-225</integer>
+    </array>
+    <key>postscriptUnderlinePosition</key>
+    <integer>-100</integer>
+    <key>postscriptUnderlineThickness</key>
+    <integer>50</integer>
+    <key>styleMapFamilyName</key>
+    <string>Metropolitan Line</string>
+    <key>styleMapStyleName</key>
+    <string>regular</string>
+    <key>styleName</key>
+    <string>Medium</string>
+    <key>unitsPerEm</key>
+    <integer>1000</integer>
+    <key>versionMajor</key>
+    <integer>0</integer>
+    <key>versionMinor</key>
+    <integer>109</integer>
+    <key>xHeight</key>
+    <integer>475</integer>
+  </dict>
 </plist>

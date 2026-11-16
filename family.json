@@ -1,5 +1,5 @@
 {
-  "published_date": "2026-11-15",
+  "published_date": "2026-11-16",
   "palette": {
     "cream": "#EEECD9",
     "navy": "#194454",
@@ -10,17 +10,34 @@
     "sans": {
       "name": "Daikonic Transit Sans",
       "title": "Daikonic Transit Sans",
-      "version": "0.108",
+      "version": "0.109",
       "stem": "DaikonicTransitSans",
       "color": "#194454",
       "light": 300,
       "heavy": 600,
       "display": 400,
-      "tag": "Sans-0.108R",
+      "tag": "Sans-0.109R",
       "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
       "weighting_baseline": "sources/weighting-baseline/sans-0.106-VF.ttf",
       "weighting_baseline_version": "0.106",
-      "weighting_ratio": 0.72
+      "weighting_ratio": 0.72,
+      "ligature_baseline": "sources/ligature-baseline/sans-0.108-VF.ttf",
+      "layout_revision": {
+        "metric_overrides": [
+          "a_i",
+          "l_i"
+        ],
+        "append_kerning_lookup": true
+      },
+      "release_summary": "Adopts the selected hooked ai and li ligatures across the full variable weight range. The ai keeps ordinary letter spacing and gains a clean curved foot; li has a matching stem gap. Standalone letters, the remaining ligatures, System and Code are unchanged. Named weights are snapshots of the same variable font.",
+      "specimen_extras": [
+        "qa/sans/Hooks-Named/Comparison.png",
+        "qa/sans/Hooks-Named/Comparison.pdf",
+        "qa/sans/Hooks-Named/Comparison.svg",
+        "qa/sans/Hooks-Intermediate/Comparison.png",
+        "qa/sans/Hooks-Intermediate/Comparison.pdf",
+        "qa/sans/Hooks-Intermediate/Comparison.svg"
+      ]
     },
     "system": {
       "name": "Daikonic Transit System",

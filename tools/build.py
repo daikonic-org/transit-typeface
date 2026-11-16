@@ -33,7 +33,12 @@ def main():
             locks = json.loads((ROOT / "recipes/weights.json").read_text())["defaults"][
                 "locks"
             ]
-            preserve_layout(font, baseline, locked(baseline, locks))
+            preserve_layout(
+                font,
+                baseline,
+                locked(baseline, locks),
+                **cfg.get("layout_revision", {})
+            )
         out = ROOT / ".build" / key
         out.mkdir(parents=True, exist_ok=True)
         dest = out / (cfg["stem"] + "-VF.ttf")

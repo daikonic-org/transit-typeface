@@ -1,0 +1,19 @@
+{
+  "archive": "SOURCE-daikonic-transit-sans-0.109R.zip",
+  "sha256": "b4dca95ded7a82edbfe04d0a0a93034a2124dca7fef5414a16d85175b72b2854",
+  "result": "exact",
+  "tables": [
+    "glyf",
+    "gvar",
+    "hmtx",
+    "cmap",
+    "GSUB",
+    "GPOS",
+    "GDEF",
+    "HVAR",
+    "MVAR",
+    "name",
+    "fvar",
+    "STAT"
+  ]
+}
