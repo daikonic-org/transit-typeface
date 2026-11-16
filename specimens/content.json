@@ -1,0 +1,23 @@
+{
+  "sans": {
+    "word": "Wayfinder",
+    "letters": "Aa Gg Rr",
+    "showcase": "a",
+    "feature_text": "fi fl ai li",
+    "feature_label": "STANDARD + CUSTOM LIGATURES"
+  },
+  "system": {
+    "word": "Interface",
+    "letters": "Hh Ee Yy",
+    "showcase": "e",
+    "feature_label": "DEFAULT / OPTIONAL TABULAR"
+  },
+  "code": {
+    "word": "Function",
+    "letters": "Ii Ll O0",
+    "showcase": "0",
+    "showcase_size": 230,
+    "feature_text": "-> => == != ::",
+    "feature_label": "CODING LIGATURES"
+  }
+}

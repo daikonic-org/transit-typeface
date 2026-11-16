@@ -10,7 +10,16 @@
     ],
     "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
     "synthetic_styles": false,
-    "background": "#194454"
+    "background": "#194454",
+    "content": {
+      "word": "Wayfinder",
+      "letters": "Aa Gg Rr",
+      "showcase": "a",
+      "feature_text": "fi fl ai li",
+      "feature_label": "STANDARD + CUSTOM LIGATURES"
+    },
+    "main_numeral_rows": "default proportional figures; tnum disabled",
+    "optional_tabular_1_callout": false
   },
   "system": {
     "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
@@ -23,7 +32,15 @@
     ],
     "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
     "synthetic_styles": false,
-    "background": "#FA994A"
+    "background": "#FA994A",
+    "content": {
+      "word": "Interface",
+      "letters": "Hh Ee Yy",
+      "showcase": "e",
+      "feature_label": "DEFAULT / OPTIONAL TABULAR"
+    },
+    "main_numeral_rows": "default proportional figures; tnum disabled",
+    "optional_tabular_1_callout": true
   },
   "code": {
     "font": "fonts/code/VF/DaikonicTransitCode-VF.ttf",
@@ -36,6 +53,16 @@
     ],
     "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
     "synthetic_styles": false,
-    "background": "#F03630"
+    "background": "#F03630",
+    "content": {
+      "word": "Function",
+      "letters": "Ii Ll O0",
+      "showcase": "0",
+      "showcase_size": 230,
+      "feature_text": "-> => == != ::",
+      "feature_label": "CODING LIGATURES"
+    },
+    "main_numeral_rows": "default fixed-width figures; tnum disabled",
+    "optional_tabular_1_callout": false
   }
 }

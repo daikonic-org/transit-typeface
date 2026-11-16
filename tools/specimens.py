@@ -12,6 +12,7 @@ import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "family.json").read_text())
+CONTENT = json.loads((ROOT / "specimens/content.json").read_text())
 
 
 class Panel:
@@ -82,6 +83,7 @@ class Panel:
 
     def draw(self):
         c = self.config
+        sample = CONTENT[self.key]
         ink = "#101712"
         cream = DATA["palette"]["cream"]
         bottom_ink = cream if self.key == "sans" else ink
@@ -92,14 +94,28 @@ class Panel:
         ]
         self.text("DAIKONIC", 25, 22, 11, c["display"], ink)
         self.text(c["title"], 24, 74, 44, c["heavy"], ink, max_width=452)
-        self.text("Aa  Ee  Qq", 24, 151, 58, c["light"], ink, max_width=293)
-        self.text("Aa  Ee  Qq", 24, 229, 58, c["heavy"], ink, max_width=293)
+        self.text(sample["letters"], 24, 151, 58, c["light"], ink, max_width=293)
+        self.text(sample["letters"], 24, 229, 58, c["heavy"], ink, max_width=293)
         # Uniform type scaling only: a decorative large glyph, not a stretched outline.
         self.text(
-            "a", 487, 254, 300, c["display"], "#FFFFFF", align="right", max_width=166
+            sample["showcase"],
+            487,
+            254,
+            sample.get("showcase_size", 300),
+            c["display"],
+            "#FFFFFF",
+            align="right",
+            max_width=166,
         )
         self.text(
-            "Starship", 250, 339, 67, c["display"], ink, align="center", max_width=452
+            sample["word"],
+            250,
+            339,
+            67,
+            c["display"],
+            ink,
+            align="center",
+            max_width=452,
         )
         self.text(
             "abcdefghijklm",
@@ -122,21 +138,56 @@ class Panel:
             max_width=452,
         )
         self.text(
-            "0123456789", 464, 523, 47, c["light"], digits, align="right", max_width=430
+            "0123456789", 464, 516, 43, c["light"], digits, align="right", max_width=430
         )
         self.text(
             "0123456789",
             464,
-            577,
-            47,
+            560,
+            43,
             c["heavy"],
             digits,
             align="right",
             max_width=430,
-            tabular=self.key == "system",
         )
+        if self.key == "system":
+            self.text("1", 160, 585, 23, c["display"], digits, align="center")
+            self.text(
+                "DEFAULT", 160, 600, 8.5, c["display"], bottom_ink, align="center"
+            )
+            self.text(
+                "1", 340, 585, 23, c["display"], digits, align="center", tabular=True
+            )
+            self.text(
+                "OPTIONAL TABULAR (tnum)",
+                340,
+                600,
+                8.5,
+                c["display"],
+                bottom_ink,
+                align="center",
+            )
+        else:
+            self.text(
+                sample["feature_text"],
+                250,
+                585,
+                17,
+                c["display"],
+                bottom_ink,
+                align="center",
+            )
+            self.text(
+                sample["feature_label"],
+                250,
+                600,
+                8.5,
+                c["display"],
+                bottom_ink,
+                align="center",
+            )
         note = f'LIGHT 300 / {"REGULAR 400" if self.key == "code" else "SEMIBOLD 600"} - V{c["version"]}'
-        self.text(note, 250, 606, 9.2, c["display"], bottom_ink, align="center")
+        self.text(note, 250, 615, 8.5, c["display"], bottom_ink, align="center")
         return self
 
     def body(self):
@@ -146,7 +197,7 @@ class Panel:
 
     def svg(self):
         title = self.config["title"] + " typography panel"
-        desc = f'Actual distributed variable font, version {self.config["version"]}. Text converted to editable vector paths. Cream upper panel; brand-color lower panel. System second figure row uses tabular figures.'
+        desc = f'Actual distributed variable font, version {self.config["version"]}. Text converted to editable vector paths. Cream upper panel; brand-color lower panel. Both numeral rows use default figures. System has a separate labeled default/tabular1 comparison.'
         return f'<svg xmlns="http://www.w3.org/2000/svg" width="500" height="620" viewBox="0 0 500 620" role="img"><title>{title}</title><desc>{desc}</desc>{self.body()}</svg>'
 
 
@@ -165,6 +216,13 @@ def main():
             "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
             "synthetic_styles": False,
             "background": c["color"],
+            "content": CONTENT[key],
+            "main_numeral_rows": (
+                "default fixed-width figures; tnum disabled"
+                if key == "code"
+                else "default proportional figures; tnum disabled"
+            ),
+            "optional_tabular_1_callout": key == "system",
         }
     board = (
         '<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="620" viewBox="0 0 1500 620">'

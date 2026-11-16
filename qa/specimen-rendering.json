@@ -3,17 +3,37 @@
   "device_scale_factor": 3,
   "fonts": "current family.json versions; actual outlined font paths",
   "files": {
-    "TransitSans.pdf": "cfe3db0a83f53a123f053e66b581b34e64c77a4c18f11082193feade61202c10",
-    "TransitSans.png": "a3303fa10fafd8885e39fc298e020ead0e78c5689417553c9c1d2e1615a127ef",
-    "TransitSans.svg": "8cb9a1da8d45200c5f64d6a56c9b0f135f74042c455bc5bb2d6771c87a25e6b3",
-    "TransitSystem.pdf": "9a523bfaeb19d68fe52f7826be562046b1094dd0f18af4e0fa207c92bfc61ef4",
-    "TransitCode.svg": "01e7e440e62e18f239b472032e820ef15accf0854083f6e40c5aeb71c6087471",
-    "TransitSystem.png": "f8f4593478b89d9658e0d028019e14d27a96c2d86f0919f25984cb516dc09908",
-    "Transit-Family.pdf": "433323ef49c76ed4ac7def812ce58ce56bf0a430b5aac84d934a21c2b986b867",
-    "Transit-Family.png": "c097b1811db7eb3ade99c2905672381b669b8773ada3265bebace44844c24a3d",
-    "Transit-Family.svg": "cd6a3d72513d455e40cf1add17597c97c58d139965b3ae80809eea570244791f",
-    "TransitSystem.svg": "4c80a649bd96a0cbcce37bf282f10077710daf1057408e069a3968d0c540845b",
-    "TransitCode.pdf": "4562a6951daa0cb3b747019c2407ae2dca0cecf513078036d8fdd232975452c9",
-    "TransitCode.png": "c4cb43c6263921ede376d2f5767f2c235282ec31618a1abf09ae972b013c6274"
-  }
+    "TransitSans.pdf": "0d454f288ae205440eedae7ad0d8e91dde3c0e608648e6ad84a77b886eab0c57",
+    "TransitSans.png": "4d2ad6562eb003d5f80b6b2ef719c69b4356a34de153137db948ea71781cad2d",
+    "TransitSans.svg": "34e328d49baf1c99e2126db7ce788e319ebb3b1031168ee44696d038492487e3",
+    "TransitSystem.pdf": "bd08136de9f374aed8e19c1260954494a5d38f8fd1b089eb414b1bc24ba93206",
+    "TransitCode.svg": "ced27ee8b3ae8ff7f250150eff9b6859bc603feb0c686afb894a396706d267c2",
+    "TransitSystem.png": "281546654ec470ee18f3fea07b73724283e91195337272c8ab20404b894ed82c",
+    "Transit-Family.pdf": "b78b86f764d9fc471ea37aaf80abb6ce0404002e333fa5a652a1f3954819d27c",
+    "Transit-Family.png": "8f3751b43eea63cafa3fe3d3bea3f5aedfa913c8cac2c0d995a8da3ce5ce7882",
+    "Transit-Family.svg": "e0c5d902484e64d7d1d13f21a469b68fadd03aff419f1304c6bb2076d24ac5e9",
+    "TransitSystem.svg": "d1e5ab188c11271816e6a9dda584dd67c8d762a9b956b9ee7516040633e74422",
+    "TransitCode.pdf": "0523573920734f6820b683cade2a9de612e2f0ea654f766099d5c3158f4061ba",
+    "TransitCode.png": "34cdebe35b48e9b63bffc2fc3f5bd347dfa1221d7f22471eb90ade121ee0974c"
+  },
+  "revision": "2026-11-16",
+  "system_figures": [
+    {
+      "weight": 300,
+      "default_1": "one",
+      "tnum_1": "one.tnum"
+    },
+    {
+      "weight": 350,
+      "default_1": "one",
+      "tnum_1": "one.tnum"
+    },
+    {
+      "weight": 600,
+      "default_1": "one",
+      "tnum_1": "one.tnum"
+    }
+  ],
+  "main_system_numeral_rows": "tnum disabled; default proportional figures",
+  "visual_review": "Opened family board and System detail: titles clear, distinct words/letter sets, optional hooked1 labeled; Code large0 sized below title."
 }
