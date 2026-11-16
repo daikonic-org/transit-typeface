@@ -45,13 +45,18 @@ class Panel:
         align="left",
         tabular=False,
         max_width=None,
+        features=None,
     ):
         f, hbfont = self.font(weight)
         assert all(ord(c) in f.getBestCmap() for c in value), value
         buffer = hb.Buffer()
         buffer.add_str(value)
         buffer.guess_segment_properties()
-        hb.shape(hbfont, buffer, {"calt": True, "liga": True, "tnum": tabular})
+        hb.shape(
+            hbfont,
+            buffer,
+            {"calt": True, "liga": True, "tnum": tabular, **(features or {})},
+        )
         upm = f["head"].unitsPerEm
         width = sum(p.x_advance for p in buffer.glyph_positions) * size / upm
         if max_width and width > max_width:
@@ -93,7 +98,15 @@ class Panel:
             f'<rect y="370" width="500" height="250" fill="{c["color"]}"/>',
         ]
         self.text("DAIKONIC", 25, 22, 11, c["display"], ink)
-        self.text(c["title"], 24, 74, 44, c["heavy"], ink, max_width=452)
+        self.text(
+            c["title"],
+            24,
+            74,
+            44,
+            sample.get("header_weight", c["heavy"]),
+            ink,
+            max_width=452,
+        )
         self.text(sample["letters"], 24, 151, 58, c["light"], ink, max_width=293)
         self.text(sample["letters"], 24, 229, 58, c["heavy"], ink, max_width=293)
         # Uniform type scaling only: a decorative large glyph, not a stretched outline.

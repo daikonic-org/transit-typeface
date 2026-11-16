@@ -1,0 +1,242 @@
+[
+  {
+    "weight": 300,
+    "pairs": {
+      "ai": {
+        "i_origin": 433,
+        "ordinary_pair_advance": 628,
+        "ligature_advance": 628,
+        "hook_extension": 4.0,
+        "hook_shift": 266.0,
+        "whitespace_band": 85.83333333333333
+      },
+      "li": {
+        "i_origin": 302,
+        "ordinary_pair_advance": 497,
+        "ligature_advance": 497,
+        "hook_extension": 139.0,
+        "hook_shift": 0,
+        "whitespace_band": 85.83333333333333
+      }
+    },
+    "word_advances": {
+      "ai": {
+        "plain": 628,
+        "ligatures": 628
+      },
+      "li": {
+        "plain": 497,
+        "ligatures": 497
+      },
+      "Daikonic": {
+        "plain": 3328,
+        "ligatures": 3328
+      },
+      "daily": {
+        "plain": 1915,
+        "ligatures": 1915
+      },
+      "liquid": {
+        "plain": 2206,
+        "ligatures": 2206
+      },
+      "mailing": {
+        "plain": 2854,
+        "ligatures": 2854
+      }
+    },
+    "sanitizer": "passed"
+  },
+  {
+    "weight": 350,
+    "pairs": {
+      "ai": {
+        "i_origin": 446,
+        "ordinary_pair_advance": 654,
+        "ligature_advance": 654,
+        "hook_extension": 16.5,
+        "hook_shift": 266.5,
+        "whitespace_band": 74.19140625
+      },
+      "li": {
+        "i_origin": 315,
+        "ordinary_pair_advance": 523,
+        "ligature_advance": 523,
+        "hook_extension": 152.0,
+        "hook_shift": 0,
+        "whitespace_band": 74.19140625
+      }
+    },
+    "word_advances": {
+      "ai": {
+        "plain": 654,
+        "ligatures": 654
+      },
+      "li": {
+        "plain": 523,
+        "ligatures": 523
+      },
+      "Daikonic": {
+        "plain": 3432,
+        "ligatures": 3432
+      },
+      "daily": {
+        "plain": 1980,
+        "ligatures": 1980
+      },
+      "liquid": {
+        "plain": 2284,
+        "ligatures": 2284
+      },
+      "mailing": {
+        "plain": 2945,
+        "ligatures": 2945
+      }
+    },
+    "sanitizer": "passed"
+  },
+  {
+    "weight": 400,
+    "pairs": {
+      "ai": {
+        "i_origin": 458,
+        "ordinary_pair_advance": 678,
+        "ligature_advance": 678,
+        "hook_extension": 29.0,
+        "hook_shift": 266.0,
+        "whitespace_band": 64.57838397790056
+      },
+      "li": {
+        "i_origin": 327,
+        "ordinary_pair_advance": 547,
+        "ligature_advance": 547,
+        "hook_extension": 164.0,
+        "hook_shift": 0,
+        "whitespace_band": 64.57838397790056
+      }
+    },
+    "word_advances": {
+      "ai": {
+        "plain": 678,
+        "ligatures": 678
+      },
+      "li": {
+        "plain": 547,
+        "ligatures": 547
+      },
+      "Daikonic": {
+        "plain": 3528,
+        "ligatures": 3528
+      },
+      "daily": {
+        "plain": 2040,
+        "ligatures": 2040
+      },
+      "liquid": {
+        "plain": 2356,
+        "ligatures": 2356
+      },
+      "mailing": {
+        "plain": 3029,
+        "ligatures": 3029
+      }
+    },
+    "sanitizer": "passed"
+  },
+  {
+    "weight": 500,
+    "pairs": {
+      "ai": {
+        "i_origin": 478,
+        "ordinary_pair_advance": 718,
+        "ligature_advance": 718,
+        "hook_extension": 49.0,
+        "hook_shift": 266.0,
+        "whitespace_band": 47.75
+      },
+      "li": {
+        "i_origin": 347,
+        "ordinary_pair_advance": 587,
+        "ligature_advance": 587,
+        "hook_extension": 184.0,
+        "hook_shift": 0,
+        "whitespace_band": 47.75
+      }
+    },
+    "word_advances": {
+      "ai": {
+        "plain": 718,
+        "ligatures": 718
+      },
+      "li": {
+        "plain": 587,
+        "ligatures": 587
+      },
+      "Daikonic": {
+        "plain": 3688,
+        "ligatures": 3688
+      },
+      "daily": {
+        "plain": 2140,
+        "ligatures": 2140
+      },
+      "liquid": {
+        "plain": 2476,
+        "ligatures": 2476
+      },
+      "mailing": {
+        "plain": 3169,
+        "ligatures": 3169
+      }
+    },
+    "sanitizer": "passed"
+  },
+  {
+    "weight": 600,
+    "pairs": {
+      "ai": {
+        "i_origin": 498,
+        "ordinary_pair_advance": 758,
+        "ligature_advance": 758,
+        "hook_extension": 69.0,
+        "hook_shift": 266.0,
+        "whitespace_band": 31.101038338658157
+      },
+      "li": {
+        "i_origin": 367,
+        "ordinary_pair_advance": 627,
+        "ligature_advance": 627,
+        "hook_extension": 204.0,
+        "hook_shift": 0,
+        "whitespace_band": 31.101038338658157
+      }
+    },
+    "word_advances": {
+      "ai": {
+        "plain": 758,
+        "ligatures": 758
+      },
+      "li": {
+        "plain": 627,
+        "ligatures": 627
+      },
+      "Daikonic": {
+        "plain": 3848,
+        "ligatures": 3848
+      },
+      "daily": {
+        "plain": 2240,
+        "ligatures": 2240
+      },
+      "liquid": {
+        "plain": 2596,
+        "ligatures": 2596
+      },
+      "mailing": {
+        "plain": 3309,
+        "ligatures": 3309
+      }
+    },
+    "sanitizer": "passed"
+  }
+]

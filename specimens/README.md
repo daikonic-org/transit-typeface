@@ -3,7 +3,7 @@
 | Typeface | Word | Letter samples | Preview | Vector PDF |
 | --- | --- | --- | --- | --- |
 | Daikonic Transit Sans | Wayfinder | Aa Gg Rr | [PNG](TransitSans.png) | [PDF](TransitSans.pdf) |
-| Daikonic Transit System | Interface | Hh Ee Yy | [PNG](TransitSystem.png) | [PDF](TransitSystem.pdf) |
+| Daikonic Transit System | Context Menu | Hh Ee Yy | [PNG](TransitSystem.png) | [PDF](TransitSystem.pdf) |
 | Daikonic Transit Code | Function | Ii Ll O0 | [PNG](TransitCode.png) | [PDF](TransitCode.pdf) |
 
 [Combined family board](Transit-Family.png) · [Family board PDF](Transit-Family.pdf)
@@ -14,3 +14,5 @@ it is selected with the OpenType `tnum` feature.
 
 The lower bands also demonstrate Sans's standard/custom ligatures and Code's
 coding ligatures. The outlined SVG versions sit beside the PNG/PDF files.
+
+The System heading uses Book 350, matching its default UI weight.
