@@ -1,4 +1,4 @@
-"""Trial ai/li hooks at the exact ordinary letter origins and pair advances."""
+"""Trial hooked ai and li with matching stem gaps and retained outer kerning."""
 
 from io import BytesIO
 from pathlib import Path
@@ -11,13 +11,14 @@ import pathops
 import uharfbuzz as hb
 import ots
 from fontTools.ttLib.tables import otTables
+from fontTools.ttLib import TTFont
 
 from adopt_weighting import ROOT, instance
 from audit import shape, spans
 from derive_weights import install
 from specimens import DATA, Panel
 
-OUT = ROOT / ".build/hook-ligatures"
+OUT = ROOT / ".build/hook-ligatures-r2"
 
 
 def rect(x0, y0, x1, y1):
@@ -81,10 +82,17 @@ def construct(font, pair, band):
     original = run(font, pair, False)
     assert len(original) == 2 and all(p[2] == 0 for p in original)
     origin = original[0][1]
-    advance = sum(p[1] for p in original)
+    ordinary_advance = sum(p[1] for p in original)
     a, l, i = shape(font, "a"), shape(font, "l"), shape(font, "i")
-    i_right = spans(i, 275, 1)[0][1] + origin
     l_stem = spans(l, 275, 1)[0]
+    if pair == "li":
+        # The i-to-stem gap must match approved ai, rather than ordinary li.
+        origin = l_stem[1] + run(font, "ai", False)[0][1] - a.bounds[2]
+    origin = round(origin)
+    movement = origin - original[0][1]
+    advance = ordinary_advance + movement
+    i_left, i_right = spans(i, 275, 1)[0]
+    i_right += origin
     shift = a.bounds[2] - l_stem[1] if pair == "ai" else 0
     extension = i_right - (l.bounds[2] + shift)
     hook = extend_hook(l, extension).transform(1, 0, 0, 1, shift, 0)
@@ -97,6 +105,8 @@ def construct(font, pair, band):
         mask = op(mask, hook.transform(1, 0, 0, 1, 0, band - delta))
     normal_i = i.transform(1, 0, 0, 1, origin, 0)
     trimmed_i = op(normal_i, mask, pathops.PathOp.DIFFERENCE)
+    if pair == "ai":
+        a = trim_old_a_foot(a, hook)
     first = op(a, hook) if pair == "ai" else hook
     result = op(first, trimmed_i)
     # Every part of i above the interaction band retains its ordinary position.
@@ -115,12 +125,40 @@ def construct(font, pair, band):
     assert sum(p[1] for p in run(font, pair)) == advance
     return {
         "i_origin": origin,
-        "ordinary_pair_advance": advance,
+        "ordinary_pair_advance": ordinary_advance,
         "ligature_advance": advance,
+        "i_movement": movement,
+        "stem_gap": origin + i_left - (a.bounds[2] if pair == "ai" else l_stem[1]),
         "hook_extension": extension,
         "hook_shift": shift,
         "whitespace_band": band,
     }
+
+
+def trim_old_a_foot(a, hook):
+    """Replace the baseline foot with a curved join from bowl to new hook."""
+    segments = list(a.segments)
+    joints = [
+        nxt[1][-1]
+        for prev, nxt in zip(segments, segments[1:])
+        if prev[0] == nxt[0] == "lineTo"
+        and prev[1][-1][1] <= 0
+        and prev[1][-1][0] == nxt[1][-1][0]
+        and nxt[1][-1][1] > 0
+    ]
+    assert len(joints) == 1, joints
+    x0, y0 = joints[0]
+    x1 = a.bounds[2]
+    y1 = spans(hook, x1, 0)[0][0]
+    tangent = (spans(hook, x1 + 1, 0)[0][0] - spans(hook, x1 - 1, 0)[0][0]) / 2
+    reach = (x1 - x0) * 0.2
+    cut = pathops.Path()
+    cut.moveTo(x0, -1000)
+    cut.lineTo(x1, -1000)
+    cut.lineTo(x1, y1)
+    cut.cubicTo(x1 - reach, y1 - reach * tangent, x0 + reach, y0 + reach * 0.7, x0, y0)
+    cut.close()
+    return op(a, cut, pathops.PathOp.DIFFERENCE)
 
 
 def bind(panel, font, weight):
@@ -202,9 +240,9 @@ def preserve_boundary_kerning(font):
 def proof(fonts, source):
     cfg = DATA["families"]["sans"]
     labels = Panel("hook-labels", cfg)
-    labels.text("SANS / ai AND li WITH ORDINARY SPACING", 24, 34, 22, 400, "#194454")
+    labels.text("SANS / CLEAN ai FOOT + MATCHED li GAP", 24, 34, 22, 400, "#194454")
     for col, title in enumerate(
-        ["CURRENT LIGATURES", "ORDINARY LETTERS", "HOOK STUDY / SAME SPACING"]
+        ["PREVIOUS HOOK STUDY", "ORDINARY LETTERS", "REVISED / MATCHED STEM GAPS"]
     ):
         labels.text(title, 24 + 400 * col, 70, 12, 400, "#194454")
     fragments = []
@@ -212,7 +250,19 @@ def proof(fonts, source):
         y = 103 + row * 210
         labels.text("Weight " + str(w), 24, y, 12, 400, "#194454")
         for col in range(3):
-            f = fonts[w] if col == 2 else instance(source, w, None)
+            f = (
+                fonts[w]
+                if col == 2
+                else (
+                    TTFont(
+                        ROOT
+                        / "trials/2026-11-16-sans-hooks"
+                        / f"DaikonicTransitSansHookStudy-{w}.ttf"
+                    )
+                    if col == 0
+                    else instance(source, w, None)
+                )
+            )
             p = Panel(f"hook-{w}-{col}", cfg)
             bind(p, f, w)
             x = 24 + 400 * col
@@ -259,7 +309,7 @@ def main():
         band = whitespace_band(f)
         details = {pair: construct(f, pair, band) for pair in ("ai", "li")}
         preserve_boundary_kerning(f)
-        family = "Daikonic Transit Sans Hook Study"
+        family = "Daikonic Transit Sans Hook Study R2"
         style = {
             300: "Light",
             350: "Book",
@@ -271,15 +321,15 @@ def main():
             text = (
                 n.toUnicode()
                 .replace(cfg["name"], family)
-                .replace("DaikonicTransitSans", "DaikonicTransitSansHookStudy")
+                .replace("DaikonicTransitSans", "DaikonicTransitSansHookStudyR2")
             )
             n.string = text.encode(n.getEncoding())
         names = {
             1: family if w == 400 else family + " " + style,
             2: "Regular",
-            3: "0.001;DaikonicTransitSansHookStudy-" + style,
+            3: "0.002;DaikonicTransitSansHookStudyR2-" + style,
             4: family + " " + style,
-            6: "DaikonicTransitSansHookStudy-" + style,
+            6: "DaikonicTransitSansHookStudyR2-" + style,
             16: family,
             17: style,
         }
@@ -287,10 +337,10 @@ def main():
             if record.nameID in names:
                 record.string = names[record.nameID].encode(record.getEncoding())
         f["OS/2"].usWeightClass = w
-        f["head"].fontRevision = 0.001
+        f["head"].fontRevision = 0.002
         for n in f["name"].names:
             if n.nameID == 5:
-                n.string = "Version0.001; hook ligature study".encode(n.getEncoding())
+                n.string = "Version0.002; hook ligature study".encode(n.getEncoding())
         path = OUT / f"DaikonicTransitSansHookStudy-{w}.ttf"
         f.save(path)
         with tempfile.TemporaryDirectory() as tmp:
@@ -307,7 +357,11 @@ def main():
             }
             for word in ("ai", "li", "Daikonic", "daily", "liquid", "mailing")
         }
-        assert all(v["plain"] == v["ligatures"] for v in words.values()), words
+        for word, values in words.items():
+            expected = values["plain"] + word.count("li") * details["li"]["i_movement"]
+            values["expected"] = expected
+            assert values["ligatures"] == expected, (word, values)
+        assert abs(details["ai"]["stem_gap"] - details["li"]["stem_gap"]) <= 0.5
         reports.append(
             {
                 "weight": w,
