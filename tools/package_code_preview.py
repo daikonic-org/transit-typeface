@@ -13,10 +13,7 @@ from fontTools.ttLib import TTFont
 import ots
 from adopt_weighting import ROOT, instance
 
-SOURCE = (
-    ROOT
-    / "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf"
-)
+PREVIEWS = json.loads((ROOT / "recipes/code-previews.json").read_text())
 FAMILY = "Daikonic Transit Code"
 STEM = "DaikonicTransitCode"
 
@@ -112,6 +109,27 @@ def check_preview(out):
                 token,
                 result,
             )
+    if selection["version"] == "1.022":
+        from fontTools.pens.recordingPen import RecordingPen
+
+        for weight in range(300, 401, 10):
+            sample = instance(vf, weight, None)
+            pen = RecordingPen()
+            sample.getGlyphSet()["at"].draw(pen)
+            previous = None
+            vertical = False
+            for op, pts in pen.value:
+                if op == "qCurveTo" and previous is not None:
+                    edge = (previous,) + pts
+                    if (
+                        all(y < 150 for x, y in edge)
+                        and max(y for x, y in edge) - min(y for x, y in edge) > 40
+                        and max(x for x, y in edge) - min(x for x, y in edge) < 0.01
+                    ):
+                        vertical = True
+                if pts:
+                    previous = pts[-1]
+            assert vertical, ("terminal cut must be vertical", weight)
     print(
         "Code preview checked: source fidelity, hashes, four sanitized fonts, snapshots and 11 shaping weights"
     )
@@ -119,10 +137,14 @@ def check_preview(out):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="1.021")
+    parser.add_argument(
+        "--version", default=PREVIEWS["latest"], choices=PREVIEWS["versions"]
+    )
     parser.add_argument("--install", action="store_true")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
+    entry = PREVIEWS["versions"][args.version]
+    SOURCE = ROOT / entry["source"]
     out = ROOT / "previews" / ("code-" + args.version)
     if args.check:
         if args.install:
@@ -140,13 +162,13 @@ def main():
         if r.nameID == 3:
             text = STEM + "-VF " + args.version + " preview"
         if r.nameID == 5:
-            text = (
-                "Version "
-                + args.version
-                + "; preview; selected single-storey at and Code refinements"
-            )
+            text = "Version " + args.version + "; preview; " + entry["summary"]
         if r.nameID == 10:
-            text = "Preview: single-storey at with matching inner/outer strokes, balanced i, stronger delimiters, extended brace pinch, raised heavier gapless underscore, wider hyphen and fixed-advance optical positioning. Repeated at fitting uses calt."
+            text = (
+                "Preview: "
+                + entry["summary"]
+                + "; balanced i, stronger delimiters, raised heavier gapless underscore, wider hyphen and fixed-advance optical positioning. Repeated at fitting uses calt."
+            )
         r.string = text.encode(r.getEncoding())
     font["head"].fontRevision = float(args.version)
     vf = out / "VF" / (STEM + "-VF.ttf")
@@ -223,11 +245,11 @@ def main():
         "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption and accented/dotless i alignment remain pending.",
     }
     (out / "selection.json").write_text(json.dumps(record, indent=2) + "\n")
-    (out / "README.md").write_text(
-        f"""# Daikonic Transit Code {args.version} preview
+    readme = f"""# Daikonic Transit Code {args.version} preview
 
-Approved working preview with the single-storey a inside @, its larger smooth
-outer loop and matching inner/outer stroke weights. Also includes the balanced i,
+{entry['overview']}
+
+Also includes the balanced i,
 stronger inward delimiters, extended brace pinch, heavier full-width baseline
 underscore, wider hyphen, and optical placement for selected lowercase/K pairs.
 The normal lowercase a is unchanged. Sans and System are unchanged.
@@ -237,14 +259,14 @@ TTF/ contains named-weight snapshots of the same VF. Install either format.
 The menu family is simply Daikonic Transit Code. Existing Book350 editor settings
 continue to work; restart applications after replacing a font.
 
-The larger @ has slight ink overhang but retains its600-unit advance. Repeated
-@@/@@@ use an equal-weight compact contextual alternate to avoid touching.
+{entry['fitting']} Repeated
+@@/@@@ use a compact contextual alternate to avoid touching.
 Enable calt/ligatures for this fitting and the existing operator ligatures.
 Browser proofs were reviewed; editor/terminal rendering still needs a smoke test.
 
-This preview has not been published as a GitHub release. The released Code font
+This cut is packaged as a preview, separately from stable font releases. The released Code font
 and native sources/code/ remain1.017. Compatible trial sources/scripts and their
-validation records are in trials/2026-11-16-code-at-single-storey/ and tools/.
+validation records are in {SOURCE.parent.relative_to(ROOT)}/ and tools/.
 Production native-source adoption, including accented/dotless i alignment, remains
 pending. Earlier studies and released fonts are preserved.
 
@@ -256,7 +278,7 @@ Specimens show enlarged comparisons and all3weights in light/dark polarity.
 Rebuild with python tools/package_code_preview.py --version {args.version}.
 Add --install to back up and replace the current user font. OFL.txt/NOTICE.txt apply.
 """
-    )
+    (out / "README.md").write_text(readme)
     checksums = {
         str(p.relative_to(out)): digest(p)
         for p in sorted(out.rglob("*"))

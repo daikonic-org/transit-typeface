@@ -196,9 +196,13 @@ def main(
             pathops.simplify(compact, fix_winding=True, clockwise=True)
         ) == (1, 1)
         assert font["hmtx"]["at"][0] == font["hmtx"][ALT][0] == 600
-        assert abs(p.bounds[0] + 10) < 2 and abs(p.bounds[3] - 579) < 2, (w, p.bounds)
         assert compact.bounds[0] >= 0 and compact.bounds[2] <= 600
         expected = draw(instance(BASE, w, None), outer=RATIO, inner=RATIO, scale=SCALE)
+        assert max(abs(a - b) for a, b in zip(p.bounds, expected.bounds)) < 1.5, (
+            w,
+            p.bounds,
+            expected.bounds,
+        )
         err = coverage_difference(p, expected)
         assert err < 0.015
         for text in ["@@", "@@@", "name@@host"]:

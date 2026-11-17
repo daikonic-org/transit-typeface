@@ -56,7 +56,7 @@ See [scaling-lineage.md](scaling-lineage.md) and `recipes/weights.json` for the 
 
 specimens/font-selections.json can select an approved preview via its
 selection.json without changing the released-font configuration in family.json.
-The main Code panel currently uses preview1.021 and labels that status. The
+The main Code panel currently uses preview1.022 and labels that status. The
 specimen packager resolves the same selection and verifies its font hash.
 
 ```sh
@@ -67,3 +67,9 @@ python tools/render_svg.py --scale 3 specimens/TransitSans.svg specimens/Transit
 
 Review the rendered images before updating qa/specimen-rendering.json and
 packaging a dated specimen revision with tools/specimen_release.py.
+
+### Code preview packages
+
+`recipes/code-previews.json` selects the working Code cut and preserves earlier selections. `python tools/package_code_preview.py` builds the canonical named preview and snapshots; `--check` verifies source fidelity, checksums, shaping and the vertical at-symbol terminal cut across eleven weights. `--install` backs up and replaces the local user font.
+
+`python tools/package_code_preview_assets.py` creates format-separated preview archives in `.dist/code-preview/`. Its SOURCE archive contains the complete editable TTX font and a portable rebuild script. The XML roundtrip is verified against outline, variation, metric and layout tables and sanitized. The design recipe for 1.022 is `python tools/code_at_c_taper_study.py --upturn`. Native released Glyphs/UFO sources retain their separately documented versions.

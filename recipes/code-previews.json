@@ -1,0 +1,17 @@
+{
+  "latest": "1.022",
+  "versions": {
+    "1.021": {
+      "source": "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf",
+      "summary": "single-storey at and Code refinements",
+      "overview": "Selected single-storey a inside a larger smooth @ loop with matching inner/outer strokes.",
+      "fitting": "The larger @ has slight ink overhang but retains its600-unit advance."
+    },
+    "1.022": {
+      "source": "trials/2026-11-17-code-at-c-upturn/DaikonicTransitCodeUpturnedCAtStudy-VF.ttf",
+      "summary": "two-storey at; tapered c wrap and upturned vertical-cut terminal",
+      "overview": "Original two-storey a inside an open c-style @ wrap. The outer stroke gradually tapers into the a arch. Its lower terminal turns gently upward with a vertical cut perpendicular to the baseline.",
+      "fitting": "The @ extends above and below o and retains its600-unit advance."
+    }
+  }
+}

@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [Code 1.021 preview](previews/code-1.021/) includes the selected single-storey `@`, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; published releases remain available above.
+The current [Code 1.022 preview](previews/code-1.022/) includes the selected two-storey `@` with a tapered, gently upturned c-style wrap, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; [preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.022-preview) separate VF, TTF, WOFF2, editable TTX sources and specimens. Published stable releases remain available above.
 
 ## Daikonic Transit Sans
 
