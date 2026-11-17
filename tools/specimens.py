@@ -15,6 +15,28 @@ DATA = json.loads((ROOT / "family.json").read_text())
 CONTENT = json.loads((ROOT / "specimens/content.json").read_text())
 
 
+def specimen_families():
+    from copy import deepcopy
+
+    families = deepcopy(DATA["families"])
+    path = ROOT / "specimens/font-selections.json"
+    selections = json.loads(path.read_text()) if path.exists() else {}
+    for key, metadata in selections.items():
+        selected = ROOT / metadata
+        record = json.loads(selected.read_text())
+        cfg = families[key]
+        assert record["family"] == cfg["name"]
+        assert record["weight_range"] == [cfg["light"], cfg["heavy"]]
+        cfg.update(
+            font=str(
+                (selected.parent / "VF" / (cfg["stem"] + "-VF.ttf")).relative_to(ROOT)
+            ),
+            version=record["version"],
+            status=record["status"],
+        )
+    return families
+
+
 class Panel:
     def __init__(self, key, config):
         self.key, self.config = key, config
@@ -200,6 +222,8 @@ class Panel:
                 align="center",
             )
         note = f'LIGHT 300 / {"REGULAR 400" if self.key == "code" else "SEMIBOLD 600"} - V{c["version"]}'
+        if c.get("status") == "preview":
+            note += " PREVIEW"
         self.text(note, 250, 615, 8.5, c["display"], bottom_ink, align="center")
         return self
 
@@ -211,12 +235,17 @@ class Panel:
     def svg(self):
         title = self.config["title"] + " typography panel"
         desc = f'Actual distributed variable font, version {self.config["version"]}. Text converted to editable vector paths. Cream upper panel; brand-color lower panel. Both numeral rows use default figures. System has a separate labeled default/tabular1 comparison.'
+        if self.config.get("status") == "preview":
+            desc = desc.replace(
+                "distributed variable font", "selected preview variable font"
+            )
         return f'<svg xmlns="http://www.w3.org/2000/svg" width="500" height="620" viewBox="0 0 500 620" role="img"><title>{title}</title><desc>{desc}</desc>{self.body()}</svg>'
 
 
 def main():
     panels, audit = [], {}
-    for key, c in DATA["families"].items():
+    families = specimen_families()
+    for key, c in families.items():
         panel = Panel(key, c).draw()
         name = "Transit" + key.title()
         (ROOT / "specimens" / (name + ".svg")).write_text(panel.svg())
@@ -225,6 +254,7 @@ def main():
             "font": c["font"],
             "sha256": hashlib.sha256((ROOT / c["font"]).read_bytes()).hexdigest(),
             "version": c["version"],
+            "status": c.get("status", "released"),
             "weights": [c["light"], c["display"], c["heavy"]],
             "outline_source": "exported variable TTF; HarfBuzz shaping; SVG paths",
             "synthetic_styles": False,

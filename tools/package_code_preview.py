@@ -199,6 +199,15 @@ def main():
             shutil.copy2(
                 SOURCE.parent / (stem + "." + suffix), proofs / (stem + "." + suffix)
             )
+    manifest = ROOT / "specimens/manifest.json"
+    if manifest.exists() and json.loads(manifest.read_text())["code"][
+        "sha256"
+    ] == digest(vf):
+        for stem in ["TransitCode", "TransitCode-Details"]:
+            for suffix in ["png", "pdf", "svg"]:
+                source = ROOT / "specimens" / (stem + "." + suffix)
+                if source.exists():
+                    shutil.copy2(source, proofs / source.name)
     for name in ["OFL.txt", "NOTICE.txt"]:
         shutil.copy2(ROOT / name, out / name)
     record = {

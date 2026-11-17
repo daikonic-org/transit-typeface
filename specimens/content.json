@@ -14,11 +14,11 @@
     "feature_label": "DEFAULT / OPTIONAL TABULAR"
   },
   "code": {
-    "word": "Function",
+    "word": "snake_case",
     "letters": "Ii Ll O0",
-    "showcase": "0",
-    "showcase_size": 230,
-    "feature_text": "-> => == != ::",
-    "feature_label": "CODING LIGATURES"
+    "showcase": "@",
+    "showcase_size": 260,
+    "feature_text": "{} [] () - -> => == != ::",
+    "feature_label": "DELIMITERS + CODING LIGATURES"
   }
 }

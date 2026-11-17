@@ -3,6 +3,7 @@
     "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
     "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
     "version": "0.109",
+    "status": "released",
     "weights": [
       300,
       400,
@@ -25,6 +26,7 @@
     "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
     "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
     "version": "0.117",
+    "status": "released",
     "weights": [
       300,
       350,
@@ -44,9 +46,10 @@
     "optional_tabular_1_callout": true
   },
   "code": {
-    "font": "fonts/code/VF/DaikonicTransitCode-VF.ttf",
-    "sha256": "73fd30503413da6b12d0c6d42a75a3e4aafd3475e23a28c8120d3e47d8fff7d9",
-    "version": "1.017",
+    "font": "previews/code-1.021/VF/DaikonicTransitCode-VF.ttf",
+    "sha256": "d66b32eaee4d71529276ee7721a5c04390352f83fca8a5f2a0cf9f5401798ced",
+    "version": "1.021",
+    "status": "preview",
     "weights": [
       300,
       350,
@@ -56,12 +59,12 @@
     "synthetic_styles": false,
     "background": "#F03630",
     "content": {
-      "word": "Function",
+      "word": "snake_case",
       "letters": "Ii Ll O0",
-      "showcase": "0",
-      "showcase_size": 230,
-      "feature_text": "-> => == != ::",
-      "feature_label": "CODING LIGATURES"
+      "showcase": "@",
+      "showcase_size": 260,
+      "feature_text": "{} [] () - -> => == != ::",
+      "feature_label": "DELIMITERS + CODING LIGATURES"
     },
     "main_numeral_rows": "default fixed-width figures; tnum disabled",
     "optional_tabular_1_callout": false

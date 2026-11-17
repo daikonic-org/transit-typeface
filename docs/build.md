@@ -51,3 +51,19 @@ To reproduce PNG/PDF, serve `specimens/` locally and render each SVG with Chromi
 ## Configurable source-design studies
 
 See [scaling-lineage.md](scaling-lineage.md) and `recipes/weights.json` for the separate Regular-anchored weight-generation lane. `python tools/pipeline.py study --family all` generates sanitized experimental static weights for all three families from their declared Regular sources. It retains selected design overrides, records topology backoffs and never overwrites current releases. Geometry sizing/fitting probes are executable in `tools/scaling_study.py`.
+
+### Current specimen font selection
+
+specimens/font-selections.json can select an approved preview via its
+selection.json without changing the released-font configuration in family.json.
+The main Code panel currently uses preview1.021 and labels that status. The
+specimen packager resolves the same selection and verifies its font hash.
+
+```sh
+python tools/specimens.py
+python tools/code_detail_specimen.py
+python tools/render_svg.py --scale 3 specimens/TransitSans.svg specimens/TransitSystem.svg specimens/TransitCode.svg specimens/Transit-Family.svg specimens/TransitCode-Details.svg
+```
+
+Review the rendered images before updating qa/specimen-rendering.json and
+packaging a dated specimen revision with tools/specimen_release.py.

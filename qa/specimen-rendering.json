@@ -1,22 +1,25 @@
 {
-  "browser": "Chromium157.0.8103.78",
+  "browser": "Chrome157.0.8103.79",
   "device_scale_factor": 3,
-  "fonts": "current family.json versions; actual outlined font paths",
+  "fonts": "selected specimen cuts; see specimens/font-selections.json and manifest.json; actual outlined font paths",
   "files": {
-    "TransitSans.pdf": "af815d83bca9f74a950702a4b77ecb2b0d1e904d1b0d40c3917862ae77339f79",
+    "Transit-Family.pdf": "8f2cb60a44c70b107fe2f8fd99a3277f8e25549a266455bc23413c1290ba3c62",
+    "Transit-Family.png": "302962f8bfdb3a47d1b472176488248e3c69e1fd6802431ede4fb5001f7110c1",
+    "Transit-Family.svg": "4e4fd2f923657c97334b105169c4d55261b7e49aaa5d0509417f760c8ba8764c",
+    "TransitCode-Details.pdf": "adde1375313203c322fe69e6ac4f0bacdd736c4040ff579081ae3b0e8d2c05dc",
+    "TransitCode-Details.png": "ca4fc0c4885d7be2684a81410cb565699401fccfd8b4ee7e0f4710e50cd1dfe4",
+    "TransitCode-Details.svg": "56470bc73403942fba939f67473a24a0fd3354d1d0a9e733575bec8d9cc309ec",
+    "TransitCode.pdf": "398114933e51c485ee90e18ca65dbcedec2280f7dc513e4deff6b6e9aac54961",
+    "TransitCode.png": "bbcec76d46e06ddc0ac4a368fbc01cf94d83a831a477fc8b4b52b8ff386a73aa",
+    "TransitCode.svg": "079689ef3356d5822befc35fe72a61e7f37e4b923b76901c2e2a2beadfd0fbb7",
+    "TransitSans.pdf": "7ca43da25730f1a1042d243145b69d560fa9abe402a7f85db1516c80726c79d0",
     "TransitSans.png": "63ebc41042e8c80d827edea125f5c8c8cd85c5f9f80f8d8318e94afadee3836f",
     "TransitSans.svg": "4178088adfd9f26e2f7b57c46a7e1838039b27aeb4bd54ca2e51ef0d898c99c1",
-    "TransitSystem.pdf": "1fdbad294b0dacca50bbd758f2a3b322e1a7631ab0fa26f89afc964c1ddc5082",
-    "TransitCode.svg": "ced27ee8b3ae8ff7f250150eff9b6859bc603feb0c686afb894a396706d267c2",
+    "TransitSystem.pdf": "1380ce294869baff3acd3c2e336cb8b3782fca466f6fa4a94842c89718dc39db",
     "TransitSystem.png": "5fedb2b58adf6cb9cee8bca7cc7beeb9b1b58b1edcac3385b278bcd073b3fdb7",
-    "Transit-Family.pdf": "e7d3d3a3bff6988f91057caad73c005b76f097431df4d92f5136007a029fcbe2",
-    "Transit-Family.png": "9d9cf8cdc10fd5c4be8f6f0da573367d3c786032cc1430753e8b336fafe89979",
-    "Transit-Family.svg": "241633c9e2b706707fa755672e1bfea183652500c37ec486f310b16205c09e34",
-    "TransitSystem.svg": "8e32ca1edce31d5151380a7a06767450a90015eff1001a44926478221ea015f4",
-    "TransitCode.pdf": "0523573920734f6820b683cade2a9de612e2f0ea654f766099d5c3158f4061ba",
-    "TransitCode.png": "34cdebe35b48e9b63bffc2fc3f5bd347dfa1221d7f22471eb90ade121ee0974c"
+    "TransitSystem.svg": "8e32ca1edce31d5151380a7a06767450a90015eff1001a44926478221ea015f4"
   },
-  "revision": "Sans-0.109R",
+  "revision": "Specimens-2026-11-17",
   "system_figures": [
     {
       "weight": 300,
@@ -35,5 +38,22 @@
     }
   ],
   "main_system_numeral_rows": "tnum disabled; default proportional figures",
-  "visual_review": "Reviewed release-VF hook proofs at five named and four intermediate weights, in display and text samples; refreshed Sans panel and family board. System and Code panels unchanged."
+  "visual_review": "Opened refreshed Code panel, family board and Code detail sheet. Code1.021 preview shows approved single-storey at, selected i, delimiters, underscore, hyphen and spacing/ligatures across Light/Book/Regular. System proportional figures and separate tabular1 callout retained; Sans/System panel compositions unchanged. PNG/PDF use identical SVG artwork.",
+  "font_versions": {
+    "sans": {
+      "version": "0.109",
+      "status": "released",
+      "font_sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf"
+    },
+    "system": {
+      "version": "0.117",
+      "status": "released",
+      "font_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
+    },
+    "code": {
+      "version": "1.021",
+      "status": "preview",
+      "font_sha256": "d66b32eaee4d71529276ee7721a5c04390352f83fca8a5f2a0cf9f5401798ced"
+    }
+  }
 }

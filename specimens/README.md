@@ -4,7 +4,7 @@
 | --- | --- | --- | --- | --- |
 | Daikonic Transit Sans | Wayfinder | Aa Gg Rr | [PNG](TransitSans.png) | [PDF](TransitSans.pdf) |
 | Daikonic Transit System | Context Menu | Hh Ee Yy | [PNG](TransitSystem.png) | [PDF](TransitSystem.pdf) |
-| Daikonic Transit Code | Function | Ii Ll O0 | [PNG](TransitCode.png) | [PDF](TransitCode.pdf) |
+| Daikonic Transit Code | snake_case | Ii Ll O0 | [PNG](TransitCode.png) | [PDF](TransitCode.pdf) |
 
 [Combined family board](Transit-Family.png) · [Family board PDF](Transit-Family.pdf)
 
@@ -16,3 +16,18 @@ The lower bands also demonstrate Sans's standard/custom ligatures and Code's
 coding ligatures. The outlined SVG versions sit beside the PNG/PDF files.
 
 The System heading uses Book 350, matching its default UI weight.
+
+## Current font cuts
+
+These specimens show Sans0.109, System0.117 and **Code1.021 preview**. The Code
+panel uses the same approved preview installed for Book350, including the
+single-storey @, balanced i, stronger delimiters, raised/heavier gapless underscore,
+wider hyphen and selected optical pair adjustments. The Code footer identifies
+it as a preview. Released font packages remain separate.
+
+[Code detail sheet PNG](TransitCode-Details.png) · [Code detail sheet PDF](TransitCode-Details.pdf)
+shows all three Code weights with email/decorator samples, repeat @ fitting,
+snake_case, delimiters, spacing pairs and all coding ligatures.
+
+The font selection is explicit in font-selections.json; manifest.json records
+versions and exact source hashes. PNG/PDF/SVG exports share the same composition.
