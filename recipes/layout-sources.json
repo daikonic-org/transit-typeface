@@ -1,0 +1,17 @@
+{
+  "sans": {
+    "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+    "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+    "version": "0.109"
+  },
+  "system": {
+    "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+    "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+    "version": "0.117"
+  },
+  "code": {
+    "font": "previews/code-1.022/VF/DaikonicTransitCode-VF.ttf",
+    "sha256": "10fd62680de621ec5d90f00d430c054b693495ddbaafc9bb9c80a835f262d6fa",
+    "version": "1.022"
+  }
+}

@@ -27,5 +27,9 @@ jobs:
         run: python tools/check_weighting.py all --production
       - name: Verify selected Code preview
         run: python tools/package_code_preview.py --check
+      - name: Verify positioning and optical-size candidates
+        run: python tools/check_layout_optical.py
+      - name: Verify CFF OpenType exports
+        run: python tools/check_otf_exports.py
       - name: Verify specimen sources and exports
         run: python tools/specimen_release.py --check

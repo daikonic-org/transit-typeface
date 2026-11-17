@@ -1,0 +1,335 @@
+{
+  "sans": {
+    "source": "trials/2026-11-17-layout-optical/sans/DaikonicTransitSansOpticalStudy-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-LightCaption.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 10
+        },
+        "sha256": "317da14611876f1970f134744dfc0b119065c19bddcca89e14ced9ea7651658a"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-LightText.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 14
+        },
+        "sha256": "4314cfa59f5252a7a271a8e013800d7475abe17d892513693b04e021eaf97b6e"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-LightDisplay.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 36
+        },
+        "sha256": "2fd45db8fc33341bccb75fd4dd152b1f06ef3d526f4a2b76ca5380e96d726f4d"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-BookCaption.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 10
+        },
+        "sha256": "b67bd3fc97b1c5f135f140d9d9100c4359a10d42c552c76399b4533abc223c0a"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-BookText.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 14
+        },
+        "sha256": "cfc3c969526cae5b91b64445161e020b8bb589b61f73d02ff2c091af967b4f6f"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-BookDisplay.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 36
+        },
+        "sha256": "a0b502fa14efb76e54170e165b7e1703e964b46c810c9b11a1c94f9a917f1e47"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-RegularCaption.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 10
+        },
+        "sha256": "92464fbb8327deac9ffc4b85784cc56d1960ae81d50b979638c9dd5a59d32ab5"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-RegularText.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 14
+        },
+        "sha256": "5ee30718af8c192d60340ab5b12dbc999085f3c8bf3678bd62a740ee7e40b1a6"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-RegularDisplay.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 36
+        },
+        "sha256": "16a53ccf15f5e3896d531c639f239da7b9bd58839b096068c447ed64ce19a1f4"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-MediumCaption.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 10
+        },
+        "sha256": "34bc0270b481a6fa195f78d2d6fe3f25ea72b91fb2eeb5a0e152f5f2761a9f33"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-MediumText.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 14
+        },
+        "sha256": "5e764857107b90829964573da1ba081c84094ce09dc4d91d357b0c3c183889dd"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-MediumDisplay.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 36
+        },
+        "sha256": "a734d5499668f2481c99df44ee288cd7eec3cfb9f84b27631a837f044a90fe64"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-SemiBoldCaption.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 10
+        },
+        "sha256": "31dd2c29b0b061a2a20d5609facaa1c6078bf05fc6335f0fd37877e4d8b6dd4d"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-SemiBoldText.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 14
+        },
+        "sha256": "863c30f89042c5bc294011d7b25e6848b8ae69e9ad162d2db6b3b0ec60725e92"
+      },
+      {
+        "file": "exports/otf/optical-trial/sans/DaikonicTransitSansOpticalStudy-SemiBoldDisplay.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 36
+        },
+        "sha256": "ebbc8120965abe0d4ec67be06d7603b192f77f49d16d0aacc367d12fd7a8bf79"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "33b17f1e464bae9b5c3d0f9bbafa190ef02b5f80262e85a8cb794b6c0ac97b5a"
+  },
+  "system": {
+    "source": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-LightCaption.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 10
+        },
+        "sha256": "688971b754631f4008784d9e5542e4079ce388d288cfc6691019805ddaa04fb3"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-LightText.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 14
+        },
+        "sha256": "f1f72487c61cf29fc93fc188040f628795e7c1d9dd8b0dd78db41adff3bbf62f"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-LightDisplay.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 36
+        },
+        "sha256": "b24875f28e8a6838e5ca32036333841be2fe978375b3106410de2135fd8a48cd"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-BookCaption.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 10
+        },
+        "sha256": "b525d624cacf190afba6041b721fdb754db2cfeb5deede0de2c05f9036063d7a"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-BookText.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 14
+        },
+        "sha256": "d3c2713531feb4be1dfee4872f13b2885c200038275e2f350a547ad26017b5d0"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-BookDisplay.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 36
+        },
+        "sha256": "206d9700b338b15355f7837972829c0367305c848bb50a597855e0a7e9d4c781"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-RegularCaption.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 10
+        },
+        "sha256": "eb6663e435f34b9622f3ddf9f754eae166a00e28768d240e064f4e2448fa3a27"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-RegularText.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 14
+        },
+        "sha256": "4bc9f0e4cc71a1d5b2d44f3d42bac38a6169720abcd253f9fb5e9d05aab9b94a"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-RegularDisplay.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 36
+        },
+        "sha256": "c3ec6db9f9fe745d2e9930b288bc81361b8e87e1183ee45224ff566216838e3a"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-MediumCaption.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 10
+        },
+        "sha256": "981539d5f9317a0ba1cf4db9ba73724a1400eab358c8418206e3971d6281068c"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-MediumText.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 14
+        },
+        "sha256": "129017ea7375e00a5db5206539d1ccf18ee335648519b2e2fdfed19cb69e0d63"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-MediumDisplay.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 36
+        },
+        "sha256": "bcac274d72a52172859e749feb903c4b100982634b6f6f07101835b3ae752d2d"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-SemiBoldCaption.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 10
+        },
+        "sha256": "a630677e2df3d14a8d426e8ab3974e0fb3f15f0dd2685cc57f1993a6621c158b"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-SemiBoldText.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 14
+        },
+        "sha256": "837389df2ad96a96dbeb4897cdeedc161bd9d97c9d0769278884aa2d1427177b"
+      },
+      {
+        "file": "exports/otf/optical-trial/system/DaikonicTransitSystem-SemiBoldDisplay.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 36
+        },
+        "sha256": "d420864ca0117e122097e0c70337baea6892998069344189dd3c6699dd0bc2c8"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
+  },
+  "code": {
+    "source": "trials/2026-11-17-layout-optical/code/DaikonicTransitCodeOpticalStudy-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-LightCaption.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 10
+        },
+        "sha256": "2ebb91bcbdae0762f910d22ee1a3feca9a370921fa5a07159888f0b92aa41f85"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-LightText.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 14
+        },
+        "sha256": "f3adff4aa55511e27cc69cc6f186cd8e795235af809e8e2a8cb92490b9fa3c54"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-LightDisplay.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 36
+        },
+        "sha256": "865ed382416ab701ea2a847bc1655d945fcd31a07c23aec9ddb2f42d2a7c6b9a"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-BookCaption.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 10
+        },
+        "sha256": "ac7dc222215a7ea982751ce94137a18b0ed2946a106c18363da0022b335c4319"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-BookText.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 14
+        },
+        "sha256": "e7f120742f2a45f3d53c5c9b417e13e74e42ae872cfc11f10377bf0669f6cd92"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-BookDisplay.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 36
+        },
+        "sha256": "1ef1ffbfdd5f64766a9708c561b3aeb39a65ed4413c4d71a5d1bc9cf21e39d04"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-RegularCaption.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 10
+        },
+        "sha256": "c515a28f0a712885bd7a17667577b92a274fb5e83e7408c0a4565771149e41d2"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-RegularText.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 14
+        },
+        "sha256": "64b8d3ea12d2c0e84d57cca1d7dd0c0d70b5b7c806fe6a86581a099cac082261"
+      },
+      {
+        "file": "exports/otf/optical-trial/code/DaikonicTransitCodeOpticalStudy-RegularDisplay.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 36
+        },
+        "sha256": "53bef4d356702faadaa38a264c7a3afcd0ef36c1dbe392e1b819bc1ecf9397c8"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "0a8ee521e489a588115b0e05d06ebc0ce5cfeb4e439738c394152a08b563012a"
+  }
+}

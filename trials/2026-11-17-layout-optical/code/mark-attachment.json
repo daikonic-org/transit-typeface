@@ -1,0 +1,107 @@
+{
+  "marks": {
+    "gravecomb": "top",
+    "acutecomb": "top",
+    "uni0302": "top",
+    "tildecomb": "top",
+    "uni0304": "top",
+    "uni0306": "top",
+    "uni0307": "top",
+    "uni0308": "top",
+    "uni030A": "top",
+    "uni030B": "top",
+    "uni030C": "top",
+    "uni0312": "top",
+    "uni0326": "bottom",
+    "uni0327": "attached",
+    "uni0328": "ogonek",
+    "uni0335": "overlay",
+    "uni0308.case": "top",
+    "uni0307.case": "top",
+    "gravecomb.case": "top",
+    "acutecomb.case": "top",
+    "uni030B.case": "top",
+    "uni0302.case": "top",
+    "uni030C.case": "top",
+    "uni0306.case": "top",
+    "uni030A.case": "top",
+    "tildecomb.case": "top",
+    "uni0304.case": "top"
+  },
+  "decomposed_accented_forms": 173,
+  "base_count": 302,
+  "anchor_locations": [
+    {
+      "wght": 300.0
+    },
+    {
+      "wght": 305
+    },
+    {
+      "wght": 310
+    },
+    {
+      "wght": 312.5
+    },
+    {
+      "wght": 315
+    },
+    {
+      "wght": 320
+    },
+    {
+      "wght": 325
+    },
+    {
+      "wght": 330
+    },
+    {
+      "wght": 335
+    },
+    {
+      "wght": 340
+    },
+    {
+      "wght": 345
+    },
+    {
+      "wght": 350.0
+    },
+    {
+      "wght": 355
+    },
+    {
+      "wght": 360
+    },
+    {
+      "wght": 365
+    },
+    {
+      "wght": 370
+    },
+    {
+      "wght": 375
+    },
+    {
+      "wght": 380
+    },
+    {
+      "wght": 385
+    },
+    {
+      "wght": 387.5
+    },
+    {
+      "wght": 390
+    },
+    {
+      "wght": 395
+    },
+    {
+      "wght": 400.0
+    }
+  ],
+  "retained_positioning_lookups": 3,
+  "mark_gap": 48,
+  "note": "Supported combining marks only; missing Unicode marks remain a separate coverage expansion."
+}

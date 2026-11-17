@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [Code 1.022 preview](previews/code-1.022/) includes the selected two-storey `@` with a tapered, gently upturned c-style wrap, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; [preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.022-preview) separate VF, TTF, WOFF2, editable TTX sources and specimens. Published stable releases remain available above.
+The current [Code 1.023 preview](previews/code-1.023/) includes the selected two-storey `@` with a tapered, gently upturned c-style wrap, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; [preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.023-preview) separate VF, TTF, WOFF2, editable TTX sources and specimens. Published stable releases remain available above.
 
 ## Daikonic Transit Sans
 
@@ -36,6 +36,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
 - Heavier, inward-set parentheses, brackets and braces for legibility. Extended brace pinches help distinguish `{}` from `()`.
 - Optical centering and contextual positioning for selected character pairs, preserving the fixed 600-unit character advance.
+- Variable accent attachment and stacking (`mark` / `mkmk`), zero-width combining marks, and consistent precomposed and decomposed accented forms.
 - A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
@@ -46,6 +47,8 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 
 All three typefaces include the same family of pointed, concave arrowheads, including the Unicode arrows **← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕**.
 
+Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the existing drawings at 14. They remain separate review fonts; see [positioning, OTF and optical-size notes](docs/layout-optical.md). System retains its existing optical-size axis.
+
 ## Downloads and release packages
 
 Each typeface has its own [release](https://github.com/daikonic-org/transit-typeface/releases) and version number. Download the package for the format you need:
@@ -53,6 +56,7 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | Package | Contents | Use |
 | --- | --- | --- |
 | **VF** | One variable TrueType font | Adjustable weights in applications that support variable fonts; System also includes optical size. |
+| **OTF** | Static CFF OpenType fonts with the same glyphs, spacing and layout features | Desktop applications and publishing workflows that prefer CFF outlines. |
 | **TTF** | Individual named-weight TrueType fonts | Applications that use separate font styles. System includes Caption, Text and Display cuts. |
 | **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
 | **SOURCE** | Editable Glyphs and UFO sources, designspaces and rebuild inputs | Editing or building the typefaces. System’s large Glyphs file is supplied inside a ZIP. |

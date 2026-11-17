@@ -109,7 +109,7 @@ def check_preview(out):
                 token,
                 result,
             )
-    if selection["version"] == "1.022":
+    if float(selection["version"]) >= 1.022:
         from fontTools.pens.recordingPen import RecordingPen
 
         for weight in range(300, 401, 10):
@@ -242,7 +242,7 @@ def main():
         "source_sha256": digest(SOURCE),
         "drawing_variation_layout_fidelity": "exact to selected source",
         "sanitized_fonts": 4,
-        "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption and accented/dotless i alignment remain pending.",
+        "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption remains pending.",
     }
     (out / "selection.json").write_text(json.dumps(record, indent=2) + "\n")
     readme = f"""# Daikonic Transit Code {args.version} preview
@@ -267,8 +267,7 @@ Browser proofs were reviewed; editor/terminal rendering still needs a smoke test
 This cut is packaged as a preview, separately from stable font releases. The released Code font
 and native sources/code/ remain1.017. Compatible trial sources/scripts and their
 validation records are in {SOURCE.parent.relative_to(ROOT)}/ and tools/.
-Production native-source adoption, including accented/dotless i alignment, remains
-pending. Earlier studies and released fonts are preserved.
+Production native-source adoption remains pending. Earlier studies and released fonts are preserved.
 
 All4preview fonts pass OTS; VF drawing/variation/layout/metrics tables exactly
 match the selected trial. See selection.json and the trial validation.json for

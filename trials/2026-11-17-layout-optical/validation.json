@@ -1,0 +1,508 @@
+{
+  "code_positioning": {
+    "locations": [
+      {
+        "wght": 300
+      },
+      {
+        "wght": 312.5
+      },
+      {
+        "wght": 325
+      },
+      {
+        "wght": 350
+      },
+      {
+        "wght": 375
+      },
+      {
+        "wght": 387.5
+      },
+      {
+        "wght": 400
+      }
+    ],
+    "checks": "top/bottom anchors, stacked marks, dotless contexts, canonical equivalence, zero mark advances, retained operators/spacing/compact fitting"
+  },
+  "sans": {
+    "default_outlines": "exact",
+    "default_advances": "exact at all sampled weights",
+    "interpolation_locations": [
+      {
+        "wght": 300,
+        "opsz": 10
+      },
+      {
+        "wght": 300,
+        "opsz": 12
+      },
+      {
+        "wght": 300,
+        "opsz": 14
+      },
+      {
+        "wght": 300,
+        "opsz": 24
+      },
+      {
+        "wght": 300,
+        "opsz": 36
+      },
+      {
+        "wght": 325,
+        "opsz": 10
+      },
+      {
+        "wght": 325,
+        "opsz": 12
+      },
+      {
+        "wght": 325,
+        "opsz": 14
+      },
+      {
+        "wght": 325,
+        "opsz": 24
+      },
+      {
+        "wght": 325,
+        "opsz": 36
+      },
+      {
+        "wght": 350,
+        "opsz": 10
+      },
+      {
+        "wght": 350,
+        "opsz": 12
+      },
+      {
+        "wght": 350,
+        "opsz": 14
+      },
+      {
+        "wght": 350,
+        "opsz": 24
+      },
+      {
+        "wght": 350,
+        "opsz": 36
+      },
+      {
+        "wght": 375,
+        "opsz": 10
+      },
+      {
+        "wght": 375,
+        "opsz": 12
+      },
+      {
+        "wght": 375,
+        "opsz": 14
+      },
+      {
+        "wght": 375,
+        "opsz": 24
+      },
+      {
+        "wght": 375,
+        "opsz": 36
+      },
+      {
+        "wght": 400,
+        "opsz": 10
+      },
+      {
+        "wght": 400,
+        "opsz": 12
+      },
+      {
+        "wght": 400,
+        "opsz": 14
+      },
+      {
+        "wght": 400,
+        "opsz": 24
+      },
+      {
+        "wght": 400,
+        "opsz": 36
+      },
+      {
+        "wght": 450,
+        "opsz": 10
+      },
+      {
+        "wght": 450,
+        "opsz": 12
+      },
+      {
+        "wght": 450,
+        "opsz": 14
+      },
+      {
+        "wght": 450,
+        "opsz": 24
+      },
+      {
+        "wght": 450,
+        "opsz": 36
+      },
+      {
+        "wght": 500,
+        "opsz": 10
+      },
+      {
+        "wght": 500,
+        "opsz": 12
+      },
+      {
+        "wght": 500,
+        "opsz": 14
+      },
+      {
+        "wght": 500,
+        "opsz": 24
+      },
+      {
+        "wght": 500,
+        "opsz": 36
+      },
+      {
+        "wght": 550,
+        "opsz": 10
+      },
+      {
+        "wght": 550,
+        "opsz": 12
+      },
+      {
+        "wght": 550,
+        "opsz": 14
+      },
+      {
+        "wght": 550,
+        "opsz": 24
+      },
+      {
+        "wght": 550,
+        "opsz": 36
+      },
+      {
+        "wght": 600,
+        "opsz": 10
+      },
+      {
+        "wght": 600,
+        "opsz": 12
+      },
+      {
+        "wght": 600,
+        "opsz": 14
+      },
+      {
+        "wght": 600,
+        "opsz": 24
+      },
+      {
+        "wght": 600,
+        "opsz": 36
+      }
+    ],
+    "control_counter_topology": "passed",
+    "axes": [
+      [
+        "wght",
+        300.0,
+        400.0,
+        600.0
+      ],
+      [
+        "opsz",
+        10.0,
+        14.0,
+        36.0
+      ]
+    ]
+  },
+  "code": {
+    "default_outlines": "exact",
+    "default_advances": "exact at all sampled weights",
+    "interpolation_locations": [
+      {
+        "wght": 300,
+        "opsz": 10
+      },
+      {
+        "wght": 300,
+        "opsz": 12
+      },
+      {
+        "wght": 300,
+        "opsz": 14
+      },
+      {
+        "wght": 300,
+        "opsz": 24
+      },
+      {
+        "wght": 300,
+        "opsz": 36
+      },
+      {
+        "wght": 325,
+        "opsz": 10
+      },
+      {
+        "wght": 325,
+        "opsz": 12
+      },
+      {
+        "wght": 325,
+        "opsz": 14
+      },
+      {
+        "wght": 325,
+        "opsz": 24
+      },
+      {
+        "wght": 325,
+        "opsz": 36
+      },
+      {
+        "wght": 350,
+        "opsz": 10
+      },
+      {
+        "wght": 350,
+        "opsz": 12
+      },
+      {
+        "wght": 350,
+        "opsz": 14
+      },
+      {
+        "wght": 350,
+        "opsz": 24
+      },
+      {
+        "wght": 350,
+        "opsz": 36
+      },
+      {
+        "wght": 375,
+        "opsz": 10
+      },
+      {
+        "wght": 375,
+        "opsz": 12
+      },
+      {
+        "wght": 375,
+        "opsz": 14
+      },
+      {
+        "wght": 375,
+        "opsz": 24
+      },
+      {
+        "wght": 375,
+        "opsz": 36
+      },
+      {
+        "wght": 400,
+        "opsz": 10
+      },
+      {
+        "wght": 400,
+        "opsz": 12
+      },
+      {
+        "wght": 400,
+        "opsz": 14
+      },
+      {
+        "wght": 400,
+        "opsz": 24
+      },
+      {
+        "wght": 400,
+        "opsz": 36
+      }
+    ],
+    "control_counter_topology": "passed",
+    "axes": [
+      [
+        "wght",
+        300.0,
+        350.0,
+        400.0
+      ],
+      [
+        "opsz",
+        10.0,
+        14.0,
+        36.0
+      ]
+    ],
+    "mark_checks": [
+      {
+        "wght": 300,
+        "opsz": 10
+      },
+      {
+        "wght": 300,
+        "opsz": 12
+      },
+      {
+        "wght": 300,
+        "opsz": 14
+      },
+      {
+        "wght": 300,
+        "opsz": 24
+      },
+      {
+        "wght": 300,
+        "opsz": 36
+      },
+      {
+        "wght": 312.5,
+        "opsz": 10
+      },
+      {
+        "wght": 312.5,
+        "opsz": 12
+      },
+      {
+        "wght": 312.5,
+        "opsz": 14
+      },
+      {
+        "wght": 312.5,
+        "opsz": 24
+      },
+      {
+        "wght": 312.5,
+        "opsz": 36
+      },
+      {
+        "wght": 325,
+        "opsz": 10
+      },
+      {
+        "wght": 325,
+        "opsz": 12
+      },
+      {
+        "wght": 325,
+        "opsz": 14
+      },
+      {
+        "wght": 325,
+        "opsz": 24
+      },
+      {
+        "wght": 325,
+        "opsz": 36
+      },
+      {
+        "wght": 350,
+        "opsz": 10
+      },
+      {
+        "wght": 350,
+        "opsz": 12
+      },
+      {
+        "wght": 350,
+        "opsz": 14
+      },
+      {
+        "wght": 350,
+        "opsz": 24
+      },
+      {
+        "wght": 350,
+        "opsz": 36
+      },
+      {
+        "wght": 375,
+        "opsz": 10
+      },
+      {
+        "wght": 375,
+        "opsz": 12
+      },
+      {
+        "wght": 375,
+        "opsz": 14
+      },
+      {
+        "wght": 375,
+        "opsz": 24
+      },
+      {
+        "wght": 375,
+        "opsz": 36
+      },
+      {
+        "wght": 387.5,
+        "opsz": 10
+      },
+      {
+        "wght": 387.5,
+        "opsz": 12
+      },
+      {
+        "wght": 387.5,
+        "opsz": 14
+      },
+      {
+        "wght": 387.5,
+        "opsz": 24
+      },
+      {
+        "wght": 387.5,
+        "opsz": 36
+      },
+      {
+        "wght": 400,
+        "opsz": 10
+      },
+      {
+        "wght": 400,
+        "opsz": 12
+      },
+      {
+        "wght": 400,
+        "opsz": 14
+      },
+      {
+        "wght": 400,
+        "opsz": 24
+      },
+      {
+        "wght": 400,
+        "opsz": 36
+      }
+    ]
+  },
+  "sans_existing_gpos": {
+    "features": [
+      "kern",
+      "mark",
+      "mkmk"
+    ],
+    "variable_anchors": true
+  },
+  "system_existing_gpos": {
+    "features": [
+      "kern",
+      "mark",
+      "mkmk"
+    ],
+    "variable_anchors": true
+  }
+}

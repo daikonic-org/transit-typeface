@@ -1,0 +1,15 @@
+{
+  "version": "1.023",
+  "status": "preview",
+  "family": "Daikonic Transit Code",
+  "default_weight": 350,
+  "weight_range": [
+    300,
+    400
+  ],
+  "selected_source": "trials/2026-11-17-layout-optical/code/CodePositioned-VF.ttf",
+  "source_sha256": "e9fb82885240d7dade49ea77643e3ce90cf0cc3acd644d679feec86b6ca64611",
+  "drawing_variation_layout_fidelity": "exact to selected source",
+  "sanitized_fonts": 4,
+  "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption remains pending."
+}

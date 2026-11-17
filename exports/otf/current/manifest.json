@@ -1,0 +1,199 @@
+{
+  "sans": {
+    "source": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/current/sans/DaikonicTransitSans-Light.otf",
+        "location": {
+          "wght": 300.0
+        },
+        "sha256": "7830ce17b1fbae1541bc02b8482ff03848c317cbc2a6e65d9c564c3ac88d4036"
+      },
+      {
+        "file": "exports/otf/current/sans/DaikonicTransitSans-Book.otf",
+        "location": {
+          "wght": 350.0
+        },
+        "sha256": "b31a62af9ed97865b9eaa4e333708e48e1320bf34519c1817285bc3587e43d55"
+      },
+      {
+        "file": "exports/otf/current/sans/DaikonicTransitSans-Regular.otf",
+        "location": {
+          "wght": 400.0
+        },
+        "sha256": "8306820087f344ea7bc2dbdaef2db4101b5c839a85cb7b599c2b95d8cab280fd"
+      },
+      {
+        "file": "exports/otf/current/sans/DaikonicTransitSans-Medium.otf",
+        "location": {
+          "wght": 500.0
+        },
+        "sha256": "cc9624d32dae9ac34988ca7f965875566dc37b74608211a8d69482e69166cb35"
+      },
+      {
+        "file": "exports/otf/current/sans/DaikonicTransitSans-SemiBold.otf",
+        "location": {
+          "wght": 600.0
+        },
+        "sha256": "ddfbc1800dfbce40334b8ddbb596874ce736216502dd48ebfbac27baa9f64d02"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf"
+  },
+  "system": {
+    "source": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-LightCaption.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 10
+        },
+        "sha256": "688971b754631f4008784d9e5542e4079ce388d288cfc6691019805ddaa04fb3"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-LightText.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 14
+        },
+        "sha256": "f1f72487c61cf29fc93fc188040f628795e7c1d9dd8b0dd78db41adff3bbf62f"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-LightDisplay.otf",
+        "location": {
+          "wght": 300.0,
+          "opsz": 36
+        },
+        "sha256": "b24875f28e8a6838e5ca32036333841be2fe978375b3106410de2135fd8a48cd"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-BookCaption.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 10
+        },
+        "sha256": "b525d624cacf190afba6041b721fdb754db2cfeb5deede0de2c05f9036063d7a"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-BookText.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 14
+        },
+        "sha256": "d3c2713531feb4be1dfee4872f13b2885c200038275e2f350a547ad26017b5d0"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-BookDisplay.otf",
+        "location": {
+          "wght": 350.0,
+          "opsz": 36
+        },
+        "sha256": "206d9700b338b15355f7837972829c0367305c848bb50a597855e0a7e9d4c781"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-RegularCaption.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 10
+        },
+        "sha256": "eb6663e435f34b9622f3ddf9f754eae166a00e28768d240e064f4e2448fa3a27"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-RegularText.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 14
+        },
+        "sha256": "4bc9f0e4cc71a1d5b2d44f3d42bac38a6169720abcd253f9fb5e9d05aab9b94a"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-RegularDisplay.otf",
+        "location": {
+          "wght": 400.0,
+          "opsz": 36
+        },
+        "sha256": "c3ec6db9f9fe745d2e9930b288bc81361b8e87e1183ee45224ff566216838e3a"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-MediumCaption.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 10
+        },
+        "sha256": "981539d5f9317a0ba1cf4db9ba73724a1400eab358c8418206e3971d6281068c"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-MediumText.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 14
+        },
+        "sha256": "129017ea7375e00a5db5206539d1ccf18ee335648519b2e2fdfed19cb69e0d63"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-MediumDisplay.otf",
+        "location": {
+          "wght": 500.0,
+          "opsz": 36
+        },
+        "sha256": "bcac274d72a52172859e749feb903c4b100982634b6f6f07101835b3ae752d2d"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-SemiBoldCaption.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 10
+        },
+        "sha256": "a630677e2df3d14a8d426e8ab3974e0fb3f15f0dd2685cc57f1993a6621c158b"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-SemiBoldText.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 14
+        },
+        "sha256": "837389df2ad96a96dbeb4897cdeedc161bd9d97c9d0769278884aa2d1427177b"
+      },
+      {
+        "file": "exports/otf/current/system/DaikonicTransitSystem-SemiBoldDisplay.otf",
+        "location": {
+          "wght": 600.0,
+          "opsz": 36
+        },
+        "sha256": "d420864ca0117e122097e0c70337baea6892998069344189dd3c6699dd0bc2c8"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
+  },
+  "code": {
+    "source": "trials/2026-11-17-layout-optical/code/CodePositioned-VF.ttf",
+    "exports": [
+      {
+        "file": "exports/otf/current/code/DaikonicTransitCode-Light.otf",
+        "location": {
+          "wght": 300.0
+        },
+        "sha256": "dcfd2c2310aaae0694afeb22dc158b3d8d6a85195dfefe35e478a1a7208f43fe"
+      },
+      {
+        "file": "exports/otf/current/code/DaikonicTransitCode-Book.otf",
+        "location": {
+          "wght": 350.0
+        },
+        "sha256": "b7c2b280b048bd3222f380cbffae3bb1a23f8d504bb98d35204f22bd8a274063"
+      },
+      {
+        "file": "exports/otf/current/code/DaikonicTransitCode-Regular.otf",
+        "location": {
+          "wght": 400.0
+        },
+        "sha256": "96a0770743e6c98fc07c1bca72c570624b7ccfcc76d1ca8f2e61c124e54f740b"
+      }
+    ],
+    "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units",
+    "source_sha256": "e9fb82885240d7dade49ea77643e3ce90cf0cc3acd644d679feec86b6ca64611"
+  }
+}

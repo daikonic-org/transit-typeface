@@ -1,0 +1,11 @@
+{
+  "status": "review trial; default drawings preserved",
+  "axis": {"tag": "opsz", "min": 10, "default": 14, "max": 36},
+  "families": {
+    "sans": {"small": {"outer": 1.2, "counter": -0.8, "punctuation": 1.8, "aperture": 3, "tracking": 8}, "display": {"outer": -0.5, "counter": 0.3, "punctuation": -0.3, "aperture": 0, "tracking": -6}},
+    "code": {"small": {"outer": 1.4, "counter": -0.8, "punctuation": 2, "aperture": 3, "tracking": 0}, "display": {"outer": -0.5, "counter": 0.3, "punctuation": -0.3, "aperture": 0, "tracking": 0}}
+  },
+  "protected": ["at", "at.compact", "a_i", "l_i", "fi", "fl"],
+  "protected_prefixes": ["code.", "arrow", "uni219", "uni21D"],
+  "notes": "Subtle compatible normal offsets, counter relief and selected c/e/s aperture opening; bounds retain original vertical extents. No x-height or cap-height scaling. Sans tracking changes; Code grid stays600. Optical endpoints require visual review."
+}
