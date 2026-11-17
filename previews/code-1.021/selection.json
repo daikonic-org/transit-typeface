@@ -1,0 +1,15 @@
+{
+  "version": "1.021",
+  "status": "preview",
+  "family": "Daikonic Transit Code",
+  "default_weight": 350,
+  "weight_range": [
+    300,
+    400
+  ],
+  "selected_source": "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf",
+  "source_sha256": "0da56bdb5c964cd7d887bf1a43b14f392f6751e81ab71e28049b963d7ff738c2",
+  "drawing_variation_layout_fidelity": "exact to selected source",
+  "sanitized_fonts": 4,
+  "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption and accented/dotless i alignment remain pending."
+}

@@ -1,0 +1,12 @@
+languagesystem DFLT dflt;
+    languagesystem latn dflt;
+    @Diagonal = [v y slash];
+    @Foot = [i l];
+    feature calt {
+        lookup DiagonalFoot {
+            pos @Diagonal <18 0 0 0> @Foot <-18 0 0 0>;
+        } DiagonalFoot;
+        lookup FootDiagonal {
+            pos @Foot <18 0 0 0> @Diagonal <-18 0 0 0>;
+        } FootDiagonal;
+    } calt;

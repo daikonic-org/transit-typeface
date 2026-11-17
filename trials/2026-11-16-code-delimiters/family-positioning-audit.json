@@ -1,0 +1,135 @@
+{
+  "sans": {
+    "version": "0.109",
+    "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+    "GPOS": true,
+    "kern_table": false,
+    "features": [
+      {
+        "tag": "kern",
+        "lookups": [
+          2,
+          0,
+          1,
+          15
+        ]
+      },
+      {
+        "tag": "kern",
+        "lookups": [
+          2,
+          0,
+          15
+        ]
+      },
+      {
+        "tag": "mark",
+        "lookups": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "tag": "mkmk",
+        "lookups": [
+          13,
+          14
+        ]
+      }
+    ],
+    "lookup_types": [
+      2,
+      2,
+      2,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6,
+      2
+    ]
+  },
+  "system": {
+    "version": "0.117",
+    "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+    "GPOS": true,
+    "kern_table": false,
+    "features": [
+      {
+        "tag": "kern",
+        "lookups": [
+          2,
+          0,
+          1
+        ]
+      },
+      {
+        "tag": "kern",
+        "lookups": [
+          2,
+          0
+        ]
+      },
+      {
+        "tag": "mark",
+        "lookups": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "tag": "mkmk",
+        "lookups": [
+          13,
+          14
+        ]
+      }
+    ],
+    "lookup_types": [
+      2,
+      2,
+      2,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      6,
+      6
+    ]
+  },
+  "code": {
+    "version": "1.017",
+    "sha256": "73fd30503413da6b12d0c6d42a75a3e4aafd3475e23a28c8120d3e47d8fff7d9",
+    "GPOS": false,
+    "kern_table": false
+  }
+}

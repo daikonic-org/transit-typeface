@@ -1,0 +1,413 @@
+{
+  "recipes": [
+    {
+      "parenleft": {
+        "stroke_addition": 12.0,
+        "inward_translation": 14,
+        "bounds": [
+          223.0,
+          -139.0,
+          409.7134094238281,
+          740.0
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "bracketleft": {
+        "stroke_addition": 12.0,
+        "inward_translation": 14,
+        "bounds": [
+          226.0,
+          -139.0,
+          430.0,
+          740.0
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "braceleft": {
+        "stroke_addition": 12.0,
+        "inward_translation": 14,
+        "bounds": [
+          125.56471252441406,
+          -139.0,
+          428.0,
+          740.0
+        ],
+        "waist_extension": 72,
+        "horizontal_nose_thickness": 59.76
+      },
+      "bar": {
+        "stroke_addition": 8.0
+      },
+      "underscore": {
+        "shift": 80,
+        "stroke_height": 66,
+        "alignment": "bottom at baseline",
+        "full_cell_width": true
+      }
+    },
+    {
+      "parenleft": {
+        "stroke_addition": 14.0,
+        "inward_translation": 14,
+        "bounds": [
+          213.0,
+          -139.0,
+          422.66546630859375,
+          740.0
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "bracketleft": {
+        "stroke_addition": 14.0,
+        "inward_translation": 14,
+        "bounds": [
+          216.0,
+          -139.0,
+          440.0,
+          740.0
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "braceleft": {
+        "stroke_addition": 14.0,
+        "inward_translation": 14,
+        "bounds": [
+          108.37435913085938,
+          -139.0,
+          438.0,
+          740.0
+        ],
+        "waist_extension": 72,
+        "horizontal_nose_thickness": 74.16
+      },
+      "bar": {
+        "stroke_addition": 10.0
+      },
+      "underscore": {
+        "shift": 87,
+        "stroke_height": 80,
+        "alignment": "bottom at baseline",
+        "full_cell_width": true
+      }
+    },
+    {
+      "parenleft": {
+        "stroke_addition": 16.0,
+        "inward_translation": 14,
+        "bounds": [
+          204.0,
+          -138.99998474121094,
+          433.0,
+          739.9999389648438
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "bracketleft": {
+        "stroke_addition": 16.0,
+        "inward_translation": 14,
+        "bounds": [
+          207.0,
+          -138.99998474121094,
+          451.0,
+          739.9999389648438
+        ],
+        "waist_extension": 0,
+        "horizontal_nose_thickness": null
+      },
+      "braceleft": {
+        "stroke_addition": 16.0,
+        "inward_translation": 14,
+        "bounds": [
+          90.75296020507812,
+          -138.99998474121094,
+          449.0,
+          739.9999389648438
+        ],
+        "waist_extension": 72,
+        "horizontal_nose_thickness": 88.56
+      },
+      "bar": {
+        "stroke_addition": 12.0
+      },
+      "underscore": {
+        "shift": 93,
+        "stroke_height": 92,
+        "alignment": "bottom at baseline",
+        "full_cell_width": true
+      }
+    }
+  ],
+  "named_master_fidelity": {
+    "bar": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "braceleft": [
+      0.0013413028599897612,
+      0.001165775621240782,
+      0.0005477571305544227
+    ],
+    "braceright": [
+      0.001275578357259237,
+      0.001028126038365955,
+      0.0005596999556441738
+    ],
+    "bracketleft": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bracketright": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "parenleft": [
+      0.0002533652485805404,
+      0.0005231956667291244,
+      0.0008957157543242675
+    ],
+    "parenright": [
+      0.00024670856850363934,
+      0.0005278059423730989,
+      0.0008810897899703099
+    ],
+    "underscore": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "sanitized_fonts": 4,
+  "weights_checked": [
+    300,
+    310,
+    320,
+    330,
+    340,
+    350,
+    360,
+    370,
+    380,
+    390,
+    400
+  ],
+  "changed_glyphs": [
+    "bar",
+    "braceleft",
+    "braceright",
+    "bracketleft",
+    "bracketright",
+    "parenleft",
+    "parenright",
+    "underscore"
+  ],
+  "other_drawings_variations": "exact",
+  "layout_and_advances": "retained",
+  "samples": [
+    {
+      "weight": 300,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.0013413028599897612,
+        "parenleft": 0.0002533652485805404,
+        "braceright": 0.001275578357259237,
+        "parenright": 0.00024670856850363934,
+        "bracketright": 0.0,
+        "bar": 0.0,
+        "bracketleft": 0.0
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 380.0,
+        "bracketleft": 340.0,
+        "braceleft": 344.0
+      }
+    },
+    {
+      "weight": 310,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.005476852752835526,
+        "parenleft": 0.00480265677020334,
+        "braceright": 0.0040621375471897505,
+        "parenright": 0.004828160503630472,
+        "bracketright": 0.0010050146910721887,
+        "bar": 0.0,
+        "bracketleft": 0.0010050146910721887
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 375.19970703125,
+        "bracketleft": 335.999755859375,
+        "braceleft": 339.999755859375
+      }
+    },
+    {
+      "weight": 320,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.004647491789862879,
+        "parenleft": 0.0043471140397633775,
+        "braceright": 0.0031765659771016887,
+        "parenright": 0.004361149679013207,
+        "bracketright": 0.00048486135855717273,
+        "bar": 0.0,
+        "bracketleft": 0.00048486135855717273
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 370.3994140625,
+        "bracketleft": 331.99951171875,
+        "braceleft": 335.99951171875
+      }
+    },
+    {
+      "weight": 330,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.004802141792209159,
+        "parenleft": 0.002476550976756745,
+        "braceright": 0.0033102841741614337,
+        "parenright": 0.0024584257432536,
+        "bracketright": 0.0004697982693548655,
+        "bar": 0.0,
+        "bracketleft": 0.0004697982693548655
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 365.6005859375,
+        "bracketleft": 328.00048828125,
+        "braceleft": 332.00048828125
+      }
+    },
+    {
+      "weight": 340,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.004592839414901148,
+        "parenleft": 0.0038999002111144983,
+        "braceright": 0.003595511863975607,
+        "parenright": 0.003908751384217298,
+        "bracketright": 0.000879467986853273,
+        "bar": 0.0,
+        "bracketleft": 0.000879467986853273
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 360.80029296875,
+        "bracketleft": 324.000244140625,
+        "braceleft": 328.000244140625
+      }
+    },
+    {
+      "weight": 350,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.001165775621240782,
+        "parenleft": 0.0005231956667291244,
+        "braceright": 0.001028126038365955,
+        "parenright": 0.0005278059423730989,
+        "bracketright": 0.0,
+        "bar": 0.0,
+        "bracketleft": 0.0
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 354.0,
+        "bracketleft": 320.0,
+        "braceleft": 324.0
+      }
+    },
+    {
+      "weight": 360,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.006764782614298995,
+        "parenleft": 0.0053332567739795,
+        "braceright": 0.006824063216606184,
+        "parenright": 0.005354823204744636,
+        "bracketright": 0.003843443640431658,
+        "bar": 0.003758169934640523,
+        "bracketleft": 0.003843443640431658
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 351.1998291015625,
+        "bracketleft": 315.5997314453125,
+        "braceleft": 319.5997314453125
+      }
+    },
+    {
+      "weight": 370,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.009454624528921915,
+        "parenleft": 0.006800355585991461,
+        "braceright": 0.009493541805270964,
+        "parenright": 0.00677765938231279,
+        "bracketright": 0.006122922984451547,
+        "bar": 0.007125350140056022,
+        "bracketleft": 0.006122922984451547
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 347.199462890625,
+        "bracketleft": 311.199462890625,
+        "braceleft": 315.199462890625
+      }
+    },
+    {
+      "weight": 380,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.008155330250509815,
+        "parenleft": 0.005151933400078214,
+        "braceright": 0.008194545562930772,
+        "parenright": 0.005105975447235203,
+        "bracketright": 0.005921727362840479,
+        "bar": 0.006879648411088573,
+        "bracketleft": 0.005921727362840479
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 342.800537109375,
+        "bracketleft": 306.800537109375,
+        "braceleft": 310.800537109375
+      }
+    },
+    {
+      "weight": 390,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.006551036091561663,
+        "parenleft": 0.004098524371511282,
+        "braceright": 0.006546768210606232,
+        "parenright": 0.004069803377304837,
+        "bracketright": 0.0034529384718580583,
+        "bar": 0.0033823529411764705,
+        "bracketleft": 0.0034529384718580583
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 338.4002685546875,
+        "bracketleft": 302.4002685546875,
+        "braceleft": 306.4002685546875
+      }
+    },
+    {
+      "weight": 400,
+      "outline_fidelity": {
+        "underscore": 0.0,
+        "braceleft": 0.0005477571305544227,
+        "parenleft": 0.0008957157543242675,
+        "braceright": 0.0005596999556441738,
+        "parenright": 0.0008810897899703099,
+        "bracketright": 0.0,
+        "bar": 0.0,
+        "bracketleft": 0.0
+      },
+      "empty_pair_ink_gaps": {
+        "parenleft": 334.0,
+        "bracketleft": 298.0,
+        "braceleft": 302.0
+      }
+    }
+  ]
+}

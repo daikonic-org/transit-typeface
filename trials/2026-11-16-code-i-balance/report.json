@@ -1,0 +1,350 @@
+{
+  "references": [
+    {
+      "label": "JetBrains Mono 400",
+      "path": "/Users/pmouli/GitHub.nosync/daikonic-transit-code/comparisons/glyph-dimensions/references/JetBrainsMono-wght.ttf",
+      "version": "Version 2.305",
+      "sha256": "3cfafa86e28b87184d592fef82846e8c10cb48653c62efcda34f082da225ec34"
+    },
+    {
+      "label": "Source Code Pro 400",
+      "path": "/Users/pmouli/Library/Fonts/SourceCodePro-VariableFont_wght.ttf",
+      "version": "Version 1.018;hotconv 1.0.116;makeotfexe 2.5.65601",
+      "sha256": "d43a17894d717dc28a67fd95a545ebcd244494bc2f93e09c5f1ea2525c505a29"
+    },
+    {
+      "label": "Menlo Regular",
+      "path": "/System/Library/Fonts/Menlo.ttc",
+      "version": "22.0d2e1",
+      "sha256": "f2d400484a6aace67980730ec0a9ef24ce9e535a2604f118e6fdc2510021b85f"
+    }
+  ],
+  "i_construction": {
+    "shaft_shift": 24,
+    "stem_width": 93.0,
+    "bar_thickness": 88.0,
+    "body_top": 515.0
+  },
+  "metrics": [
+    {
+      "font": "Transit Code / current Book",
+      "glyph": "i",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 68.67,
+      "left_margin_percent": 15.67,
+      "right_margin_percent": 15.67,
+      "ink_centroid_percent": 46.82,
+      "bounds": [
+        94.0,
+        0.0,
+        506.0,
+        726.0
+      ]
+    },
+    {
+      "font": "Transit Code / current Book",
+      "glyph": "c",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 74.33,
+      "left_margin_percent": 13.0,
+      "right_margin_percent": 12.67,
+      "ink_centroid_percent": 46.98,
+      "bounds": [
+        78.0,
+        2.0,
+        524.0,
+        528.0
+      ]
+    },
+    {
+      "font": "Transit Code / current Book",
+      "glyph": "o",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 86.67,
+      "left_margin_percent": 6.67,
+      "right_margin_percent": 6.67,
+      "ink_centroid_percent": 50.01,
+      "bounds": [
+        40.0,
+        2.0,
+        560.0,
+        528.0
+      ]
+    },
+    {
+      "font": "Transit Code / current Book",
+      "glyph": "n",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 79.0,
+      "left_margin_percent": 10.5,
+      "right_margin_percent": 10.5,
+      "ink_centroid_percent": 48.52,
+      "bounds": [
+        63.0,
+        13.0,
+        537.0,
+        528.0
+      ]
+    },
+    {
+      "font": "Transit Code / proposed i",
+      "glyph": "i",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 68.67,
+      "left_margin_percent": 15.67,
+      "right_margin_percent": 15.67,
+      "ink_centroid_percent": 48.9,
+      "bounds": [
+        94.0,
+        0.0,
+        506.0,
+        726.0
+      ]
+    },
+    {
+      "font": "Transit Code / proposed i",
+      "glyph": "c",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 74.33,
+      "left_margin_percent": 13.0,
+      "right_margin_percent": 12.67,
+      "ink_centroid_percent": 46.98,
+      "bounds": [
+        78.0,
+        2.0,
+        524.0,
+        528.0
+      ]
+    },
+    {
+      "font": "Transit Code / proposed i",
+      "glyph": "o",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 86.67,
+      "left_margin_percent": 6.67,
+      "right_margin_percent": 6.67,
+      "ink_centroid_percent": 50.01,
+      "bounds": [
+        40.0,
+        2.0,
+        560.0,
+        528.0
+      ]
+    },
+    {
+      "font": "Transit Code / proposed i",
+      "glyph": "n",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 79.0,
+      "left_margin_percent": 10.5,
+      "right_margin_percent": 10.5,
+      "ink_centroid_percent": 48.52,
+      "bounds": [
+        63.0,
+        13.0,
+        537.0,
+        528.0
+      ]
+    },
+    {
+      "font": "JetBrains Mono 400",
+      "glyph": "i",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 78.33,
+      "left_margin_percent": 14.17,
+      "right_margin_percent": 7.5,
+      "ink_centroid_percent": 50.76,
+      "bounds": [
+        85.0,
+        0.0,
+        555.0,
+        777.0
+      ]
+    },
+    {
+      "font": "JetBrains Mono 400",
+      "glyph": "c",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 72.5,
+      "left_margin_percent": 14.67,
+      "right_margin_percent": 12.83,
+      "ink_centroid_percent": 46.41,
+      "bounds": [
+        88.0,
+        -10.0,
+        523.0,
+        560.0
+      ]
+    },
+    {
+      "font": "JetBrains Mono 400",
+      "glyph": "o",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 72.0,
+      "left_margin_percent": 14.0,
+      "right_margin_percent": 14.0,
+      "ink_centroid_percent": 50.0,
+      "bounds": [
+        84.0,
+        -8.0,
+        516.0,
+        558.0
+      ]
+    },
+    {
+      "font": "JetBrains Mono 400",
+      "glyph": "n",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 69.67,
+      "left_margin_percent": 15.33,
+      "right_margin_percent": 15.0,
+      "ink_centroid_percent": 49.21,
+      "bounds": [
+        92.0,
+        0.0,
+        510.0,
+        560.0
+      ]
+    },
+    {
+      "font": "Source Code Pro 400",
+      "glyph": "i",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 53.93,
+      "left_margin_percent": 15.0,
+      "right_margin_percent": 31.07,
+      "ink_centroid_percent": 53.52,
+      "bounds": [
+        90.0,
+        0.0,
+        413.55078125,
+        715.6463623046875
+      ]
+    },
+    {
+      "font": "Source Code Pro 400",
+      "glyph": "c",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 76.49,
+      "left_margin_percent": 13.28,
+      "right_margin_percent": 10.23,
+      "ink_centroid_percent": 44.96,
+      "bounds": [
+        79.696533203125,
+        -12.0,
+        538.6236572265625,
+        498.0955810546875
+      ]
+    },
+    {
+      "font": "Source Code Pro 400",
+      "glyph": "o",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 80.1,
+      "left_margin_percent": 9.95,
+      "right_margin_percent": 9.95,
+      "ink_centroid_percent": 49.98,
+      "bounds": [
+        59.696533203125,
+        -12.0,
+        540.303466796875,
+        498.0955810546875
+      ]
+    },
+    {
+      "font": "Source Code Pro 400",
+      "glyph": "n",
+      "cell": 600,
+      "upm": 1000,
+      "ink_width_percent": 71.7,
+      "left_margin_percent": 15.51,
+      "right_margin_percent": 12.79,
+      "ink_centroid_percent": 50.67,
+      "bounds": [
+        93.0728759765625,
+        0.0,
+        523.247314453125,
+        498.0955810546875
+      ]
+    },
+    {
+      "font": "Menlo Regular",
+      "glyph": "i",
+      "cell": 1233,
+      "upm": 2048,
+      "ink_width_percent": 74.13,
+      "left_margin_percent": 19.3,
+      "right_margin_percent": 6.57,
+      "ink_centroid_percent": 54.37,
+      "bounds": [
+        238.0,
+        0.0,
+        1152.0,
+        1551.0
+      ]
+    },
+    {
+      "font": "Menlo Regular",
+      "glyph": "c",
+      "cell": 1233,
+      "upm": 2048,
+      "ink_width_percent": 70.24,
+      "left_margin_percent": 15.82,
+      "right_margin_percent": 13.95,
+      "ink_centroid_percent": 45.45,
+      "bounds": [
+        195.0,
+        -29.0,
+        1061.0,
+        1147.0
+      ]
+    },
+    {
+      "font": "Menlo Regular",
+      "glyph": "o",
+      "cell": 1233,
+      "upm": 2048,
+      "ink_width_percent": 77.78,
+      "left_margin_percent": 11.11,
+      "right_margin_percent": 11.11,
+      "ink_centroid_percent": 49.99,
+      "bounds": [
+        137.0,
+        -29.0,
+        1096.0,
+        1147.0
+      ]
+    },
+    {
+      "font": "Menlo Regular",
+      "glyph": "n",
+      "cell": 1233,
+      "upm": 2048,
+      "ink_width_percent": 69.42,
+      "left_margin_percent": 15.82,
+      "right_margin_percent": 14.76,
+      "ink_centroid_percent": 49.61,
+      "bounds": [
+        195.0,
+        0.0,
+        1051.0,
+        1147.0
+      ]
+    }
+  ]
+}

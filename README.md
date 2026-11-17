@@ -6,6 +6,8 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
+The current [Code 1.021 preview](previews/code-1.021/) includes the selected single-storey `@`, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; published releases remain available above.
+
 ## Daikonic Transit Sans
 
 The proportional foundation of the family. Based on [Metropolitan Line](https://github.com/cyrealtype/metropolitan-line), an open-source interpretation of Edward Johnston’s London Underground lettering, Sans retains its humanist character, rounded forms and distinctive diamond details while extending it into a range of weights.

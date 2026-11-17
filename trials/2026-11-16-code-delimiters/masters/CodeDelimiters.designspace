@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="300" maximum="400" default="350"/>
+  </axes>
+  <sources>
+    <source filename="Master-300.ttf" name="300">
+      <location>
+        <dimension name="Weight" xvalue="300"/>
+      </location>
+    </source>
+    <source filename="Master-350.ttf" name="350">
+      <location>
+        <dimension name="Weight" xvalue="350"/>
+      </location>
+    </source>
+    <source filename="Master-400.ttf" name="400">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+  </sources>
+</designspace>

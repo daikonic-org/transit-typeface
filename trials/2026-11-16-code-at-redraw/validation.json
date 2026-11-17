@@ -1,0 +1,131 @@
+{
+  "outer_width": 590,
+  "outer_height": 597,
+  "outer_stroke_ratio": 0.8,
+  "inner_stroke_ratio": 0.45,
+  "curve_approximation_tolerance": 0.025,
+  "sanitized_fonts": 4,
+  "checks": [
+    {
+      "weight": 300,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.008696755098614157,
+      "points": 928
+    },
+    {
+      "weight": 310,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.007389516670285536,
+      "points": 928
+    },
+    {
+      "weight": 320,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.006591954990636675,
+      "points": 928
+    },
+    {
+      "weight": 330,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.006244662974680625,
+      "points": 928
+    },
+    {
+      "weight": 340,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.0063051552122793215,
+      "points": 928
+    },
+    {
+      "weight": 350,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.00679443849909949,
+      "points": 928
+    },
+    {
+      "weight": 360,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.005920604369962114,
+      "points": 928
+    },
+    {
+      "weight": 370,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.005583213699974843,
+      "points": 928
+    },
+    {
+      "weight": 380,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.005561970921369956,
+      "points": 928
+    },
+    {
+      "weight": 390,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.00587246598932915,
+      "points": 928
+    },
+    {
+      "weight": 400,
+      "bounds": [
+        5.0,
+        -33.0,
+        595.0,
+        564.0
+      ],
+      "coverage_error": 0.006591647928830334,
+      "points": 928
+    }
+  ]
+}

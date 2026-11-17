@@ -25,3 +25,5 @@ jobs:
         run: python tools/pipeline.py approved
       - name: Verify weighting interpolation and retained designs
         run: python tools/check_weighting.py all --production
+      - name: Verify selected Code preview
+        run: python tools/package_code_preview.py --check
