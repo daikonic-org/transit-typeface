@@ -145,6 +145,7 @@ def main():
     args = parser.parse_args()
     entry = PREVIEWS["versions"][args.version]
     SOURCE = ROOT / entry["source"]
+    STUDY = ROOT / entry.get("study_directory", str(SOURCE.parent.relative_to(ROOT)))
     out = ROOT / "previews" / ("code-" + args.version)
     if args.check:
         if args.install:
@@ -216,11 +217,9 @@ def main():
             assert r.returncode == 0, r.stderr.decode()
     proofs = out / "specimens"
     proofs.mkdir(exist_ok=True)
-    for stem in ["Book", "NamedWeights"]:
+    for stem in entry.get("specimens", ["Book", "NamedWeights"]):
         for suffix in ["png", "pdf", "svg"]:
-            shutil.copy2(
-                SOURCE.parent / (stem + "." + suffix), proofs / (stem + "." + suffix)
-            )
+            shutil.copy2(STUDY / (stem + "." + suffix), proofs / (stem + "." + suffix))
     manifest = ROOT / "specimens/manifest.json"
     if manifest.exists() and json.loads(manifest.read_text())["code"][
         "sha256"
@@ -266,7 +265,7 @@ Browser proofs were reviewed; editor/terminal rendering still needs a smoke test
 
 This cut is packaged as a preview, separately from stable font releases. The released Code font
 and native sources/code/ remain1.017. Compatible trial sources/scripts and their
-validation records are in {SOURCE.parent.relative_to(ROOT)}/ and tools/.
+validation records are in {STUDY.relative_to(ROOT)}/ and tools/.
 Production native-source adoption remains pending. Earlier studies and released fonts are preserved.
 
 All4preview fonts pass OTS; VF drawing/variation/layout/metrics tables exactly

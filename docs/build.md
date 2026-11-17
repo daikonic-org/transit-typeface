@@ -56,7 +56,7 @@ See [scaling-lineage.md](scaling-lineage.md) and `recipes/weights.json` for the 
 
 specimens/font-selections.json can select an approved preview via its
 selection.json without changing the released-font configuration in family.json.
-The main Code panel currently uses preview1.023 and labels that status. The
+The main Code panel currently uses preview1.025 and labels that status. The
 specimen packager resolves the same selection and verifies its font hash.
 
 ```sh
@@ -75,3 +75,11 @@ packaging a dated specimen revision with tools/specimen_release.py.
 `python tools/package_code_preview_assets.py` creates format-separated preview archives in `.dist/code-preview/`. Its SOURCE archive contains the complete editable TTX font and a portable rebuild script. The XML roundtrip is verified against outline, variation, metric and layout tables and sanitized. The design recipe for 1.022 is `python tools/code_at_c_taper_study.py --upturn`. Native released Glyphs/UFO sources retain their separately documented versions.
 
 See [positioning, OTF exports and optical-size trials](layout-optical.md) for the new shared layout and CFF pipelines and the separate default-preserving optical review fonts.
+
+### Feature tables and Code 1.025
+
+`python tools/readme_features.py` renders README On/Off cells from the selected actual fonts, then updates the marked tables. `--check` verifies source hashes, shaping differences, generated SVGs and README content. Fixed character designs use the original Metropolitan Line as a reference, not a fictional Off style.
+
+The Code 1.025 design chain is `dot_palette.py` then `syntax_numeral_study.py --family code`; frozen inputs and the final per-token positions are in `recipes/syntax-numeral-trial.json`. `check_dot_palette.py` and `check_syntax_numerals.py` verify the variable shapes, preserved metrics, glyph bodies, fixed-cell ligatures and optional proportional-family numeral studies. Sans/System numeral and dot studies remain review fonts; only the Code study is selected for the 1.024 preview.
+
+`export_otf.py --family code` exports the selected Code cut, and `package_code_preview_assets.py` includes OTF with VF/TTF/WOFF2, editable TTX and specimens. Native released Glyphs/UFO sources retain their separately documented versions.

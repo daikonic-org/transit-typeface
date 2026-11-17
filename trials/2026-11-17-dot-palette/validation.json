@@ -1,0 +1,26 @@
+{
+  "code": {
+    "sanitizer": "passed",
+    "normal_dot_usages": 50,
+    "sampled_locations": 7,
+    "body_and_metrics": "preserved",
+    "bullet": "unchanged",
+    "layout_tables": "byte-identical"
+  },
+  "sans": {
+    "sanitizer": "passed",
+    "normal_dot_usages": 55,
+    "sampled_locations": 9,
+    "body_and_metrics": "preserved",
+    "bullet": "unchanged",
+    "layout_tables": "byte-identical"
+  },
+  "system": {
+    "sanitizer": "passed",
+    "normal_dot_usages": 56,
+    "sampled_locations": 45,
+    "body_and_metrics": "preserved",
+    "bullet": "unchanged",
+    "layout_tables": "byte-identical"
+  }
+}

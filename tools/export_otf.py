@@ -118,8 +118,6 @@ def main():
             report[key] = {**current, "exports": outputs}
             continue
         source = ROOT / cfg["font"]
-        if key == "code":
-            source = trial / "code/CodePositioned-VF.ttf"
         if key in optical:
             source = ROOT / optical[key]
         original = TTFont(source)

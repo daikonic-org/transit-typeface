@@ -27,6 +27,14 @@ jobs:
         run: python tools/check_weighting.py all --production
       - name: Verify selected Code preview
         run: python tools/package_code_preview.py --check
+      - name: Verify dot palette, syntax and numeral studies
+        run: |
+          python tools/check_dot_palette.py
+          python tools/check_syntax_numerals.py
+      - name: Verify Rust lifetime apostrophe and protected literals
+        run: python tools/check_rust_lifetimes.py
+      - name: Verify font-rendered README feature tables
+        run: python tools/readme_features.py --check
       - name: Verify positioning and optical-size candidates
         run: python tools/check_layout_optical.py
       - name: Verify CFF OpenType exports

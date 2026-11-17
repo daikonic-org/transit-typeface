@@ -1,0 +1,664 @@
+{
+  "code": {
+    "master": "existing period dot; complete variable shape; centers retained except minimum paired-dot clearance",
+    "bullet": "unchanged separate master",
+    "glyphs": {
+      "Cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Edieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Idieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Idotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Ldot": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Ydieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "adieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "edieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "i": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "idieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "i.loclTRK": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "iogonek": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ij": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "j": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ldot": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "odieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "udieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "wdieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "zero": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "period": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "colon": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "semicolon": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ellipsis": {
+        "dots": 3,
+        "clearance_adjusted": false
+      },
+      "exclam": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "exclamdown": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "question": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "questiondown": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "periodcentered": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni2049": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "exclamdbl": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni2047": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni2048": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "twodotenleader": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "periodcentered.loclCAT": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "periodcentered.loclCAT.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "divide": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0308": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni0308.case": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "dieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "dotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "code.scope": {
+        "dots": 4,
+        "clearance_adjusted": false
+      }
+    }
+  },
+  "sans": {
+    "master": "existing i dot; complete variable shape; centers retained except minimum paired-dot clearance",
+    "bullet": "unchanged separate master",
+    "glyphs": {
+      "Adieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Edieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Idieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Idotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Ldot": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Odieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Udieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Wdieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Ydieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "adieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "edieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "i": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "idieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "i.loclTRK": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "iogonek": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ij": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "j": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ldot": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "odieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "udieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "wdieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "ydieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "period": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "colon": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "semicolon": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ellipsis": {
+        "dots": 3,
+        "clearance_adjusted": false
+      },
+      "exclam": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "exclamdown": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "question": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "questiondown": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "periodcentered": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni2049": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "exclamdbl": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni2047": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni2048": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "twodotenleader": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "periodcentered.loclCAT": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "periodcentered.loclCAT.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "divide": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni0308": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni0308.case": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "dieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "dotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "a_i": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "l_i": {
+        "dots": 1,
+        "clearance_adjusted": false
+      }
+    }
+  },
+  "system": {
+    "master": "existing i dot; complete variable shape; centers retained except minimum paired-dot clearance",
+    "bullet": "unchanged separate master",
+    "glyphs": {
+      "Adieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Edieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Idieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Idotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Ldot": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "Odieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Udieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Wdieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Ydieresis": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "Zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "adieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "cdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "edieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "edotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "gdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "i": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "idieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "i.loclTRK": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "iogonek": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ij": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "j": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ldot": {
+        "dots": 1,
+        "clearance_adjusted": true
+      },
+      "odieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "udieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "wdieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "ydieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "zdotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "fi": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "period": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "colon": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "semicolon": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "ellipsis": {
+        "dots": 3,
+        "clearance_adjusted": false
+      },
+      "exclam": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "exclamdown": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "question": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "questiondown": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "periodcentered": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni2049": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "exclamdbl": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni2047": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni2048": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "twodotenleader": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "periodcentered.loclCAT": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "periodcentered.loclCAT.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "divide": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "uni0308": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "uni0308.case": {
+        "dots": 2,
+        "clearance_adjusted": true
+      },
+      "uni0307.case": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "dieresis": {
+        "dots": 2,
+        "clearance_adjusted": false
+      },
+      "dotaccent": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "period.tnum": {
+        "dots": 1,
+        "clearance_adjusted": false
+      },
+      "colon.tnum": {
+        "dots": 2,
+        "clearance_adjusted": false
+      }
+    }
+  }
+}

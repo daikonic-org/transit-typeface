@@ -1,0 +1,15 @@
+{
+  "version": "1.025",
+  "status": "preview",
+  "family": "Daikonic Transit Code",
+  "default_weight": 350,
+  "weight_range": [
+    300,
+    400
+  ],
+  "selected_source": "trials/2026-11-17-syntax-numerals/code/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+  "source_sha256": "b0b6d3001720f7de2cc0a0716c28d7b0c41bbf6b448dd0564a9581c485f46c8d",
+  "drawing_variation_layout_fidelity": "exact to selected source",
+  "sanitized_fonts": 4,
+  "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption remains pending."
+}

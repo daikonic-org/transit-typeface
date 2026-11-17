@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [Code 1.023 preview](previews/code-1.023/) includes the selected two-storey `@` with a tapered, gently upturned c-style wrap, refined delimiters, underscore and hyphen, and optical spacing adjustments. It is an installable working cut; [preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.023-preview) separate VF, TTF, WOFF2, editable TTX sources and specimens. Published stable releases remain available above.
+The current [Code 1.025 preview](previews/code-1.025/) includes consistent prominent diamond dots, wider equals, additional coding ligatures and taller generic delimiters. The approved `?.` and `!.` use their original internal spacing; `?.` has a small rightward optical shift. [Preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.025-preview) separate VF, OTF, TTF, WOFF2, editable TTX sources and specimens. Earlier cuts and stable releases remain available.
 
 ## Daikonic Transit Sans
 
@@ -17,6 +17,15 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
+The samples below use the actual Book font, with the listed feature enabled or disabled.
+
+<!-- sans-features -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/sans-standard-on.svg" width="300" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/sans-standard-off.svg" width="300" alt="Standard ligatures off: fi fl"> |
+| Hooked combinations<br><code>ai li</code> | <img src="specimens/features/sans-hooks-on.svg" width="300" alt="Hooked combinations on: ai li"> | <img src="specimens/features/sans-hooks-off.svg" width="300" alt="Hooked combinations off: ai li"> |
+<!-- /sans-features -->
+
 ## Daikonic Transit System
 
 An interface font for application navigation, controls, dashboards and short passages of screen text. Developed from Daikonic Transit Sans, System combines a larger lowercase, adjusted spacing and an optical-size range for smaller interface text, while keeping Sans’s capital-height proportions.
@@ -26,6 +35,16 @@ An interface font for application navigation, controls, dashboards and short pas
 - Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` has a curved hook and no pedestal.
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
+
+Tabular figures are optional; the hooked `1` appears with `tnum`. The default proportional `1` stays unchanged.
+
+<!-- system-features -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/system-standard-on.svg" width="300" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/system-standard-off.svg" width="300" alt="Standard ligatures off: fi fl"> |
+| Tabular figures<br><code>111  248  000</code> | <img src="specimens/features/system-tabular-on.svg" width="300" alt="Tabular figures on: 111  248  000"> | <img src="specimens/features/system-tabular-off.svg" width="300" alt="Tabular figures off: 111  248  000"> |
+| Tabular 1 / default 1<br><code>1</code> | <img src="specimens/features/system-one-on.svg" width="300" alt="Tabular 1 / default 1 on: 1"> | <img src="specimens/features/system-one-off.svg" width="300" alt="Tabular 1 / default 1 off: 1"> |
+<!-- /system-features -->
 
 ## Daikonic Transit Code
 
@@ -40,10 +59,43 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
-- Arrow ligatures: `->`, `->>`, `=>`, `<-`, `<<-`.
-- Comparison ligatures: `==`, `===`, `!=`, `!==`, `<=`, `>=`.
-- A balanced `::` ligature. Contextual alternates (`calt`) provide all twelve coding ligatures; enable font ligatures in your editor to use them.
+- Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
+- A diamond-headed, tapered apostrophe for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`), with a flat terminal above the x-height. Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
+
+**Switchable features.** On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting is a typographic heuristic: adjacent `a<b` receives the taller form, while spaced `a < b` remains a comparison. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
+
+<!-- code-features -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="300" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="300" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
+| Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="300" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="300" alt="Comparisons off: == === != !== &lt;= &gt;="> |
+| Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="300" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="300" alt="Scope separator off: ::"> |
+| Optional / non-null access<br><code>?. !.</code> | <img src="specimens/features/code-access-on.svg" width="300" alt="Optional / non-null access on: ?. !."> | <img src="specimens/features/code-access-off.svg" width="300" alt="Optional / non-null access off: ?. !."> |
+| Interpolation / expansion<br><code>${ $[ $(</code> | <img src="specimens/features/code-interpolation-on.svg" width="300" alt="Interpolation / expansion on: ${ $[ $("> | <img src="specimens/features/code-interpolation-off.svg" width="300" alt="Interpolation / expansion off: ${ $[ $("> |
+| Ranges and dot assignment<br><code>.. .= ..=</code> | <img src="specimens/features/code-ranges-on.svg" width="300" alt="Ranges and dot assignment on: .. .= ..="> | <img src="specimens/features/code-ranges-off.svg" width="300" alt="Ranges and dot assignment off: .. .= ..="> |
+| Three-character ellipsis<br><code>...</code> | <img src="specimens/features/code-ellipsis-on.svg" width="300" alt="Three-character ellipsis on: ..."> | <img src="specimens/features/code-ellipsis-off.svg" width="300" alt="Three-character ellipsis off: ..."> |
+| Assignment / turnstiles<br><code>:= &#124;= &#124;-</code> | <img src="specimens/features/code-assignment-on.svg" width="300" alt="Assignment / turnstiles on: := &#124;= &#124;-"> | <img src="specimens/features/code-assignment-off.svg" width="300" alt="Assignment / turnstiles off: := &#124;= &#124;-"> |
+| Hash groups<br><code>## ### ####</code> | <img src="specimens/features/code-hashes-on.svg" width="300" alt="Hash groups on: ## ### ####"> | <img src="specimens/features/code-hashes-off.svg" width="300" alt="Hash groups off: ## ### ####"> |
+| Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="300" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="300" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
+| Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="300" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="300" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
+| Generic delimiters<br><code>Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="300" alt="Generic delimiters on: Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="300" alt="Generic delimiters off: Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
+| Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="300" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="300" alt="Contextual optical placement off: ke Ke KE vi il"> |
+| Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="300" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="300" alt="Repeated at-symbol fitting off: @@ @@@"> |
+<!-- /code-features -->
+
+**Distinct character designs.** These are permanent parts of Code, so there is no Off setting. The comparison uses Code Book and the original Metropolitan Line Regular at the same text size; the base font is proportional.
+
+<!-- code-characters -->
+| Permanent design | Transit Code | Metropolitan Line reference |
+| --- | --- | --- |
+| Distinct letters and figures | <img src="specimens/features/distinct-identity-code.svg" width="300" alt="Distinct letters and figures / code"> | <img src="specimens/features/distinct-identity-base.svg" width="300" alt="Distinct letters and figures / base"> |
+| Stronger, inward-set delimiters | <img src="specimens/features/distinct-delimiters-code.svg" width="300" alt="Stronger, inward-set delimiters / code"> | <img src="specimens/features/distinct-delimiters-base.svg" width="300" alt="Stronger, inward-set delimiters / base"> |
+| Inline, gapless underscore | <img src="specimens/features/distinct-underscore-code.svg" width="300" alt="Inline, gapless underscore / code"> | <img src="specimens/features/distinct-underscore-base.svg" width="300" alt="Inline, gapless underscore / base"> |
+| Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-code.svg" width="300" alt="Redrawn two-storey at symbol / code"> | <img src="specimens/features/distinct-at-base.svg" width="300" alt="Redrawn two-storey at symbol / base"> |
+| Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-code.svg" width="300" alt="Shared prominent diamond dots / code"> | <img src="specimens/features/distinct-diamonds-base.svg" width="300" alt="Shared prominent diamond dots / base"> |
+| Wider equals and hyphen | <img src="specimens/features/distinct-bars-code.svg" width="300" alt="Wider equals and hyphen / code"> | <img src="specimens/features/distinct-bars-base.svg" width="300" alt="Wider equals and hyphen / base"> |
+<!-- /code-characters -->
 
 All three typefaces include the same family of pointed, concave arrowheads, including the Unicode arrows **← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕**.
 
@@ -59,7 +111,7 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | **OTF** | Static CFF OpenType fonts with the same glyphs, spacing and layout features | Desktop applications and publishing workflows that prefer CFF outlines. |
 | **TTF** | Individual named-weight TrueType fonts | Applications that use separate font styles. System includes Caption, Text and Display cuts. |
 | **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
-| **SOURCE** | Editable Glyphs and UFO sources, designspaces and rebuild inputs | Editing or building the typefaces. System’s large Glyphs file is supplied inside a ZIP. |
+| **SOURCE** | Editable Glyphs and UFO sources, designspaces and rebuild inputs | Editing or building the typefaces. System’s large Glyphs file is supplied inside a ZIP. Code previews instead include a complete editable TTX font snapshot and portable rebuild script; native Glyphs/UFO sources retain their separately documented version. |
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 

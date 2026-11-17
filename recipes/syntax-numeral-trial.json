@@ -1,0 +1,74 @@
+{
+  "status": "review trial; existing installed faces preserved",
+  "inputs": {
+    "code": {
+      "font": "previews/code-1.023/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "e00278f26cecd637959a167e57401d33690430b45aca51008a4bdd13dccf7d7b"
+    },
+    "sans": {
+      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf"
+    },
+    "system": {
+      "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
+    }
+  },
+  "code": {
+    "equals_width_factor": 1.08,
+    "ligatures": [
+      "?.",
+      "!.",
+      "${",
+      "$[",
+      "$(",
+      "..",
+      ".=",
+      "..=",
+      "...",
+      ":=",
+      "|=",
+      "|-",
+      "##",
+      "###",
+      "####",
+      "<'"
+    ],
+    "generics": "taller delimiter profile when directly adjacent to identifiers; spaces preserve comparison form",
+    "generic_height": "Halfway between comparison-sign and bracket height; centered within baseline/cap-height limits.",
+    "punctuation_pair_offsets": {
+      "?.": {
+        "lead": 95,
+        "period": 580
+      },
+      "!.": {
+        "lead": 35,
+        "period": 520
+      }
+    },
+    "rust_lifetime": {
+      "head_scale": 0.8,
+      "stem_ratio": 0.8,
+      "terminal_ratio": 0.6,
+      "angle_degrees": 22.5,
+      "head_x": 480,
+      "terminal_above_xheight": 18,
+      "quoted_identifier_limit": 32,
+      "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments."
+    }
+  },
+  "numerals": {
+    "fractions": "Sans/System frac,numr,dnom and18Unicodevulgarfractions",
+    "oldstyle": "Sans onum/lnum; lining figures remain default"
+  },
+  "dots": {
+    "master": "Code uses its existing variable period; Sans and System use their existing variable i dot.",
+    "bullet": "Separate, unchanged.",
+    "clearance": "Minimum 12 units or 8% of dot width for horizontal pairs; preserve ldot/Ldot stem clearance and a 12-unit gap between Code question/exclamation and division dots and bodies.",
+    "master_glyphs": {
+      "code": "period",
+      "sans": "i",
+      "system": "i"
+    }
+  }
+}

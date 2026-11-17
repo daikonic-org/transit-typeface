@@ -19,15 +19,15 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-These specimens show Sans0.109, System0.117 and **Code1.021 preview**. The Code
+These specimens show Sans0.109, System0.117 and **Code1.025 preview**. The Code
 panel uses the same approved preview installed for Book350, including the
-single-storey @, balanced i, stronger delimiters, raised/heavier gapless underscore,
+two-storey @ with a tapered c-style wrap, balanced i, stronger delimiters, raised/heavier gapless underscore,
 wider hyphen and selected optical pair adjustments. The Code footer identifies
 it as a preview. Released font packages remain separate.
 
 [Code detail sheet PNG](TransitCode-Details.png) · [Code detail sheet PDF](TransitCode-Details.pdf)
 shows all three Code weights with email/decorator samples, repeat @ fitting,
-snake_case, delimiters, spacing pairs and all coding ligatures.
+snake_case, delimiters, spacing pairs and arrow/comparison ligatures. The [Code feature table](features/code-Features.pdf) covers all current contextual and coding ligatures; [character comparisons](features/Code-Characters.pdf) show permanent designs beside Metropolitan Line.
 
 The font selection is explicit in font-selections.json; manifest.json records
 versions and exact source hashes. PNG/PDF/SVG exports share the same composition.

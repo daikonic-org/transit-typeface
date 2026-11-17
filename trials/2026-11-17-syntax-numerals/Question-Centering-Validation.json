@@ -1,0 +1,52 @@
+{
+  "question_pair_offsets": {
+    "original": [
+      35,
+      520
+    ],
+    "revised": [
+      95,
+      580
+    ]
+  },
+  "question_pair_shift_x": 60,
+  "internal_spacing": "original gap restored for both pairs",
+  "exclamation_pair_offsets": [
+    35,
+    520
+  ],
+  "exclamation_pair": "original spacing and placement; no added shift",
+  "other_glyphs_and_metrics": "byte-identical to preceding reviewed build",
+  "variation_and_layout": "unchanged",
+  "sanitizer": "passed",
+  "gaps_by_weight": {
+    "300": {
+      "?.": 364.0,
+      "!.": 351.0
+    },
+    "312.5": {
+      "?.": 358.5,
+      "!.": 345.5
+    },
+    "325": {
+      "?.": 353.0,
+      "!.": 340.0
+    },
+    "350": {
+      "?.": 342.0,
+      "!.": 329.0
+    },
+    "375": {
+      "?.": 331.0,
+      "!.": 318.0
+    },
+    "387.5": {
+      "?.": 325.5,
+      "!.": 312.5
+    },
+    "400": {
+      "?.": 320.0,
+      "!.": 307.0
+    }
+  }
+}

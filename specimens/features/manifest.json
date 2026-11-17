@@ -1,0 +1,2237 @@
+{
+  "sources": {
+    "sans": {
+      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+      "location": {
+        "wght": 350
+      }
+    },
+    "system": {
+      "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+      "location": {
+        "wght": 350,
+        "opsz": 14
+      }
+    },
+    "code": {
+      "font": "previews/code-1.025/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "85e7e74acb45a70442a3e0f766de759fce0d2974a732343526828e52e17a0d54",
+      "location": {
+        "wght": 350
+      }
+    },
+    "metropolitan": {
+      "font": "upstream/MetropolitanLine-Regular.ttf",
+      "sha256": "db03cb8a2599c914c5b3fe2305dd5e758cc55fd4aba88f2bb95f98c150f962c7"
+    }
+  },
+  "rows": {
+    "sans-standard": {
+      "text": "fi fl",
+      "on_features": {
+        "liga": true
+      },
+      "off_features": {
+        "liga": false
+      },
+      "on_shaping": [
+        [
+          "fi",
+          481,
+          0,
+          0
+        ],
+        [
+          "space",
+          250,
+          0,
+          0
+        ],
+        [
+          "fl",
+          605,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "f",
+          351,
+          0,
+          0
+        ],
+        [
+          "i",
+          208,
+          0,
+          0
+        ],
+        [
+          "space",
+          250,
+          0,
+          0
+        ],
+        [
+          "f",
+          351,
+          0,
+          0
+        ],
+        [
+          "l",
+          323,
+          0,
+          0
+        ]
+      ]
+    },
+    "sans-hooks": {
+      "text": "ai li",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "a_i",
+          654,
+          0,
+          0
+        ],
+        [
+          "space",
+          250,
+          0,
+          0
+        ],
+        [
+          "l_i",
+          388,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "a",
+          446,
+          0,
+          0
+        ],
+        [
+          "i",
+          208,
+          0,
+          0
+        ],
+        [
+          "space",
+          250,
+          0,
+          0
+        ],
+        [
+          "l",
+          315,
+          0,
+          0
+        ],
+        [
+          "i",
+          208,
+          0,
+          0
+        ]
+      ]
+    },
+    "system-standard": {
+      "text": "fi fl",
+      "on_features": {
+        "liga": true
+      },
+      "off_features": {
+        "liga": false
+      },
+      "on_shaping": [
+        [
+          "fi",
+          608,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "fl",
+          752,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "f",
+          390,
+          0,
+          0
+        ],
+        [
+          "i",
+          218,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "f",
+          390,
+          0,
+          0
+        ],
+        [
+          "l",
+          362,
+          0,
+          0
+        ]
+      ]
+    },
+    "system-tabular": {
+      "text": "111  248  000",
+      "on_features": {
+        "tnum": true
+      },
+      "off_features": {
+        "tnum": false
+      },
+      "on_shaping": [
+        [
+          "one.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "one.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "one.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "two.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "four.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "eight.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "zero.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "zero.tnum",
+          630,
+          0,
+          0
+        ],
+        [
+          "zero.tnum",
+          630,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "one",
+          268,
+          0,
+          0
+        ],
+        [
+          "one",
+          268,
+          0,
+          0
+        ],
+        [
+          "one",
+          268,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "two",
+          508,
+          0,
+          0
+        ],
+        [
+          "four",
+          606,
+          0,
+          0
+        ],
+        [
+          "eight",
+          629,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "space",
+          260,
+          0,
+          0
+        ],
+        [
+          "zero",
+          578,
+          0,
+          0
+        ],
+        [
+          "zero",
+          578,
+          0,
+          0
+        ],
+        [
+          "zero",
+          574,
+          0,
+          0
+        ]
+      ]
+    },
+    "system-one": {
+      "text": "1",
+      "on_features": {
+        "tnum": true
+      },
+      "off_features": {
+        "tnum": false
+      },
+      "on_shaping": [
+        [
+          "one.tnum",
+          630,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "one",
+          268,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-arrows": {
+      "text": "-> ->> => <- <<-",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.arrow",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.arrowDouble",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.fatArrow",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.leftArrow",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.leftDouble",
+          1800,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-comparisons": {
+      "text": "== === != !== <= >=",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.equal",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.strictEqual",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notEqual",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notStrict",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.lessEqual",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.greaterEqual",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-scope": {
+      "text": "::",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.scope",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-access": {
+      "text": "?. !.",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax00",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax01",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "question",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-interpolation": {
+      "text": "${ $[ $(",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax02",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax03",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax04",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "dollar",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "dollar",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "dollar",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-ranges": {
+      "text": ".. .= ..=",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax05",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax06",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax07",
+          1800,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-ellipsis": {
+      "text": "...",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax08",
+          1800,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-assignment": {
+      "text": ":= |= |-",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax09",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax10",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax11",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-hashes": {
+      "text": "## ### ####",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.syntax12",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax13",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax14",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ],
+        [
+          "numbersign",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-lifetimes": {
+      "text": "&'a <'a> 'static",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.lifetimeOpen",
+          1200,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-lifetime-literals": {
+      "text": "&'a 'a' '_'",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-generics": {
+      "text": "Vec<T> Vec<Vec<T>>",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "V",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-optical": {
+      "text": "ke Ke KE vi il",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "k",
+          600,
+          18,
+          0
+        ],
+        [
+          "e",
+          600,
+          -18,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "K",
+          600,
+          18,
+          0
+        ],
+        [
+          "e",
+          600,
+          -18,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "K",
+          600,
+          18,
+          0
+        ],
+        [
+          "E",
+          600,
+          -18,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "v",
+          600,
+          18,
+          0
+        ],
+        [
+          "i",
+          600,
+          -18,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "k",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "K",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "K",
+          600,
+          0,
+          0
+        ],
+        [
+          "E",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "v",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-at-repeat": {
+      "text": "@@ @@@",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "at.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "at.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "at.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "at.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "at.compact",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "at",
+          600,
+          0,
+          0
+        ],
+        [
+          "at",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "at",
+          600,
+          0,
+          0
+        ],
+        [
+          "at",
+          600,
+          0,
+          0
+        ],
+        [
+          "at",
+          600,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "files": {
+    "Code-Characters.svg": "499956a754c03564a99a8b28bd0d880e4b61d3716ea7d5d862f02dd56ef75388",
+    "code-Features.svg": "b4da60186e1d1b7fcdcd4d6ae5648e8e2d6fca36fc1981b29d5a08b113fc15f1",
+    "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
+    "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
+    "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
+    "code-arrows-on.svg": "4be9439aa1dec2e344121c8136316c429d87e0b93e63b32fe1c0ed127783147e",
+    "code-assignment-off.svg": "d856dbf094c5efcc58238954fd767b5ea4bd89f0029dfb580cfa43f9c8bec385",
+    "code-assignment-on.svg": "6bf9f23497b9002dc47303082d4f7059274330585e1d4ab6f1bc446a048b8fbf",
+    "code-at-repeat-off.svg": "28674eea5dd5abd91eb270d0aba3d1c7e501222c037edcc11da0e518d7ebee2f",
+    "code-at-repeat-on.svg": "98a1539247285a007c22e02c9bfbf6a4a03426e784bd80c2aa62ca30122088d0",
+    "code-comparisons-off.svg": "f28c0085db456652504540fde0377da4f611e59f6304295b9b7cebca1e78e9ca",
+    "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
+    "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
+    "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
+    "code-generics-off.svg": "be90742d847efee22c01a633b4443bb77d7d1409acbf2336319f9f8f81618370",
+    "code-generics-on.svg": "aa86e4e84819186ed70233c7b9387ca8a50e594662ffb3de681ce86885926736",
+    "code-hashes-off.svg": "fa3719dd2729f4d4be0cd363383c29d91f7d650595989fe496018ba254c6dd35",
+    "code-hashes-on.svg": "b456ed50535814e30430cb0f2982b9d2d21c291c77b7aab86074f16533214e61",
+    "code-interpolation-off.svg": "301f5c190008cf048dfbe672a586eda402f2811767c13389ca53dbc10023dd18",
+    "code-interpolation-on.svg": "730215295773707901cf1f285a4def52959da40259e2d777ad78e4b0dfe923c1",
+    "code-lifetime-literals-off.svg": "f876df6c8d5a7c05bec460902d766f21d489537a7fc432883cd7bca851c45ae6",
+    "code-lifetime-literals-on.svg": "6e4e1e9accd5290933f72cb97cb825f283e465ef8dcd57a36927c46fe0bbe1a2",
+    "code-lifetimes-off.svg": "262a5942e23de25931816624f157a0018bae8fd107b0917d6a26218564f34005",
+    "code-lifetimes-on.svg": "851076ae150f097fcdaa4f07ed537fd24f528afc321906881307580538c80be9",
+    "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
+    "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
+    "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
+    "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
+    "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
+    "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
+    "distinct-at-base.svg": "bb337f48766e7a0015347ff4a90967ecbb2516f30951f3877e2a6d16aaa2591f",
+    "distinct-at-code.svg": "3d89b37d2cd5e87ee40c023bddd3119825e950db989f472a59834dffe336572e",
+    "distinct-bars-base.svg": "5fb7b6ea0b78f6b0e6c8fbda26e9438b13fb988ce990289a8bc3d1275273496b",
+    "distinct-bars-code.svg": "abb290959544de1726f647c16622792bc3e681fde344682c39e933591067530e",
+    "distinct-delimiters-base.svg": "e8703595637370b81ca3a3ad9160b4103d3828bbf60b855c047bd78c137b2e4f",
+    "distinct-delimiters-code.svg": "e30a345babe04d4c33055c27e33cdef8b1242834594c37435cb1922fcec12d62",
+    "distinct-diamonds-base.svg": "926c5d805f7d38004bf47e77f9c60e7e83c46b100ccd1e3f9a8efd27e75375b3",
+    "distinct-diamonds-code.svg": "1ac8e69807927e54a3ecc1b829fb41e99243b7105fe6d77d452d567a93d051ce",
+    "distinct-identity-base.svg": "477876c1866cc4f9bbd2ab4e323790569e18f2ecd1cac02fc592f92d3732aef9",
+    "distinct-identity-code.svg": "6ceb07c858e5f0d548d26dc0aa1ef58c7238f1dd8250c2287d33b311fc1cc28c",
+    "distinct-underscore-base.svg": "bf86efbe209de35982b44377b70f0508bb163c49a6c55353ab3db41173a8423d",
+    "distinct-underscore-code.svg": "4c9366b88ea54f8303c2634148280636419e9dc24bcfbd891bafa117f1662ada",
+    "sans-Features.svg": "bdec36e4f69d83bec055fef535c84c51332289cbd3ae5c5a8e0c2bcd136e4491",
+    "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
+    "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
+    "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
+    "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
+    "system-Features.svg": "1fb41b1b56bc175b271d306a6242607366fabb7d94922be0fb6e8d8f76061643",
+    "system-one-off.svg": "84e1643acfecd2e576baadf6eb7369601cfb764ece23d998b4c09b84b4c503c1",
+    "system-one-on.svg": "b3a412f7fbbc2acf9f216b7edf37e2495c23e952c62b2184227517d4bfcc152e",
+    "system-standard-off.svg": "0f8ea230e630f18de9c7003993140f1658e9de3bc0c6a7c92d6f3d4e146a7c0b",
+    "system-standard-on.svg": "1d4c0f647b12a3ab566fb37b999113b302374a20b1bcaf5246deb06471605702",
+    "system-tabular-off.svg": "cac0aa4514e7e12dad72f2bdc2bc8dc154121d559b9c8e441cf4a3e18af3d3ee",
+    "system-tabular-on.svg": "c0bc61a77f289d74162f92cb9f67a1377ac24f525a41a45466418b985ca490f6"
+  }
+}

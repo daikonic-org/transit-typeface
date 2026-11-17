@@ -1,0 +1,79 @@
+{
+  "code": {
+    "source": "previews/code-1.023/VF/DaikonicTransitCode-VF.ttf",
+    "dot_palette": "trials/2026-11-17-dot-palette/code-dot-palette-VF.ttf",
+    "tokens": {
+      "?.": "code.syntax00",
+      "!.": "code.syntax01",
+      "${": "code.syntax02",
+      "$[": "code.syntax03",
+      "$(": "code.syntax04",
+      "..": "code.syntax05",
+      ".=": "code.syntax06",
+      "..=": "code.syntax07",
+      "...": "code.syntax08",
+      ":=": "code.syntax09",
+      "|=": "code.syntax10",
+      "|-": "code.syntax11",
+      "##": "code.syntax12",
+      "###": "code.syntax13",
+      "####": "code.syntax14",
+      "<'": "code.syntax15"
+    },
+    "equals_width_factor": 1.08,
+    "equals_height_and_thickness": "unchanged",
+    "generic_policy": "identifier-adjacent angles; unspaced a<b also treated as generic; spaces preserve comparison operators",
+    "generic_height": "halfway between comparison and bracket height, centered within baseline/cap-height limits",
+    "ligature_advances": "600 times input length",
+    "carets": "every600units",
+    "period_policy": "all syntax periods use the unscaled source diamond; only positions change",
+    "punctuation_pair_offsets": {
+      "?.": {
+        "lead": 95,
+        "period": 580
+      },
+      "!.": {
+        "lead": 35,
+        "period": 520
+      }
+    },
+    "rust_lifetime": {
+      "head_scale": 0.8,
+      "stem_ratio": 0.8,
+      "terminal_ratio": 0.6,
+      "angle_degrees": 22.5,
+      "head_x": 480,
+      "terminal_above_xheight": 18,
+      "quoted_identifier_limit": 32,
+      "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments."
+    },
+    "unicode_ellipsis": "one-cell U+2026 uses three full-size source periods; ASCII ... retains three cells"
+  },
+  "sans": {
+    "source": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+    "dot_palette": "trials/2026-11-17-dot-palette/sans-dot-palette-VF.ttf",
+    "unicode_fractions": 18,
+    "fractions": "frac, numr, dnom; reuses source-designed super/sub digits; new variable fraction slash; multi-digit numeric sequences",
+    "oldstyle": true,
+    "oldstyle_note": "0/1/2 at x-height,3/4/5/7/9 descend,6/8 retain ascenders; uniform sizing with stroke compensation; review trial",
+    "counter_backoffs": [
+      {
+        "glyph": "two",
+        "location": {
+          "wght": 500.0
+        },
+        "desired": 38.59550561797753,
+        "actual": 28.94662921348315
+      }
+    ]
+  },
+  "system": {
+    "source": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+    "dot_palette": "trials/2026-11-17-dot-palette/system-dot-palette-VF.ttf",
+    "unicode_fractions": 18,
+    "fractions": "frac, numr, dnom; reuses source-designed super/sub digits; new variable fraction slash; multi-digit numeric sequences",
+    "oldstyle": false,
+    "oldstyle_note": "0/1/2 at x-height,3/4/5/7/9 descend,6/8 retain ascenders; uniform sizing with stroke compensation; review trial",
+    "counter_backoffs": []
+  }
+}
