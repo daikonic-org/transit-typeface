@@ -19,7 +19,7 @@ Browser proofs were reviewed; editor/terminal rendering still needs a smoke test
 
 This cut is packaged as a preview, separately from stable font releases. The released Code font
 and native sources/code/ remain1.017. Compatible trial sources/scripts and their
-validation records are in trials/2026-11-17-syntax-numerals/ and tools/.
+validation records are in previews/code-1.025/specimens/ and tools/.
 Production native-source adoption remains pending. Earlier studies and released fonts are preserved.
 
 All4preview fonts pass OTS; VF drawing/variation/layout/metrics tables exactly

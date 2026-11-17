@@ -252,19 +252,61 @@ def code(font):
         }
         | {"dotlessi", "dotlessj"}
     )
-    generic = """languagesystem DFLT dflt; languagesystem latn dflt;
-    @Identifiers=[NAMES];
-    feature calt {
-      lookupflag IgnoreMarks;
-      sub less' @Identifiers by less.generic;
-      sub less' quotesingle by less.generic;
-      sub greater' @Identifiers by greater.generic;
-      sub @Identifiers greater' by greater.generic;
-      sub greater.generic greater' by greater.generic;
-    } calt;""".replace(
-        "NAMES", " ".join(identifiers)
+    words = sorted(set(identifiers) | {"underscore"})
+    lower = sorted(
+        {
+            name
+            for cp, name in cmap.items()
+            if unicodedata.category(chr(cp)) == "Ll" or 48 <= cp <= 57
+        }
+        | {"underscore", "dotlessi", "dotlessj"}
     )
-    add_features(font, generic)
+    upper = sorted(
+        {
+            name
+            for cp, name in cmap.items()
+            if unicodedata.category(chr(cp)) in ("Lu", "Lt")
+        }
+    )
+    whitespace = sorted({name for cp, name in cmap.items() if chr(cp).isspace()})
+    generic_lines = [
+        "languagesystem DFLT dflt;",
+        "languagesystem latn dflt;",
+        "@Identifiers=[" + " ".join(identifiers) + "];",
+        "@AngleWord=[" + " ".join(words) + "];",
+        "@AngleLower=[" + " ".join(lower) + "];",
+        "@AngleUpper=[" + " ".join(upper) + "];",
+        "@AngleSpace=[" + " ".join(whitespace) + "];",
+        "feature calt {",
+        "lookup GenericWordPriority {",
+        "lookupflag IgnoreMarks;",
+    ]
+    # A capital anywhere in an adjacent identifier preserves the generic form.
+    # Contiguous word lookback/lookahead handles Vec<u8>, HashMap<key,value>,
+    # and mixed-case type arguments without treating a<b or12<34 as generics.
+    for n in range(32):
+        middle = " ".join(["@AngleWord"] * n)
+        generic_lines += [
+            "sub @AngleUpper " + middle + " less' @AngleLower by less.generic;",
+            "sub @AngleLower less' " + middle + " @AngleUpper by less.generic;",
+        ]
+    generic_lines += [
+        "} GenericWordPriority;",
+        "lookup ComparisonLess {",
+        "lookupflag IgnoreMarks;",
+        "ignore sub @AngleSpace less' @AngleSpace;",
+        "ignore sub @AngleLower less' @AngleLower;",
+        "sub less' by less.generic;",
+        "} ComparisonLess;",
+        "lookup ExistingGreater {",
+        "lookupflag IgnoreMarks;",
+        "sub greater' @Identifiers by greater.generic;",
+        "sub @Identifiers greater' by greater.generic;",
+        "sub greater.generic greater' by greater.generic;",
+        "} ExistingGreater;",
+        "} calt;",
+    ]
+    add_features(font, "\n".join(generic_lines))
     lifetime = RECIPE["code"]["rust_lifetime"]
     from dot_inventory import dots
 
@@ -347,7 +389,7 @@ def code(font):
         "tokens": mapping,
         "equals_width_factor": factor,
         "equals_height_and_thickness": "unchanged",
-        "generic_policy": "identifier-adjacent angles; unspaced a<b also treated as generic; spaces preserve comparison operators",
+        "generic_policy": RECIPE["code"]["generics"],
         "generic_height": "halfway between comparison and bracket height, centered within baseline/cap-height limits",
         "ligature_advances": "600 times input length",
         "carets": "every600units",

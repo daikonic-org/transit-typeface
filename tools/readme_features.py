@@ -46,7 +46,7 @@ FEATURES = {
         ("hashes", "Hash groups", "## ### ####", ON, OFF),
         ("lifetimes", "Rust lifetime marker", "&'a <'a> 'static", ON, OFF),
         ("lifetime-literals", "Lifetimes / character literals", "&'a 'a' '_'", ON, OFF),
-        ("generics", "Generic delimiters", "Vec<T> Vec<Vec<T>>", ON, OFF),
+        ("generics", "Comparison / generic context", "a<b x<2 Vec<T> Vec<u8>", ON, OFF),
         ("optical", "Contextual optical placement", "ke Ke KE vi il", ON, OFF),
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
@@ -57,7 +57,7 @@ DISTINCT = [
     ("underscore", "Inline, gapless underscore", "snake_case __init__"),
     ("at", "Redrawn two-storey at symbol", "o@o user@host"),
     ("diamonds", "Shared prominent diamond dots", "i j . : ; ! ?"),
-    ("bars", "Wider equals and hyphen", "= + -"),
+    ("bars", "Equals and hyphen", "= + -"),
 ]
 
 
@@ -228,6 +228,99 @@ def main(check=False):
         ),
     )
     readme = update_table(readme, "code-characters", "\n".join(table))
+    # Compare matching Code weights to isolate the permanent horizontal change.
+    previous_path = ROOT / "previews/code-1.023/VF/DaikonicTransitCode-VF.ttf"
+    manifest["sources"]["code-previous"] = {
+        "font": str(previous_path.relative_to(ROOT)),
+        "sha256": hashlib.sha256(previous_path.read_bytes()).hexdigest(),
+    }
+    table = [
+        f"| Matching Code weight | Current Code {cfg['code']['version']} | Previous Code 1.023 |",
+        "| --- | --- | --- |",
+    ]
+    board = []
+    metrics = {}
+    from audit import shape_from_glyphs
+    from fontTools.pens.svgPathPen import SVGPathPen
+
+    for row, (weight, label) in enumerate([(350, "Book"), (400, "Regular")]):
+        metrics[label] = {}
+        pictures = []
+        for col, (which, path) in enumerate(
+            [("current", ROOT / cfg["code"]["font"]), ("previous", previous_path)]
+        ):
+            f = instantiateVariableFont(TTFont(path), {"wght": weight}, inplace=True)
+            key = "equal-" + str(weight) + "-" + which
+            p = Panel(key, DATA["families"]["code"])
+            bind(p, f)
+            p.text("=", 230, 120, 160, 400, "#101712", align="center", features=OFF)
+            emit(
+                OUT / (key + ".svg"),
+                svg(p.body(), label + " equals / " + which, 460, 150),
+            )
+            pictures.append(image(key, label + " equals / " + which))
+            gs = f.getGlyphSet()
+            bounds = shape_from_glyphs(gs, "equal").bounds
+            bars = list(shape_from_glyphs(gs, "equal").contours)
+            metrics[label][which] = {
+                "width": bounds[2] - bounds[0],
+                "bar_thickness": bars[0].bounds[3] - bars[0].bounds[1],
+            }
+            x = 100 + 600 * col
+            base = 300 + 330 * row
+            pen = SVGPathPen(gs)
+            gs["equal"].draw(pen)
+            board.append(
+                f'<path d="{pen.getCommands()}" transform="translate({x} {base}) scale(.5 -.5)" fill="#101712"/>'
+            )
+            board.append(
+                f'<path d="M{x},{base-240} v190 M{x+300},{base-240} v190" stroke="#C06D3E" fill="none"/>'
+            )
+            heading = Panel(key + "-label", DATA["families"]["code"])
+            bind(heading, f)
+            heading.text(
+                label + " " + str(weight) + " / " + which,
+                x - 50,
+                35 + 330 * row,
+                21,
+                400,
+                "#194454",
+            )
+            m = metrics[label][which]
+            heading.text(
+                "Width "
+                + str(round(m["width"]))
+                + " / stroke "
+                + str(round(m["bar_thickness"])),
+                x - 50,
+                275 + 330 * row,
+                17,
+                400,
+                "#194454",
+            )
+            board.append(heading.body())
+        table.append(
+            "| "
+            + label
+            + " "
+            + str(weight)
+            + " | "
+            + pictures[0]
+            + " | "
+            + pictures[1]
+            + " |"
+        )
+    emit(
+        OUT / "Equals-Comparison.svg",
+        svg(
+            "".join(board),
+            "Matching-weight Code equals comparison; identical scale",
+            1200,
+            660,
+        ),
+    )
+    manifest["equals_metrics"] = metrics
+    readme = update_table(readme, "code-equals", "\n".join(table))
     emit(ROOT / "README.md", readme)
     manifest["files"] = {
         p.name: hashlib.sha256(content.encode()).hexdigest()

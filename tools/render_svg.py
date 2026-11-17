@@ -17,6 +17,7 @@ def render(source, scale=3):
         common = [
             chrome,
             "--headless",
+            "--disable-gpu",
             f"--user-data-dir={temp / 'profile'}",
             "--hide-scrollbars",
             "--no-pdf-header-footer",

@@ -1,5 +1,5 @@
 {
-  "latest": "1.025",
+  "latest": "1.026",
   "versions": {
     "1.021": {
       "source": "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf",
@@ -31,7 +31,7 @@
       "study_directory": "trials/2026-11-17-syntax-numerals"
     },
     "1.025": {
-      "source": "trials/2026-11-17-syntax-numerals/code/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+      "source": "previews/code-1.025/source/DaikonicTransitCodeSyntaxStudy-VF.ttf",
       "summary": "prominent diamonds, syntax ligatures and contextual Rust lifetime apostrophe",
       "overview": "Approved larger period-based normal diamond palette across weights. Equal bars widen horizontally by 8%. Adds optional-chaining/non-null, interpolation, range, assignment, turnstile, hash and Rust-lifetime ligatures; generic angle alternates stay within baseline/cap height. The ?. and !. pairs retain original internal spacing; only ?. shifts 60 units right. Adds a contextual apostrophe fit for Rust lifetimes and labels, preserving character literals through bounded nearby-character checks. The lifetime prime uses a diamond head, a22.5-degree tapered stroke at80% of the punctuation stem and a flat terminal just above x-height.",
       "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
@@ -40,7 +40,18 @@
         "Punctuation-Pairs",
         "Rust-Lifetimes"
       ],
-      "study_directory": "trials/2026-11-17-syntax-numerals"
+      "study_directory": "previews/code-1.025/specimens"
+    },
+    "1.026": {
+      "source": "previews/code-1.026/source/DaikonicTransitCodeAngleContextStudy-VF.ttf",
+      "summary": "lowercase comparison contexts and retained tall generic delimiters",
+      "overview": "Approved larger period-based normal diamond palette across weights. Equal bars widen horizontally by 8%. Adds optional-chaining/non-null, interpolation, range, assignment, turnstile, hash and Rust-lifetime ligatures; generic angle alternates stay within baseline/cap height. The ?. and !. pairs retain original internal spacing; only ?. shifts 60 units right. Adds a contextual apostrophe fit for Rust lifetimes and labels, preserving character literals through bounded nearby-character checks. The lifetime prime uses a diamond head, a22.5-degree tapered stroke at80% of the punctuation stem and a flat terminal just above x-height. The less-than sign is tall by default, but short between whitespace on both sides or lowercase/numeric operands; adjacent capitalized or mixed-case words preserve tall generic contexts, including Vec<u8>. All glyph drawings, weights and advances are unchanged from1.025.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Comparison",
+        "Equals-Comparison"
+      ],
+      "study_directory": "previews/code-1.026/study"
     }
   }
 }

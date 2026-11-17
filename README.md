@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [Code 1.025 preview](previews/code-1.025/) includes consistent prominent diamond dots, wider equals, additional coding ligatures and taller generic delimiters. The approved `?.` and `!.` use their original internal spacing; `?.` has a small rightward optical shift. [Preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.025-preview) separate VF, OTF, TTF, WOFF2, editable TTX sources and specimens. Earlier cuts and stable releases remain available.
+The current [Code 1.026 preview](previews/code-1.026/) includes consistent prominent diamond dots, wider equals, additional coding ligatures and taller generic delimiters. The approved `?.` and `!.` use their original internal spacing; `?.` has a small rightward optical shift. [Preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.026-preview) separate VF, OTF, TTF, WOFF2, editable TTX sources and specimens. Earlier cuts and stable releases remain available.
 
 ## Daikonic Transit Sans
 
@@ -63,7 +63,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A diamond-headed, tapered apostrophe for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`), with a flat terminal above the x-height. Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
-**Switchable features.** On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting is a typographic heuristic: adjacent `a<b` receives the taller form, while spaced `a < b` remains a comparison. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
+**Switchable features.** On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting is a typographic heuristic: `<` is tall by default, but short with whitespace on both sides or between lowercase/numeric operands (`a<b`, `x<2`, `12<34`). Capitalized or mixed-case adjacent words keep tall generic forms (`Vec<T>`, `Vec<u8>`), using up to 32 surrounding glyphs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
 
 <!-- code-features -->
 | Feature / input | On | Off |
@@ -79,7 +79,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 | Hash groups<br><code>## ### ####</code> | <img src="specimens/features/code-hashes-on.svg" width="300" alt="Hash groups on: ## ### ####"> | <img src="specimens/features/code-hashes-off.svg" width="300" alt="Hash groups off: ## ### ####"> |
 | Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="300" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="300" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="300" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="300" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
-| Generic delimiters<br><code>Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="300" alt="Generic delimiters on: Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="300" alt="Generic delimiters off: Vec&lt;T&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
+| Comparison / generic context<br><code>a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="300" alt="Comparison / generic context on: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> | <img src="specimens/features/code-generics-off.svg" width="300" alt="Comparison / generic context off: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> |
 | Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="300" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="300" alt="Contextual optical placement off: ke Ke KE vi il"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="300" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="300" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
@@ -94,8 +94,17 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 | Inline, gapless underscore | <img src="specimens/features/distinct-underscore-code.svg" width="300" alt="Inline, gapless underscore / code"> | <img src="specimens/features/distinct-underscore-base.svg" width="300" alt="Inline, gapless underscore / base"> |
 | Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-code.svg" width="300" alt="Redrawn two-storey at symbol / code"> | <img src="specimens/features/distinct-at-base.svg" width="300" alt="Redrawn two-storey at symbol / base"> |
 | Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-code.svg" width="300" alt="Shared prominent diamond dots / code"> | <img src="specimens/features/distinct-diamonds-base.svg" width="300" alt="Shared prominent diamond dots / base"> |
-| Wider equals and hyphen | <img src="specimens/features/distinct-bars-code.svg" width="300" alt="Wider equals and hyphen / code"> | <img src="specimens/features/distinct-bars-base.svg" width="300" alt="Wider equals and hyphen / base"> |
+| Equals and hyphen | <img src="specimens/features/distinct-bars-code.svg" width="300" alt="Equals and hyphen / code"> | <img src="specimens/features/distinct-bars-base.svg" width="300" alt="Equals and hyphen / base"> |
 <!-- /code-characters -->
+
+**Equals width, at matching weights.** The equals was widened horizontally, not emboldened. Comparing Code with the previous Code cut isolates the change: Regular goes from 438 to 474 units wide (about 8%), while its 101-unit bar thickness stays the same. Book goes from 420 to 454 units, retaining its 89-unit bars. Metropolitan Line Regular has 100-unit bars, so comparing it with Code Book mixes a width change with a lighter weight.
+
+<!-- code-equals -->
+| Matching Code weight | Current Code 1.026 | Previous Code 1.023 |
+| --- | --- | --- |
+| Book 350 | <img src="specimens/features/equal-350-current.svg" width="300" alt="Book equals / current"> | <img src="specimens/features/equal-350-previous.svg" width="300" alt="Book equals / previous"> |
+| Regular 400 | <img src="specimens/features/equal-400-current.svg" width="300" alt="Regular equals / current"> | <img src="specimens/features/equal-400-previous.svg" width="300" alt="Regular equals / previous"> |
+<!-- /code-equals -->
 
 All three typefaces include the same family of pointed, concave arrowheads, including the Unicode arrows **← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕**.
 

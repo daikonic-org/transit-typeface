@@ -22,7 +22,7 @@
     },
     "equals_width_factor": 1.08,
     "equals_height_and_thickness": "unchanged",
-    "generic_policy": "identifier-adjacent angles; unspaced a<b also treated as generic; spaces preserve comparison operators",
+    "generic_policy": "Tall < by default; short between whitespace on both sides or lowercase/digit/underscore operands. Adjacent words containing uppercase letters retain tall generics (bounded32glyph context). Greater-than policy unchanged.",
     "generic_height": "halfway between comparison and bracket height, centered within baseline/cap-height limits",
     "ligature_advances": "600 times input length",
     "carets": "every600units",

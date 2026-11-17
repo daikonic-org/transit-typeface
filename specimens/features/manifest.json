@@ -16,8 +16,8 @@
       }
     },
     "code": {
-      "font": "previews/code-1.025/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "85e7e74acb45a70442a3e0f766de759fce0d2974a732343526828e52e17a0d54",
+      "font": "previews/code-1.026/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "61877f2b4f06472c55ee7ea7b226aa9718b0ea66d1e04997f8011601b362bb44",
       "location": {
         "wght": 350
       }
@@ -25,6 +25,10 @@
     "metropolitan": {
       "font": "upstream/MetropolitanLine-Regular.ttf",
       "sha256": "db03cb8a2599c914c5b3fe2305dd5e758cc55fd4aba88f2bb95f98c150f962c7"
+    },
+    "code-previous": {
+      "font": "previews/code-1.023/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "e00278f26cecd637959a167e57401d33690430b45aca51008a4bdd13dccf7d7b"
     }
   },
   "rows": {
@@ -1671,7 +1675,7 @@
       ]
     },
     "code-generics": {
-      "text": "Vec<T> Vec<Vec<T>>",
+      "text": "a<b x<2 Vec<T> Vec<u8>",
       "on_features": {
         "calt": true,
         "liga": true,
@@ -1683,6 +1687,54 @@
         "clig": false
       },
       "on_shaping": [
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "two",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
         [
           "V",
           600,
@@ -1750,37 +1802,13 @@
           0
         ],
         [
-          "V",
+          "u",
           600,
           0,
           0
         ],
         [
-          "e",
-          600,
-          0,
-          0
-        ],
-        [
-          "c",
-          600,
-          0,
-          0
-        ],
-        [
-          "less.generic",
-          600,
-          0,
-          0
-        ],
-        [
-          "T",
-          600,
-          0,
-          0
-        ],
-        [
-          "greater.generic",
+          "eight",
           600,
           0,
           0
@@ -1794,6 +1822,54 @@
       ],
       "off_shaping": [
         [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "two",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
           "V",
           600,
           0,
@@ -1860,37 +1936,13 @@
           0
         ],
         [
-          "V",
+          "u",
           600,
           0,
           0
         ],
         [
-          "e",
-          600,
-          0,
-          0
-        ],
-        [
-          "c",
-          600,
-          0,
-          0
-        ],
-        [
-          "less",
-          600,
-          0,
-          0
-        ],
-        [
-          "T",
-          600,
-          0,
-          0
-        ],
-        [
-          "greater",
+          "eight",
           600,
           0,
           0
@@ -2178,9 +2230,32 @@
       ]
     }
   },
+  "equals_metrics": {
+    "Book": {
+      "current": {
+        "width": 454.0,
+        "bar_thickness": 89.0
+      },
+      "previous": {
+        "width": 420.0,
+        "bar_thickness": 89.0
+      }
+    },
+    "Regular": {
+      "current": {
+        "width": 474.0,
+        "bar_thickness": 101.0
+      },
+      "previous": {
+        "width": 438.0,
+        "bar_thickness": 101.0
+      }
+    }
+  },
   "files": {
-    "Code-Characters.svg": "499956a754c03564a99a8b28bd0d880e4b61d3716ea7d5d862f02dd56ef75388",
-    "code-Features.svg": "b4da60186e1d1b7fcdcd4d6ae5648e8e2d6fca36fc1981b29d5a08b113fc15f1",
+    "Code-Characters.svg": "c6740ade61470965702c151b84a4a85be6291361d6908dfc350e337ef4ea46d9",
+    "Equals-Comparison.svg": "cd69b4478b526decee7d770a9765af30858bdecc94c7f699791d6c97360da14e",
+    "code-Features.svg": "3f0f8f7fa1743b7ba0b0a668866686470257e8e27e693270bd28ff0fcad97552",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -2193,8 +2268,8 @@
     "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
     "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
     "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
-    "code-generics-off.svg": "be90742d847efee22c01a633b4443bb77d7d1409acbf2336319f9f8f81618370",
-    "code-generics-on.svg": "aa86e4e84819186ed70233c7b9387ca8a50e594662ffb3de681ce86885926736",
+    "code-generics-off.svg": "c49e3473d076893edf38cfd7e4631591cbf60af10c871f800b6890b184387245",
+    "code-generics-on.svg": "b1e0eeeabfe8adebaff24c816076286f26958909541cfe38ed42b84d543bd237",
     "code-hashes-off.svg": "fa3719dd2729f4d4be0cd363383c29d91f7d650595989fe496018ba254c6dd35",
     "code-hashes-on.svg": "b456ed50535814e30430cb0f2982b9d2d21c291c77b7aab86074f16533214e61",
     "code-interpolation-off.svg": "301f5c190008cf048dfbe672a586eda402f2811767c13389ca53dbc10023dd18",
@@ -2211,8 +2286,8 @@
     "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
     "distinct-at-base.svg": "bb337f48766e7a0015347ff4a90967ecbb2516f30951f3877e2a6d16aaa2591f",
     "distinct-at-code.svg": "3d89b37d2cd5e87ee40c023bddd3119825e950db989f472a59834dffe336572e",
-    "distinct-bars-base.svg": "5fb7b6ea0b78f6b0e6c8fbda26e9438b13fb988ce990289a8bc3d1275273496b",
-    "distinct-bars-code.svg": "abb290959544de1726f647c16622792bc3e681fde344682c39e933591067530e",
+    "distinct-bars-base.svg": "1a533ada2eb52774acd1cc10756b63e85284bf6ed942f5b70d2e9c2064db8ed6",
+    "distinct-bars-code.svg": "314c3827ec3b8bd6c0f633a501667df640e6b0b8fafbdc4e6468cd03ce59ab0f",
     "distinct-delimiters-base.svg": "e8703595637370b81ca3a3ad9160b4103d3828bbf60b855c047bd78c137b2e4f",
     "distinct-delimiters-code.svg": "e30a345babe04d4c33055c27e33cdef8b1242834594c37435cb1922fcec12d62",
     "distinct-diamonds-base.svg": "926c5d805f7d38004bf47e77f9c60e7e83c46b100ccd1e3f9a8efd27e75375b3",
@@ -2221,6 +2296,10 @@
     "distinct-identity-code.svg": "6ceb07c858e5f0d548d26dc0aa1ef58c7238f1dd8250c2287d33b311fc1cc28c",
     "distinct-underscore-base.svg": "bf86efbe209de35982b44377b70f0508bb163c49a6c55353ab3db41173a8423d",
     "distinct-underscore-code.svg": "4c9366b88ea54f8303c2634148280636419e9dc24bcfbd891bafa117f1662ada",
+    "equal-350-current.svg": "bd19d11acabb06e74db3adbf354f630889dac8aa802de8a4376a0e948787dd66",
+    "equal-350-previous.svg": "9e27518040c2848eaf7ac83eccf85d7ef3df219fa1204b1751eacc1cf99c13b9",
+    "equal-400-current.svg": "8b42b427dd2036a3536848c6f630a19327769279dbbebaa73a3910e8fbd15dbf",
+    "equal-400-previous.svg": "6ba404e3f89f77dcec193347a66cceb5c36a00e9d7563efbf2242247bbfb16f2",
     "sans-Features.svg": "bdec36e4f69d83bec055fef535c84c51332289cbd3ae5c5a8e0c2bcd136e4491",
     "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
     "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",

@@ -219,7 +219,10 @@ def main():
     proofs.mkdir(exist_ok=True)
     for stem in entry.get("specimens", ["Book", "NamedWeights"]):
         for suffix in ["png", "pdf", "svg"]:
-            shutil.copy2(STUDY / (stem + "." + suffix), proofs / (stem + "." + suffix))
+            original_proof = STUDY / (stem + "." + suffix)
+            destination = proofs / (stem + "." + suffix)
+            if original_proof.resolve() != destination.resolve():
+                shutil.copy2(original_proof, destination)
     manifest = ROOT / "specimens/manifest.json"
     if manifest.exists() and json.loads(manifest.read_text())["code"][
         "sha256"

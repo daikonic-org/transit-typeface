@@ -34,7 +34,7 @@
       "####",
       "<'"
     ],
-    "generics": "taller delimiter profile when directly adjacent to identifiers; spaces preserve comparison form",
+    "generics": "Tall < by default; short between whitespace on both sides or lowercase/digit/underscore operands. Adjacent words containing uppercase letters retain tall generics (bounded32glyph context). Greater-than policy unchanged.",
     "generic_height": "Halfway between comparison-sign and bracket height; centered within baseline/cap-height limits.",
     "punctuation_pair_offsets": {
       "?.": {

@@ -1,0 +1,15 @@
+{
+  "version": "1.026",
+  "status": "preview",
+  "family": "Daikonic Transit Code",
+  "default_weight": 350,
+  "weight_range": [
+    300,
+    400
+  ],
+  "selected_source": "previews/code-1.026/source/DaikonicTransitCodeAngleContextStudy-VF.ttf",
+  "source_sha256": "7122ea451c2b9f1b0d7a69e11a4263ddd0efffb3696109ef91e4bc436bd623a6",
+  "drawing_variation_layout_fidelity": "exact to selected source",
+  "sanitized_fonts": 4,
+  "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption remains pending."
+}

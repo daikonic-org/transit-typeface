@@ -169,29 +169,29 @@
     "source_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
   },
   "code": {
-    "source": "previews/code-1.025/VF/DaikonicTransitCode-VF.ttf",
-    "source_sha256": "85e7e74acb45a70442a3e0f766de759fce0d2974a732343526828e52e17a0d54",
+    "source": "previews/code-1.026/VF/DaikonicTransitCode-VF.ttf",
+    "source_sha256": "61877f2b4f06472c55ee7ea7b226aa9718b0ea66d1e04997f8011601b362bb44",
     "exports": [
       {
         "file": "exports/otf/current/code/DaikonicTransitCode-Light.otf",
         "location": {
           "wght": 300.0
         },
-        "sha256": "577e16144792504dc471691b25bc8268a9ac591f7c0edb04b5a1674a3982387c"
+        "sha256": "013268238a1fe7c7fd82de49bddc780546676ef506b4985e765f6dccb3cc14d7"
       },
       {
         "file": "exports/otf/current/code/DaikonicTransitCode-Book.otf",
         "location": {
           "wght": 350.0
         },
-        "sha256": "f7fb29f678a4d3f63fc4af70100c0889f6bd5d5cce7bc9194811f29e067a9378"
+        "sha256": "081faa40817b0bfebe7841a091f65611168f5c9b2fa9b5dadcea633587a8a584"
       },
       {
         "file": "exports/otf/current/code/DaikonicTransitCode-Regular.otf",
         "location": {
           "wght": 400.0
         },
-        "sha256": "ba59e4fe694bb0811a05190a824bec966b48f641c13b7ac59a9a12ee68a7e9d0"
+        "sha256": "de4e1f45db933be43477c75c73dde548054380f20764ed6707794b1da76cb562"
       }
     ],
     "validation": "CFF OpenType; OTS; exact cmap, hmtx, GSUB, GPOS, GDEF versus same TTF instance; quadratic curves converted to cubic without integer rounding; all glyph bounds match within0.05units"
