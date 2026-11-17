@@ -40,6 +40,7 @@ Use it in source editors, terminals, code examples and other settings where char
 - Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
 - Fixed-width characters and coding ligatures that occupy the same total width as their original character sequences.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
+- A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
 - Arrow ligatures: `->`, `->>`, `=>`, `<-`, `<<-`.
 - Comparison ligatures: `==`, `===`, `!=`, `!==`, `<=`, `>=`.
 - A balanced `::` ligature. Contextual alternates (`calt`) provide all twelve coding ligatures; enable font ligatures in your editor to use them.
