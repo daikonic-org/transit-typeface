@@ -10,9 +10,7 @@ The current [Code 1.022 preview](previews/code-1.022/) includes the selected two
 
 ## Daikonic Transit Sans
 
-The proportional foundation of the family. Based on [Metropolitan Line](https://github.com/cyrealtype/metropolitan-line), an open-source interpretation of Edward Johnston’s London Underground lettering, Sans retains its humanist character, rounded forms and distinctive diamond details while extending it into a range of weights.
-
-Use it for identity, headings, signage, editorial work and general proportional text.
+A proportional font for identity, headings, signage and editorial text, and the foundation of the Transit family. Based on [Metropolitan Line](https://github.com/cyrealtype/metropolitan-line), an open-source interpretation of Edward Johnston’s London Underground lettering, Sans retains its humanist character, rounded forms and distinctive diamond details while extending it into a range of weights.
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, available individually or through a variable weight range of 300–600.
 - Proportional spacing, kerning and accented-character positioning.
@@ -21,9 +19,7 @@ Use it for identity, headings, signage, editorial work and general proportional 
 
 ## Daikonic Transit System
 
-The interface companion to Daikonic Transit Sans. System develops Sans’s forms with a larger lowercase, adjusted spacing and an optical-size range for smaller interface text. Its capital-height proportions remain consistent with Sans.
-
-Use it for application interfaces, navigation, controls, dashboards and short passages of screen text.
+An interface font for application navigation, controls, dashboards and short passages of screen text. Developed from Daikonic Transit Sans, System combines a larger lowercase, adjusted spacing and an optical-size range for smaller interface text, while keeping Sans’s capital-height proportions.
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, with a variable weight range of 300–600.
 - An independent **optical-size axis, 10–36**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
@@ -33,14 +29,16 @@ Use it for application interfaces, navigation, controls, dashboards and short pa
 
 ## Daikonic Transit Code
 
-The monospaced companion to Daikonic Transit Sans. Code carries Sans’s Johnston-derived character into a fixed-width design, with reworked letters, numerals and operators for programming and aligned text.
-
-Use it in source editors, terminals, code examples and other settings where character columns need to line up.
+A monospace font with coding-friendly glyphs, ligatures and optically adjusted proportions and spacing for source editors, terminals and code examples. Derived from Daikonic Transit Sans, Code carries its Johnston-inspired character into a fixed-width design with reworked letters, numerals, punctuation and operators for programming and aligned text.
 
 - Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
 - Fixed-width characters and coding ligatures that occupy the same total width as their original character sequences.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
+- Heavier, inward-set parentheses, brackets and braces for legibility. Extended brace pinches help distinguish `{}` from `()`.
+- Optical centering and contextual positioning for selected character pairs, preserving the fixed 600-unit character advance.
 - A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
+- A wider hyphen and vertically balanced operators and punctuation for inline code.
+- A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
 - Arrow ligatures: `->`, `->>`, `=>`, `<-`, `<<-`.
 - Comparison ligatures: `==`, `===`, `!=`, `!==`, `<=`, `>=`.
 - A balanced `::` ligature. Contextual alternates (`calt`) provide all twelve coding ligatures; enable font ligatures in your editor to use them.
