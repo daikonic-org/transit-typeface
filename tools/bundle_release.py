@@ -195,6 +195,19 @@ def package():
                     ]
                 for source, member in files:
                     z.write(source, Path(stem) / member)
+                if fmt == "WOFF2":
+                    z.writestr(
+                        str(Path(stem) / key / "font.css"),
+                        "@font-face { font-family: '"
+                        + cfg["name"]
+                        + "'; src: url('./"
+                        + cfg["stem"]
+                        + "-VF.woff2') format('woff2'); font-weight: "
+                        + str(cfg["light"])
+                        + " "
+                        + str(cfg["heavy"])
+                        + "; font-style: normal; font-display: swap; }\n",
+                    )
             if fmt == "SPECIMEN":
                 # Manifests select current proofs; historical study images stay in Git.
                 paths = {
