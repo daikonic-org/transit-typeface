@@ -7,6 +7,7 @@ import hashlib
 import html
 import json
 import re
+import xml.etree.ElementTree as ET
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 import uharfbuzz as hb
@@ -119,6 +120,48 @@ def update_table(readme, marker, table):
     replacement = "<!-- " + marker + " -->\n" + table + "\n<!-- /" + marker + " -->"
     assert pattern.search(readme), marker
     return pattern.sub(lambda _: replacement, readme)
+
+
+def highlight_rust_line(panel, text):
+    """Color the already-shaped glyphs; lexical runs never split font context."""
+    assert text.isascii(), "The specimen uses ASCII source offsets."
+    colors = ["#eeeddb"] * len(text)
+    tokens = re.compile(
+        r'"(?:[^"\\]|\\.)*"|\'[A-Za-z_][A-Za-z_0-9]*|\b[0-9]+\b|\b[A-Za-z_][A-Za-z_0-9]*\b'
+    )
+    keywords = {"struct", "fn", "let", "mut", "pub", "impl", "return", "self"}
+    types = {"usize", "str", "u8", "u64", "bool"}
+    for match in tokens.finditer(text):
+        token = match.group()
+        color = None
+        if token.startswith('"'):
+            color = "#c3e88d"
+        elif token.startswith("'"):
+            colors[match.start() + 1 : match.end()] = ["#c3a6ff"] * (len(token) - 1)
+            continue
+        elif token in keywords:
+            color = "#c792ea"
+        elif token[0].isdigit():
+            color = "#f78c6c"
+        elif token in types or token[0].isupper():
+            color = "#ffcb6b"
+        elif re.match(r"\s*(?:\(|!(?!=))", text[match.end() :]) or text[
+            : match.start()
+        ].rstrip().endswith("fn"):
+            color = "#82aaff"
+        if color:
+            colors[match.start() : match.end()] = [color] * len(token)
+    _, font = panel.font(400)
+    buffer = hb.Buffer()
+    buffer.add_str(text)
+    buffer.guess_segment_properties()
+    hb.shape(font, buffer, {**ON, "tnum": False})
+    element = ET.fromstring(panel.elements[-1])
+    uses = list(element)
+    assert len(uses) == len(buffer.glyph_infos)
+    for use, info in zip(uses, buffer.glyph_infos):
+        use.set("fill", colors[info.cluster])
+    panel.elements[-1] = ET.tostring(element, encoding="unicode")
 
 
 def main(check=False):
@@ -252,18 +295,21 @@ def main(check=False):
                 features=ON,
                 max_width=1040,
             )
+            highlight_rust_line(p, text)
     height = 112 + 34 * len(example)
     body = '<rect width="1100" height="' + str(height) + '" fill="#0d1218"/>'
     body += '<text x="30" y="32" font-family="Arial" font-size="14" fill="#aebbc6">Daikonic Transit Code · Book 350</text>'
     body += p.body()
     emit(
         OUT / "Code-Characters.svg",
-        svg(body, "Rust code in Daikonic Transit Code Book", 1100, height),
+        svg(
+            body, "Syntax-highlighted Rust in Daikonic Transit Code Book", 1100, height
+        ),
     )
     readme = update_table(
         readme,
         "code-characters",
-        '<img src="specimens/features/Code-Characters.svg" width="1100" alt="Rust code rendered in Daikonic Transit Code Book">',
+        '<img src="specimens/features/Code-Characters.svg" width="1100" alt="Syntax-highlighted Rust rendered in Daikonic Transit Code Book">',
     )
     emit(ROOT / "README.md", readme)
     manifest["files"] = {

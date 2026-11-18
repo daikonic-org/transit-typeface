@@ -113,10 +113,10 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 
 ### Code example
 
-A Rust example rendered in Code Book.
+A syntax-highlighted Rust example rendered in Code Book.
 
 <!-- code-characters -->
-<img src="specimens/features/Code-Characters.svg" width="1100" alt="Rust code rendered in Daikonic Transit Code Book">
+<img src="specimens/features/Code-Characters.svg" width="1100" alt="Syntax-highlighted Rust rendered in Daikonic Transit Code Book">
 <!-- /code-characters -->
 
 
