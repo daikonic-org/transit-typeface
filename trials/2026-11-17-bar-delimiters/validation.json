@@ -1,0 +1,275 @@
+{
+  "positive": [
+    "|x|",
+    "| x |",
+    "map(|x| x + 1)",
+    "let f = |x, y| x+y",
+    "move |x| x",
+    "async |x| x",
+    "do |x| x",
+    "{ |x| x }",
+    "let f = || 42",
+    "|x: &T| x",
+    "|x: &'a T| x",
+    "|x: Foo::Bar| x"
+  ],
+  "negative": [
+    "a | b",
+    "a|b",
+    "a | b | c",
+    "a|b|c",
+    "a || b",
+    "||",
+    "flags |= mask",
+    "|-",
+    "cat | sort | uniq"
+  ],
+  "weights": [
+    {
+      "weight": 300,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 87.99996752837754,
+      "bounds": {
+        "bar.delimiterOpen": [
+          270.0,
+          -139.0,
+          358.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          242.0,
+          -139.0,
+          330.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 310,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 91.9999717078552,
+      "bounds": {
+        "bar.delimiterOpen": [
+          268.0,
+          -139.0,
+          360.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          240.0,
+          -139.0,
+          332.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 320,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 95.99997582420264,
+      "bounds": {
+        "bar.delimiterOpen": [
+          266.0,
+          -139.0,
+          362.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          238.0,
+          -139.0,
+          334.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 330,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 99.9999798783139,
+      "bounds": {
+        "bar.delimiterOpen": [
+          264.0,
+          -139.0,
+          364.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          236.0,
+          -139.0,
+          336.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 340,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 103.99998387015034,
+      "bounds": {
+        "bar.delimiterOpen": [
+          262.0,
+          -139.0,
+          366.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          234.0,
+          -139.0,
+          338.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 350,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 107.99998780059622,
+      "bounds": {
+        "bar.delimiterOpen": [
+          260.0,
+          -139.0,
+          368.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          232.0,
+          -139.0,
+          340.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 360,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 111.99970307719158,
+      "bounds": {
+        "bar.delimiterOpen": [
+          258.0,
+          -139.0,
+          370.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          230.0,
+          -139.0,
+          342.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 370,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 115.9993771314399,
+      "bounds": {
+        "bar.delimiterOpen": [
+          256.0,
+          -139.0,
+          372.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          228.0,
+          -139.0,
+          344.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 380,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 119.99921650868927,
+      "bounds": {
+        "bar.delimiterOpen": [
+          254.0,
+          -139.0,
+          374.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          226.0,
+          -139.0,
+          346.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 390,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 123.99919882479531,
+      "bounds": {
+        "bar.delimiterOpen": [
+          252.0,
+          -139.0,
+          376.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          224.0,
+          -139.0,
+          348.0,
+          740.0
+        ]
+      }
+    },
+    {
+      "weight": 400,
+      "delimiter_span": [
+        -139.0,
+        740.0
+      ],
+      "stem_width": 127.99921164342027,
+      "bounds": {
+        "bar.delimiterOpen": [
+          250.0,
+          -139.0,
+          378.0,
+          740.0
+        ],
+        "bar.delimiterClose": [
+          222.0,
+          -139.0,
+          350.0,
+          740.0
+        ]
+      }
+    }
+  ],
+  "feature": "calt",
+  "lifetime_ss01": "on/off tested",
+  "sanitizer": "passed",
+  "context_limit": 48
+}

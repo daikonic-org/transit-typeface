@@ -50,16 +50,20 @@
       }
     },
     "rust_lifetime": {
-      "head_scale": 0.9,
-      "stem_ratio": 0.95,
-      "terminal_ratio": 0.7,
-      "angle_degrees": 22.5,
-      "head_x": 480,
-      "terminal_above_xheight": 18,
+      "marker_glyph": "quoteleft",
+      "marker_shift": 300,
+      "pair_leader_shift": 600,
       "quoted_identifier_limit": 32,
       "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments.",
-      "pair_leader_shift": 180,
-      "pair_prime_offset": 500
+      "pair_fitting": "Center of opening quote sits on boundary before following character cell; < and & shift exactly600units right. Original advances retained.",
+      "vertical_clearance": 12,
+      "feature": "ss01",
+      "feature_label": "Boundary-centered Rust lifetimes",
+      "default": "Opening single quote in its normal cell under calt; compact placement disabled by default."
+    },
+    "bar_delimiters": {
+      "inward_units": 14,
+      "context_limit": 48
     }
   },
   "numerals": {

@@ -1,0 +1,399 @@
+{
+  "font": "trials/2026-11-17-lifetime-cell-fit/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+  "cases": {
+    "'a": 1,
+    "&'a": 1,
+    "&'static str": 1,
+    "Vec<'a>": 1,
+    "for<'a>": 1,
+    "<'a, 'b>": 2,
+    "&'_": 1,
+    "'outer: loop { break 'outer; }": 2,
+    "T: 'static": 1,
+    "'\u00e9": 1,
+    "&'a mut T": 1,
+    "<'a, 'b, 'static, '_>": 4,
+    "'a'": 0,
+    "'_'": 0,
+    "'\u00e9'": 0,
+    "'x' + &'a": 1,
+    "<'a'>": 0,
+    "&'a'": 0,
+    "'\\n'": 0,
+    "'\\''": 0,
+    "'\\u{1F600}'": 0,
+    "don't": 0,
+    "foo'a": 0,
+    "'123": 0,
+    "'word'": 0,
+    "'abcdefghijklmnopqrstuvwxyzabcdef'": 0
+  },
+  "weights": [
+    {
+      "wght": 300,
+      "bounds": [
+        389.0,
+        536.0,
+        547.0,
+        738.0
+      ]
+    },
+    {
+      "wght": 310,
+      "bounds": [
+        388.20001220703125,
+        536.0,
+        549.2000122070312,
+        738.2000122070312
+      ]
+    },
+    {
+      "wght": 320,
+      "bounds": [
+        387.3999938964844,
+        536.0,
+        551.4000244140625,
+        738.4000244140625
+      ]
+    },
+    {
+      "wght": 330,
+      "bounds": [
+        386.6000061035156,
+        536.0,
+        553.5999755859375,
+        738.5999755859375
+      ]
+    },
+    {
+      "wght": 340,
+      "bounds": [
+        385.79998779296875,
+        536.0,
+        555.7999877929688,
+        738.7999877929688
+      ]
+    },
+    {
+      "wght": 350,
+      "bounds": [
+        385.0,
+        536.0,
+        558.0,
+        739.0
+      ]
+    },
+    {
+      "wght": 360,
+      "bounds": [
+        384.20001220703125,
+        536.0,
+        560.2000122070312,
+        739.2000122070312
+      ]
+    },
+    {
+      "wght": 370,
+      "bounds": [
+        383.3999938964844,
+        536.0,
+        562.4000244140625,
+        739.4000244140625
+      ]
+    },
+    {
+      "wght": 380,
+      "bounds": [
+        382.6000061035156,
+        536.0,
+        564.5999755859375,
+        739.5999755859375
+      ]
+    },
+    {
+      "wght": 390,
+      "bounds": [
+        381.79998779296875,
+        536.0,
+        566.7999877929688,
+        739.7999877929688
+      ]
+    },
+    {
+      "wght": 400,
+      "bounds": [
+        381.0,
+        536.0,
+        569.0,
+        740.0
+      ]
+    }
+  ],
+  "feature_off": "no lifetime alternates",
+  "advance": "600 per input character",
+  "geometry": "rightward fit; horizontal terminal18units above x-height;22.5degree tapered prime from recipe",
+  "context_limit": "quoted identifiers up to32 glyphs; does not parse source strings/comments",
+  "cell_fitting": [
+    {
+      "weight": 300,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        610.0,
+        2.0,
+        1172.0,
+        738.0
+      ],
+      "minimum_horizontal_clearance": 53.40235722453201
+    },
+    {
+      "weight": 300,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1172.0,
+        738.0
+      ],
+      "minimum_horizontal_clearance": 65.58052196053472
+    },
+    {
+      "weight": 310,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        609.2000122070312,
+        2.0,
+        1174.199951171875,
+        738.2000122070312
+      ],
+      "minimum_horizontal_clearance": 51.038728803802314
+    },
+    {
+      "weight": 310,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1174.199951171875,
+        738.2000122070312
+      ],
+      "minimum_horizontal_clearance": 63.60086220751327
+    },
+    {
+      "weight": 320,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        608.4000244140625,
+        2.0,
+        1176.4000244140625,
+        738.4000244140625
+      ],
+      "minimum_horizontal_clearance": 48.66619540794807
+    },
+    {
+      "weight": 320,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1176.4000244140625,
+        738.4000244140625
+      ],
+      "minimum_horizontal_clearance": 61.59482912559804
+    },
+    {
+      "weight": 330,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        607.5999755859375,
+        2.0,
+        1178.5999755859375,
+        738.5999755859375
+      ],
+      "minimum_horizontal_clearance": 46.281715404790816
+    },
+    {
+      "weight": 330,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1178.5999755859375,
+        738.5999755859375
+      ],
+      "minimum_horizontal_clearance": 59.48353405276407
+    },
+    {
+      "weight": 340,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        606.7999877929688,
+        2.0,
+        1180.800048828125,
+        738.7999877929688
+      ],
+      "minimum_horizontal_clearance": 43.88797603425667
+    },
+    {
+      "weight": 340,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1180.800048828125,
+        738.7999877929688
+      ],
+      "minimum_horizontal_clearance": 57.63611870177772
+    },
+    {
+      "weight": 350,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        606.0,
+        2.0,
+        1183.0,
+        739.0
+      ],
+      "minimum_horizontal_clearance": 41.48271964810215
+    },
+    {
+      "weight": 350,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1183.0,
+        739.0
+      ],
+      "minimum_horizontal_clearance": 55.57718331473211
+    },
+    {
+      "weight": 360,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        604.7999877929688,
+        2.0,
+        1185.199951171875,
+        739.2000122070312
+      ],
+      "minimum_horizontal_clearance": 38.65248429560836
+    },
+    {
+      "weight": 360,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1185.199951171875,
+        739.2000122070312
+      ],
+      "minimum_horizontal_clearance": 53.81749487705167
+    },
+    {
+      "weight": 370,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        603.5999755859375,
+        2.0,
+        1187.4000244140625,
+        739.4000244140625
+      ],
+      "minimum_horizontal_clearance": 35.80772175168636
+    },
+    {
+      "weight": 370,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1187.4000244140625,
+        739.4000244140625
+      ],
+      "minimum_horizontal_clearance": 52.11172053085079
+    },
+    {
+      "weight": 380,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        602.4000244140625,
+        2.0,
+        1189.5999755859375,
+        739.5999755859375
+      ],
+      "minimum_horizontal_clearance": 32.950323762378275
+    },
+    {
+      "weight": 380,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1189.5999755859375,
+        739.5999755859375
+      ],
+      "minimum_horizontal_clearance": 50.46449879230124
+    },
+    {
+      "weight": 390,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        601.2000122070312,
+        2.0,
+        1191.800048828125,
+        739.7999877929688
+      ],
+      "minimum_horizontal_clearance": 30.078990733716182
+    },
+    {
+      "weight": 390,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1191.800048828125,
+        739.7999877929688
+      ],
+      "minimum_horizontal_clearance": 48.88079762310997
+    },
+    {
+      "weight": 400,
+      "pair": "code.lifetimeBorrow",
+      "bounds": [
+        600.0,
+        2.0,
+        1194.0,
+        740.0
+      ],
+      "minimum_horizontal_clearance": 27.19276078460848
+    },
+    {
+      "weight": 400,
+      "pair": "code.lifetimeOpen",
+      "bounds": [
+        600.0,
+        22.0,
+        1194.0,
+        740.0
+      ],
+      "minimum_horizontal_clearance": 47.16853636500525
+    }
+  ],
+  "recipe": {
+    "head_scale": 1.0,
+    "stem_ratio": 1.1,
+    "terminal_ratio": 0.7,
+    "angle_degrees": 22.5,
+    "head_x": 480,
+    "terminal_above_xheight": 18,
+    "quoted_identifier_limit": 32,
+    "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments.",
+    "pair_prime_offset": 625,
+    "pair_leader_shifts": {
+      "less.generic": 480,
+      "ampersand": 568
+    },
+    "pair_fitting": "Both symbols fit inside the second600-unit cell; retain full1200-unit advance and midpoint caret."
+  },
+  "sha256": "cae5ec019ea498615f24edd96eff99dc4ec5456ecf83f09437cb1082e724826b",
+  "scope": "Only lifetime prime and two paired outlines/bearings change; all other outlines, variation, metrics and layout exactly retained. All advances unchanged.",
+  "sanitizer": "passed"
+}

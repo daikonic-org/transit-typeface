@@ -39,7 +39,7 @@ CASES = {
 }
 
 
-def check(path):
+def check_legacy(path):
     f = TTFont(path)
     h = hb.Font(hb.Face(path.read_bytes()))
     h.scale = (1000, 1000)
@@ -53,15 +53,11 @@ def check(path):
                 b.guess_segment_properties()
                 hb.shape(h, b, {"calt": enabled, "liga": True, "clig": True})
                 names = [f.getGlyphName(g.codepoint) for g in b.glyph_infos]
-                got = sum(
-                    n
-                    in (
-                        "quotesingle.lifetime",
-                        "code.lifetimeOpen",
-                        "code.lifetimeBorrow",
+                got = sum(n in ("quotesingle.lifetime",) for n in names)
+                if f["hmtx"]["code.lifetimeOpen"][0] == 1200:
+                    got += sum(
+                        n in ("code.lifetimeOpen", "code.lifetimeBorrow") for n in names
                     )
-                    for n in names
-                )
                 assert got == (count if enabled else 0), (weight, text, enabled, names)
                 if enabled and text in ("&'a", "<'a, 'b>"):
                     expected_pair = (
@@ -78,6 +74,24 @@ def check(path):
         gs = f.getGlyphSet(location={"wght": weight})
         p = shape_from_glyphs(gs, "quotesingle.lifetime")
         box = p.bounds
+        quote_style = (
+            "code.lifetimeOpen" in f["hmtx"].metrics
+            and f["hmtx"]["code.lifetimeOpen"][0] == 600
+        )
+        if quote_style:
+            assert abs((box[0] + box[2]) / 2 - 600) < 1, (weight, box)
+            quote = shape_from_glyphs(gs, "quoteleft").bounds
+            assert (
+                max(
+                    abs(x - y)
+                    for x, y in zip(
+                        box, (quote[0] + 300, quote[1], quote[2] + 300, quote[3])
+                    )
+                )
+                < 1
+            )
+            results.append({"wght": weight, "bounds": list(box)})
+            continue
         assert 0 < box[0] < box[2] < 600, (weight, box)
         expected = shape_from_glyphs(gs, "x").bounds[3] + 18
         assert abs(box[1] - expected) < 1.5, (
@@ -109,15 +123,131 @@ def check(path):
         "weights": results,
         "feature_off": "no lifetime alternates",
         "advance": "600 per input character",
-        "geometry": "rightward fit; horizontal terminal18units above x-height;22.5degree tapered prime from recipe",
+        "geometry": (
+            "existing opening quote centered on boundary before following letter cell; contextual vertical clearance"
+            if quote_style
+            else "rightward fit; horizontal terminal18units above x-height;22.5degree tapered prime from recipe"
+        ),
         "context_limit": "quoted identifiers up to32 glyphs; does not parse source strings/comments",
     }
     print(
         "Rust lifetime checks passed:",
         len(CASES),
-        "contexts,11weights,feature on/off,600unit cells and flat terminals",
+        "contexts,11weights,feature on/off,600unit advances and marker geometry",
     )
     return report
+
+
+def check(path):
+    f = TTFont(path)
+    if "quotesingle.lifetime.compact" not in f.getGlyphOrder():
+        return check_legacy(path)
+    h = hb.Font(hb.Face(path.read_bytes()))
+    h.scale = (1000, 1000)
+
+    def run(text, calt, compact):
+        b = hb.Buffer()
+        b.add_str(text)
+        b.guess_segment_properties()
+        hb.shape(h, b, {"calt": calt, "ss01": compact})
+        return [
+            (f.getGlyphName(g.codepoint), p.x_advance, p.x_offset, p.y_offset)
+            for g, p in zip(b.glyph_infos, b.glyph_positions)
+        ]
+
+    results = []
+    for weight in range(300, 401, 10):
+        h.set_variations({"wght": weight})
+        for calt in (False, True):
+            for compact in (False, True):
+                for text, count in CASES.items():
+                    shaped = run(text, calt, compact)
+                    marks = [
+                        n
+                        for n, a, x, y in shaped
+                        if n.startswith("quotesingle.lifetime")
+                    ]
+                    assert len(marks) == (count if calt or compact else 0), (
+                        weight,
+                        text,
+                        calt,
+                        compact,
+                        shaped,
+                    )
+                    expected = (
+                        "quotesingle.lifetime.compact"
+                        if compact
+                        else "quotesingle.lifetime"
+                    )
+                    assert all(n == expected for n in marks), (
+                        weight,
+                        text,
+                        calt,
+                        compact,
+                        shaped,
+                    )
+                    assert sum(a for n, a, x, y in shaped) == 600 * len(text)
+                for text in (
+                    "->",
+                    "->>",
+                    "=>",
+                    "==",
+                    "===",
+                    "###",
+                    "?.",
+                    "!.",
+                    "::",
+                    "Vec<T>",
+                ):
+                    assert run(text, calt, False) == run(text, calt, True), (
+                        weight,
+                        text,
+                        "independent switch",
+                    )
+        gs = f.getGlyphSet(location={"wght": weight})
+        normal = shape_from_glyphs(gs, "quotesingle.lifetime").bounds
+        quote = shape_from_glyphs(gs, "quoteleft").bounds
+        compact = shape_from_glyphs(gs, "quotesingle.lifetime.compact").bounds
+        assert max(abs(a - b) for a, b in zip(normal, quote)) < 1, (
+            weight,
+            "normal quote outline",
+        )
+        assert (
+            max(
+                abs(a - b)
+                for a, b in zip(
+                    compact, (quote[0] + 300, quote[1], quote[2] + 300, quote[3])
+                )
+            )
+            < 1
+        )
+        assert abs((compact[0] + compact[2]) / 2 - 600) < 1
+        results.append(
+            {
+                "wght": weight,
+                "normal_bounds": list(normal),
+                "compact_bounds": list(compact),
+            }
+        )
+    record = next(
+        r for r in f["GSUB"].table.FeatureList.FeatureRecord if r.FeatureTag == "ss01"
+    )
+    label = f["name"].getDebugName(record.Feature.FeatureParams.UINameID)
+    assert label == "Boundary-centered Rust lifetimes", label
+    print(
+        "Rust lifetime toggle passed:26contexts,11weights,all4calt/ss01 combinations; other coding ligatures unchanged"
+    )
+    return {
+        "font": str(path.relative_to(ROOT)),
+        "cases": CASES,
+        "weights": results,
+        "feature": "ss01",
+        "label": label,
+        "default": "normal opening quote in its own cell under calt",
+        "toggle": "ss01 shifts lifetime quote to boundary and < / & one cell right; works independently of calt",
+        "advance": "600 per input character",
+        "other_coding_features": "unchanged with ss01 toggle",
+    }
 
 
 if __name__ == "__main__":

@@ -1,0 +1,51 @@
+{
+  "feature": "ss02",
+  "label": "Logic",
+  "default": "off",
+  "independent": "all eight calt/ss01/ss02 combinations checked",
+  "tokens": {
+    "<>": "code.enclosureDiamond",
+    "[]": "code.enclosureBox",
+    "<[": "code.angleSquareOpen",
+    "]>": "code.angleSquareClose",
+    "[<": "code.squareAngleOpen",
+    ">]": "code.squareAngleClose"
+  },
+  "examples": {
+    "<[T]>": [
+      "code.angleSquareOpen",
+      "code.angleSquareClose"
+    ],
+    "[<T>]": [
+      "code.squareAngleOpen",
+      "code.squareAngleClose"
+    ],
+    "<[]>": [
+      "code.angleSquareOpen",
+      "code.angleSquareClose"
+    ],
+    "[<>]": [
+      "code.squareAngleOpen",
+      "code.squareAngleClose"
+    ]
+  },
+  "weights": [
+    300,
+    310,
+    320,
+    330,
+    340,
+    350,
+    360,
+    370,
+    380,
+    390,
+    400
+  ],
+  "advance": 1200,
+  "caret": 600,
+  "height": "same vertical span as square brackets",
+  "stroke": "existing one-step-heavier delimiter stems/diagonals",
+  "unchanged": "all existing outlines,variations,metrics and positioning",
+  "sanitizer": "passed"
+}

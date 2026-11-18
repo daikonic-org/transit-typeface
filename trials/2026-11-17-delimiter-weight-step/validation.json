@@ -1,0 +1,84 @@
+{
+  "source": "previews/code-1.029/source/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+  "changed_glyphs": [
+    "bar.delimiterClose",
+    "bar.delimiterOpen",
+    "braceleft",
+    "braceright",
+    "bracketleft",
+    "bracketright",
+    "code.lifetimeOpen",
+    "code.syntax02",
+    "code.syntax03",
+    "code.syntax04",
+    "code.syntax15",
+    "greater.generic",
+    "less.generic",
+    "parenleft",
+    "parenright"
+  ],
+  "mapping": {
+    "300": 350,
+    "350": 400,
+    "400": "450 continuation; compatible extrapolation with optically grown braces"
+  },
+  "weights": [
+    {
+      "weight": 300,
+      "delimiter_weight": 350,
+      "paren_stem": 107.99998780059622
+    },
+    {
+      "weight": 310,
+      "delimiter_weight": 360,
+      "paren_stem": 111.99970307719158
+    },
+    {
+      "weight": 320,
+      "delimiter_weight": 370,
+      "paren_stem": 115.9993771314399
+    },
+    {
+      "weight": 330,
+      "delimiter_weight": 380,
+      "paren_stem": 119.99921650868927
+    },
+    {
+      "weight": 340,
+      "delimiter_weight": 390,
+      "paren_stem": 123.99919882479531
+    },
+    {
+      "weight": 350,
+      "delimiter_weight": 400,
+      "paren_stem": 127.99921164342027
+    },
+    {
+      "weight": 360,
+      "delimiter_weight": 410,
+      "paren_stem": 131.99922444684523
+    },
+    {
+      "weight": 370,
+      "delimiter_weight": 420,
+      "paren_stem": 135.99920671734967
+    },
+    {
+      "weight": 380,
+      "delimiter_weight": 430,
+      "paren_stem": 139.999382743314
+    },
+    {
+      "weight": 390,
+      "delimiter_weight": 440,
+      "paren_stem": 143.99972929545012
+    },
+    {
+      "weight": 400,
+      "delimiter_weight": 450,
+      "paren_stem": 148.00011619404754
+    }
+  ],
+  "preserved": "all other outlines/variations/metrics, all advances and layout tables",
+  "sanitizer": "passed"
+}

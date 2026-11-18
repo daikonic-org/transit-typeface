@@ -1,0 +1,15 @@
+{
+  "version": "1.030",
+  "status": "preview",
+  "family": "Daikonic Transit Code",
+  "default_weight": 350,
+  "weight_range": [
+    300,
+    400
+  ],
+  "selected_source": "previews/code-1.030/source/DaikonicTransitCodeDelimiterWeightStudy-VF.ttf",
+  "source_sha256": "c9a2bc13b9d5b378544904c039abb7226b9cd05fc9d1b5259f1f4d072797978d",
+  "drawing_variation_layout_fidelity": "exact to selected source",
+  "sanitized_fonts": 4,
+  "source_status": "Scripted trial derivation; released sources/code remains1.017. Native production source adoption remains pending."
+}

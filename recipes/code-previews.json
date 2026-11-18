@@ -1,5 +1,5 @@
 {
-  "latest": "1.027",
+  "latest": "1.032",
   "versions": {
     "1.021": {
       "source": "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf",
@@ -64,6 +64,69 @@
         "Rust-Lifetimes"
       ],
       "study_directory": "previews/code-1.027/specimens"
+    },
+    "1.028": {
+      "source": "previews/code-1.028/source/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+      "summary": "opening-quote Rust lifetimes with independent boundary-placement option",
+      "overview": "Rust lifetimes use the existing opening single quote at its normal size and weight. The standard calt form keeps the marker in its own600-unit cell. Stylistic set ss01, Boundary-centered Rust lifetimes, independently enables a quote centered on the following cell boundary and shifts an adjoining < or & exactly one cell right. Compact placement is off by default; it also works when calt is disabled. Character literals retain their ordinary quotes, and all input advances stay600units.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Lifetime-Toggle",
+        "Lifetime-Boundary"
+      ],
+      "study_directory": "previews/code-1.028/specimens"
+    },
+    "1.029": {
+      "source": "previews/code-1.029/source/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+      "summary": "contextual inward-set pipe delimiters and independent lifetime placement",
+      "overview": "Rust lifetimes use the existing opening single quote at its normal size and weight. The standard calt form keeps the marker in its own600-unit cell. Stylistic set ss01, Boundary-centered Rust lifetimes, independently enables a quote centered on the following cell boundary and shifts an adjoining < or & exactly one cell right. Compact placement is off by default; it also works when calt is disabled. Character literals retain their ordinary quotes, and all input advances stay600units. Paired pipe delimiters use the parentheses\u2019 vertical span and stem weight with14units of inward fitting. Contextual rules recognize common closure/parameter forms while preserving bitwise/logical bars and turnstile operators. The context is bounded to48parameter-like glyphs.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Bar-Delimiters",
+        "Lifetime-Toggle",
+        "Lifetime-Boundary"
+      ],
+      "study_directory": "previews/code-1.029/specimens"
+    },
+    "1.030": {
+      "source": "previews/code-1.030/source/DaikonicTransitCodeDelimiterWeightStudy-VF.ttf",
+      "summary": "one-step heavier structural delimiters",
+      "overview": "Rust lifetimes use the existing opening single quote at its normal size and weight. The standard calt form keeps the marker in its own600-unit cell. Stylistic set ss01, Boundary-centered Rust lifetimes, independently enables a quote centered on the following cell boundary and shifts an adjoining < or & exactly one cell right. Compact placement is off by default; it also works when calt is disabled. Character literals retain their ordinary quotes, and all input advances stay600units. Paired pipe delimiters use the parentheses\u2019 vertical span and stem weight with14units of inward fitting. Contextual rules recognize common closure/parameter forms while preserving bitwise/logical bars and turnstile operators. The context is bounded to48parameter-like glyphs. Structural delimiters use a one-step weight offset: Light300 uses Book350 outlines, Book350 uses Regular400 outlines, and Regular400 uses a derived450 continuation. This covers parentheses, brackets, braces, contextual pipe delimiters and generic angles, including structural components inside interpolation and lifetime forms. Delimiter height and placement, other glyphs, operators, all advances and layout features are retained. The450brace endpoint uses the established72%weight-growth method to preserve its vertical span.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Delimiter-Weight"
+      ],
+      "study_directory": "previews/code-1.030/specimens"
+    },
+    "1.031": {
+      "source": "previews/code-1.031/source/DaikonicTransitCodeEnclosureStudy-VF.ttf",
+      "summary": "closed diamond and box plus mixed enclosure ligatures",
+      "overview": "Rust lifetimes use the existing opening single quote at its normal size and weight. The standard calt form keeps the marker in its own600-unit cell. Stylistic set ss01, Boundary-centered Rust lifetimes, independently enables a quote centered on the following cell boundary and shifts an adjoining < or & exactly one cell right. Compact placement is off by default; it also works when calt is disabled. Character literals retain their ordinary quotes, and all input advances stay600units. Paired pipe delimiters use the parentheses\u2019 vertical span and stem weight with14units of inward fitting. Contextual rules recognize common closure/parameter forms while preserving bitwise/logical bars and turnstile operators. The context is bounded to48parameter-like glyphs. Structural delimiters use a one-step weight offset: Light300 uses Book350 outlines, Book350 uses Regular400 outlines, and Regular400 uses a derived450 continuation. This covers parentheses, brackets, braces, contextual pipe delimiters and generic angles, including structural components inside interpolation and lifetime forms. Delimiter height and placement, other glyphs, operators, all advances and layout features are retained. The450brace endpoint uses the established72%weight-growth method to preserve its vertical span. Adds <> as a closed diamond, [] as a closed box, and joined mixed delimiter pairs <[ / ]> and [< / >]. All six sequences retain1200-unit advances and a600-unit caret, match bracket height, and use the current heavier delimiter stroke palette. Compound pairs take precedence in nested empty forms <[]> and [<>]. Enable calt to use the ligatures.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Enclosure-Ligatures"
+      ],
+      "study_directory": "previews/code-1.031/specimens"
+    },
+    "1.032": {
+      "source": "previews/code-1.032/source/DaikonicTransitCodeEnclosureStudy-VF.ttf",
+      "summary": "opening-quote lifetimes, independent Logic toggle and heavier structural delimiters",
+      "overview": "Rust lifetimes use the existing opening single quote, with ordinary placement through calt. Optional ss01, Boundary-centered Rust lifetimes, places the quote on the following cell boundary and shifts an adjoining < or & one cell right. Optional ss02, Logic, joins <> into a diamond, [] into a box, and <[ / ]> and [< / >] into full-bracket-height enclosures. Both stylistic sets are independent and off by default. Structural delimiters use one weight step above the surrounding text, including contextual pipe delimiters fitted to the parentheses\u2019 height and inset. Contextual rules preserve ordinary bitwise/logical bars, turnstiles and quoted character literals. All characters retain 600-unit advances; two-character enclosure ligatures retain 1200 units and an internal caret.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Enclosure-Ligatures"
+      ],
+      "study_directory": "previews/code-1.032/specimens"
+    },
+    "1.033": {
+      "source": "previews/code-1.033/source/DaikonicTransitCodeEnclosureStudy-VF.ttf",
+      "summary": "Logic mixed pairs reuse native tall delimiter angles",
+      "overview": "Rust lifetimes use the existing opening single quote at its normal size and weight. The standard calt form keeps the marker in its own600-unit cell. Stylistic set ss01, Boundary-centered Rust lifetimes, independently enables a quote centered on the following cell boundary and shifts an adjoining < or & exactly one cell right. Compact placement is off by default; it also works when calt is disabled. Character literals retain their ordinary quotes, and all input advances stay600units. Paired pipe delimiters use the parentheses\u2019 vertical span and stem weight with14units of inward fitting. Contextual rules recognize common closure/parameter forms while preserving bitwise/logical bars and turnstile operators. The context is bounded to48parameter-like glyphs. Structural delimiters use a one-step weight offset: Light300 uses Book350 outlines, Book350 uses Regular400 outlines, and Regular400 uses a derived450 continuation. This covers parentheses, brackets, braces, contextual pipe delimiters and generic angles, including structural components inside interpolation and lifetime forms. Delimiter height and placement, other glyphs, operators, all advances and layout features are retained. The450brace endpoint uses the established72%weight-growth method to preserve its vertical span. Adds <> as a closed diamond, [] as a closed box, and optically fitted mixed delimiter pairs <[ / ]> and [< / >]. All six sequences retain1200-unit advances and a600-unit caret, match bracket height, and use the current heavier delimiter stroke palette. Compound pairs take precedence in nested empty forms <[]> and [<>]. All six enclosure ligatures are controlled by the independent stylistic set ss02, named Logic, and are off by default. Enable ss02=1 to use them. Logic works independently of calt and the ss01 lifetime-placement option. The four mixed pairs reuse the actual tall delimiter-angle outlines without scaling or redrawing. Angle height, vertical position, width, slant and stroke match standalone delimiter angles. The two original component shapes use a64-unit optical gap; the combined pair remains centered in its1200-unit advance. Closed diamond and box drawings are unchanged.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "Enclosure-Ligatures"
+      ],
+      "study_directory": "previews/code-1.033/specimens"
     }
   }
 }

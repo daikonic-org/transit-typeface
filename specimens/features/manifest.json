@@ -16,15 +16,15 @@
       }
     },
     "code": {
-      "font": "previews/code-1.027/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "a9eb85e4cdb573385952dbbb0f6322203c6a5dab392bac58a6afd8ca6f3e34ff",
+      "font": "previews/code-1.032/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "64fd16628d8a477c54f1999ed18c2b634371bb4f60add528efda23cbcf040ab4",
       "location": {
         "wght": 350
       }
     },
     "code-regular": {
-      "font": "previews/code-1.027/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "a9eb85e4cdb573385952dbbb0f6322203c6a5dab392bac58a6afd8ca6f3e34ff",
+      "font": "previews/code-1.032/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "64fd16628d8a477c54f1999ed18c2b634371bb4f60add528efda23cbcf040ab4",
       "location": {
         "wght": 400
       }
@@ -1437,8 +1437,14 @@
       },
       "on_shaping": [
         [
-          "code.lifetimeBorrow",
-          1200,
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
           0,
           0
         ],
@@ -1455,8 +1461,14 @@
           0
         ],
         [
-          "code.lifetimeOpen",
-          1200,
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
           0,
           0
         ],
@@ -1634,8 +1646,14 @@
       },
       "on_shaping": [
         [
-          "code.lifetimeBorrow",
-          1200,
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
           0,
           0
         ],
@@ -1757,6 +1775,668 @@
         ],
         [
           "quotesingle",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-lifetime-placement": {
+      "text": "&'a <'a> 'static",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss01": true
+      },
+      "off_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss01": false
+      },
+      "on_shaping": [
+        [
+          "code.lifetimeBorrow",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.lifetimeOpen",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime.compact",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "ampersand",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "c",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-logic": {
+      "text": "<> []",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": true
+      },
+      "off_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": false
+      },
+      "on_shaping": [
+        [
+          "code.enclosureDiamond",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.enclosureBox",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-logic-mixed": {
+      "text": "<[T]> [<T>]",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": true
+      },
+      "off_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": false
+      },
+      "on_shaping": [
+        [
+          "code.angleSquareOpen",
+          1200,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.angleSquareClose",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.squareAngleOpen",
+          1200,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.squareAngleClose",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-pipe-delimiters": {
+      "text": "|x| map(|x| x) a | b",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "bar.delimiterOpen",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar.delimiterClose",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar.delimiterOpen",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar.delimiterClose",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bar",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
           600,
           0,
           0
@@ -2320,8 +3000,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "e52c8d5682efd8d817d85289109d1180090319cffe177c5e1ed844e3cf20949a",
-    "code-Features.svg": "0438c165afaa37be703d9fd0910d4b7d9ee51128accb0ccb3dbaf6b3ce7d5e30",
+    "Code-Characters.svg": "ceb5fcf5ed45cd01cb485265b0a7e544d3bd4f453be7d9a4f56696a1407884e0",
+    "code-Features.svg": "1188b3ed3b079a1dc23fe82d2e493279d6d2d3f175541f437bc4b03b6fb85339",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -2335,17 +3015,25 @@
     "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
     "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
     "code-generics-off.svg": "c49e3473d076893edf38cfd7e4631591cbf60af10c871f800b6890b184387245",
-    "code-generics-on.svg": "b1e0eeeabfe8adebaff24c816076286f26958909541cfe38ed42b84d543bd237",
+    "code-generics-on.svg": "2617069f12da326c79e1a685bf115136d084bf2551b0594b4ca48ef9e282aa19",
     "code-hashes-off.svg": "5d4ff56763ba71306320574ad2ff6690f53d3b8f864a878b5ff239456ee60cbd",
     "code-hashes-on.svg": "b8a15ec7845c5988f3506633a0b632b715983ecc6044f410b6d9f91d36a47979",
-    "code-interpolation-off.svg": "301f5c190008cf048dfbe672a586eda402f2811767c13389ca53dbc10023dd18",
-    "code-interpolation-on.svg": "730215295773707901cf1f285a4def52959da40259e2d777ad78e4b0dfe923c1",
+    "code-interpolation-off.svg": "a9fe4f3cd122d41866ae81f77af5ba1141250e5cdd88d590ded469370090319f",
+    "code-interpolation-on.svg": "13c10d16dddcc0768ba796f6efcd4d22581bb9d68ee548652b401d64c37ad740",
     "code-lifetime-literals-off.svg": "f876df6c8d5a7c05bec460902d766f21d489537a7fc432883cd7bca851c45ae6",
-    "code-lifetime-literals-on.svg": "ae47c75aaa0536b1d90413a9c664dbd338972766eecfaf674ddb867e66c4a5ef",
+    "code-lifetime-literals-on.svg": "6aaf8266cf02e89ab8a3a571734c3e4ed79cceb585e45e32e5eaf5cab21f13b6",
+    "code-lifetime-placement-off.svg": "c5466ff28edbebb816dc1a2607d316176db471a6f35f0c08cadeb78151eaae9a",
+    "code-lifetime-placement-on.svg": "e84781324fced44437b45e1831df5bdfd5383fcf790547bd820289d109b94608",
     "code-lifetimes-off.svg": "262a5942e23de25931816624f157a0018bae8fd107b0917d6a26218564f34005",
-    "code-lifetimes-on.svg": "89fa007d0b34cc265821400bca6af83f4ff9a318d208e87f92e88045d05e2be5",
+    "code-lifetimes-on.svg": "214446ddccfc0cf3ee2bbc6e8afce3960cb9d539a8a8caef1914952242995ad1",
+    "code-logic-mixed-off.svg": "bd3268a3fed21a4f6a30a4738e02f90a3e69cd5f9d815eeec946f0821f2bb0a8",
+    "code-logic-mixed-on.svg": "6e588c2a843fdf6d5c2ffbfa4bf6b7303a14af61962e2f87cf4735596b2eaf50",
+    "code-logic-off.svg": "ddbe8273c4b493ad6d7c836ca1682ddd97cbd3d860a5e7d654a2a7743b5a4c10",
+    "code-logic-on.svg": "80fa824ee44fdd59232deed73e0417b95cc81e01d63b13f59e3ea8aef166d539",
     "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
     "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
+    "code-pipe-delimiters-off.svg": "9098f689f03cbd2e623a3bdac5feb0631b5915c7ed7048c38065264135d69abb",
+    "code-pipe-delimiters-on.svg": "f58d53d96b25edda6b0c67b49daa39ee71dbfedc1767b753b9e315290c17407c",
     "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
     "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
     "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
@@ -2354,8 +3042,8 @@
     "distinct-at-regular.svg": "32ff187a992aaa92289c81fb562a489b52b0f0e12195484f7968c86afaef7ba3",
     "distinct-bars-book.svg": "9a821dc3290aa6101deef9e31361c0a9fdc3b557256ca4864cdcd8d2cf636ceb",
     "distinct-bars-regular.svg": "2b8260e18d35131e4f5ec75858064bb03b3e59b1403d7876b669bb1bfd270ffd",
-    "distinct-delimiters-book.svg": "ad5f50dd074ff3768baf99af6cb9be2742aa3dc93687a67826f05fe1c1797d73",
-    "distinct-delimiters-regular.svg": "1a140680b1703e76135673481d56a54c3e74461d65c2433d011a9a4e2c91de3f",
+    "distinct-delimiters-book.svg": "8fde2e41771738b79a918d65c4b70fa5adcfef9b9144ee623cfbfbda76310bee",
+    "distinct-delimiters-regular.svg": "ecd1604b4969ef6dc9882dd7c8ddc09db7bc0edae92586fc3898d5c27c00157c",
     "distinct-diamonds-book.svg": "85b21b0d14603c6571c16ae9f499c0dcaff0c1be8aa0594339a00503dc98fc8b",
     "distinct-diamonds-regular.svg": "3b367e32f44f3d3b163424f1b1f27da31d6151ab92d3d91a83c13885fbd60fdd",
     "distinct-identity-book.svg": "e5b98f717a9dc6f9c119427145645ab4a59eae39663bf1ca4701345c7e5be897",

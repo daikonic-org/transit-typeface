@@ -12,6 +12,7 @@ from fontTools.misc.roundTools import otRound
 import pathops
 from specimens import ROOT, specimen_families
 from audit import shape, spans
+from code_bar_delimiters import add_bar_delimiters
 from derive_weights import weighted
 from font_feature_tools import (
     compose,
@@ -19,6 +20,7 @@ from font_feature_tools import (
     master_locations,
     add_features,
     append_glyph,
+    label_stylistic_set,
 )
 
 OUT = ROOT / "trials/2026-11-17-syntax-numerals"
@@ -328,53 +330,18 @@ def code(font):
     ]
     add_features(font, "\n".join(generic_lines))
     lifetime = RECIPE["code"]["rust_lifetime"]
-    from dot_inventory import dots
-
-    prime_paths = []
-    for f in samples:
-        marker = dots(f.getGlyphSet(), "i")[0][1]
-        diameter = min(marker["width"], marker["height"]) * lifetime["head_scale"]
-        top = marker["bounds"][3]
-        cx = lifetime["head_x"]
-        cy = top - diameter / 2
-        bottom = shape(f, "x").bounds[3] + lifetime["terminal_above_xheight"]
-        angle = math.radians(lifetime["angle_degrees"])
-        stem = shape(f, "bar").bounds[2] - shape(f, "bar").bounds[0]
-        thickness = stem * lifetime["stem_ratio"]
-        dx = (cy - bottom) * math.tan(angle)
-        half = thickness / (2 * math.cos(angle))
-        terminal = half * lifetime["terminal_ratio"]
-        diamond = polygon(
-            [
-                (cx, top),
-                (cx + diameter / 2, cy),
-                (cx, cy - diameter / 2),
-                (cx - diameter / 2, cy),
-            ]
-        )
-        tail = polygon(
-            [
-                (cx - half, cy),
-                (cx + half, cy),
-                (cx - dx + terminal, bottom),
-                (cx - dx - terminal, bottom),
-            ]
-        )
-        prime_paths.append(pathops.op(diamond, tail, pathops.PathOp.UNION))
-    from_paths(font, "quotesingle.lifetime", locs, prime_paths, 600)
+    compose(font, "quotesingle.lifetime", [(lifetime["marker_glyph"], 1, 1, 0, 0)], 600)
+    compose(
+        font,
+        "quotesingle.lifetime.compact",
+        [(lifetime["marker_glyph"], 1, 1, lifetime["marker_shift"], 0)],
+        600,
+    )
     for name, leader in [
         ("code.lifetimeOpen", "less.generic"),
         ("code.lifetimeBorrow", "ampersand"),
     ]:
-        compose(
-            font,
-            name,
-            [
-                (leader, 1, 1, lifetime["pair_leader_shift"], 0),
-                ("quotesingle.lifetime", 1, 1, lifetime["pair_prime_offset"], 0),
-            ],
-            1200,
-        )
+        compose(font, name, [(leader, 1, 1, lifetime["pair_leader_shift"], 0)], 600)
     starts = sorted(
         {
             name
@@ -390,8 +357,11 @@ def code(font):
         "@LifetimeStart=[" + " ".join(starts) + "];",
         "@LifetimeContinue=[" + " ".join(continues) + "];",
         "@LifetimeOpen=[quotesingle " + mapping["<'"] + " " + mapping["&'"] + "];",
-        "@LifetimeAlternate=[quotesingle.lifetime code.lifetimeOpen code.lifetimeBorrow];",
-        "feature calt {",
+        "lookup LifetimeForms {",
+        "sub quotesingle by quotesingle.lifetime;",
+        "sub " + mapping["<'"] + " by less.generic quotesingle.lifetime;",
+        "sub " + mapping["&'"] + " by ampersand quotesingle.lifetime;",
+        "} LifetimeForms;",
         "lookup RustLifetime {",
         "lookupflag IgnoreMarks;",
     ]
@@ -406,14 +376,87 @@ def code(font):
     lines += [
         "ignore sub @LifetimeContinue quotesingle';",
         "ignore sub quotesingle quotesingle';",
-        "sub @LifetimeOpen' @LifetimeStart by @LifetimeAlternate;",
+        "sub @LifetimeOpen' lookup LifetimeForms @LifetimeStart;",
         "} RustLifetime;",
-        "} calt;",
-        "table GDEF { LigatureCaretByPos code.lifetimeOpen 600; LigatureCaretByPos code.lifetimeBorrow 600; } GDEF;",
+        "feature calt { lookup RustLifetime; } calt;",
+        "feature ss01 {",
+        "lookup RustLifetime;",
+        "sub quotesingle.lifetime by quotesingle.lifetime.compact;",
+        "sub [less less.generic]' quotesingle.lifetime.compact by code.lifetimeOpen;",
+        "sub ampersand' quotesingle.lifetime.compact by code.lifetimeBorrow;",
+        "} ss01;",
     ]
+    # Reuse the opening quote unchanged. Position it above the following
+    # character, like an accent, while leaving both advances untouched.
+    heights = {}
+    quote_bottom = min(shape(f, lifetime["marker_glyph"]).bounds[1] for f in samples)
+
+    def quote_rise(name):
+        overlaps = any(
+            pathops.op(
+                shape(f, lifetime["marker_glyph"]).transform(
+                    1, 0, 0, 1, lifetime["marker_shift"], 0
+                ),
+                shape(f, name).transform(1, 0, 0, 1, 600, 0),
+                pathops.PathOp.INTERSECTION,
+            ).area
+            > 0.01
+            for f in samples
+        )
+        if not overlaps:
+            return 0
+        top = max(shape(f, name).bounds[3] for f in samples)
+        return max(0, math.ceil(top + lifetime["vertical_clearance"] - quote_bottom))
+
+    for name in starts:
+        rise = quote_rise(name)
+        heights.setdefault(rise, []).append(name)
+    for rise, names in sorted(heights.items()):
+        lines.insert(2, "@LifetimeHeight" + str(rise) + "=[" + " ".join(names) + "];")
+    lines += [
+        "feature ss01 {",
+        "lookup LifetimeQuoteHeight {",
+    ]
+    # Canonically decomposed letters need their accent height, rather than
+    # just the height of the first base glyph, when positioning the quote.
+    accented = {}
+    for cp, name in cmap.items():
+        decomp = unicodedata.normalize("NFD", chr(cp))
+        if (
+            name not in starts
+            or len(decomp) < 2
+            or any(ord(c) not in cmap for c in decomp)
+        ):
+            continue
+        names = [cmap[ord(c)] for c in decomp]
+        if names[0] in ("i", "j"):
+            names[0] = "dotless" + names[0]
+        rise = quote_rise(name)
+        accented[tuple(names)] = max(rise, accented.get(tuple(names), 0))
+    for names, rise in sorted(accented.items(), key=lambda item: -len(item[0])):
+        lines.append(
+            "pos quotesingle.lifetime.compact' <0 "
+            + str(rise)
+            + " 0 0> "
+            + " ".join(names)
+            + ";"
+        )
+    for rise in sorted(heights):
+        lines.append(
+            "pos quotesingle.lifetime.compact' <0 "
+            + str(rise)
+            + " 0 0> @LifetimeHeight"
+            + str(rise)
+            + ";"
+        )
+    lines += ["} LifetimeQuoteHeight;", "} ss01;"]
     add_features(font, "\n".join(lines))
+    label_stylistic_set(font, "ss01", "Boundary-centered Rust lifetimes")
     return {
         "tokens": mapping,
+        "bar_delimiters": add_bar_delimiters(
+            font, RECIPE["code"]["bar_delimiters"], mapping
+        ),
         "equals_width_factor": factor,
         "equals_height_and_thickness": "unchanged",
         "generic_policy": RECIPE["code"]["generics"],

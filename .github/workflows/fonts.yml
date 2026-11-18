@@ -33,6 +33,10 @@ jobs:
           python tools/check_syntax_numerals.py
       - name: Verify Rust lifetime apostrophe and protected literals
         run: python tools/check_rust_lifetimes.py
+      - name: Verify contextual pipe delimiters
+        run: python tools/code_bar_proof.py --check --font previews/code-1.032/VF/DaikonicTransitCode-VF.ttf
+      - name: Verify selected joined Logic enclosures
+        run: python tools/code_enclosure_ligatures.py
       - name: Verify font-rendered README feature tables
         run: python tools/readme_features.py --check
       - name: Verify positioning and optical-size candidates

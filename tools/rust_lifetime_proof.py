@@ -1,4 +1,4 @@
-"""Show lifetime on/off context and prime construction across Code named weights."""
+"""Show lifetime on/off context and opening-quote construction across Code named weights."""
 
 from copy import deepcopy
 import shutil
@@ -16,7 +16,7 @@ def main():
     for row, (w, label) in enumerate([(300, "Light"), (350, "Book"), (400, "Regular")]):
         f = instantiateVariableFont(deepcopy(vf), {"wght": w}, inplace=True)
         for col, (title, enabled) in enumerate(
-            [("On / lifetime calt", True), ("Off / ordinary quote", False)]
+            [("Normal / ss01 off", False), ("Boundary / ss01 on", True)]
         ):
             p = Panel(f"rust-{w}-{col}", DATA["families"]["code"])
             bind(p, f)
@@ -30,7 +30,7 @@ def main():
                 36,
                 400,
                 "#101712",
-                features={"calt": enabled},
+                features={"calt": True, "ss01": enabled},
                 max_width=610,
             )
             p.text(
@@ -40,7 +40,7 @@ def main():
                 25,
                 400,
                 "#101712",
-                features={"calt": enabled},
+                features={"calt": True, "ss01": enabled},
                 max_width=610,
             )
             p.text(
@@ -50,7 +50,7 @@ def main():
                 24,
                 400,
                 "#101712",
-                features={"calt": enabled},
+                features={"calt": True, "ss01": enabled},
                 max_width=610,
             )
             parts.append(p.body())
@@ -60,7 +60,7 @@ def main():
         [
             ("i", "Shared diamond / i"),
             ("quotesingle", "Literal apostrophe"),
-            ("quotesingle.lifetime", "Lifetime diamond-headed prime"),
+            ("quotesingle.lifetime", "Lifetime opening single quote"),
         ]
     ):
         x = 100 + col * 400

@@ -33,6 +33,8 @@ def expanded_variations(font, name):
 
 
 def append_glyph(font, name, glyph, variations, advance, metric_source=None):
+    # Decode gvar against the original glyph count before extending the order.
+    gvar = font["gvar"]
     order = font.getGlyphOrder()
     if name not in order:
         font.setGlyphOrder(order + [name])
@@ -40,7 +42,7 @@ def append_glyph(font, name, glyph, variations, advance, metric_source=None):
     if glyph.numberOfContours:
         glyph.recalcBounds(font["glyf"])
     font["hmtx"][name] = (round(advance), glyph.xMin if glyph.numberOfContours else 0)
-    font["gvar"].variations[name] = variations
+    gvar.variations[name] = variations
     if "HVAR" in font:
         table = font["HVAR"].table
         if table.AdvWidthMap is None:
@@ -90,6 +92,12 @@ def compose(font, name, parts, advance, metric_source=None, sum_metrics=False):
         }
         supports.update({key: dict(key) for key in variations})
         sources.append((old, sx, sy, variations))
+    # OVERLAP_SIMPLE is legal only on the first point of a simple glyph.
+    # A later composed component can carry it on its own first point.
+    overlap = any(flag & 0x40 for flag in glyph.flags)
+    glyph.flags = bytearray(flag & ~0x40 for flag in glyph.flags)
+    if overlap and glyph.flags:
+        glyph.flags[0] |= 0x40
     from fontTools.ttLib.tables.ttProgram import Program
 
     glyph.program = Program()
@@ -184,9 +192,11 @@ def add_features(font, fea, prepend=False):
     scratch = TTFont()
     scratch.setGlyphOrder(font.getGlyphOrder())
     addOpenTypeFeaturesFromString(scratch, fea)
-    if "GSUB" in scratch:
-        source = scratch["GSUB"].table
-        target = font["GSUB"].table
+    for tag in ("GSUB", "GPOS"):
+        if tag not in scratch:
+            continue
+        source = scratch[tag].table
+        target = font[tag].table
         offset = len(target.LookupList.Lookup)
 
         def remap(value):
@@ -271,3 +281,14 @@ def add_features(font, fea, prepend=False):
             old.LigCaretList.Coverage.glyphs = names
             old.LigCaretList.LigGlyph = [records[n] for n in names]
             old.LigCaretList.LigGlyphCount = len(names)
+
+
+def label_stylistic_set(font, tag, label):
+    """Attach a readable UI label to an existing stylistic-set feature."""
+    record = next(
+        r for r in font["GSUB"].table.FeatureList.FeatureRecord if r.FeatureTag == tag
+    )
+    params = otTables.FeatureParamsStylisticSet()
+    params.Version = 0
+    params.UINameID = font["name"].addName(label)
+    record.Feature.FeatureParams = params
