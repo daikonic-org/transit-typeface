@@ -68,7 +68,7 @@ FEATURES = {
             ON,
             OFF,
         ),
-        ("generics", "Comparison / generic context", "<> a<b Vec<T> Vec<u8>", ON, OFF),
+        ("generics", "Comparison / generic context", "a<>b Vec<> Vec<Vec<T>>", ON, OFF),
         ("optical", "Contextual optical placement", "ke Ke KE vi il", ON, OFF),
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
