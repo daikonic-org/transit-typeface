@@ -221,14 +221,34 @@ def code(font):
                         300 - (b + t) / 2,
                     )
                 ]
-        elif text.startswith("#"):
-            parts = [
-                ("numbersign", 1, 1, 600 * i + 20 - 40 * i / (length - 1), 0)
-                for i in range(length)
-            ]
-        elif text == "<'":
-            parts = [("less.generic", 1, 1, 0, 0), ("quotesingle", 1, 1, 680, 0)]
-        compose(font, name, parts, length * 600)
+        elif text in ("<'", "&'"):
+            leader = "less.generic" if text == "<'" else "ampersand"
+            parts = [(leader, 1, 1, 0, 0), ("quotesingle", 1, 1, 680, 0)]
+        if text.startswith("#"):
+            paths = []
+            for sample in samples:
+                original = shape(sample, "numbersign")
+                rails = [
+                    (a, b)
+                    for a, b in spans(original, 100, 0)
+                    if 150 < a < 450 and b - a > 35
+                ]
+                assert len(rails) == 2, rails
+                joined = pathops.Path()
+                for j in range(length):
+                    shifted = original.transform(1, 0, 0, 1, 600 * j, 0)
+                    joined = pathops.op(joined, shifted, pathops.PathOp.UNION)
+                for j in range(length - 1):
+                    for bottom, top in rails:
+                        left, right = 500 + 600 * j, 700 + 600 * j
+                        bridge = polygon(
+                            [(left, bottom), (right, bottom), (right, top), (left, top)]
+                        )
+                        joined = pathops.op(joined, bridge, pathops.PathOp.UNION)
+                paths.append(joined)
+            from_paths(font, name, locs, paths, length * 600)
+        else:
+            compose(font, name, parts, length * 600)
         mapping[text] = name
         caret.append(
             "LigatureCaretByPos "
@@ -342,12 +362,19 @@ def code(font):
         )
         prime_paths.append(pathops.op(diamond, tail, pathops.PathOp.UNION))
     from_paths(font, "quotesingle.lifetime", locs, prime_paths, 600)
-    compose(
-        font,
-        "code.lifetimeOpen",
-        [("less.generic", 1, 1, 0, 0), ("quotesingle.lifetime", 1, 1, 600, 0)],
-        1200,
-    )
+    for name, leader in [
+        ("code.lifetimeOpen", "less.generic"),
+        ("code.lifetimeBorrow", "ampersand"),
+    ]:
+        compose(
+            font,
+            name,
+            [
+                (leader, 1, 1, lifetime["pair_leader_shift"], 0),
+                ("quotesingle.lifetime", 1, 1, lifetime["pair_prime_offset"], 0),
+            ],
+            1200,
+        )
     starts = sorted(
         {
             name
@@ -362,8 +389,8 @@ def code(font):
         "languagesystem latn dflt;",
         "@LifetimeStart=[" + " ".join(starts) + "];",
         "@LifetimeContinue=[" + " ".join(continues) + "];",
-        "@LifetimeOpen=[quotesingle " + mapping["<'"] + "];",
-        "@LifetimeAlternate=[quotesingle.lifetime code.lifetimeOpen];",
+        "@LifetimeOpen=[quotesingle " + mapping["<'"] + " " + mapping["&'"] + "];",
+        "@LifetimeAlternate=[quotesingle.lifetime code.lifetimeOpen code.lifetimeBorrow];",
         "feature calt {",
         "lookup RustLifetime {",
         "lookupflag IgnoreMarks;",
@@ -382,7 +409,7 @@ def code(font):
         "sub @LifetimeOpen' @LifetimeStart by @LifetimeAlternate;",
         "} RustLifetime;",
         "} calt;",
-        "table GDEF { LigatureCaretByPos code.lifetimeOpen 600; } GDEF;",
+        "table GDEF { LigatureCaretByPos code.lifetimeOpen 600; LigatureCaretByPos code.lifetimeBorrow 600; } GDEF;",
     ]
     add_features(font, "\n".join(lines))
     return {

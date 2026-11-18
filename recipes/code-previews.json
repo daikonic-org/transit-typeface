@@ -1,5 +1,5 @@
 {
-  "latest": "1.026",
+  "latest": "1.027",
   "versions": {
     "1.021": {
       "source": "trials/2026-11-16-code-at-single-storey/DaikonicTransitCodeSingleStoreyAtStudy-VF.ttf",
@@ -52,6 +52,18 @@
         "Equals-Comparison"
       ],
       "study_directory": "previews/code-1.026/study"
+    },
+    "1.027": {
+      "source": "previews/code-1.027/source/DaikonicTransitCodeSyntaxStudy-VF.ttf",
+      "summary": "joined hash rails and fuller paired Rust lifetime marks",
+      "overview": "Daikonic Transit Code uses prominent diamond punctuation, wider equals bars, baseline inline underscores, stronger inward-set delimiters and contextual optical placement. Hash groups of two through six join their horizontal rails. Rust lifetimes use fuller diamond-headed primes with close optical fits for ampersand and opening-angle pairs; quoted character literals retain their ordinary apostrophes. Generic angles stay within baseline and cap height, with shorter less-than signs in lowercase or spaced comparison contexts.",
+      "fitting": "All Code characters retain 600-unit cells; ligatures preserve the width of their input and caret positions. Existing arrow ligatures, optical positioning and mark attachment remain intact. Bullets remain separate.",
+      "specimens": [
+        "code-Features",
+        "Code-Characters",
+        "Rust-Lifetimes"
+      ],
+      "study_directory": "previews/code-1.027/specimens"
     }
   }
 }

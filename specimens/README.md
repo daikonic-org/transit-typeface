@@ -19,7 +19,7 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-These specimens show Sans0.109, System0.117 and **Code1.026 preview**. The Code
+These specimens show Sans0.109, System0.117 and **Code1.027 preview**. The Code
 panel uses the same approved preview installed for Book350, including the
 two-storey @ with a tapered c-style wrap, balanced i, stronger delimiters, raised/heavier gapless underscore,
 wider hyphen and selected optical pair adjustments. The Code footer identifies

@@ -17,7 +17,7 @@ OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
 OFF = {"calt": False, "liga": False, "clig": False}
 # Each row defines its sample and actual feature switch once for both rendering
-# and README generation. Permanent designs use an explicit source reference.
+# and README generation. Permanent designs show current Book and Regular weights.
 FEATURES = {
     "sans": [
         ("standard", "Standard ligatures", "fi fl", {"liga": True}, {"liga": False}),
@@ -43,7 +43,7 @@ FEATURES = {
         ("ranges", "Ranges and dot assignment", ".. .= ..=", ON, OFF),
         ("ellipsis", "Three-character ellipsis", "...", ON, OFF),
         ("assignment", "Assignment / turnstiles", ":= |= |-", ON, OFF),
-        ("hashes", "Hash groups", "## ### ####", ON, OFF),
+        ("hashes", "Hash groups", "## ### #### ##### ######", ON, OFF),
         ("lifetimes", "Rust lifetime marker", "&'a <'a> 'static", ON, OFF),
         ("lifetime-literals", "Lifetimes / character literals", "&'a 'a' '_'", ON, OFF),
         ("generics", "Comparison / generic context", "a<b x<2 Vec<T> Vec<u8>", ON, OFF),
@@ -88,7 +88,7 @@ def svg(body, title, width=460, height=58):
 
 
 def image(name, alt):
-    return f'<img src="specimens/features/{name}.svg" width="300" alt="{html.escape(alt,quote=True).replace(chr(124),"&#124;")}">'
+    return f'<img src="specimens/features/{name}.svg" width="100%" alt="{html.escape(alt,quote=True).replace(chr(124),"&#124;")}">'
 
 
 def update_table(readme, marker, table):
@@ -100,6 +100,11 @@ def update_table(readme, marker, table):
 
 def main(check=False):
     OUT.mkdir(exist_ok=True)
+    prior_files = (
+        set(json.loads((OUT / "manifest.json").read_text()).get("files", {}))
+        if (OUT / "manifest.json").exists()
+        else set()
+    )
     documents = {}
 
     def emit(path, content):
@@ -123,12 +128,12 @@ def main(check=False):
             "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
             "location": loc,
         }
-    reference = TTFont(ROOT / "upstream/MetropolitanLine-Regular.ttf")
-    manifest["sources"]["metropolitan"] = {
-        "font": "upstream/MetropolitanLine-Regular.ttf",
-        "sha256": hashlib.sha256(
-            (ROOT / "upstream/MetropolitanLine-Regular.ttf").read_bytes()
-        ).hexdigest(),
+    fonts["code-regular"] = instantiateVariableFont(
+        TTFont(ROOT / cfg["code"]["font"]), {"wght": 400}, inplace=True
+    )
+    manifest["sources"]["code-regular"] = {
+        **manifest["sources"]["code"],
+        "location": {"wght": 400},
     }
     for key, rows in FEATURES.items():
         table = ["| Feature / input | On | Off |", "| --- | --- | --- |"]
@@ -191,14 +196,14 @@ def main(check=False):
         )
         readme = update_table(readme, key + "-features", "\n".join(table))
     table = [
-        "| Permanent design | Transit Code | Metropolitan Line reference |",
+        "| Permanent design | Book 350 | Regular 400 |",
         "| --- | --- | --- |",
     ]
     board = []
     for row, (slug, label, text) in enumerate(DISTINCT):
         samples = []
         for col, (which, f) in enumerate(
-            [("code", fonts["code"]), ("base", reference)]
+            [("book", fonts["code"]), ("regular", fonts["code-regular"])]
         ):
             name = "distinct-" + slug + "-" + which
             body = cell(name, f, text, OFF)
@@ -214,119 +219,32 @@ def main(check=False):
         board.append(p.body())
     p = Panel("distinct-head", DATA["families"]["code"])
     bind(p, fonts["code"])
-    p.text("Permanent Code designs / base reference", 14, 29, 23, 400, "#194454")
+    p.text("Current Code character designs", 14, 29, 23, 400, "#194454")
     p.text("Transit Code Book", 325, 55, 17, 400, "#194454")
-    p.text("Metropolitan Line Regular", 785, 55, 17, 400, "#194454")
+    p.text("Transit Code Regular", 785, 55, 17, 400, "#194454")
     board.append(p.body())
     emit(
         OUT / "Code-Characters.svg",
         svg(
             "".join(board),
-            "Distinct Code designs and original Metropolitan Line",
+            "Current Code designs in Book and Regular",
             1230,
             85 + 72 * len(DISTINCT),
         ),
     )
     readme = update_table(readme, "code-characters", "\n".join(table))
-    # Compare matching Code weights to isolate the permanent horizontal change.
-    previous_path = ROOT / "previews/code-1.023/VF/DaikonicTransitCode-VF.ttf"
-    manifest["sources"]["code-previous"] = {
-        "font": str(previous_path.relative_to(ROOT)),
-        "sha256": hashlib.sha256(previous_path.read_bytes()).hexdigest(),
-    }
-    table = [
-        f"| Matching Code weight | Current Code {cfg['code']['version']} | Previous Code 1.023 |",
-        "| --- | --- | --- |",
-    ]
-    board = []
-    metrics = {}
-    from audit import shape_from_glyphs
-    from fontTools.pens.svgPathPen import SVGPathPen
-
-    for row, (weight, label) in enumerate([(350, "Book"), (400, "Regular")]):
-        metrics[label] = {}
-        pictures = []
-        for col, (which, path) in enumerate(
-            [("current", ROOT / cfg["code"]["font"]), ("previous", previous_path)]
-        ):
-            f = instantiateVariableFont(TTFont(path), {"wght": weight}, inplace=True)
-            key = "equal-" + str(weight) + "-" + which
-            p = Panel(key, DATA["families"]["code"])
-            bind(p, f)
-            p.text("=", 230, 120, 160, 400, "#101712", align="center", features=OFF)
-            emit(
-                OUT / (key + ".svg"),
-                svg(p.body(), label + " equals / " + which, 460, 150),
-            )
-            pictures.append(image(key, label + " equals / " + which))
-            gs = f.getGlyphSet()
-            bounds = shape_from_glyphs(gs, "equal").bounds
-            bars = list(shape_from_glyphs(gs, "equal").contours)
-            metrics[label][which] = {
-                "width": bounds[2] - bounds[0],
-                "bar_thickness": bars[0].bounds[3] - bars[0].bounds[1],
-            }
-            x = 100 + 600 * col
-            base = 300 + 330 * row
-            pen = SVGPathPen(gs)
-            gs["equal"].draw(pen)
-            board.append(
-                f'<path d="{pen.getCommands()}" transform="translate({x} {base}) scale(.5 -.5)" fill="#101712"/>'
-            )
-            board.append(
-                f'<path d="M{x},{base-240} v190 M{x+300},{base-240} v190" stroke="#C06D3E" fill="none"/>'
-            )
-            heading = Panel(key + "-label", DATA["families"]["code"])
-            bind(heading, f)
-            heading.text(
-                label + " " + str(weight) + " / " + which,
-                x - 50,
-                35 + 330 * row,
-                21,
-                400,
-                "#194454",
-            )
-            m = metrics[label][which]
-            heading.text(
-                "Width "
-                + str(round(m["width"]))
-                + " / stroke "
-                + str(round(m["bar_thickness"])),
-                x - 50,
-                275 + 330 * row,
-                17,
-                400,
-                "#194454",
-            )
-            board.append(heading.body())
-        table.append(
-            "| "
-            + label
-            + " "
-            + str(weight)
-            + " | "
-            + pictures[0]
-            + " | "
-            + pictures[1]
-            + " |"
-        )
-    emit(
-        OUT / "Equals-Comparison.svg",
-        svg(
-            "".join(board),
-            "Matching-weight Code equals comparison; identical scale",
-            1200,
-            660,
-        ),
-    )
-    manifest["equals_metrics"] = metrics
-    readme = update_table(readme, "code-equals", "\n".join(table))
     emit(ROOT / "README.md", readme)
     manifest["files"] = {
         p.name: hashlib.sha256(content.encode()).hexdigest()
         for p, content in sorted(documents.items())
         if p.suffix == ".svg"
     }
+    if not check:
+        for stale in prior_files - set(manifest["files"]):
+            for suffix in (".svg", ".png", ".pdf"):
+                path = (OUT / stale).with_suffix(suffix)
+                if path.exists():
+                    path.unlink()
     emit(OUT / "manifest.json", json.dumps(manifest, indent=2) + "\n")
     if check:
         rendered = json.loads((ROOT / "qa/readme-feature-rendering.json").read_text())

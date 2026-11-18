@@ -9,7 +9,7 @@ from fontTools.ttLib import TTFont
 import uharfbuzz as hb
 import ots
 from syntax_numeral_study import OUT, TOKENS, RECIPE, DIGITS
-from audit import shape_from_glyphs
+from audit import shape_from_glyphs, spans
 from derive_weights import topology
 from specimens import ROOT
 from validate import TOKENS as EXISTING
@@ -72,6 +72,24 @@ def main():
                             and result[0][0] == recipe["code"]["tokens"][text]
                         ), (weight, text, result)
                         assert result[0][1] == 600 * len(text), (weight, text, result)
+                    for length in range(2, 7):
+                        hash_path = shape_from_glyphs(
+                            gs, recipe["code"]["tokens"]["#" * length]
+                        )
+                        rails = [
+                            (a, b)
+                            for a, b in spans(
+                                shape_from_glyphs(gs, "numbersign"), 100, 0
+                            )
+                            if 150 < a < 450 and b - a > 35
+                        ]
+                        for bottom, top in rails:
+                            runs = spans(hash_path, (bottom + top) / 2, 1)
+                            for boundary in range(1, length):
+                                assert any(
+                                    a < boundary * 600 - 40 and b > boundary * 600 + 40
+                                    for a, b in runs
+                                ), (weight, length, boundary, runs)
                     from dot_inventory import dots
 
                     for text in ("?.", "!."):

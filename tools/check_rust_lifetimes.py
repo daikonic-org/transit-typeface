@@ -27,6 +27,7 @@ CASES = {
     "'é'": 0,
     "'x' + &'a": 1,
     "<'a'>": 0,
+    "&'a'": 0,
     "'\\n'": 0,
     "'\\''": 0,
     "'\\u{1F600}'": 0,
@@ -53,9 +54,22 @@ def check(path):
                 hb.shape(h, b, {"calt": enabled, "liga": True, "clig": True})
                 names = [f.getGlyphName(g.codepoint) for g in b.glyph_infos]
                 got = sum(
-                    n in ("quotesingle.lifetime", "code.lifetimeOpen") for n in names
+                    n
+                    in (
+                        "quotesingle.lifetime",
+                        "code.lifetimeOpen",
+                        "code.lifetimeBorrow",
+                    )
+                    for n in names
                 )
                 assert got == (count if enabled else 0), (weight, text, enabled, names)
+                if enabled and text in ("&'a", "<'a, 'b>"):
+                    expected_pair = (
+                        "code.lifetimeBorrow"
+                        if text.startswith("&")
+                        else "code.lifetimeOpen"
+                    )
+                    assert names[0] == expected_pair, (weight, text, names)
                 assert sum(p.x_advance for p in b.glyph_positions) == 600 * len(text), (
                     weight,
                     text,

@@ -32,7 +32,10 @@
       "##",
       "###",
       "####",
-      "<'"
+      "<'",
+      "&'",
+      "#####",
+      "######"
     ],
     "generics": "Tall < by default; short between whitespace on both sides or lowercase/digit/underscore operands. Adjacent words containing uppercase letters retain tall generics (bounded32glyph context). Greater-than policy unchanged.",
     "generic_height": "Halfway between comparison-sign and bracket height; centered within baseline/cap-height limits.",
@@ -47,14 +50,16 @@
       }
     },
     "rust_lifetime": {
-      "head_scale": 0.8,
-      "stem_ratio": 0.8,
-      "terminal_ratio": 0.6,
+      "head_scale": 0.9,
+      "stem_ratio": 0.95,
+      "terminal_ratio": 0.7,
       "angle_degrees": 22.5,
       "head_x": 480,
       "terminal_above_xheight": 18,
       "quoted_identifier_limit": 32,
-      "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments."
+      "policy": "ASCII apostrophe before identifier starts; quoted identifiers up to 32 letters/digits retain normal quote. Nearby-character heuristic does not parse source strings/comments.",
+      "pair_leader_shift": 180,
+      "pair_prime_offset": 500
     }
   },
   "numerals": {
