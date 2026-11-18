@@ -188,6 +188,19 @@ def from_paths(font, name, locations, paths, advance):
     append_glyph(font, name, glyphs[default], variations, advance)
 
 
+def remap_lookup_records(value, offset, start=0):
+    """Shift nested lookup references when a layout lookup is moved or inserted."""
+    if isinstance(value, (otTables.SubstLookupRecord, otTables.PosLookupRecord)):
+        if value.LookupListIndex >= start:
+            value.LookupListIndex += offset
+    elif isinstance(value, list):
+        for item in value:
+            remap_lookup_records(item, offset, start)
+    elif hasattr(value, "__dict__"):
+        for item in vars(value).values():
+            remap_lookup_records(item, offset, start)
+
+
 def add_features(font, fea, prepend=False):
     scratch = TTFont()
     scratch.setGlyphOrder(font.getGlyphOrder())
@@ -199,20 +212,8 @@ def add_features(font, fea, prepend=False):
         target = font[tag].table
         offset = len(target.LookupList.Lookup)
 
-        def remap(value):
-            if isinstance(
-                value, (otTables.SubstLookupRecord, otTables.PosLookupRecord)
-            ):
-                value.LookupListIndex += offset
-            elif isinstance(value, list):
-                for v in value:
-                    remap(v)
-            elif hasattr(value, "__dict__"):
-                for v in vars(value).values():
-                    remap(v)
-
         for lookup in source.LookupList.Lookup:
-            remap(lookup)
+            remap_lookup_records(lookup, offset)
         target.LookupList.Lookup.extend(source.LookupList.Lookup)
         target.LookupList.LookupCount = len(target.LookupList.Lookup)
         added = []

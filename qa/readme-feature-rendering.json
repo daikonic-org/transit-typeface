@@ -2,18 +2,24 @@
   "scale": 3,
   "review": "Actual on/off cells and Rust weight proof visually reviewed; SVG source manifest controls generated content.",
   "files": {
-    "specimens/features/Code-Characters.pdf": "accc8b31d4b12c962cdffcba789b785af6889622b80ca55940a4f7fa7315135b",
-    "specimens/features/Code-Characters.png": "3ec7fa84f303b878d0559d02e506c72cf64249a57fe9ed4b00cc31270a17d162",
-    "specimens/features/Rust-Lifetimes.pdf": "d66f6bbca2cb5c823c6a34ed4359c5e062f073ee5519fa114b58d34ebb5a0e41",
+    "specimens/features/Code-Characters.pdf": "b94d59c9557f65f415dd337d9b58ab0580dd954f1c8adc810e6d5003ad1fdf53",
+    "specimens/features/Code-Characters.png": "d905c4f6db2f0d0657809bad41dd710c7ab8a6be7e28b8200daff723de2eb852",
+    "specimens/features/Rust-Lifetimes.pdf": "e76c6243e0e0551b5291088a5d4b92f139d87ab607554b701f7f7b922dcb8565",
     "specimens/features/Rust-Lifetimes.png": "a89d77c17c04d582369f67d5731bb16fa2a140fbc9d04c2d2f8e40983c8d034a",
-    "specimens/features/code-Features.pdf": "633505ba64b891353930c34d7eb4e95188661e4c7010e8be523658993859473b",
-    "specimens/features/code-Features.png": "727cd9b9878b802540053cf140430c690eed82a628da3ffa5bfc479ce10d00b7",
+    "specimens/features/code-Features.pdf": "f6f74ebb113a6bb0987a7aaf6f1f9618108072817a9ab3ca6d4be0337000be40",
+    "specimens/features/code-Features.png": "571e97722f7f24ca2df82e305662118c88e69ad55c973570993713022e4b442c",
     "specimens/features/sans-Features.pdf": "040df943af6287c9b1286848785d33cb4852ee20f1464d0cd32f5dffc3904ed8",
     "specimens/features/sans-Features.png": "e18f8f6271dc65b40256715ca9d68681d79e9cbab3b3475741ec4ec39c294453",
     "specimens/features/system-Features.pdf": "4183cff5b85c1239ba1117c5d67cb240b958b1648beeded33be9c9a0b8c59bd2",
     "specimens/features/system-Features.png": "b88bee5b15de7e57b177fe81653e684bca5c8adae9310fb75ef150f61df6c43a",
     "specimens/features/Angle-Pairs.svg": "4e9b13c709f6ea543ba1f1ea1bdeb378e1a6b2d712670e5924d4d09fc0957729",
     "specimens/features/Angle-Pairs.png": "50b18f79a688b4656b179da684e39f86483ff50fe6d2e94bb11acfce606c2425",
-    "specimens/features/Angle-Pairs.pdf": "a7af6428a522c30e9bc73a0eaef4e5a8186894691a1a58a651f19fa4a8dd2263"
+    "specimens/features/Angle-Pairs.pdf": "a7af6428a522c30e9bc73a0eaef4e5a8186894691a1a58a651f19fa4a8dd2263",
+    "specimens/features/Logic-Order.svg": "0271ddea56ff8c8edf0b435099189f2cfce16599ae95a156db731f2f48f05ae1",
+    "specimens/features/Logic-Order.png": "efc489e32aef3536b37c431d7e64ea47f5ba0e96d8ca3adeafceb4ae5496361d",
+    "specimens/features/Logic-Order.pdf": "0abfde0a53a87513913bd0e96dae81f09f8bd6f38f8fc52986418351e5904e16",
+    "specimens/features/Logic-Symbols.svg": "533b15a22425bcbc6065b61a274357094bfe37a10bf2a3371700637d957a0506",
+    "specimens/features/Logic-Symbols.png": "e5a4a63b4cbc39ef50df53e528109528d4564d9a3302db653d2c514186a2fffd",
+    "specimens/features/Logic-Symbols.pdf": "dad7754774d6bab49eb9046024fe27095cfba37d609f5dcaa3a0c3052fc9041a"
   }
 }

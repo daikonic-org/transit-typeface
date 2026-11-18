@@ -1,0 +1,18 @@
+{
+  "font": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
+  "engine": "macOS CoreText via CGFont from VF file, without registration",
+  "unicode": [
+    "U+00AC",
+    "U+2200",
+    "U+2203"
+  ],
+  "fallback": false,
+  "cell_units": 600,
+  "point_size": 32,
+  "advances": [
+    19.19970703125,
+    19.19970703125,
+    19.19970703125
+  ]
+}

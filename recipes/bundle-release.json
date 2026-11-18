@@ -1,6 +1,10 @@
 {
-  "version": "2026.11.18",
-  "tag": "Transit-2026.11.18",
-  "families": ["sans", "system", "code"],
+  "version": "2026.11.18.1",
+  "tag": "Transit-2026.11.18.1",
+  "families": [
+    "sans",
+    "system",
+    "code"
+  ],
   "policy": "Publish all three families together as a normal release; no preview releases."
 }

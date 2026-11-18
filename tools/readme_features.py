@@ -35,6 +35,13 @@ FEATURES = {
         ("one", "Tabular 1 / default 1", "1", {"tnum": True}, {"tnum": False}),
     ],
     "code": [
+        (
+            "logic-not",
+            "Logical negation / ss02",
+            "!p !!p != !== !.",
+            {**ON, "ss02": True},
+            {**ON, "ss02": False},
+        ),
         ("arrows", "Arrows", "-> ->> => <- <<-", ON, OFF),
         ("comparisons", "Comparisons", "== === != !== <= >=", ON, OFF),
         ("scope", "Scope separator", "::", ON, OFF),
@@ -54,6 +61,13 @@ FEATURES = {
             {**ON, "ss01": False},
         ),
         ("logic", "Logic / ss02", "<> []", {**ON, "ss02": True}, {**ON, "ss02": False}),
+        (
+            "logic-order",
+            "Empty nested Logic order / ss02",
+            "[<>] <[]>",
+            {**ON, "ss02": True},
+            {**ON, "ss02": False},
+        ),
         (
             "logic-mixed",
             "Joined Logic enclosures / ss02",
@@ -80,6 +94,7 @@ DISTINCT = [
     ("at", "Redrawn two-storey at symbol", "o@o user@host"),
     ("diamonds", "Shared prominent diamond dots", "i j . : ; ! ?"),
     ("bars", "Equals and hyphen", "= + -"),
+    ("quantifiers", "Universal and existential quantifiers", "∀x ∃y ¬p"),
 ]
 
 

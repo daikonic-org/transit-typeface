@@ -1,0 +1,99 @@
+{
+  "version": "2026.11.18.1",
+  "tag": "Transit-2026.11.18.1",
+  "families": {
+    "sans": {
+      "name": "Daikonic Transit Sans",
+      "version": "0.109",
+      "source": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+      "source_sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+      "static_files": [
+        "DaikonicTransitSans-Book.ttf",
+        "DaikonicTransitSans-Light.ttf",
+        "DaikonicTransitSans-Medium.ttf",
+        "DaikonicTransitSans-Regular.ttf",
+        "DaikonicTransitSans-SemiBold.ttf"
+      ],
+      "ttc_faces": 5,
+      "source_format": "Complete editable TTX with verified rebuild; historical native sources retained in repository."
+    },
+    "system": {
+      "name": "Daikonic Transit System",
+      "version": "0.117",
+      "source": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
+      "source_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+      "static_files": [
+        "DaikonicTransitSystem-BookCaption.ttf",
+        "DaikonicTransitSystem-BookDisplay.ttf",
+        "DaikonicTransitSystem-BookText.ttf",
+        "DaikonicTransitSystem-LightCaption.ttf",
+        "DaikonicTransitSystem-LightDisplay.ttf",
+        "DaikonicTransitSystem-LightText.ttf",
+        "DaikonicTransitSystem-MediumCaption.ttf",
+        "DaikonicTransitSystem-MediumDisplay.ttf",
+        "DaikonicTransitSystem-MediumText.ttf",
+        "DaikonicTransitSystem-RegularCaption.ttf",
+        "DaikonicTransitSystem-RegularDisplay.ttf",
+        "DaikonicTransitSystem-RegularText.ttf",
+        "DaikonicTransitSystem-SemiBoldCaption.ttf",
+        "DaikonicTransitSystem-SemiBoldDisplay.ttf",
+        "DaikonicTransitSystem-SemiBoldText.ttf"
+      ],
+      "ttc_faces": 15,
+      "source_format": "Complete editable TTX with verified rebuild; historical native sources retained in repository."
+    },
+    "code": {
+      "name": "Daikonic Transit Code",
+      "version": "1.035",
+      "source": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
+      "source_sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
+      "static_files": [
+        "DaikonicTransitCode-Book.ttf",
+        "DaikonicTransitCode-Light.ttf",
+        "DaikonicTransitCode-Regular.ttf"
+      ],
+      "ttc_faces": 3,
+      "source_format": "Complete editable TTX with verified rebuild; historical native sources retained in repository."
+    }
+  },
+  "files": {
+    "sans/SOURCE/DaikonicTransitSans.ttx.gz": "6366e1e434a7206f163889634d8837b898a0f882a1dbaeb9d4a0b1ad98b2ff92",
+    "sans/SOURCE/rebuild.py": "d390576e58ba5ef4e9b2767e21f63a2ef173e377d277dc236b277b93bc4c853b",
+    "sans/TTC/DaikonicTransitSans.ttc": "356eaad5541ed6fa04865e63466084949778401f0d1647b234732a08afcd3ed6",
+    "sans/TTF/DaikonicTransitSans-Book.ttf": "d7204f6fd68a472389e6e24bf2c15c1856d6f9e01cfb958073138870d018a16e",
+    "sans/TTF/DaikonicTransitSans-Light.ttf": "0eae724950abb923414adffd797776e86d64eda85c8a7fb29f2520f44e258dfd",
+    "sans/TTF/DaikonicTransitSans-Medium.ttf": "e909f19970ab099328371addc8de339d008cfa1032821543bfa13ceae36acb38",
+    "sans/TTF/DaikonicTransitSans-Regular.ttf": "b918c662107d2e1629257de92d1663168a51e28b86d0e833eb01af0c473c75db",
+    "sans/TTF/DaikonicTransitSans-SemiBold.ttf": "279d9bcd61751578cefddeaeee04c2c4f22ee47faaab39e74394ab63971f475a",
+    "sans/VF/DaikonicTransitSans-VF.ttf": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+    "sans/WOFF2/DaikonicTransitSans-VF.woff2": "c30de4c3c192aa3f97c75c975caf47ff7d87d18cfb2fb8850d88767a371651db",
+    "system/SOURCE/DaikonicTransitSystem.ttx.gz": "b9a5cd7f109e8f92f6256f1c4c6b07cb80cebe847a7b97f974b753b7edb67c04",
+    "system/SOURCE/rebuild.py": "d390576e58ba5ef4e9b2767e21f63a2ef173e377d277dc236b277b93bc4c853b",
+    "system/TTC/DaikonicTransitSystem.ttc": "8a5cd4ff558f088ba37d0653a4c07424c4e336885c484998747fb70edf82c9cf",
+    "system/TTF/DaikonicTransitSystem-BookCaption.ttf": "cf455435b54d0ed0e54ea136b274554153603e6109a32e000ebf62861a7b8991",
+    "system/TTF/DaikonicTransitSystem-BookDisplay.ttf": "9d920f6636f685c02b175be237655ea557e44734f714dd7d360f39049b53aeca",
+    "system/TTF/DaikonicTransitSystem-BookText.ttf": "6faebe36339a51a4d9a7d956d410db238daa0696557768732f31d4073209b330",
+    "system/TTF/DaikonicTransitSystem-LightCaption.ttf": "1272116f7fbf18f46e6055c541fb2b463831f938fe8bf5047e5020cc9c99f1f2",
+    "system/TTF/DaikonicTransitSystem-LightDisplay.ttf": "05fac763f734e1a94d147af4287fb1835645937f58053c3c31647191aeb653d0",
+    "system/TTF/DaikonicTransitSystem-LightText.ttf": "c5e99dbb005644eedaba1a6c4e7da1efd22374f1cecb9d378381e120921bb54a",
+    "system/TTF/DaikonicTransitSystem-MediumCaption.ttf": "608be3c737c2a5318a64fe319a613f21eb2769b6c5559e8c710ba9a1d605f1a6",
+    "system/TTF/DaikonicTransitSystem-MediumDisplay.ttf": "dbfee46c7758daff601e6145fb9d84c26ae88eff569023b5e8085abc70dbc5f1",
+    "system/TTF/DaikonicTransitSystem-MediumText.ttf": "4a9ebaf411e946533923d8fc8b294a7b48ce1532fa44fa7f2ff88cb1fab0e5bc",
+    "system/TTF/DaikonicTransitSystem-RegularCaption.ttf": "842d2ecb4afcf62837390f04e44355d9e07b8a74e74f4706ea8636ce4ab2e2c0",
+    "system/TTF/DaikonicTransitSystem-RegularDisplay.ttf": "786aa0ee128e53ac81e0a819d4b0663720c6c12a1b3d67e3ca9fe4e709791632",
+    "system/TTF/DaikonicTransitSystem-RegularText.ttf": "5eb73de4087d49e09da95c8e3247b2ea10ffc0720bd8bb6acd65715a2202262b",
+    "system/TTF/DaikonicTransitSystem-SemiBoldCaption.ttf": "dcf37052fa005b4758ac02b941f89655e36fee242e90f72ea665a15632654a1f",
+    "system/TTF/DaikonicTransitSystem-SemiBoldDisplay.ttf": "e8701c2692e13593b9dc454fa82ca8d3988246e068f8e277f610cf300d72faf7",
+    "system/TTF/DaikonicTransitSystem-SemiBoldText.ttf": "66abb4f7e336a5e40355e4c38bd84d513be0f5401e78542d1fd4cd3c18f9ffba",
+    "system/VF/DaikonicTransitSystem-VF.ttf": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+    "system/WOFF2/DaikonicTransitSystem-VF.woff2": "45ce5ce888dc46d25c7fa330517b208c57ad62a1c61658d3dc5267eaa1aa7193",
+    "code/SOURCE/DaikonicTransitCode.ttx.gz": "9479c859fc7911c5be7e1a96cc8acd8b5d1d7b50c86d58ed80fed326a8f4ba97",
+    "code/SOURCE/rebuild.py": "d390576e58ba5ef4e9b2767e21f63a2ef173e377d277dc236b277b93bc4c853b",
+    "code/TTC/DaikonicTransitCode.ttc": "1dcd924c1dcd98c0073bc6d74fa5253c1d38387df9d460e1e2f409a6ad949e65",
+    "code/TTF/DaikonicTransitCode-Book.ttf": "e992202c311ce2d5839e008d77a16bf6637ddacaef61eee41e5371aeb0ac967b",
+    "code/TTF/DaikonicTransitCode-Light.ttf": "1ab3dae7d770814fe229f0b920e65141dab01fedd9128e2c620d0d4c4013d70b",
+    "code/TTF/DaikonicTransitCode-Regular.ttf": "4db71916c3e53accc108ec8d7b25a9c8536b71318d4cfe4edac1bbfae36619c8",
+    "code/VF/DaikonicTransitCode-VF.ttf": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
+    "code/WOFF2/DaikonicTransitCode-VF.woff2": "2a4850ef35c3cf75ef0620069fa58000b6e0cee187a9125b7a093542a3508c56"
+  }
+}

@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18) includes **Sans 0.109, System 0.117 and Code 1.034**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.1) includes **Sans 0.109, System 0.117 and Code 1.035**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
 
 ## Daikonic Transit Sans
 
@@ -62,7 +62,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
 - An opening single quote for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Optional **boundary-centered Rust lifetimes (`ss01`)**, moving the marker to the target cell boundary and fitting preceding `&` / `<` into its cell. Off by default.
-- Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Off by default.
+- Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
 Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`). Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
@@ -72,6 +72,7 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 <!-- code-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
+| Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
 | Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
 | Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="460" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="460" alt="Comparisons off: == === != !== &lt;= &gt;="> |
 | Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="460" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="460" alt="Scope separator off: ::"> |
@@ -85,6 +86,7 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 | Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="460" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="460" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
 | Boundary-centered lifetimes / ss01<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetime-placement-on.svg" width="460" alt="Boundary-centered lifetimes / ss01 on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetime-placement-off.svg" width="460" alt="Boundary-centered lifetimes / ss01 off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
+| Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
 | Joined Logic enclosures / ss02<br><code>&lt;[T]&gt; [&lt;T&gt;]</code> | <img src="specimens/features/code-logic-mixed-on.svg" width="460" alt="Joined Logic enclosures / ss02 on: &lt;[T]&gt; [&lt;T&gt;]"> | <img src="specimens/features/code-logic-mixed-off.svg" width="460" alt="Joined Logic enclosures / ss02 off: &lt;[T]&gt; [&lt;T&gt;]"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
 | Comparison / generic context<br><code>a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
@@ -103,6 +105,7 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 | Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-book.svg" width="460" alt="Redrawn two-storey at symbol / book"> | <img src="specimens/features/distinct-at-regular.svg" width="460" alt="Redrawn two-storey at symbol / regular"> |
 | Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-book.svg" width="460" alt="Shared prominent diamond dots / book"> | <img src="specimens/features/distinct-diamonds-regular.svg" width="460" alt="Shared prominent diamond dots / regular"> |
 | Equals and hyphen | <img src="specimens/features/distinct-bars-book.svg" width="460" alt="Equals and hyphen / book"> | <img src="specimens/features/distinct-bars-regular.svg" width="460" alt="Equals and hyphen / regular"> |
+| Universal and existential quantifiers | <img src="specimens/features/distinct-quantifiers-book.svg" width="460" alt="Universal and existential quantifiers / book"> | <img src="specimens/features/distinct-quantifiers-regular.svg" width="460" alt="Universal and existential quantifiers / regular"> |
 <!-- /code-characters -->
 
 
@@ -125,7 +128,7 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.1.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose either the variable font, the TTC collection or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
 

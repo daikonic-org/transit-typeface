@@ -16,15 +16,15 @@
       }
     },
     "code": {
-      "font": "releases/2026.11.18/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "e7a2ea92d6487faa129fe2c3f342d630fda5c90ed4fd94ba2758d40f59c70152",
+      "font": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
       "location": {
         "wght": 350
       }
     },
     "code-regular": {
-      "font": "releases/2026.11.18/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "e7a2ea92d6487faa129fe2c3f342d630fda5c90ed4fd94ba2758d40f59c70152",
+      "font": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
       "location": {
         "wght": 400
       }
@@ -407,6 +407,169 @@
         [
           "one",
           268,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-logic-not": {
+      "text": "!p !!p != !== !.",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": true
+      },
+      "off_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": false
+      },
+      "on_shaping": [
+        [
+          "logicalnot",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "logicalnot",
+          600,
+          0,
+          0
+        ],
+        [
+          "logicalnot",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notEqual",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notStrict",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax01",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "exclam",
+          600,
+          0,
+          0
+        ],
+        [
+          "p",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notEqual",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.notStrict",
+          1800,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.syntax01",
+          1200,
           0,
           0
         ]
@@ -2059,6 +2222,97 @@
         ]
       ]
     },
+    "code-logic-order": {
+      "text": "[<>] <[]>",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": true
+      },
+      "off_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true,
+        "ss02": false
+      },
+      "on_shaping": [
+        [
+          "code.logicBoxDiamond",
+          2400,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.logicDiamondBox",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
     "code-logic-mixed": {
       "text": "<[T]> [<T>]",
       "on_features": {
@@ -3000,8 +3254,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "ceb5fcf5ed45cd01cb485265b0a7e544d3bd4f453be7d9a4f56696a1407884e0",
-    "code-Features.svg": "ca70449c6b54e57db56a3987286cb3dad5c915a18cb231122955c4ea94324f78",
+    "Code-Characters.svg": "2aa58eb8d0764f37646bdffc53048e2bf444e20aaf7750e584a68a34f80c7fc7",
+    "code-Features.svg": "f863d01583ac9aee2ce865edd3bf7c3e63b45b0f4ae82c18d9b185943c964391",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3028,8 +3282,12 @@
     "code-lifetimes-on.svg": "214446ddccfc0cf3ee2bbc6e8afce3960cb9d539a8a8caef1914952242995ad1",
     "code-logic-mixed-off.svg": "784437d6dd8f33bca1a853c426669d502d3dff2fabd3b0b00919c09dcd235bad",
     "code-logic-mixed-on.svg": "6e588c2a843fdf6d5c2ffbfa4bf6b7303a14af61962e2f87cf4735596b2eaf50",
+    "code-logic-not-off.svg": "83357b06a4a1025de6e1e6c49c1126b62ac3580752797ddccd08e49a7b63cf5d",
+    "code-logic-not-on.svg": "01df8863ea7e142d0d517f7492587aa6cbebea97f2d8e34491d7af4299077c80",
     "code-logic-off.svg": "6f6ec8e9848ea7d71a2810a2bf79f3e62866b05d49169eed72e40317a540cead",
     "code-logic-on.svg": "80fa824ee44fdd59232deed73e0417b95cc81e01d63b13f59e3ea8aef166d539",
+    "code-logic-order-off.svg": "9d64407663cdca6e19144a7661ca0012ca1f1c8e9dbf3060727c9a867b56dd46",
+    "code-logic-order-on.svg": "7e515686181e0b1b982b09171ae495b5bded467394b440b9f646cceb980cc2fd",
     "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
     "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
     "code-pipe-delimiters-off.svg": "9098f689f03cbd2e623a3bdac5feb0631b5915c7ed7048c38065264135d69abb",
@@ -3048,6 +3306,8 @@
     "distinct-diamonds-regular.svg": "3b367e32f44f3d3b163424f1b1f27da31d6151ab92d3d91a83c13885fbd60fdd",
     "distinct-identity-book.svg": "e5b98f717a9dc6f9c119427145645ab4a59eae39663bf1ca4701345c7e5be897",
     "distinct-identity-regular.svg": "8ab6102abfea7fa0eae7b00644dc1c93657a62ba2128cc6d51fd7c4a645fed51",
+    "distinct-quantifiers-book.svg": "fa79ff49e1ca2af561b40e899cd71750a2791cbf74486dc572d6e7d456c77b2f",
+    "distinct-quantifiers-regular.svg": "d6e804b3089f6368fe09c0e36bf33173019673d0ac6f93e625a8e6c53077a8bf",
     "distinct-underscore-book.svg": "377ed1efb1557738ee50f4d0e2d1b77a9981901ab76f91b0afce5183f55141fb",
     "distinct-underscore-regular.svg": "72ba1b26eebb12b5d09cc3885c2224cbb4236903939180d6a0fdf409455310bf",
     "sans-Features.svg": "bdec36e4f69d83bec055fef535c84c51332289cbd3ae5c5a8e0c2bcd136e4491",

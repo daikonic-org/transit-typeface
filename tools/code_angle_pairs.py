@@ -10,8 +10,8 @@ from specimens import ROOT, DATA, Panel
 from code_balance_study import bind
 from check_syntax_numerals import run
 
-SOURCE = ROOT / "previews/code-1.032/VF/DaikonicTransitCode-VF.ttf"
-OUT = ROOT / "releases/2026.11.18/code"
+SOURCE = ROOT / "sources/code-logic-symbols/DaikonicTransitCodeLogicSymbols-VF.ttf"
+OUT = ROOT / "releases/2026.11.18.1/code"
 
 
 def check(path):
@@ -255,13 +255,13 @@ def main():
     for record in font["name"].names:
         text = record.toUnicode()
         if record.nameID == 3:
-            text = "DaikonicTransitCode-VF 1.034"
+            text = "DaikonicTransitCode-VF 1.035"
         elif record.nameID == 5:
-            text = "Version 1.034"
+            text = "Version 1.035"
         elif record.nameID == 10:
             text = "Daikonic Transit Code; balanced angle pairs, independent Logic and lifetime features."
         record.string = text.encode(record.getEncoding())
-    font["head"].fontRevision = 1.034
+    font["head"].fontRevision = 1.035
     target = OUT / "VF/DaikonicTransitCode-VF.ttf"
     target.parent.mkdir(exist_ok=True)
     font.save(target)
@@ -269,7 +269,7 @@ def main():
         json.dumps(
             {
                 "family": "Daikonic Transit Code",
-                "version": "1.034",
+                "version": "1.035",
                 "status": "release",
                 "weight_range": [300, 400],
             },

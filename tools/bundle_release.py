@@ -59,6 +59,7 @@ def build(only=None):
     report = {"version": RECIPE["version"], "tag": RECIPE["tag"], "families": {}}
     if only:
         report = json.loads((OUT / "manifest.json").read_text())
+        report.update(version=RECIPE["version"], tag=RECIPE["tag"])
     assert set(families) == set(RECIPE["families"])
     for key, cfg in families.items():
         if only and key not in only:
@@ -139,6 +140,7 @@ def build(only=None):
 
 def check():
     report = json.loads((OUT / "manifest.json").read_text())
+    assert report["version"] == RECIPE["version"] and report["tag"] == RECIPE["tag"]
     assert set(report["families"]) == set(RECIPE["families"])
     for rel, expected in report["files"].items():
         assert digest(OUT / rel) == expected, rel
@@ -249,7 +251,7 @@ def package():
         + RECIPE["version"]
         + ".\n\n"
         + versions
-        + ".\n\nAll three families are published together. Choose VF for adjustable weights, TTF or OTF for individual styles, or TTC for one collection per family. The System TTC contains all 15 named weight/optical-size combinations; Sans contains five weights and Code three. WOFF2 is for web use. SOURCE provides complete editable TTX snapshots and verified rebuild scripts. SPECIMEN includes matching PNG/PDF and outlined SVG samples.\n\nCode retains the joined Logic enclosures and heavier delimiters. Tall angles require matched pairs: a<>b remains short, Vec<> is tall, nested generic pairs inherit the outer style, and unmatched angles stay short. Matching supports 16 nesting levels and 60 non-mark glyphs per pair. Logic (ss02) and boundary-centered Rust lifetimes (ss01) remain independently optional and off by default. Book 350 remains the default. Sans and System drawings are unchanged.\n\nValidation includes TTC/TTF table parity and sanitizer checks for every collection face, source roundtrip fidelity, variable shaping and current-font specimens. Native Code Glyphs/UFO sources remain at 1.017; the complete current font is editable through the TTX source package.\n"
+        + ".\n\nAll three families are published together. Choose VF for adjustable weights, TTF or OTF for individual styles, or TTC for one collection per family. The System TTC contains all 15 named weight/optical-size combinations; Sans contains five weights and Code three. WOFF2 is for web use. SOURCE provides complete editable TTX snapshots and verified rebuild scripts. SPECIMEN includes matching PNG/PDF and outlined SVG samples.\n\nCode retains the joined Logic enclosures and heavier delimiters. Logic renders prefix ! as ¬ while protecting inequalities, optional-access punctuation, postfix/macros and simple quoted bangs. Unicode ∀, ∃ and ¬ are available directly. With Logic enabled, `[<>]` displays box then diamond (`[]<>`), and `<[]>` displays diamond then box (`<>[]`). Tall angles require matched pairs: a<>b remains short, Vec<> is tall, nested generic pairs inherit the outer style, and unmatched angles stay short. Matching supports 16 nesting levels and 60 non-mark glyphs per pair. Logic (ss02) and boundary-centered Rust lifetimes (ss01) remain independently optional and off by default. Book 350 remains the default. Sans and System drawings are unchanged.\n\nValidation includes TTC/TTF table parity and sanitizer checks for every collection face, source roundtrip fidelity, variable shaping and current-font specimens. Native Code Glyphs/UFO sources remain at 1.017; the complete current font is editable through the TTX source package.\n"
     )
     print(destination.relative_to(ROOT), flush=True)
 
