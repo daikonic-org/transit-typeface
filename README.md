@@ -22,8 +22,8 @@ The samples below use the actual Book font, with the listed feature enabled or d
 <!-- sans-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
-| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/sans-standard-on.svg" width="100%" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/sans-standard-off.svg" width="100%" alt="Standard ligatures off: fi fl"> |
-| Hooked combinations<br><code>ai li</code> | <img src="specimens/features/sans-hooks-on.svg" width="100%" alt="Hooked combinations on: ai li"> | <img src="specimens/features/sans-hooks-off.svg" width="100%" alt="Hooked combinations off: ai li"> |
+| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/sans-standard-on.svg" width="460" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/sans-standard-off.svg" width="460" alt="Standard ligatures off: fi fl"> |
+| Hooked combinations<br><code>ai li</code> | <img src="specimens/features/sans-hooks-on.svg" width="460" alt="Hooked combinations on: ai li"> | <img src="specimens/features/sans-hooks-off.svg" width="460" alt="Hooked combinations off: ai li"> |
 <!-- /sans-features -->
 
 ## Daikonic Transit System
@@ -41,9 +41,9 @@ Tabular figures are optional; the hooked `1` appears with `tnum`. The default pr
 <!-- system-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
-| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/system-standard-on.svg" width="100%" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/system-standard-off.svg" width="100%" alt="Standard ligatures off: fi fl"> |
-| Tabular figures<br><code>111  248  000</code> | <img src="specimens/features/system-tabular-on.svg" width="100%" alt="Tabular figures on: 111  248  000"> | <img src="specimens/features/system-tabular-off.svg" width="100%" alt="Tabular figures off: 111  248  000"> |
-| Tabular 1 / default 1<br><code>1</code> | <img src="specimens/features/system-one-on.svg" width="100%" alt="Tabular 1 / default 1 on: 1"> | <img src="specimens/features/system-one-off.svg" width="100%" alt="Tabular 1 / default 1 off: 1"> |
+| Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/system-standard-on.svg" width="460" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/system-standard-off.svg" width="460" alt="Standard ligatures off: fi fl"> |
+| Tabular figures<br><code>111  248  000</code> | <img src="specimens/features/system-tabular-on.svg" width="460" alt="Tabular figures on: 111  248  000"> | <img src="specimens/features/system-tabular-off.svg" width="460" alt="Tabular figures off: 111  248  000"> |
+| Tabular 1 / default 1<br><code>1</code> | <img src="specimens/features/system-one-on.svg" width="460" alt="Tabular 1 / default 1 on: 1"> | <img src="specimens/features/system-one-off.svg" width="460" alt="Tabular 1 / default 1 off: 1"> |
 <!-- /system-features -->
 
 ## Daikonic Transit Code
@@ -68,20 +68,20 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 <!-- code-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
-| Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="100%" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="100%" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
-| Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="100%" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="100%" alt="Comparisons off: == === != !== &lt;= &gt;="> |
-| Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="100%" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="100%" alt="Scope separator off: ::"> |
-| Optional / non-null access<br><code>?. !.</code> | <img src="specimens/features/code-access-on.svg" width="100%" alt="Optional / non-null access on: ?. !."> | <img src="specimens/features/code-access-off.svg" width="100%" alt="Optional / non-null access off: ?. !."> |
-| Interpolation / expansion<br><code>${ $[ $(</code> | <img src="specimens/features/code-interpolation-on.svg" width="100%" alt="Interpolation / expansion on: ${ $[ $("> | <img src="specimens/features/code-interpolation-off.svg" width="100%" alt="Interpolation / expansion off: ${ $[ $("> |
-| Ranges and dot assignment<br><code>.. .= ..=</code> | <img src="specimens/features/code-ranges-on.svg" width="100%" alt="Ranges and dot assignment on: .. .= ..="> | <img src="specimens/features/code-ranges-off.svg" width="100%" alt="Ranges and dot assignment off: .. .= ..="> |
-| Three-character ellipsis<br><code>...</code> | <img src="specimens/features/code-ellipsis-on.svg" width="100%" alt="Three-character ellipsis on: ..."> | <img src="specimens/features/code-ellipsis-off.svg" width="100%" alt="Three-character ellipsis off: ..."> |
-| Assignment / turnstiles<br><code>:= &#124;= &#124;-</code> | <img src="specimens/features/code-assignment-on.svg" width="100%" alt="Assignment / turnstiles on: := &#124;= &#124;-"> | <img src="specimens/features/code-assignment-off.svg" width="100%" alt="Assignment / turnstiles off: := &#124;= &#124;-"> |
-| Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="100%" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="100%" alt="Hash groups off: ## ### #### ##### ######"> |
-| Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="100%" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="100%" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
-| Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="100%" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="100%" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
-| Comparison / generic context<br><code>a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="100%" alt="Comparison / generic context on: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> | <img src="specimens/features/code-generics-off.svg" width="100%" alt="Comparison / generic context off: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> |
-| Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="100%" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="100%" alt="Contextual optical placement off: ke Ke KE vi il"> |
-| Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="100%" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="100%" alt="Repeated at-symbol fitting off: @@ @@@"> |
+| Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
+| Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="460" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="460" alt="Comparisons off: == === != !== &lt;= &gt;="> |
+| Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="460" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="460" alt="Scope separator off: ::"> |
+| Optional / non-null access<br><code>?. !.</code> | <img src="specimens/features/code-access-on.svg" width="460" alt="Optional / non-null access on: ?. !."> | <img src="specimens/features/code-access-off.svg" width="460" alt="Optional / non-null access off: ?. !."> |
+| Interpolation / expansion<br><code>${ $[ $(</code> | <img src="specimens/features/code-interpolation-on.svg" width="460" alt="Interpolation / expansion on: ${ $[ $("> | <img src="specimens/features/code-interpolation-off.svg" width="460" alt="Interpolation / expansion off: ${ $[ $("> |
+| Ranges and dot assignment<br><code>.. .= ..=</code> | <img src="specimens/features/code-ranges-on.svg" width="460" alt="Ranges and dot assignment on: .. .= ..="> | <img src="specimens/features/code-ranges-off.svg" width="460" alt="Ranges and dot assignment off: .. .= ..="> |
+| Three-character ellipsis<br><code>...</code> | <img src="specimens/features/code-ellipsis-on.svg" width="460" alt="Three-character ellipsis on: ..."> | <img src="specimens/features/code-ellipsis-off.svg" width="460" alt="Three-character ellipsis off: ..."> |
+| Assignment / turnstiles<br><code>:= &#124;= &#124;-</code> | <img src="specimens/features/code-assignment-on.svg" width="460" alt="Assignment / turnstiles on: := &#124;= &#124;-"> | <img src="specimens/features/code-assignment-off.svg" width="460" alt="Assignment / turnstiles off: := &#124;= &#124;-"> |
+| Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="460" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="460" alt="Hash groups off: ## ### #### ##### ######"> |
+| Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="460" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="460" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
+| Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="460" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="460" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
+| Comparison / generic context<br><code>a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> |
+| Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: ke Ke KE vi il"> |
+| Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
 
 **Distinct character designs.** These are permanent parts of Code, so there is no Off setting. The samples show the current font in Book and Regular, at the same text size.
@@ -89,12 +89,12 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 <!-- code-characters -->
 | Permanent design | Book 350 | Regular 400 |
 | --- | --- | --- |
-| Distinct letters and figures | <img src="specimens/features/distinct-identity-book.svg" width="100%" alt="Distinct letters and figures / book"> | <img src="specimens/features/distinct-identity-regular.svg" width="100%" alt="Distinct letters and figures / regular"> |
-| Stronger, inward-set delimiters | <img src="specimens/features/distinct-delimiters-book.svg" width="100%" alt="Stronger, inward-set delimiters / book"> | <img src="specimens/features/distinct-delimiters-regular.svg" width="100%" alt="Stronger, inward-set delimiters / regular"> |
-| Inline, gapless underscore | <img src="specimens/features/distinct-underscore-book.svg" width="100%" alt="Inline, gapless underscore / book"> | <img src="specimens/features/distinct-underscore-regular.svg" width="100%" alt="Inline, gapless underscore / regular"> |
-| Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-book.svg" width="100%" alt="Redrawn two-storey at symbol / book"> | <img src="specimens/features/distinct-at-regular.svg" width="100%" alt="Redrawn two-storey at symbol / regular"> |
-| Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-book.svg" width="100%" alt="Shared prominent diamond dots / book"> | <img src="specimens/features/distinct-diamonds-regular.svg" width="100%" alt="Shared prominent diamond dots / regular"> |
-| Equals and hyphen | <img src="specimens/features/distinct-bars-book.svg" width="100%" alt="Equals and hyphen / book"> | <img src="specimens/features/distinct-bars-regular.svg" width="100%" alt="Equals and hyphen / regular"> |
+| Distinct letters and figures | <img src="specimens/features/distinct-identity-book.svg" width="460" alt="Distinct letters and figures / book"> | <img src="specimens/features/distinct-identity-regular.svg" width="460" alt="Distinct letters and figures / regular"> |
+| Stronger, inward-set delimiters | <img src="specimens/features/distinct-delimiters-book.svg" width="460" alt="Stronger, inward-set delimiters / book"> | <img src="specimens/features/distinct-delimiters-regular.svg" width="460" alt="Stronger, inward-set delimiters / regular"> |
+| Inline, gapless underscore | <img src="specimens/features/distinct-underscore-book.svg" width="460" alt="Inline, gapless underscore / book"> | <img src="specimens/features/distinct-underscore-regular.svg" width="460" alt="Inline, gapless underscore / regular"> |
+| Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-book.svg" width="460" alt="Redrawn two-storey at symbol / book"> | <img src="specimens/features/distinct-at-regular.svg" width="460" alt="Redrawn two-storey at symbol / regular"> |
+| Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-book.svg" width="460" alt="Shared prominent diamond dots / book"> | <img src="specimens/features/distinct-diamonds-regular.svg" width="460" alt="Shared prominent diamond dots / regular"> |
+| Equals and hyphen | <img src="specimens/features/distinct-bars-book.svg" width="460" alt="Equals and hyphen / book"> | <img src="specimens/features/distinct-bars-regular.svg" width="460" alt="Equals and hyphen / regular"> |
 <!-- /code-characters -->
 
 

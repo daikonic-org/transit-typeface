@@ -88,7 +88,7 @@ def svg(body, title, width=460, height=58):
 
 
 def image(name, alt):
-    return f'<img src="specimens/features/{name}.svg" width="100%" alt="{html.escape(alt,quote=True).replace(chr(124),"&#124;")}">'
+    return f'<img src="specimens/features/{name}.svg" width="460" alt="{html.escape(alt,quote=True).replace(chr(124),"&#124;")}">'
 
 
 def update_table(readme, marker, table):
