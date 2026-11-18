@@ -1,6 +1,6 @@
 # Editor setup
 
-Install `fonts/code/VF/DaikonicTransitCode-VF.ttf`. The installed family name is **Daikonic Transit Code**. Book is weight 350.
+Install the Code VF or TTC from the coordinated release. The installed family name is **Daikonic Transit Code**. Book is weight 350.
 
 ## WezTerm
 
@@ -42,6 +42,6 @@ WezTerm calls the350 weight DemiLight; the font’s named instance is Book.
 
 Merge these font settings into existing configuration, rather than replacing other preferences. Font size is intentionally left to the application/user. Common Unicode arrows are actual Code glyphs; other symbols may still require system fallback fonts.
 
-## Optional Code preview features
+## Optional Code features
 
-The current Code preview provides **Boundary-centered Rust lifetimes (`ss01`)** and **Logic (`ss02`)** independently; both are off by default. Enable the desired tag alongside `calt`, `clig` and `liga`: WezTerm accepts `ss01=1` / `ss02=1`; VS Code accepts an explicit font-feature string; Zed accepts `"ss01": true` / `"ss02": true` in its font-feature settings. Logic joins `<>`, `[]`, `<[` / `]>` and `[<` / `>]`.
+The current Code release provides **Boundary-centered Rust lifetimes (`ss01`)** and **Logic (`ss02`)** independently; both are off by default. Enable the desired tag alongside `calt`, `clig` and `liga`: WezTerm accepts `ss01=1` / `ss02=1`; VS Code accepts an explicit font-feature string; Zed accepts `"ss01": true` / `"ss02": true` in its font-feature settings. Logic joins `<>`, `[]`, `<[` / `]>` and `[<` / `>]`.

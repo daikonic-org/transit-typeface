@@ -1,0 +1,10 @@
+{
+  "platform": "macOS CoreText",
+  "method": "CTFontManagerCreateFontDescriptorsFromURL; read-only, no registration",
+  "families": {
+    "sans": 5,
+    "system": 15,
+    "code": 3
+  },
+  "release": "2026.11.18"
+}

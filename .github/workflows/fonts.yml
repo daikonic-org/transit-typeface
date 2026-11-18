@@ -25,8 +25,12 @@ jobs:
         run: python tools/pipeline.py approved
       - name: Verify weighting interpolation and retained designs
         run: python tools/check_weighting.py all --production
-      - name: Verify selected Code preview
+      - name: Verify archived Code derivation
         run: python tools/package_code_preview.py --check
+      - name: Verify coordinated release and TTC collections
+        run: |
+          python tools/code_angle_pairs.py --check
+          python tools/bundle_release.py check
       - name: Verify dot palette, syntax and numeral studies
         run: |
           python tools/check_dot_palette.py
@@ -34,7 +38,7 @@ jobs:
       - name: Verify Rust lifetime apostrophe and protected literals
         run: python tools/check_rust_lifetimes.py
       - name: Verify contextual pipe delimiters
-        run: python tools/code_bar_proof.py --check --font previews/code-1.032/VF/DaikonicTransitCode-VF.ttf
+        run: python tools/code_bar_proof.py --check --font releases/2026.11.18/code/VF/DaikonicTransitCode-VF.ttf
       - name: Verify selected joined Logic enclosures
         run: python tools/code_enclosure_ligatures.py
       - name: Verify font-rendered README feature tables

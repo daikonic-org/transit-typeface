@@ -19,7 +19,7 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-These specimens show Sans0.109, System0.117 and **Code1.032 preview**. The Code
+These specimens show Sans0.109, System0.117 and **Code1.034**. The Code
 panel uses the same approved preview installed for Book350, including the
 two-storey @ with a tapered c-style wrap, balanced i, stronger delimiters, raised/heavier gapless underscore,
 wider hyphen and selected optical pair adjustments. The Code footer identifies
@@ -31,3 +31,5 @@ snake_case, delimiters, spacing pairs and arrow/comparison ligatures. The [Code 
 
 The font selection is explicit in font-selections.json; manifest.json records
 versions and exact source hashes. PNG/PDF/SVG exports share the same composition.
+
+All three families are included in each coordinated release. Optional angle-pair/Logic behavior is shown in [Angle-Pairs.pdf](features/Angle-Pairs.pdf).

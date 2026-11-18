@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [Code 1.032 preview](previews/code-1.032/) includes consistent prominent diamond dots, wider equals, additional coding ligatures and taller generic delimiters. Hash groups join their horizontal rails; Rust lifetimes use an opening single quote, with optional boundary-centered placement; the independent Logic toggle provides joined enclosure shapes. [Preview packages](https://github.com/daikonic-org/transit-typeface/releases/tag/Code-1.032-preview) separate VF, OTF, TTF, WOFF2, editable TTX sources and specimens. Earlier cuts and stable releases remain available.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18) includes **Sans 0.109, System 0.117 and Code 1.034**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
 
 ## Daikonic Transit Sans
 
@@ -65,6 +65,8 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Off by default.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
+With Logic off, adjacent `<>` uses ordinary angles whenever only one character qualifies as a delimiter; both angles must independently qualify to stay tall.
+
 **Switchable features.** On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting is a typographic heuristic: `<` is tall by default, but short with whitespace on both sides or between lowercase/numeric operands (`a<b`, `x<2`, `12<34`). Capitalized or mixed-case adjacent words keep tall generic forms (`Vec<T>`, `Vec<u8>`), using up to 32 surrounding glyphs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
 
 <!-- code-features -->
@@ -85,7 +87,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
 | Joined Logic enclosures / ss02<br><code>&lt;[T]&gt; [&lt;T&gt;]</code> | <img src="specimens/features/code-logic-mixed-on.svg" width="460" alt="Joined Logic enclosures / ss02 on: &lt;[T]&gt; [&lt;T&gt;]"> | <img src="specimens/features/code-logic-mixed-off.svg" width="460" alt="Joined Logic enclosures / ss02 off: &lt;[T]&gt; [&lt;T&gt;]"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
-| Comparison / generic context<br><code>a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;b x&lt;2 Vec&lt;T&gt; Vec&lt;u8&gt;"> |
+| Comparison / generic context<br><code>&lt;&gt; a&lt;b Vec&lt;T&gt; Vec&lt;u8&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: &lt;&gt; a&lt;b Vec&lt;T&gt; Vec&lt;u8&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: &lt;&gt; a&lt;b Vec&lt;T&gt; Vec&lt;u8&gt;"> |
 | Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: ke Ke KE vi il"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
@@ -115,16 +117,17 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | Package | Contents | Use |
 | --- | --- | --- |
 | **VF** | One variable TrueType font | Adjustable weights in applications that support variable fonts; System also includes optical size. |
+| **TTC** | One TrueType collection per family, containing all named static styles | Install all weights together; System also includes Caption, Text and Display styles. |
 | **OTF** | Static CFF OpenType fonts with the same glyphs, spacing and layout features | Desktop applications and publishing workflows that prefer CFF outlines. |
 | **TTF** | Individual named-weight TrueType fonts | Applications that use separate font styles. System includes Caption, Text and Display cuts. |
 | **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
-| **SOURCE** | Editable Glyphs and UFO sources, designspaces and rebuild inputs | Editing or building the typefaces. System’s large Glyphs file is supplied inside a ZIP. Code previews instead include a complete editable TTX font snapshot and portable rebuild script; native Glyphs/UFO sources retain their separately documented version. |
+| **SOURCE** | Complete editable TTX snapshots and portable rebuild scripts | Editing or building the typefaces. Historical native Glyphs/UFO/designspace sources remain in the repository at their documented versions; current TTX snapshots include every outline and layout feature. |
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Archives are named by format, family and version—for example, `VF-daikonic-transit-code-1.017R.zip`. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
-Choose either the variable font or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
+Choose either the variable font, the TTC collection or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
 
 ## Credits and tools
 

@@ -16,15 +16,15 @@
       }
     },
     "code": {
-      "font": "previews/code-1.032/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "64fd16628d8a477c54f1999ed18c2b634371bb4f60add528efda23cbcf040ab4",
+      "font": "releases/2026.11.18/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "d4ae67180d87c2be47040b4d4148de7e7328434d44e43aba6ae99c4b88135c3f",
       "location": {
         "wght": 350
       }
     },
     "code-regular": {
-      "font": "previews/code-1.032/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "64fd16628d8a477c54f1999ed18c2b634371bb4f60add528efda23cbcf040ab4",
+      "font": "releases/2026.11.18/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "d4ae67180d87c2be47040b4d4148de7e7328434d44e43aba6ae99c4b88135c3f",
       "location": {
         "wght": 400
       }
@@ -2028,7 +2028,7 @@
       ],
       "off_shaping": [
         [
-          "less.generic",
+          "less",
           600,
           0,
           0
@@ -2444,7 +2444,7 @@
       ]
     },
     "code-generics": {
-      "text": "a<b x<2 Vec<T> Vec<u8>",
+      "text": "<> a<b Vec<T> Vec<u8>",
       "on_features": {
         "calt": true,
         "liga": true,
@@ -2456,6 +2456,24 @@
         "clig": false
       },
       "on_shaping": [
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
         [
           "a",
           600,
@@ -2470,30 +2488,6 @@
         ],
         [
           "b",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "x",
-          600,
-          0,
-          0
-        ],
-        [
-          "less",
-          600,
-          0,
-          0
-        ],
-        [
-          "two",
           600,
           0,
           0
@@ -2591,6 +2585,24 @@
       ],
       "off_shaping": [
         [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
           "a",
           600,
           0,
@@ -2604,30 +2616,6 @@
         ],
         [
           "b",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "x",
-          600,
-          0,
-          0
-        ],
-        [
-          "less",
-          600,
-          0,
-          0
-        ],
-        [
-          "two",
           600,
           0,
           0
@@ -3001,7 +2989,7 @@
   },
   "files": {
     "Code-Characters.svg": "ceb5fcf5ed45cd01cb485265b0a7e544d3bd4f453be7d9a4f56696a1407884e0",
-    "code-Features.svg": "1188b3ed3b079a1dc23fe82d2e493279d6d2d3f175541f437bc4b03b6fb85339",
+    "code-Features.svg": "9fdf6a0297dc82f74b27c4ab647f11118bae077f2be43a7a9c03a25e18b6a44e",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3014,8 +3002,8 @@
     "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
     "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
     "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
-    "code-generics-off.svg": "c49e3473d076893edf38cfd7e4631591cbf60af10c871f800b6890b184387245",
-    "code-generics-on.svg": "2617069f12da326c79e1a685bf115136d084bf2551b0594b4ca48ef9e282aa19",
+    "code-generics-off.svg": "214c437ec84be703b9d024aff3ffadeddb132b473003f652600d9d3cfa1ec0e0",
+    "code-generics-on.svg": "1355dd2fbe1a2823afaff5e89385c0bb9cda8ef447df7039a85345822e2901b6",
     "code-hashes-off.svg": "5d4ff56763ba71306320574ad2ff6690f53d3b8f864a878b5ff239456ee60cbd",
     "code-hashes-on.svg": "b8a15ec7845c5988f3506633a0b632b715983ecc6044f410b6d9f91d36a47979",
     "code-interpolation-off.svg": "a9fe4f3cd122d41866ae81f77af5ba1141250e5cdd88d590ded469370090319f",
@@ -3028,7 +3016,7 @@
     "code-lifetimes-on.svg": "214446ddccfc0cf3ee2bbc6e8afce3960cb9d539a8a8caef1914952242995ad1",
     "code-logic-mixed-off.svg": "bd3268a3fed21a4f6a30a4738e02f90a3e69cd5f9d815eeec946f0821f2bb0a8",
     "code-logic-mixed-on.svg": "6e588c2a843fdf6d5c2ffbfa4bf6b7303a14af61962e2f87cf4735596b2eaf50",
-    "code-logic-off.svg": "ddbe8273c4b493ad6d7c836ca1682ddd97cbd3d860a5e7d654a2a7743b5a4c10",
+    "code-logic-off.svg": "6f6ec8e9848ea7d71a2810a2bf79f3e62866b05d49169eed72e40317a540cead",
     "code-logic-on.svg": "80fa824ee44fdd59232deed73e0417b95cc81e01d63b13f59e3ea8aef166d539",
     "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
     "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
