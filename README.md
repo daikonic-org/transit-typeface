@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.118 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, left-hook Rust lifetime markers, heavier structural delimiters and optional Logic enclosures.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.118 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages.
 
 ## Daikonic Transit Sans
 
@@ -43,7 +43,6 @@ Tabular figures are optional (`tnum`). The default proportional `1` stays unchan
 | --- | --- | --- |
 | Standard ligatures<br><code>fi fl</code> | <img src="specimens/features/system-standard-on.svg" width="460" alt="Standard ligatures on: fi fl"> | <img src="specimens/features/system-standard-off.svg" width="460" alt="Standard ligatures off: fi fl"> |
 | Tabular figures<br><code>111  248  000</code> | <img src="specimens/features/system-tabular-on.svg" width="460" alt="Tabular figures on: 111  248  000"> | <img src="specimens/features/system-tabular-off.svg" width="460" alt="Tabular figures off: 111  248  000"> |
-| Tabular 1 / default 1<br><code>1</code> | <img src="specimens/features/system-one-on.svg" width="460" alt="Tabular 1 / default 1 on: 1"> | <img src="specimens/features/system-one-off.svg" width="460" alt="Tabular 1 / default 1 off: 1"> |
 <!-- /system-features -->
 
 ## Daikonic Transit Code
@@ -62,23 +61,33 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
 - A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Optional **extended lifetime hooks (`ss01`)**, lengthening the marker’s straight stroke into the following letter’s cell, with a slight upward and inward adjustment to the marker and preceding `&` / `<`. Off by default.
-- Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
-- Standard backslash shortcuts: `\forall` → `∀`, `\exists` → `∃`, `\not` → `¬`, `\box` → the closed box and `\dia` → the closed diamond. These use `calt` independently of Logic. Complete commands retain their input cell widths and internal carets, with the symbol at the right edge; direct Unicode stays one cell. Longer identifiers and doubled backslashes remain literal.
+- Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
-Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`). Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
+Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`), except explicit mixed square/angle enclosures, which force the tall form. Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
 
-**Switchable features.** On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting uses capitalized or mixed-case type names and type arguments, with up to 32 adjacent identifier glyphs for the type-name decision. Individual angles remain ordinary operators; tall forms require matched pairs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
+### Symbol shortcuts
+
+Complete backslash commands use `calt` independently of Logic. They retain their input cell widths and internal caret positions, with the symbol at the right edge. Direct Unicode glyphs occupy one cell; longer identifiers and doubled backslashes remain literal.
+
+<!-- code-shortcuts -->
+| Input | Rendered form |
+| --- | --- |
+| <code>\forall</code> | <img src="specimens/features/code-command-forall.svg" width="460" alt="\forall"> |
+| <code>\exists</code> | <img src="specimens/features/code-command-exists.svg" width="460" alt="\exists"> |
+| <code>\not</code> | <img src="specimens/features/code-command-not.svg" width="460" alt="\not"> |
+| <code>\box</code> | <img src="specimens/features/code-command-box.svg" width="460" alt="\box"> |
+| <code>\diamond</code> | <img src="specimens/features/code-command-diamond.svg" width="460" alt="\diamond"> |
+<!-- /code-shortcuts -->
+
+### Ligatures and contextual features
+
+On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting uses capitalized or mixed-case type names and type arguments, with up to 32 adjacent identifier glyphs for the type-name decision. Individual angles remain ordinary operators; tall forms require matched pairs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
 
 <!-- code-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
-| Forall shortcut<br><code>\forall</code> | <img src="specimens/features/code-command-forall-on.svg" width="460" alt="Forall shortcut on: \forall"> | <img src="specimens/features/code-command-forall-off.svg" width="460" alt="Forall shortcut off: \forall"> |
-| Exists shortcut<br><code>\exists</code> | <img src="specimens/features/code-command-exists-on.svg" width="460" alt="Exists shortcut on: \exists"> | <img src="specimens/features/code-command-exists-off.svg" width="460" alt="Exists shortcut off: \exists"> |
-| Not shortcut<br><code>\not</code> | <img src="specimens/features/code-command-not-on.svg" width="460" alt="Not shortcut on: \not"> | <img src="specimens/features/code-command-not-off.svg" width="460" alt="Not shortcut off: \not"> |
-| Box shortcut<br><code>\box</code> | <img src="specimens/features/code-command-box-on.svg" width="460" alt="Box shortcut on: \box"> | <img src="specimens/features/code-command-box-off.svg" width="460" alt="Box shortcut off: \box"> |
-| Dia shortcut<br><code>\dia</code> | <img src="specimens/features/code-command-dia-on.svg" width="460" alt="Dia shortcut on: \dia"> | <img src="specimens/features/code-command-dia-off.svg" width="460" alt="Dia shortcut off: \dia"> |
 | Rust inference placeholders<br><code>&lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;</code> | <img src="specimens/features/code-rust-inference-on.svg" width="460" alt="Rust inference placeholders on: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> | <img src="specimens/features/code-rust-inference-off.svg" width="460" alt="Rust inference placeholders off: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> |
 | Rust turbofish<br><code>::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;</code> | <img src="specimens/features/code-rust-turbofish-on.svg" width="460" alt="Rust turbofish on: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> | <img src="specimens/features/code-rust-turbofish-off.svg" width="460" alt="Rust turbofish off: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
@@ -96,29 +105,21 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 | Extended lifetime hooks / ss01<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetime-placement-on.svg" width="460" alt="Extended lifetime hooks / ss01 on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetime-placement-off.svg" width="460" alt="Extended lifetime hooks / ss01 off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
 | Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
-| Joined Logic enclosures / ss02<br><code>&lt;[T]&gt; [&lt;T&gt;]</code> | <img src="specimens/features/code-logic-mixed-on.svg" width="460" alt="Joined Logic enclosures / ss02 on: &lt;[T]&gt; [&lt;T&gt;]"> | <img src="specimens/features/code-logic-mixed-off.svg" width="460" alt="Joined Logic enclosures / ss02 off: &lt;[T]&gt; [&lt;T&gt;]"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
 | Comparison / generic context<br><code>a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
 | Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: ke Ke KE vi il"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
 
-**Distinct character designs.** These are permanent parts of Code, so there is no Off setting. The samples show the current font in Book and Regular, at the same text size.
+### Code example
+
+A Rust example rendered in Code Book.
 
 <!-- code-characters -->
-| Permanent design | Book 350 | Regular 400 |
-| --- | --- | --- |
-| Distinct letters and figures | <img src="specimens/features/distinct-identity-book.svg" width="460" alt="Distinct letters and figures / book"> | <img src="specimens/features/distinct-identity-regular.svg" width="460" alt="Distinct letters and figures / regular"> |
-| Stronger, inward-set delimiters | <img src="specimens/features/distinct-delimiters-book.svg" width="460" alt="Stronger, inward-set delimiters / book"> | <img src="specimens/features/distinct-delimiters-regular.svg" width="460" alt="Stronger, inward-set delimiters / regular"> |
-| Inline, gapless underscore | <img src="specimens/features/distinct-underscore-book.svg" width="460" alt="Inline, gapless underscore / book"> | <img src="specimens/features/distinct-underscore-regular.svg" width="460" alt="Inline, gapless underscore / regular"> |
-| Redrawn two-storey at symbol | <img src="specimens/features/distinct-at-book.svg" width="460" alt="Redrawn two-storey at symbol / book"> | <img src="specimens/features/distinct-at-regular.svg" width="460" alt="Redrawn two-storey at symbol / regular"> |
-| Shared prominent diamond dots | <img src="specimens/features/distinct-diamonds-book.svg" width="460" alt="Shared prominent diamond dots / book"> | <img src="specimens/features/distinct-diamonds-regular.svg" width="460" alt="Shared prominent diamond dots / regular"> |
-| Equals and hyphen | <img src="specimens/features/distinct-bars-book.svg" width="460" alt="Equals and hyphen / book"> | <img src="specimens/features/distinct-bars-regular.svg" width="460" alt="Equals and hyphen / regular"> |
-| Universal and existential quantifiers | <img src="specimens/features/distinct-quantifiers-book.svg" width="460" alt="Universal and existential quantifiers / book"> | <img src="specimens/features/distinct-quantifiers-regular.svg" width="460" alt="Universal and existential quantifiers / regular"> |
+<img src="specimens/features/Code-Characters.svg" width="1100" alt="Rust code rendered in Daikonic Transit Code Book">
 <!-- /code-characters -->
 
 
-All three typefaces include the same family of pointed, concave arrowheads, including the Unicode arrows **← ↑ → ↓ ↔ ↕ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕**.
 
 Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the existing drawings at 14. They remain separate review fonts; see [positioning, OTF and optical-size notes](docs/layout-optical.md). System retains its existing optical-size axis.
 

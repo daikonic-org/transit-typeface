@@ -12,14 +12,14 @@ from check_syntax_numerals import run
 from specimens import ROOT, DATA, Panel, specimen_families
 from code_balance_study import bind
 
-SOURCE = ROOT / "sources/code-lifetime-hook/VF/DaikonicTransitCode-VF.ttf"
+SOURCE = ROOT / "sources/code-structural-fit/VF/DaikonicTransitCode-VF.ttf"
 OUT = ROOT / "releases/2026.11.18.2/code"
 COMMANDS = {
     r"\forall": "universal",
     r"\exists": "existential",
     r"\not": "logicalnot",
     r"\box": "code.enclosureBox",
-    r"\dia": "code.enclosureDiamond",
+    r"\diamond": "code.enclosureDiamond",
 }
 
 
@@ -198,7 +198,7 @@ def proof():
                 "#194454",
             )
             for line, text in enumerate(
-                [r"\forall x \exists y", r"\not p \box p \dia p", "∀x ∃y ¬p"]
+                [r"\forall x \exists y", r"\not p \box p \diamond p", "∀x ∃y ¬p"]
             ):
                 p.text(
                     text,

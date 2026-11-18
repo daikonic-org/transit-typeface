@@ -18,7 +18,7 @@ OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
 OFF = {"calt": False, "liga": False, "clig": False}
 # Each row defines its sample and actual feature switch once for both rendering
-# and README generation. Permanent designs show current Book and Regular weights.
+# and README generation. Permanent designs use one Book-weight sample.
 FEATURES = {
     "sans": [
         ("standard", "Standard ligatures", "fi fl", {"liga": True}, {"liga": False}),
@@ -33,7 +33,6 @@ FEATURES = {
             {"tnum": True},
             {"tnum": False},
         ),
-        ("one", "Tabular 1 / default 1", "1", {"tnum": True}, {"tnum": False}),
     ],
     "code": [
         ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
@@ -72,13 +71,6 @@ FEATURES = {
             {**ON, "ss02": False},
         ),
         (
-            "logic-mixed",
-            "Joined Logic enclosures / ss02",
-            "<[T]> [<T>]",
-            {**ON, "ss02": True},
-            {**ON, "ss02": False},
-        ),
-        (
             "pipe-delimiters",
             "Contextual pipe delimiters",
             "|x| map(|x| x) a | b",
@@ -90,20 +82,6 @@ FEATURES = {
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
 }
-FEATURES["code"] = [
-    ("command-" + command[1:], command[1:].title() + " shortcut", command, ON, OFF)
-    for command in COMMANDS
-] + FEATURES["code"]
-
-DISTINCT = [
-    ("identity", "Distinct letters and figures", "I l 1 0 O"),
-    ("delimiters", "Stronger, inward-set delimiters", "() [] {}"),
-    ("underscore", "Inline, gapless underscore", "snake_case __init__"),
-    ("at", "Redrawn two-storey at symbol", "o@o user@host"),
-    ("diamonds", "Shared prominent diamond dots", "i j . : ; ! ?"),
-    ("bars", "Equals and hyphen", "= + -"),
-    ("quantifiers", "Universal and existential quantifiers", "∀x ∃y ¬p"),
-]
 
 
 def shaped(font, text, features):
@@ -173,13 +151,6 @@ def main(check=False):
             "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
             "location": loc,
         }
-    fonts["code-regular"] = instantiateVariableFont(
-        TTFont(ROOT / cfg["code"]["font"]), {"wght": 400}, inplace=True
-    )
-    manifest["sources"]["code-regular"] = {
-        **manifest["sources"]["code"],
-        "location": {"wght": 400},
-    }
     for key, rows in FEATURES.items():
         table = ["| Feature / input | On | Off |", "| --- | --- | --- |"]
         board = []
@@ -240,44 +211,60 @@ def main(check=False):
             ),
         )
         readme = update_table(readme, key + "-features", "\n".join(table))
-    table = [
-        "| Permanent design | Book 350 | Regular 400 |",
-        "| --- | --- | --- |",
+    manifest["shortcuts"] = {}
+    shortcuts = ["| Input | Rendered form |", "| --- | --- |"]
+    for command in COMMANDS:
+        rendered = shaped(fonts["code"], command, ON)
+        assert len(rendered) == 1 and rendered[0][0] == "code.command." + command[1:]
+        manifest["shortcuts"][command] = {"shaping": rendered, "features": ON}
+        slug = "code-command-" + command[1:]
+        body = cell(slug, fonts["code"], command, ON)
+        emit(OUT / (slug + ".svg"), svg(body, "Code shortcut " + command))
+        shortcuts.append(
+            f"| <code>{html.escape(command)}</code> | {image(slug,command)} |"
+        )
+    readme = update_table(readme, "code-shortcuts", "\n".join(shortcuts))
+    example = [
+        "struct IoRecord<'a> {",
+        "    user_id: usize,",
+        "    label: &'a str,",
+        "}",
+        "",
+        "fn labels<'a>(rows: &'a [IoRecord<'a>]) -> Vec<Vec<&'a str>> {",
+        "    rows.iter()",
+        "        .filter(|row| row.user_id != 0)",
+        "        .take(1)",
+        '        .map(|row| vec![row.label, "user@host"])',
+        "        .collect()",
+        "}",
     ]
-    board = []
-    for row, (slug, label, text) in enumerate(DISTINCT):
-        samples = []
-        for col, (which, f) in enumerate(
-            [("book", fonts["code"]), ("regular", fonts["code-regular"])]
-        ):
-            name = "distinct-" + slug + "-" + which
-            body = cell(name, f, text, OFF)
-            emit(OUT / (name + ".svg"), svg(body, label + " / " + which))
-            samples.append(image(name, label + " / " + which))
-            board.append(
-                f'<g transform="translate({310+460*col} {58+72*row})">{body}</g>'
-            )
-        table.append(f"| {label} | {samples[0]} | {samples[1]} |")
-        p = Panel("distinct-label" + slug, DATA["families"]["code"])
-        bind(p, fonts["code"])
-        p.text(label, 14, 100 + 72 * row, 17, 400, "#194454", max_width=285)
-        board.append(p.body())
-    p = Panel("distinct-head", DATA["families"]["code"])
+    p = Panel("code-example", DATA["families"]["code"])
     bind(p, fonts["code"])
-    p.text("Current Code character designs", 14, 29, 23, 400, "#194454")
-    p.text("Transit Code Book", 325, 55, 17, 400, "#194454")
-    p.text("Transit Code Regular", 785, 55, 17, 400, "#194454")
-    board.append(p.body())
+    for line, text in enumerate(example):
+        if text:
+            p.text(
+                text,
+                30,
+                84 + 34 * line,
+                24,
+                400,
+                "#eeeddb",
+                features=ON,
+                max_width=1040,
+            )
+    height = 112 + 34 * len(example)
+    body = '<rect width="1100" height="' + str(height) + '" fill="#0d1218"/>'
+    body += '<text x="30" y="32" font-family="Arial" font-size="14" fill="#aebbc6">Daikonic Transit Code · Book 350</text>'
+    body += p.body()
     emit(
         OUT / "Code-Characters.svg",
-        svg(
-            "".join(board),
-            "Current Code designs in Book and Regular",
-            1230,
-            85 + 72 * len(DISTINCT),
-        ),
+        svg(body, "Rust code in Daikonic Transit Code Book", 1100, height),
     )
-    readme = update_table(readme, "code-characters", "\n".join(table))
+    readme = update_table(
+        readme,
+        "code-characters",
+        '<img src="specimens/features/Code-Characters.svg" width="1100" alt="Rust code rendered in Daikonic Transit Code Book">',
+    )
     emit(ROOT / "README.md", readme)
     manifest["files"] = {
         p.name: hashlib.sha256(content.encode()).hexdigest()

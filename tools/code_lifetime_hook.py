@@ -152,6 +152,10 @@ def check(path):
         "code.lifetimeOpen",
         "code.lifetimeBorrow",
     }
+    from code_structural_fit import separate_enclosures, INTERPOLATION
+
+    if separate_enclosures(font):
+        changed.update(INTERPOLATION)
     for name in source.getGlyphOrder():
         if name not in changed:
             assert font["glyf"][name].compile(font["glyf"]) == source["glyf"][

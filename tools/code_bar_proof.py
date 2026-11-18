@@ -69,10 +69,22 @@ def main(font_path=None, check_only=False):
             for g, p in zip(b.glyph_infos, b.glyph_positions)
         ]
 
+    lifetime_reference = None
+    if any(
+        record.toUnicode() == "Extended Rust lifetime hooks"
+        for record in vf["name"].names
+    ):
+        from code_lifetime_hook import OUT as lifetime_path
+
+        lifetime_reference = TTFont(lifetime_path)
+        lifetime_engine = hb.Font(hb.Face(lifetime_path.read_bytes()))
+        lifetime_engine.scale = (1000, 1000)
     records = []
     for weight in range(300, 401, 10):
         h.set_variations({"wght": weight})
         old_h.set_variations({"wght": weight})
+        if lifetime_reference is not None:
+            lifetime_engine.set_variations({"wght": weight})
         for compact in (False, True):
             for text in POSITIVE:
                 result = run(vf, h, text, compact=compact)
@@ -92,8 +104,13 @@ def main(font_path=None, check_only=False):
                 "?. !.",
                 "&'a <'a> 'static",
             ]:
+                reference, engine = (
+                    (lifetime_reference, lifetime_engine)
+                    if lifetime_reference is not None and text == "&'a <'a> 'static"
+                    else (old, old_h)
+                )
                 assert run(vf, h, text, compact=compact) == run(
-                    old, old_h, text, compact=compact
+                    reference, engine, text, compact=compact
                 ), (weight, text, compact)
         gs = vf.getGlyphSet(location={"wght": weight})
         parent = shape_from_glyphs(gs, "parenleft")

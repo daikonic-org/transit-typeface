@@ -315,6 +315,10 @@ def main():
         + "\n"
     )
     check(target)
+    proof(target)
+
+
+def proof(target):
     p = Panel("angle-pairs", DATA["families"]["code"])
     from fontTools.varLib.instancer import instantiateVariableFont
 
@@ -344,5 +348,14 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--proof", action="store_true")
+    parser.add_argument("--font", type=Path)
     args = parser.parse_args()
-    check(OUT / "VF/DaikonicTransitCode-VF.ttf") if args.check else main()
+    if args.proof:
+        from specimens import specimen_families
+
+        proof(args.font or ROOT / specimen_families()["code"]["font"])
+    elif args.check:
+        check(args.font or OUT / "VF/DaikonicTransitCode-VF.ttf")
+    else:
+        main()

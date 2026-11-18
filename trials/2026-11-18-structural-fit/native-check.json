@@ -1,0 +1,12 @@
+{
+  "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "4a9983665334835b635c5cc364e1ccdb9aff2c5efca5171944129c973cabf77c",
+  "engine": "CoreText direct CGFont; no registration",
+  "checks": [
+    "separate mixed glyphs with Logic off/on",
+    "60-unit pair gap reduction, applied once",
+    "nested generic closer ligature",
+    "ordinary shift unchanged",
+    "600-unit input cell advances"
+  ]
+}

@@ -35,6 +35,7 @@ jobs:
           python tools/code_logic_symbols.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
           python tools/code_logic_sequences.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
           python tools/code_logic_shortcuts.py --check
+          python tools/code_structural_fit.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
           python tools/system_tabular_one.py --check
           python tools/bundle_release.py check
       - name: Verify dot palette, syntax and numeral studies
@@ -45,7 +46,7 @@ jobs:
         run: python tools/check_rust_lifetimes.py
       - name: Verify contextual pipe delimiters
         run: python tools/code_bar_proof.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
-      - name: Verify selected joined Logic enclosures
+      - name: Verify archived enclosure outlines
         run: python tools/code_enclosure_ligatures.py
       - name: Verify font-rendered README feature tables
         run: python tools/readme_features.py --check

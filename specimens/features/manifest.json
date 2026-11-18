@@ -17,16 +17,9 @@
     },
     "code": {
       "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "e65d89fbef0cf4ab838e0fac03e78b85b617b769f43ea09070ce1c63cdf782a9",
+      "sha256": "4a9983665334835b635c5cc364e1ccdb9aff2c5efca5171944129c973cabf77c",
       "location": {
         "wght": 350
-      }
-    },
-    "code-regular": {
-      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "e65d89fbef0cf4ab838e0fac03e78b85b617b769f43ea09070ce1c63cdf782a9",
-      "location": {
-        "wght": 400
       }
     }
   },
@@ -387,302 +380,6 @@
         ]
       ]
     },
-    "system-one": {
-      "text": "1",
-      "on_features": {
-        "tnum": true
-      },
-      "off_features": {
-        "tnum": false
-      },
-      "on_shaping": [
-        [
-          "one.tnum",
-          630,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "one",
-          268,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-command-forall": {
-      "text": "\\forall",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true
-      },
-      "off_features": {
-        "calt": false,
-        "liga": false,
-        "clig": false
-      },
-      "on_shaping": [
-        [
-          "code.command.forall",
-          4200,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "backslash",
-          600,
-          0,
-          0
-        ],
-        [
-          "f",
-          600,
-          0,
-          0
-        ],
-        [
-          "o",
-          600,
-          0,
-          0
-        ],
-        [
-          "r",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "l",
-          600,
-          0,
-          0
-        ],
-        [
-          "l",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-command-exists": {
-      "text": "\\exists",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true
-      },
-      "off_features": {
-        "calt": false,
-        "liga": false,
-        "clig": false
-      },
-      "on_shaping": [
-        [
-          "code.command.exists",
-          4200,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "backslash",
-          600,
-          0,
-          0
-        ],
-        [
-          "e",
-          600,
-          0,
-          0
-        ],
-        [
-          "x",
-          600,
-          0,
-          0
-        ],
-        [
-          "i",
-          600,
-          0,
-          0
-        ],
-        [
-          "s",
-          600,
-          0,
-          0
-        ],
-        [
-          "t",
-          600,
-          0,
-          0
-        ],
-        [
-          "s",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-command-not": {
-      "text": "\\not",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true
-      },
-      "off_features": {
-        "calt": false,
-        "liga": false,
-        "clig": false
-      },
-      "on_shaping": [
-        [
-          "code.command.not",
-          2400,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "backslash",
-          600,
-          0,
-          0
-        ],
-        [
-          "n",
-          600,
-          0,
-          0
-        ],
-        [
-          "o",
-          600,
-          0,
-          0
-        ],
-        [
-          "t",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-command-box": {
-      "text": "\\box",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true
-      },
-      "off_features": {
-        "calt": false,
-        "liga": false,
-        "clig": false
-      },
-      "on_shaping": [
-        [
-          "code.command.box",
-          2400,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "backslash",
-          600,
-          0,
-          0
-        ],
-        [
-          "b",
-          600,
-          0,
-          0
-        ],
-        [
-          "o",
-          600,
-          0,
-          0
-        ],
-        [
-          "x",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-command-dia": {
-      "text": "\\dia",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true
-      },
-      "off_features": {
-        "calt": false,
-        "liga": false,
-        "clig": false
-      },
-      "on_shaping": [
-        [
-          "code.command.dia",
-          2400,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "backslash",
-          600,
-          0,
-          0
-        ],
-        [
-          "d",
-          600,
-          0,
-          0
-        ],
-        [
-          "i",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
     "code-rust-inference": {
       "text": "<'_> <_> <[_]>",
       "on_features": {
@@ -753,13 +450,13 @@
         [
           "less.generic",
           600,
-          0,
+          30,
           0
         ],
         [
           "bracketleft",
           600,
-          0,
+          -30,
           0
         ],
         [
@@ -771,13 +468,13 @@
         [
           "bracketright",
           600,
-          0,
+          30,
           0
         ],
         [
           "greater.generic",
           600,
-          0,
+          -30,
           0
         ]
       ],
@@ -950,13 +647,13 @@
         [
           "less.generic",
           600,
-          -18,
+          12,
           0
         ],
         [
           "bracketleft",
           600,
-          0,
+          -30,
           0
         ],
         [
@@ -968,13 +665,13 @@
         [
           "bracketright",
           600,
-          0,
+          30,
           0
         ],
         [
           "greater.generic",
           600,
-          0,
+          -30,
           0
         ]
       ],
@@ -2943,156 +2640,29 @@
         [
           "bracketleft",
           600,
-          0,
+          30,
           0
         ],
         [
-          "less",
+          "less.generic",
           600,
-          0,
+          -30,
           0
         ],
         [
-          "greater",
+          "greater.generic",
           600,
-          0,
+          30,
           0
         ],
         [
           "bracketright",
           600,
-          0,
+          -30,
           0
         ],
         [
           "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "less",
-          600,
-          0,
-          0
-        ],
-        [
-          "bracketleft",
-          600,
-          0,
-          0
-        ],
-        [
-          "bracketright",
-          600,
-          0,
-          0
-        ],
-        [
-          "greater",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
-    "code-logic-mixed": {
-      "text": "<[T]> [<T>]",
-      "on_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true,
-        "ss02": true
-      },
-      "off_features": {
-        "calt": true,
-        "liga": true,
-        "clig": true,
-        "ss02": false
-      },
-      "on_shaping": [
-        [
-          "code.angleSquareOpen",
-          1200,
-          0,
-          0
-        ],
-        [
-          "T",
-          600,
-          0,
-          0
-        ],
-        [
-          "code.angleSquareClose",
-          1200,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "code.squareAngleOpen",
-          1200,
-          0,
-          0
-        ],
-        [
-          "T",
-          600,
-          0,
-          0
-        ],
-        [
-          "code.squareAngleClose",
-          1200,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "less",
-          600,
-          0,
-          0
-        ],
-        [
-          "bracketleft",
-          600,
-          0,
-          0
-        ],
-        [
-          "T",
-          600,
-          0,
-          0
-        ],
-        [
-          "bracketright",
-          600,
-          0,
-          0
-        ],
-        [
-          "greater",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "bracketleft",
           600,
           0,
           0
@@ -3100,25 +2670,25 @@
         [
           "less.generic",
           600,
-          0,
+          30,
           0
         ],
         [
-          "T",
+          "bracketleft",
           600,
-          0,
-          0
-        ],
-        [
-          "greater.generic",
-          600,
-          0,
+          -30,
           0
         ],
         [
           "bracketright",
           600,
-          0,
+          30,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          -30,
           0
         ]
       ]
@@ -3514,14 +3084,8 @@
           0
         ],
         [
-          "greater.generic",
-          600,
-          0,
-          0
-        ],
-        [
-          "greater.generic",
-          600,
+          "code.genericClose2",
+          1200,
           0,
           0
         ]
@@ -3936,9 +3500,86 @@
       ]
     }
   },
+  "shortcuts": {
+    "\\forall": {
+      "shaping": [
+        [
+          "code.command.forall",
+          4200,
+          0,
+          0
+        ]
+      ],
+      "features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      }
+    },
+    "\\exists": {
+      "shaping": [
+        [
+          "code.command.exists",
+          4200,
+          0,
+          0
+        ]
+      ],
+      "features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      }
+    },
+    "\\not": {
+      "shaping": [
+        [
+          "code.command.not",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      }
+    },
+    "\\box": {
+      "shaping": [
+        [
+          "code.command.box",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      }
+    },
+    "\\diamond": {
+      "shaping": [
+        [
+          "code.command.diamond",
+          4800,
+          0,
+          0
+        ]
+      ],
+      "features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      }
+    }
+  },
   "files": {
-    "Code-Characters.svg": "2aa58eb8d0764f37646bdffc53048e2bf444e20aaf7750e584a68a34f80c7fc7",
-    "code-Features.svg": "33adc18feb9f3495d84135dc07bde1c1f6bec134afa7eb39074465952069c2f9",
+    "Code-Characters.svg": "468819fc54b4f072a905415397745f62f0c6571bb8c329020c3c695d68a85075",
+    "code-Features.svg": "d70d3f0334c0da4e91254ee8530333fffdd38e24743853809c5c897f9156d302",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3947,39 +3588,32 @@
     "code-assignment-on.svg": "6bf9f23497b9002dc47303082d4f7059274330585e1d4ab6f1bc446a048b8fbf",
     "code-at-repeat-off.svg": "28674eea5dd5abd91eb270d0aba3d1c7e501222c037edcc11da0e518d7ebee2f",
     "code-at-repeat-on.svg": "98a1539247285a007c22e02c9bfbf6a4a03426e784bd80c2aa62ca30122088d0",
-    "code-command-box-off.svg": "cf5523a9d8043703b86d400c37baa793169348d6f2ac1f5bfe22e8d19db6b0be",
-    "code-command-box-on.svg": "e1fb2e44cd3b50f129444d2ee1b73b23d2217902f4295bd5fb3051205b3bc1be",
-    "code-command-dia-off.svg": "cdc55f96d7223474dad6aa7f34993a542c86688c5e8d97e2a33e5c4c90e49601",
-    "code-command-dia-on.svg": "24bc1cd6959be8f6f7abc82f8ad118fc0807521a8125fcee6d75bda6a2eb4014",
-    "code-command-exists-off.svg": "9f149ca893c34094f8c4542a259a349dcb7d0114d64dbc76c5499cbdcd8edefb",
-    "code-command-exists-on.svg": "830fb755320ec8746651dea6d324320b0afc79e2f3b44da3b2c3ac1761204ea6",
-    "code-command-forall-off.svg": "68c3060c3ff608a0e150efd037e90e45ab1eb8aacff7a4bbdd4d2abe4c839de6",
-    "code-command-forall-on.svg": "bc695f9cd086a25e20201e5384eb73c39f0755f094058e6c509da91166ad6f48",
-    "code-command-not-off.svg": "bfac098fbc759dcadc06108c93689fd6c65504421667280fc8f44b1935251a3e",
-    "code-command-not-on.svg": "d11b241dacd708e13ccfa838f9116c66dbaeff9aa2175c22041bdadb23b95e95",
+    "code-command-box.svg": "2f5a549444d6ce5b54f6a4fa6115febb406a2a90dc7ae6002087445b6738cc2b",
+    "code-command-diamond.svg": "72fd0bba88bc7cabb15b74359002864eb78cf982f66e3595e51f0fc3d257cd8f",
+    "code-command-exists.svg": "789197fedf158a41c2b14638ccbed0899e41609eefc79a6251ee1bc096463e92",
+    "code-command-forall.svg": "160c2f87ecfa6e2b1b5ef3449f8e58cd05fe0d66c075d5bd374efc7861a4fe5b",
+    "code-command-not.svg": "a6b5802d510b2c3ca518cfbeb82b4e49bd1666df1e584f985691c4d3b0ffb691",
     "code-comparisons-off.svg": "f28c0085db456652504540fde0377da4f611e59f6304295b9b7cebca1e78e9ca",
     "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
     "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
     "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
     "code-generics-off.svg": "bda082a993d3a59da8dee508b89465fdb8f26c63a1a4a78a46a9e8c601c803c6",
-    "code-generics-on.svg": "d8aa2639fbd81d56ad143715255ee1d2447f28a85cce16b28d087282c1e7209e",
+    "code-generics-on.svg": "0cc5645a0572abcadd1607a4f94c39977ee89fc0c02f73523e78287be7d7d7ad",
     "code-hashes-off.svg": "5d4ff56763ba71306320574ad2ff6690f53d3b8f864a878b5ff239456ee60cbd",
     "code-hashes-on.svg": "b8a15ec7845c5988f3506633a0b632b715983ecc6044f410b6d9f91d36a47979",
     "code-interpolation-off.svg": "a9fe4f3cd122d41866ae81f77af5ba1141250e5cdd88d590ded469370090319f",
-    "code-interpolation-on.svg": "13c10d16dddcc0768ba796f6efcd4d22581bb9d68ee548652b401d64c37ad740",
+    "code-interpolation-on.svg": "54add49934029664d0707943516559e57cc2db07e514d3e9c44e6263b592fa32",
     "code-lifetime-literals-off.svg": "f876df6c8d5a7c05bec460902d766f21d489537a7fc432883cd7bca851c45ae6",
     "code-lifetime-literals-on.svg": "a34976ca3a66c3544734fdf89988e3ec79c4d05019b10f44b5bb5e47336d09ce",
     "code-lifetime-placement-off.svg": "03c41dded227a4a9a517bb98eeb7741993cd8e7b8c6b3936fee09523fb28e16c",
     "code-lifetime-placement-on.svg": "735b9c1f154f91ba958d98e89a47d7477acb793c62a2e1218cf0b57670cf2395",
     "code-lifetimes-off.svg": "262a5942e23de25931816624f157a0018bae8fd107b0917d6a26218564f34005",
     "code-lifetimes-on.svg": "7a69cb81af44a6cfdea30a73bdf3223b15a09b4f86b92d46c356f29c7b302b8f",
-    "code-logic-mixed-off.svg": "784437d6dd8f33bca1a853c426669d502d3dff2fabd3b0b00919c09dcd235bad",
-    "code-logic-mixed-on.svg": "6e588c2a843fdf6d5c2ffbfa4bf6b7303a14af61962e2f87cf4735596b2eaf50",
     "code-logic-not-off.svg": "83357b06a4a1025de6e1e6c49c1126b62ac3580752797ddccd08e49a7b63cf5d",
     "code-logic-not-on.svg": "01df8863ea7e142d0d517f7492587aa6cbebea97f2d8e34491d7af4299077c80",
     "code-logic-off.svg": "6f6ec8e9848ea7d71a2810a2bf79f3e62866b05d49169eed72e40317a540cead",
     "code-logic-on.svg": "80fa824ee44fdd59232deed73e0417b95cc81e01d63b13f59e3ea8aef166d539",
-    "code-logic-order-off.svg": "9d64407663cdca6e19144a7661ca0012ca1f1c8e9dbf3060727c9a867b56dd46",
+    "code-logic-order-off.svg": "d43ccabee6bf67823c12b9618e267320878244bbc46b4cd40049be27408248fd",
     "code-logic-order-on.svg": "7e515686181e0b1b982b09171ae495b5bded467394b440b9f646cceb980cc2fd",
     "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
     "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
@@ -3988,33 +3622,17 @@
     "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
     "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
     "code-rust-inference-off.svg": "585f8df149036e6a86eba4649a85b2e86875af4f9f48ccf5a3e98721a5300e61",
-    "code-rust-inference-on.svg": "17d1c08c356b1608075a6d9e2b1186f1b9d07791784a2e8a6a81ee30981ddcdf",
+    "code-rust-inference-on.svg": "e6fb115efec8a8a1c8d5b39d503845631c13711a1684e6663cd1c156a76bd5c9",
     "code-rust-turbofish-off.svg": "c42ff46f3a20cd7a6062c97b88cce1735c1b8f7e2910d5318a31bb4b6578b51e",
-    "code-rust-turbofish-on.svg": "ba29615f376c436d7d97c02c61fcdd46dbce3474c2d4057ccf082d13c9ac0a88",
+    "code-rust-turbofish-on.svg": "df23baf74132d903b98180962b9f0593cf8a92f62f7437d51a636cd223df6d5d",
     "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
     "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
-    "distinct-at-book.svg": "67d3ff93ffb5448ce66a4495ef0c6fd11fafbe0a50a9a666a04ab94565dedf18",
-    "distinct-at-regular.svg": "32ff187a992aaa92289c81fb562a489b52b0f0e12195484f7968c86afaef7ba3",
-    "distinct-bars-book.svg": "9a821dc3290aa6101deef9e31361c0a9fdc3b557256ca4864cdcd8d2cf636ceb",
-    "distinct-bars-regular.svg": "2b8260e18d35131e4f5ec75858064bb03b3e59b1403d7876b669bb1bfd270ffd",
-    "distinct-delimiters-book.svg": "8fde2e41771738b79a918d65c4b70fa5adcfef9b9144ee623cfbfbda76310bee",
-    "distinct-delimiters-regular.svg": "ecd1604b4969ef6dc9882dd7c8ddc09db7bc0edae92586fc3898d5c27c00157c",
-    "distinct-diamonds-book.svg": "85b21b0d14603c6571c16ae9f499c0dcaff0c1be8aa0594339a00503dc98fc8b",
-    "distinct-diamonds-regular.svg": "3b367e32f44f3d3b163424f1b1f27da31d6151ab92d3d91a83c13885fbd60fdd",
-    "distinct-identity-book.svg": "e5b98f717a9dc6f9c119427145645ab4a59eae39663bf1ca4701345c7e5be897",
-    "distinct-identity-regular.svg": "8ab6102abfea7fa0eae7b00644dc1c93657a62ba2128cc6d51fd7c4a645fed51",
-    "distinct-quantifiers-book.svg": "fa79ff49e1ca2af561b40e899cd71750a2791cbf74486dc572d6e7d456c77b2f",
-    "distinct-quantifiers-regular.svg": "d6e804b3089f6368fe09c0e36bf33173019673d0ac6f93e625a8e6c53077a8bf",
-    "distinct-underscore-book.svg": "377ed1efb1557738ee50f4d0e2d1b77a9981901ab76f91b0afce5183f55141fb",
-    "distinct-underscore-regular.svg": "72ba1b26eebb12b5d09cc3885c2224cbb4236903939180d6a0fdf409455310bf",
     "sans-Features.svg": "bdec36e4f69d83bec055fef535c84c51332289cbd3ae5c5a8e0c2bcd136e4491",
     "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
     "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
     "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
     "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
-    "system-Features.svg": "1c2ddd0c84f2142a92fceebd430e22806816c434b0488adf5667d34b23042e6c",
-    "system-one-off.svg": "84e1643acfecd2e576baadf6eb7369601cfb764ece23d998b4c09b84b4c503c1",
-    "system-one-on.svg": "99b0076ec574b25c1619fac2ae96966a570556775ba977d0b2c4664635eb02f5",
+    "system-Features.svg": "a1df3132704a7396eeac7ea5b92064fcfcd473994010ebc7e8e4192c992c1c0e",
     "system-standard-off.svg": "0f8ea230e630f18de9c7003993140f1658e9de3bc0c6a7c92d6f3d4e146a7c0b",
     "system-standard-on.svg": "1d4c0f647b12a3ab566fb37b999113b302374a20b1bcaf5246deb06471605702",
     "system-tabular-off.svg": "cac0aa4514e7e12dad72f2bdc2bc8dc154121d559b9c8e441cf4a3e18af3d3ee",

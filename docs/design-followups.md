@@ -1,7 +1,8 @@
-# Pending design follow-ups
+# Review changes for the coordinated release
 
-- Keep mixed angle/square enclosures (`<[`, `[<`, and their closing forms) as separate glyphs with forced tall angles, with or without Logic. Preserve the selected ordering of empty four-character Logic forms.
-- Vertically center `$` against the delimiter in `${`, `$[` and `$(`.
-- Combine the first four permanent Code examples into one Book-weight sample. Remove individual at-symbol, diamond-dot and equals/hyphen callouts, and the separate shared-arrow paragraph.
-
-The coordinated 2026.11.18.2 release contains the approved lifetime-marker and System tabular-figure designs. These remaining review requests are pending implementation.
+- Mixed angle/square enclosures use separate glyphs, forced tall angles and a 60-unit closer optical fit, with or without Logic. Empty four-character Logic forms retain their selected ordering.
+- Matched generic closer runs are tightened within their original character cells; ordinary shift operators retain their drawings and spacing.
+- Interpolation dollars are vertically centered against their delimiters.
+- The separate permanent Code examples are replaced by a realistic Book-weight Rust sample in light text on a dark background. Individual at-symbol, dot and equals/hyphen callouts and the separate shared-arrow paragraph are removed.
+- Shortcuts have their own Input/Rendered form section and use `\diamond` for the diamond command.
+- The redundant isolated System tabular/default `1` comparison is removed; the complete tabular-figure example remains.

@@ -50,6 +50,11 @@ def check(path):
         if hooked
         else set()
     )
+    from code_structural_fit import separate_enclosures, INTERPOLATION
+
+    structural = separate_enclosures(f)
+    if structural:
+        changed.update(INTERPOLATION)
     for name in source.getGlyphOrder():
         if name in changed:
             continue  # Geometry and fixed-anchor fitting are verified by check_rust_lifetimes.
@@ -75,13 +80,22 @@ def check(path):
             assert sum(p[1] for p in result) == 2400
             if logic:
                 assert [p[0] for p in result] == [glyph], (text, features, result)
+            elif structural and calt:
+                assert len(result) == 4
+                assert all(
+                    n.endswith(".generic")
+                    for n, *_ in result
+                    if n.startswith(("less", "greater"))
+                )
             else:
                 assert result == run(baseline, text, {"wght": weight}, features), (
                     text,
                     features,
                 )
         for text in ["<[T]>", "[<T>]", "<> []", "-> ->> =>", "&'a <'a>"]:
-            if hooked and text == "&'a <'a>":
+            if (hooked and text == "&'a <'a>") or (
+                structural and text in ["<[T]>", "[<T>]"]
+            ):
                 continue
             assert run(path, text, {"wght": weight}, features) == run(
                 baseline, text, {"wght": weight}, features
