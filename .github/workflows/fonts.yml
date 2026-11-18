@@ -35,6 +35,7 @@ jobs:
           python tools/code_logic_symbols.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
           python tools/code_logic_sequences.py --check --font releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf
           python tools/code_logic_shortcuts.py --check
+          python tools/system_tabular_one.py --check
           python tools/bundle_release.py check
       - name: Verify dot palette, syntax and numeral studies
         run: |

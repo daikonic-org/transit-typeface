@@ -90,7 +90,7 @@ def main():
                 + args.date
                 + "\n\n"
                 + summary
-                + ".\nBoth main System numeral rows use default figures. The hooked 1 is shown only in the labeled optional tabular (tnum) comparison.\n\nFont versions: "
+                + ".\nBoth main System numeral rows use default figures. The Sans-style tabular 1 is shown in the labeled optional tabular (tnum) comparison.\n\nFont versions: "
                 + versions
                 + ". Font binaries are unchanged.\n",
             )
@@ -122,7 +122,7 @@ def main():
         )
         + "\n\nCurrent font cuts: "
         + versions
-        + ". Code includes an additional detail sheet across all three weights.\n\nBoth main System numeral rows use default proportional figures. Its hooked 1 appears only in a separately labeled **optional tabular (tnum)** example.\n\nEach ZIP contains matching PNG, vector PDF and outlined SVG exports. Choose an individual typeface or the **family** archive for all three panels and the combined board. Font versions and installed font files are unchanged.\n"
+        + ". Code includes an additional detail sheet across all three weights.\n\nBoth main System numeral rows use default proportional figures. Its Sans-style tabular 1 appears in a separately labeled **optional tabular (tnum)** example.\n\nEach ZIP contains matching PNG, vector PDF and outlined SVG exports. Choose an individual typeface or the **family** archive for all three panels and the combined board. Font versions and installed font files are unchanged.\n"
     )
     (out / "release.json").write_text(
         json.dumps(

@@ -39,3 +39,5 @@ All three families are included in each coordinated release. Optional angle-pair
 [Logic symbols](features/Logic-Symbols.pdf) shows negation and Unicode quantifiers across the three Code weights.
 
 [Standard Logic shortcuts](features/Logic-Shortcuts.pdf) shows the same shortcut rendering with Logic off and on.
+
+[Rust inference and turbofish](features/Rust-Generics.pdf) includes enlarged forms and 14px reading-size samples with calt on/off.

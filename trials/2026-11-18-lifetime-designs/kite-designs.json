@@ -1,0 +1,39 @@
+{
+  "source": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "fd34b1fe36d660f6199c02d5979bb97b3a752b7dce49f41af6aecb178cbde69b",
+  "weight": 350,
+  "cell": 600,
+  "adopted": null,
+  "candidates": [
+    {
+      "id": "E",
+      "name": "Short kite",
+      "bounds": [
+        195.0,
+        445.0,
+        405.0,
+        700.0
+      ]
+    },
+    {
+      "id": "F",
+      "name": "Medium kite",
+      "bounds": [
+        195.0,
+        405.0,
+        405.0,
+        700.0
+      ]
+    },
+    {
+      "id": "G",
+      "name": "Long kite",
+      "bounds": [
+        195.0,
+        365.0,
+        405.0,
+        700.0
+      ]
+    }
+  ]
+}

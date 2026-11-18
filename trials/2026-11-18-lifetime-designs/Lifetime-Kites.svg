@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="900" viewBox="0 0 960 900">
+<rect width="960" height="900" fill="#eeeddb"/>
+<style>text{font-family:Arial,sans-serif;fill:#172331}.label{font-size:16px}.small{font-size:12px;fill:#53616a}</style>
+<text x="40" y="44" font-size="26" font-weight="bold">Lifetime marker — kite study</text>
+<text x="40" y="73" class="label">Book 350 · same upper diamond and width · three lower-point lengths</text>
+<defs>
+<path id="E" d="M300.0 700.0 405.0 595.0 300.0 445.0 195.0 595.0Z"/>
+<path id="F" d="M300.0 700.0 405.0 595.0 300.0 405.0 195.0 595.0Z"/>
+<path id="G" d="M300.0 700.0 405.0 595.0 300.0 365.0 195.0 595.0Z"/>
+</defs>
+<text x="220" y="118" text-anchor="middle" class="label" font-weight="bold">E · Short kite</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(51.99999999999997 552.0) scale(0.56 -0.56)" fill="#172331"/>
+<text x="220" y="367" text-anchor="middle" class="small">Enlarged silhouette</text>
+<text x="480" y="118" text-anchor="middle" class="label" font-weight="bold">F · Medium kite</text>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(312.0 552.0) scale(0.56 -0.56)" fill="#172331"/>
+<text x="480" y="367" text-anchor="middle" class="small">Enlarged silhouette</text>
+<text x="740" y="118" text-anchor="middle" class="label" font-weight="bold">G · Long kite</text>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(572.0 552.0) scale(0.56 -0.56)" fill="#172331"/>
+<text x="740" y="367" text-anchor="middle" class="small">Enlarged silhouette</text>
+<path d="M40 384H920" stroke="#bbc2bb"/>
+<text x="40" y="417" class="label">At coding sizes</text>
+<text x="40" y="462" class="small">14 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(215.8 459.8) scale(0.014 -0.014)" fill="#172331"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(475.8 459.8) scale(0.014 -0.014)" fill="#172331"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(735.8 459.8) scale(0.014 -0.014)" fill="#172331"/>
+<text x="40" y="502" class="small">18 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(214.6 502.6) scale(0.018 -0.018)" fill="#172331"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(474.6 502.6) scale(0.018 -0.018)" fill="#172331"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(734.6 502.6) scale(0.018 -0.018)" fill="#172331"/>
+<text x="40" y="542" class="small">24 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(212.8 546.8) scale(0.024 -0.024)" fill="#172331"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(472.8 546.8) scale(0.024 -0.024)" fill="#172331"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(732.8 546.8) scale(0.024 -0.024)" fill="#172331"/>
+<text x="40" y="582" class="small">32 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(210.4 592.4) scale(0.032 -0.032)" fill="#172331"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(470.4 592.4) scale(0.032 -0.032)" fill="#172331"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(730.4 592.4) scale(0.032 -0.032)" fill="#172331"/>
+<text x="40" y="622" class="small">48 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(205.6 643.6) scale(0.048 -0.048)" fill="#172331"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(465.6 643.6) scale(0.048 -0.048)" fill="#172331"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(725.6 643.6) scale(0.048 -0.048)" fill="#172331"/>
+<rect x="40" y="684" width="880" height="164" rx="6" fill="#142130"/>
+<text x="60" y="715" style="fill:#eeeddb;font-size:14px">Reversed · 18 / 24 / 32 px</text>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(214.6 748.6) scale(0.018 -0.018)" fill="#eeeddb"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(474.6 748.6) scale(0.018 -0.018)" fill="#eeeddb"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(734.6 748.6) scale(0.018 -0.018)" fill="#eeeddb"/>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(212.8 782.8) scale(0.024 -0.024)" fill="#eeeddb"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(472.8 782.8) scale(0.024 -0.024)" fill="#eeeddb"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(732.8 782.8) scale(0.024 -0.024)" fill="#eeeddb"/>
+<use href="#E" xlink:href="#E" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(210.4 818.4) scale(0.032 -0.032)" fill="#eeeddb"/>
+<use href="#F" xlink:href="#F" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(470.4 818.4) scale(0.032 -0.032)" fill="#eeeddb"/>
+<use href="#G" xlink:href="#G" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(730.4 818.4) scale(0.032 -0.032)" fill="#eeeddb"/>
+<text x="40" y="878" class="small">Glyph-only prototypes · source apostrophe and working fonts unchanged · no candidate selected</text></svg>

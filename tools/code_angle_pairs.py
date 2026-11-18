@@ -11,14 +11,24 @@ from code_balance_study import bind
 from check_syntax_numerals import run
 
 SOURCE = ROOT / "sources/code-logic-symbols/DaikonicTransitCodeLogicSymbols-VF.ttf"
-OUT = ROOT / "releases/2026.11.18.1/code"
+OUT = ROOT / "sources/code-rust-generics"
 
 
 def check(path):
     source = TTFont(SOURCE)
     font = TTFont(path)
-    for tag in ["GPOS", "cmap", "fvar"]:
+    for tag in ["cmap", "fvar"]:
         assert source.getTableData(tag) == font.getTableData(tag), tag
+    gpos = deepcopy(font["GPOS"])
+    count = len(source["GPOS"].table.LookupList.Lookup)
+    gpos.table.LookupList.Lookup = gpos.table.LookupList.Lookup[:count]
+    gpos.table.LookupList.LookupCount = count
+    for record in gpos.table.FeatureList.FeatureRecord:
+        record.Feature.LookupListIndex = [
+            index for index in record.Feature.LookupListIndex if index < count
+        ]
+        record.Feature.LookupCount = len(record.Feature.LookupListIndex)
+    assert gpos.compile(font) == source.getTableData("GPOS")
     gdef = deepcopy(font["GDEF"])
     gdef.table.GlyphClassDef.classDefs = {
         name: value
@@ -43,6 +53,14 @@ def check(path):
         "fooBar<>": [True, True],
         "vec<>": [False, False],
         "12<>34": [False, False],
+        "<_>": [True, True],
+        "<[_]>": [True, True],
+        "::<_>": [True, True],
+        "::<u8>": [True, True],
+        "::<usize>": [True, True],
+        "::<[_]>": [True, True],
+        "Vec<vec<_>>": [True] * 4,
+        "::<": [False],
         "Vec<T>": [True, True],
         "Vec<u8>": [True, True],
         "get<T>": [True, True],
@@ -75,7 +93,9 @@ def check(path):
                         if not calt or text not in expected:
                             if not (compact and not calt and "<'" in text):
                                 assert before == after, (text, features)
-                        elif not (logic and "<>" in text):
+                        elif not (
+                            logic and any(token in text for token in ("<>", "<[", "[<"))
+                        ):
                             angles = [
                                 name.endswith(".generic")
                                 for name, *_ in after
@@ -104,6 +124,15 @@ def check(path):
     for compact in [False, True]:
         actual = run(path, "<'a", {"wght": 350}, {"calt": True, "ss01": compact})
         assert actual[0][0] == ("code.lifetimeOpen.short" if compact else "less")
+    for text in ["::<T>", "::<_>"]:
+        shaped = run(path, text, {"wght": 350}, {"calt": True})
+        assert (
+            shaped[0][0] == "code.scope" and shaped[0][2] == 18 and shaped[0][3] == 50
+        )
+        assert shaped[1][0] == "less.generic" and shaped[1][2] == -18
+        assert sum(item[1] for item in shaped) == len(text) * 600
+    incomplete = run(path, "::<", {"wght": 350}, {"calt": True})
+    assert incomplete[0][2] == incomplete[1][2] == 0
     deep = "A<" * 16 + "T" + ">" * 16
     assert (
         sum(
@@ -197,6 +226,9 @@ def main():
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
         "lookup TypePairIntent { lookupflag IgnoreMarks;",
         "sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;",
+        "sub less' underscore greater by less.pairIntent;",
+        "sub less' bracketleft underscore bracketright greater by less.pairIntent;",
+        "sub code.scope less' by less.pairIntent;",
     ]
     for count in range(32):
         middle = " ".join(["@PairWord"] * count)
@@ -251,17 +283,22 @@ def main():
         ]:
             rules.append(f"sub {names[kind]} by {final};")
     rules += ["} FinishAnglePairs;", "} calt;"]
+    rules += [
+        "feature calt {",
+        "pos code.scope' <18 50 0 0> less.generic' <-18 0 0 0>;",
+        "} calt;",
+    ]
     add_features(font, "\n".join(rules))
     for record in font["name"].names:
         text = record.toUnicode()
         if record.nameID == 3:
-            text = "DaikonicTransitCode-VF 1.035"
+            text = "DaikonicTransitCode-VF 1.036"
         elif record.nameID == 5:
-            text = "Version 1.035"
+            text = "Version 1.036"
         elif record.nameID == 10:
             text = "Daikonic Transit Code; balanced angle pairs, independent Logic and lifetime features."
         record.string = text.encode(record.getEncoding())
-    font["head"].fontRevision = 1.035
+    font["head"].fontRevision = 1.036
     target = OUT / "VF/DaikonicTransitCode-VF.ttf"
     target.parent.mkdir(exist_ok=True)
     font.save(target)
@@ -269,7 +306,7 @@ def main():
         json.dumps(
             {
                 "family": "Daikonic Transit Code",
-                "version": "1.035",
+                "version": "1.036",
                 "status": "release",
                 "weight_range": [300, 400],
             },

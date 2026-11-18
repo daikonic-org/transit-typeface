@@ -44,4 +44,4 @@ Merge these font settings into existing configuration, rather than replacing oth
 
 ## Optional Code features
 
-The current Code release provides **Boundary-centered Rust lifetimes (`ss01`)** and **Logic (`ss02`)** independently; both are off by default. Enable the desired tag alongside `calt`, `clig` and `liga`: WezTerm accepts `ss01=1` / `ss02=1`; VS Code accepts an explicit font-feature string; Zed accepts `"ss01": true` / `"ss02": true` in its font-feature settings. Logic joins `<>`, `[]`, `<[` / `]>` and `[<` / `>]`.
+The current Code release provides **Extended Rust lifetime hooks (`ss01`)** and **Logic (`ss02`)** independently; both are off by default. Enable the desired tag alongside `calt`, `clig` and `liga`: WezTerm accepts `ss01=1` / `ss02=1`; VS Code accepts an explicit font-feature string; Zed accepts `"ss01": true` / `"ss02": true` in its font-feature settings. Logic joins `<>`, `[]`, `<[` / `]>` and `[<` / `>]`.

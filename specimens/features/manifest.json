@@ -8,8 +8,8 @@
       }
     },
     "system": {
-      "font": "fonts/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102",
+      "font": "releases/2026.11.18.2/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "40635984ecb714bca84569a67b099d35ea6dfd7e5670c7ffb6345c84c87b5c1d",
       "location": {
         "wght": 350,
         "opsz": 14
@@ -17,14 +17,14 @@
     },
     "code": {
       "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "8af14010ba0610aae51656777b903d1e3d91a491a0a753bb7865c82e00d1ce59",
+      "sha256": "e65d89fbef0cf4ab838e0fac03e78b85b617b769f43ea09070ce1c63cdf782a9",
       "location": {
         "wght": 350
       }
     },
     "code-regular": {
       "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "8af14010ba0610aae51656777b903d1e3d91a491a0a753bb7865c82e00d1ce59",
+      "sha256": "e65d89fbef0cf4ab838e0fac03e78b85b617b769f43ea09070ce1c63cdf782a9",
       "location": {
         "wght": 400
       }
@@ -677,6 +677,418 @@
         ],
         [
           "a",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-rust-inference": {
+      "text": "<'_> <_> <[_]>",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle.lifetime",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "quotesingle",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-rust-turbofish": {
+      "text": "::<T> ::<_> ::<[_]>",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.scope",
+          1200,
+          18,
+          50
+        ],
+        [
+          "less.generic",
+          600,
+          -18,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.scope",
+          1200,
+          18,
+          50
+        ],
+        [
+          "less.generic",
+          600,
+          -18,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "code.scope",
+          1200,
+          18,
+          50
+        ],
+        [
+          "less.generic",
+          600,
+          -18,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater.generic",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "colon",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "underscore",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
           600,
           0,
           0
@@ -2233,14 +2645,14 @@
         [
           "code.lifetimeBorrow",
           600,
-          0,
-          0
+          40,
+          45
         ],
         [
           "quotesingle.lifetime.compact",
           600,
-          0,
-          0
+          40,
+          45
         ],
         [
           "a",
@@ -2257,14 +2669,14 @@
         [
           "code.lifetimeOpen",
           600,
-          0,
-          0
+          40,
+          45
         ],
         [
           "quotesingle.lifetime.compact",
           600,
-          0,
-          0
+          40,
+          45
         ],
         [
           "a",
@@ -2287,8 +2699,8 @@
         [
           "quotesingle.lifetime.compact",
           600,
-          0,
-          0
+          40,
+          45
         ],
         [
           "s",
@@ -3526,7 +3938,7 @@
   },
   "files": {
     "Code-Characters.svg": "2aa58eb8d0764f37646bdffc53048e2bf444e20aaf7750e584a68a34f80c7fc7",
-    "code-Features.svg": "edb3ec94ab2cb31334b1ab097e81a0da9910764cf23f97686a4f3c4036b056b2",
+    "code-Features.svg": "33adc18feb9f3495d84135dc07bde1c1f6bec134afa7eb39074465952069c2f9",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3556,11 +3968,11 @@
     "code-interpolation-off.svg": "a9fe4f3cd122d41866ae81f77af5ba1141250e5cdd88d590ded469370090319f",
     "code-interpolation-on.svg": "13c10d16dddcc0768ba796f6efcd4d22581bb9d68ee548652b401d64c37ad740",
     "code-lifetime-literals-off.svg": "f876df6c8d5a7c05bec460902d766f21d489537a7fc432883cd7bca851c45ae6",
-    "code-lifetime-literals-on.svg": "6aaf8266cf02e89ab8a3a571734c3e4ed79cceb585e45e32e5eaf5cab21f13b6",
-    "code-lifetime-placement-off.svg": "c5466ff28edbebb816dc1a2607d316176db471a6f35f0c08cadeb78151eaae9a",
-    "code-lifetime-placement-on.svg": "e84781324fced44437b45e1831df5bdfd5383fcf790547bd820289d109b94608",
+    "code-lifetime-literals-on.svg": "a34976ca3a66c3544734fdf89988e3ec79c4d05019b10f44b5bb5e47336d09ce",
+    "code-lifetime-placement-off.svg": "03c41dded227a4a9a517bb98eeb7741993cd8e7b8c6b3936fee09523fb28e16c",
+    "code-lifetime-placement-on.svg": "735b9c1f154f91ba958d98e89a47d7477acb793c62a2e1218cf0b57670cf2395",
     "code-lifetimes-off.svg": "262a5942e23de25931816624f157a0018bae8fd107b0917d6a26218564f34005",
-    "code-lifetimes-on.svg": "214446ddccfc0cf3ee2bbc6e8afce3960cb9d539a8a8caef1914952242995ad1",
+    "code-lifetimes-on.svg": "7a69cb81af44a6cfdea30a73bdf3223b15a09b4f86b92d46c356f29c7b302b8f",
     "code-logic-mixed-off.svg": "784437d6dd8f33bca1a853c426669d502d3dff2fabd3b0b00919c09dcd235bad",
     "code-logic-mixed-on.svg": "6e588c2a843fdf6d5c2ffbfa4bf6b7303a14af61962e2f87cf4735596b2eaf50",
     "code-logic-not-off.svg": "83357b06a4a1025de6e1e6c49c1126b62ac3580752797ddccd08e49a7b63cf5d",
@@ -3575,6 +3987,10 @@
     "code-pipe-delimiters-on.svg": "f58d53d96b25edda6b0c67b49daa39ee71dbfedc1767b753b9e315290c17407c",
     "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
     "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
+    "code-rust-inference-off.svg": "585f8df149036e6a86eba4649a85b2e86875af4f9f48ccf5a3e98721a5300e61",
+    "code-rust-inference-on.svg": "17d1c08c356b1608075a6d9e2b1186f1b9d07791784a2e8a6a81ee30981ddcdf",
+    "code-rust-turbofish-off.svg": "c42ff46f3a20cd7a6062c97b88cce1735c1b8f7e2910d5318a31bb4b6578b51e",
+    "code-rust-turbofish-on.svg": "ba29615f376c436d7d97c02c61fcdd46dbce3474c2d4057ccf082d13c9ac0a88",
     "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
     "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
     "distinct-at-book.svg": "67d3ff93ffb5448ce66a4495ef0c6fd11fafbe0a50a9a666a04ab94565dedf18",
@@ -3596,12 +4012,12 @@
     "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
     "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
     "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
-    "system-Features.svg": "1fb41b1b56bc175b271d306a6242607366fabb7d94922be0fb6e8d8f76061643",
+    "system-Features.svg": "1c2ddd0c84f2142a92fceebd430e22806816c434b0488adf5667d34b23042e6c",
     "system-one-off.svg": "84e1643acfecd2e576baadf6eb7369601cfb764ece23d998b4c09b84b4c503c1",
-    "system-one-on.svg": "b3a412f7fbbc2acf9f216b7edf37e2495c23e952c62b2184227517d4bfcc152e",
+    "system-one-on.svg": "99b0076ec574b25c1619fac2ae96966a570556775ba977d0b2c4664635eb02f5",
     "system-standard-off.svg": "0f8ea230e630f18de9c7003993140f1658e9de3bc0c6a7c92d6f3d4e146a7c0b",
     "system-standard-on.svg": "1d4c0f647b12a3ab566fb37b999113b302374a20b1bcaf5246deb06471605702",
     "system-tabular-off.svg": "cac0aa4514e7e12dad72f2bdc2bc8dc154121d559b9c8e441cf4a3e18af3d3ee",
-    "system-tabular-on.svg": "c0bc61a77f289d74162f92cb9f67a1377ac24f525a41a45466418b985ca490f6"
+    "system-tabular-on.svg": "dae4fdf911e0d8d9973ee50899022a6961e307e2973ce2abb0f4ca7366da6f32"
   }
 }

@@ -1,0 +1,49 @@
+{
+  "source": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "fd34b1fe36d660f6199c02d5979bb97b3a752b7dce49f41af6aecb178cbde69b",
+  "weight": 350,
+  "cell": 600,
+  "adopted": null,
+  "candidates": [
+    {
+      "id": "A",
+      "name": "Curved quote",
+      "bounds": [
+        198.89999389648438,
+        425.20001220703125,
+        400.79998779296875,
+        700.0
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Diamond + stem",
+      "bounds": [
+        195.0,
+        420.0,
+        405.0,
+        700.0
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Open diamond",
+      "bounds": [
+        195.0,
+        420.0,
+        405.0,
+        700.0
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Half-diamond flag",
+      "bounds": [
+        195.0,
+        420.0,
+        405.0,
+        700.0
+      ]
+    }
+  ]
+}

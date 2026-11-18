@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.117 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.118 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, left-hook Rust lifetime markers, heavier structural delimiters and optional Logic enclosures.
 
 ## Daikonic Transit Sans
 
@@ -32,11 +32,11 @@ An interface font for application navigation, controls, dashboards and short pas
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, with a variable weight range of 300–600.
 - An independent **optical-size axis, 10–36**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
-- Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` has a curved hook and no pedestal.
+- Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` uses Sans’s original drawing, centered in the same-width cells as the other tabular digits.
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-Tabular figures are optional; the hooked `1` appears with `tnum`. The default proportional `1` stays unchanged.
+Tabular figures are optional (`tnum`). The default proportional `1` stays unchanged.
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -60,10 +60,11 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
-- An opening single quote for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
-- Optional **boundary-centered Rust lifetimes (`ss01`)**, moving the marker to the target cell boundary and fitting preceding `&` / `<` into its cell. Off by default.
+- A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
+- Optional **extended lifetime hooks (`ss01`)**, lengthening the marker’s straight stroke into the following letter’s cell, with a slight upward and inward adjustment to the marker and preceding `&` / `<`. Off by default.
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Standard backslash shortcuts: `\forall` → `∀`, `\exists` → `∃`, `\not` → `¬`, `\box` → the closed box and `\dia` → the closed diamond. These use `calt` independently of Logic. Complete commands retain their input cell widths and internal carets, with the symbol at the right edge; direct Unicode stays one cell. Longer identifiers and doubled backslashes remain literal.
+- Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
 Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`). Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
@@ -78,6 +79,8 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 | Not shortcut<br><code>\not</code> | <img src="specimens/features/code-command-not-on.svg" width="460" alt="Not shortcut on: \not"> | <img src="specimens/features/code-command-not-off.svg" width="460" alt="Not shortcut off: \not"> |
 | Box shortcut<br><code>\box</code> | <img src="specimens/features/code-command-box-on.svg" width="460" alt="Box shortcut on: \box"> | <img src="specimens/features/code-command-box-off.svg" width="460" alt="Box shortcut off: \box"> |
 | Dia shortcut<br><code>\dia</code> | <img src="specimens/features/code-command-dia-on.svg" width="460" alt="Dia shortcut on: \dia"> | <img src="specimens/features/code-command-dia-off.svg" width="460" alt="Dia shortcut off: \dia"> |
+| Rust inference placeholders<br><code>&lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;</code> | <img src="specimens/features/code-rust-inference-on.svg" width="460" alt="Rust inference placeholders on: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> | <img src="specimens/features/code-rust-inference-off.svg" width="460" alt="Rust inference placeholders off: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> |
+| Rust turbofish<br><code>::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;</code> | <img src="specimens/features/code-rust-turbofish-on.svg" width="460" alt="Rust turbofish on: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> | <img src="specimens/features/code-rust-turbofish-off.svg" width="460" alt="Rust turbofish off: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
 | Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
 | Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="460" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="460" alt="Comparisons off: == === != !== &lt;= &gt;="> |
@@ -90,7 +93,7 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 | Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="460" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="460" alt="Hash groups off: ## ### #### ##### ######"> |
 | Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="460" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="460" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="460" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="460" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
-| Boundary-centered lifetimes / ss01<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetime-placement-on.svg" width="460" alt="Boundary-centered lifetimes / ss01 on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetime-placement-off.svg" width="460" alt="Boundary-centered lifetimes / ss01 off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
+| Extended lifetime hooks / ss01<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetime-placement-on.svg" width="460" alt="Extended lifetime hooks / ss01 on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetime-placement-off.svg" width="460" alt="Extended lifetime hooks / ss01 off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
 | Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
 | Joined Logic enclosures / ss02<br><code>&lt;[T]&gt; [&lt;T&gt;]</code> | <img src="specimens/features/code-logic-mixed-on.svg" width="460" alt="Joined Logic enclosures / ss02 on: &lt;[T]&gt; [&lt;T&gt;]"> | <img src="specimens/features/code-logic-mixed-off.svg" width="460" alt="Joined Logic enclosures / ss02 off: &lt;[T]&gt; [&lt;T&gt;]"> |

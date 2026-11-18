@@ -73,27 +73,50 @@ def build(only=None):
             shutil.copy2(source, vf)
         font = TTFont(vf, recalcTimestamp=False)
         sanitize(deepcopy(font))
-        if key == "code":
+        if key == "code" or cfg["font"].startswith("releases/"):
             for weight, style in STYLES.items():
                 if weight > cfg["heavy"]:
                     continue
-                f = instance(vf, weight, None)
-                f.recalcTimestamp = False
-                names = {
-                    1: cfg["name"] if weight == 400 else cfg["name"] + " " + style,
-                    2: "Regular",
-                    3: cfg["stem"] + "-" + style + " " + cfg["version"],
-                    4: cfg["name"] + " " + style,
-                    6: cfg["stem"] + "-" + style,
-                    16: cfg["name"],
-                    17: style,
-                }
-                for record in f["name"].names:
-                    if record.nameID in names:
-                        record.string = names[record.nameID].encode(
-                            record.getEncoding()
-                        )
-                f.save(directory / "TTF" / (cfg["stem"] + "-" + style + ".ttf"))
+                optical_values = (
+                    [10, 14, 36]
+                    if any(a.axisTag == "opsz" for a in font["fvar"].axes)
+                    else [None]
+                )
+                for optical in optical_values:
+                    style_name = style + (
+                        {10: " Caption", 14: " Text", 36: " Display"}[optical]
+                        if optical
+                        else ""
+                    )
+                    f = instance(vf, weight, optical)
+                    f.recalcTimestamp = False
+                    names = {
+                        1: (
+                            cfg["name"]
+                            if key == "code" and weight == 400
+                            else cfg["name"] + " " + style_name
+                        ),
+                        2: "Regular",
+                        3: cfg["stem"]
+                        + "-"
+                        + style_name.replace(" ", "")
+                        + " "
+                        + cfg["version"],
+                        4: cfg["name"] + " " + style_name,
+                        6: cfg["stem"] + "-" + style_name.replace(" ", ""),
+                        16: cfg["name"],
+                        17: style_name,
+                    }
+                    for record in f["name"].names:
+                        if record.nameID in names:
+                            record.string = names[record.nameID].encode(
+                                record.getEncoding()
+                            )
+                    f.save(
+                        directory
+                        / "TTF"
+                        / (cfg["stem"] + "-" + style_name.replace(" ", "") + ".ttf")
+                    )
         else:
             for path in (ROOT / "fonts" / key / "TTF").glob("*.ttf"):
                 shutil.copy2(path, directory / "TTF" / path.name)
@@ -259,13 +282,17 @@ def package():
     versions = ", ".join(
         cfg["name"] + " " + cfg["version"] for cfg in families.values()
     )
-    (destination / "Release.md").write_text(
-        "Daikonic Transit — coordinated release "
-        + RECIPE["version"]
-        + ".\n\n"
-        + versions
-        + ".\n\nAll three families are published together. Choose VF for adjustable weights, TTF or OTF for individual styles, or TTC for one collection per family. The System TTC contains all 15 named weight/optical-size combinations; Sans contains five weights and Code three. WOFF2 is for web use. SOURCE provides complete editable TTX snapshots and verified rebuild scripts. SPECIMEN includes matching PNG/PDF and outlined SVG samples.\n\nCode retains the joined Logic enclosures and heavier delimiters. Standard calt shortcuts \\forall, \\exists, \\not, \\box and \\dia work independently of Logic; they preserve input cell widths and internal carets, with artwork aligned to the right edge. Logic renders prefix ! as ¬ while protecting inequalities, optional-access punctuation, postfix/macros and simple quoted bangs. Unicode ∀, ∃ and ¬ are available directly. With Logic enabled, `[<>]` displays box then diamond (`[]<>`), and `<[]>` displays diamond then box (`<>[]`). Tall angles require matched pairs: a<>b remains short, Vec<> is tall, nested generic pairs inherit the outer style, and unmatched angles stay short. Matching supports 16 nesting levels and 60 non-mark glyphs per pair. Logic (ss02) and boundary-centered Rust lifetimes (ss01) remain independently optional and off by default. Book 350 remains the default. Sans and System drawings are unchanged.\n\nValidation includes TTC/TTF table parity and sanitizer checks for every collection face, source roundtrip fidelity, variable shaping and current-font specimens. Native Code Glyphs/UFO sources remain at 1.017; the complete current font is editable through the TTX source package.\n"
-    )
+    notes = [
+        "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
+        versions + ". All three families ship together as a normal release.",
+        "System’s tabular `1` uses the unscaled Sans drawing, centered within its existing variable tabular cell. The proportional `1` keeps its normal spacing. The family includes five weights and Caption, Text and Display optical-size presets.",
+        "Code uses left-hook Rust lifetime markers matched to the character stroke weight. The optional `ss01` form extends the marker toward the following letter and applies the selected +40x/+45y inset to the marker and preceding `&` or `<`, while preserving 600-unit advances. Inference placeholders and completed turbofish pairs receive tall angles with balanced scope placement; unmatched angles remain short. Book 350 is the default.",
+        r"Standard Code shortcuts `\forall`, `\exists`, `\not`, `\box` and `\dia` work independently of Logic. Optional `ss02` provides modal enclosures and prefix negation; Unicode ∀, ∃ and ¬ are also available directly. Both stylistic sets are off by default. Sans is included in its current 0.109 cut.",
+        "Packages: **VF** for variable fonts; **TTF** and **OTF** for named styles; **TTC** for one collection per family (Sans: 5 faces, System: 15, Code: 3); **WOFF2** with CSS for the web; **SOURCE** for complete editable TTX and verified rebuild scripts; **SPECIMEN** for matching PNG, vector PDF and outlined SVG samples. SHA256SUMS.txt covers all seven archives.",
+        "Validation covers interpolation, protected character literals, fixed-cell shaping, current-font specimens, TTC/TTF table parity, sanitizer checks and editable-source roundtrips. System’s tabular figures were checked at 91 weight/optical-size locations; Code’s marker weight and clearance were checked across 11 weights, with native CoreText checks for both fonts.",
+        "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
+    ]
+    (destination / "Release.md").write_text("\n\n".join(notes) + "\n")
     print(destination.relative_to(ROOT), flush=True)
 
 

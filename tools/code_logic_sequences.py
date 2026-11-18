@@ -27,7 +27,32 @@ def check(path):
         if "anglePair0.shortLeft" in f.getGlyphOrder()
         else SOURCE
     )
+    set_record = next(
+        (
+            r
+            for r in f["GSUB"].table.FeatureList.FeatureRecord
+            if r.FeatureTag == "ss01"
+        ),
+        None,
+    )
+    hooked = bool(
+        set_record
+        and f["name"].getDebugName(set_record.Feature.FeatureParams.UINameID)
+        == "Extended Rust lifetime hooks"
+    )
+    changed = (
+        {
+            "quotesingle.lifetime",
+            "quotesingle.lifetime.compact",
+            "code.lifetimeOpen",
+            "code.lifetimeBorrow",
+        }
+        if hooked
+        else set()
+    )
     for name in source.getGlyphOrder():
+        if name in changed:
+            continue  # Geometry and fixed-anchor fitting are verified by check_rust_lifetimes.
         assert f["glyf"][name].compile(f["glyf"]) == source["glyf"][name].compile(
             source["glyf"]
         ), name
@@ -56,6 +81,8 @@ def check(path):
                     features,
                 )
         for text in ["<[T]>", "[<T>]", "<> []", "-> ->> =>", "&'a <'a>"]:
+            if hooked and text == "&'a <'a>":
+                continue
             assert run(path, text, {"wght": weight}, features) == run(
                 baseline, text, {"wght": weight}, features
             ), (text, features)

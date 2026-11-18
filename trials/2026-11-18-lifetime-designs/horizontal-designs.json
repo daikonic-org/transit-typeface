@@ -1,0 +1,29 @@
+{
+  "source": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "fd34b1fe36d660f6199c02d5979bb97b3a752b7dce49f41af6aecb178cbde69b",
+  "weight": 350,
+  "cell": 600,
+  "adopted": null,
+  "candidates": [
+    {
+      "id": "H",
+      "name": "Hook left",
+      "bounds": [
+        165.4499969482422,
+        568.484130859375,
+        434.54998779296875,
+        700.0
+      ]
+    },
+    {
+      "id": "I",
+      "name": "Hook right",
+      "bounds": [
+        165.4499969482422,
+        568.484130859375,
+        434.54998779296875,
+        700.0
+      ]
+    }
+  ]
+}

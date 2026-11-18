@@ -36,6 +36,8 @@ FEATURES = {
         ("one", "Tabular 1 / default 1", "1", {"tnum": True}, {"tnum": False}),
     ],
     "code": [
+        ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
+        ("rust-turbofish", "Rust turbofish", "::<T> ::<_> ::<[_]>", ON, OFF),
         (
             "logic-not",
             "Logical negation / ss02",
@@ -56,7 +58,7 @@ FEATURES = {
         ("lifetime-literals", "Lifetimes / character literals", "&'a 'a' '_'", ON, OFF),
         (
             "lifetime-placement",
-            "Boundary-centered lifetimes / ss01",
+            "Extended lifetime hooks / ss01",
             "&'a <'a> 'static",
             {**ON, "ss01": True},
             {**ON, "ss01": False},

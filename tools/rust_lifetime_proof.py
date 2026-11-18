@@ -1,7 +1,6 @@
-"""Show lifetime on/off context and opening-quote construction across Code named weights."""
+"""Show lifetime on/off context and left-hook construction across Code named weights."""
 
 from copy import deepcopy
-import shutil
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.pens.svgPathPen import SVGPathPen
@@ -16,7 +15,7 @@ def main():
     for row, (w, label) in enumerate([(300, "Light"), (350, "Book"), (400, "Regular")]):
         f = instantiateVariableFont(deepcopy(vf), {"wght": w}, inplace=True)
         for col, (title, enabled) in enumerate(
-            [("Normal / ss01 off", False), ("Boundary / ss01 on", True)]
+            [("Normal / ss01 off", False), ("Extended / ss01 on", True)]
         ):
             p = Panel(f"rust-{w}-{col}", DATA["families"]["code"])
             bind(p, f)
@@ -60,7 +59,7 @@ def main():
         [
             ("i", "Shared diamond / i"),
             ("quotesingle", "Literal apostrophe"),
-            ("quotesingle.lifetime", "Lifetime opening single quote"),
+            ("quotesingle.lifetime", "Lifetime left hook"),
         ]
     ):
         x = 100 + col * 400
@@ -86,7 +85,6 @@ def main():
         + "".join(parts)
         + "</svg>"
     )
-    shutil.copy2(path, ROOT / "trials/2026-11-17-syntax-numerals/Rust-Lifetimes.svg")
     print("Rust lifetime weight and construction proof generated")
 
 

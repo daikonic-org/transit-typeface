@@ -12,7 +12,7 @@ from check_syntax_numerals import run
 from specimens import ROOT, DATA, Panel, specimen_families
 from code_balance_study import bind
 
-SOURCE = ROOT / "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf"
+SOURCE = ROOT / "sources/code-lifetime-hook/VF/DaikonicTransitCode-VF.ttf"
 OUT = ROOT / "releases/2026.11.18.2/code"
 COMMANDS = {
     r"\forall": "universal",
