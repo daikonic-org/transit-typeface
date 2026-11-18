@@ -12,6 +12,7 @@ from fontTools.varLib.instancer import instantiateVariableFont
 import uharfbuzz as hb
 from specimens import ROOT, DATA, Panel, specimen_families
 from code_balance_study import bind
+from code_logic_shortcuts import COMMANDS
 
 OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
@@ -87,6 +88,11 @@ FEATURES = {
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
 }
+FEATURES["code"] = [
+    ("command-" + command[1:], command[1:].title() + " shortcut", command, ON, OFF)
+    for command in COMMANDS
+] + FEATURES["code"]
+
 DISTINCT = [
     ("identity", "Distinct letters and figures", "I l 1 0 O"),
     ("delimiters", "Stronger, inward-set delimiters", "() [] {}"),

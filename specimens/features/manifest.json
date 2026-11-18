@@ -16,15 +16,15 @@
       }
     },
     "code": {
-      "font": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
+      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "8af14010ba0610aae51656777b903d1e3d91a491a0a753bb7865c82e00d1ce59",
       "location": {
         "wght": 350
       }
     },
     "code-regular": {
-      "font": "releases/2026.11.18.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "7b1bb2ef3bf42867177a1df12053c47d8875ed48737c584382c81500cbb540c3",
+      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "8af14010ba0610aae51656777b903d1e3d91a491a0a753bb7865c82e00d1ce59",
       "location": {
         "wght": 400
       }
@@ -407,6 +407,277 @@
         [
           "one",
           268,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-command-forall": {
+      "text": "\\forall",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.command.forall",
+          4200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "backslash",
+          600,
+          0,
+          0
+        ],
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "o",
+          600,
+          0,
+          0
+        ],
+        [
+          "r",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-command-exists": {
+      "text": "\\exists",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.command.exists",
+          4200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "backslash",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-command-not": {
+      "text": "\\not",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.command.not",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "backslash",
+          600,
+          0,
+          0
+        ],
+        [
+          "n",
+          600,
+          0,
+          0
+        ],
+        [
+          "o",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-command-box": {
+      "text": "\\box",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.command.box",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "backslash",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ],
+        [
+          "o",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-command-dia": {
+      "text": "\\dia",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false
+      },
+      "on_shaping": [
+        [
+          "code.command.dia",
+          2400,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "backslash",
+          600,
+          0,
+          0
+        ],
+        [
+          "d",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
           0,
           0
         ]
@@ -3255,7 +3526,7 @@
   },
   "files": {
     "Code-Characters.svg": "2aa58eb8d0764f37646bdffc53048e2bf444e20aaf7750e584a68a34f80c7fc7",
-    "code-Features.svg": "f863d01583ac9aee2ce865edd3bf7c3e63b45b0f4ae82c18d9b185943c964391",
+    "code-Features.svg": "edb3ec94ab2cb31334b1ab097e81a0da9910764cf23f97686a4f3c4036b056b2",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3264,6 +3535,16 @@
     "code-assignment-on.svg": "6bf9f23497b9002dc47303082d4f7059274330585e1d4ab6f1bc446a048b8fbf",
     "code-at-repeat-off.svg": "28674eea5dd5abd91eb270d0aba3d1c7e501222c037edcc11da0e518d7ebee2f",
     "code-at-repeat-on.svg": "98a1539247285a007c22e02c9bfbf6a4a03426e784bd80c2aa62ca30122088d0",
+    "code-command-box-off.svg": "cf5523a9d8043703b86d400c37baa793169348d6f2ac1f5bfe22e8d19db6b0be",
+    "code-command-box-on.svg": "e1fb2e44cd3b50f129444d2ee1b73b23d2217902f4295bd5fb3051205b3bc1be",
+    "code-command-dia-off.svg": "cdc55f96d7223474dad6aa7f34993a542c86688c5e8d97e2a33e5c4c90e49601",
+    "code-command-dia-on.svg": "24bc1cd6959be8f6f7abc82f8ad118fc0807521a8125fcee6d75bda6a2eb4014",
+    "code-command-exists-off.svg": "9f149ca893c34094f8c4542a259a349dcb7d0114d64dbc76c5499cbdcd8edefb",
+    "code-command-exists-on.svg": "830fb755320ec8746651dea6d324320b0afc79e2f3b44da3b2c3ac1761204ea6",
+    "code-command-forall-off.svg": "68c3060c3ff608a0e150efd037e90e45ab1eb8aacff7a4bbdd4d2abe4c839de6",
+    "code-command-forall-on.svg": "bc695f9cd086a25e20201e5384eb73c39f0755f094058e6c509da91166ad6f48",
+    "code-command-not-off.svg": "bfac098fbc759dcadc06108c93689fd6c65504421667280fc8f44b1935251a3e",
+    "code-command-not-on.svg": "d11b241dacd708e13ccfa838f9116c66dbaeff9aa2175c22041bdadb23b95e95",
     "code-comparisons-off.svg": "f28c0085db456652504540fde0377da4f611e59f6304295b9b7cebca1e78e9ca",
     "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
     "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",

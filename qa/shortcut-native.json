@@ -1,0 +1,15 @@
+{
+  "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+  "sha256": "8af14010ba0610aae51656777b903d1e3d91a491a0a753bb7865c82e00d1ce59",
+  "engine": "macOS CoreText via CGFont, no registration",
+  "calt": true,
+  "ss02": false,
+  "commands": [
+    "\\forall",
+    "\\exists",
+    "\\not",
+    "\\box",
+    "\\dia"
+  ],
+  "result": "all five command glyphs present in shaped run"
+}

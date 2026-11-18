@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.1) includes **Sans 0.109, System 0.117 and Code 1.035**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.117 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages. Code includes prominent diamond dots, wider equals, joined hash rails, opening-quote Rust lifetimes, heavier structural delimiters and optional Logic enclosures.
 
 ## Daikonic Transit Sans
 
@@ -63,6 +63,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - An opening single quote for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Optional **boundary-centered Rust lifetimes (`ss01`)**, moving the marker to the target cell boundary and fitting preceding `&` / `<` into its cell. Off by default.
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>`, `[]`, `<[` / `]>` and `[<` / `>]`. Joined mixed enclosures share the full bracket height. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
+- Standard backslash shortcuts: `\forall` → `∀`, `\exists` → `∃`, `\not` → `¬`, `\box` → the closed box and `\dia` → the closed diamond. These use `calt` independently of Logic. Complete commands retain their input cell widths and internal carets, with the symbol at the right edge; direct Unicode stays one cell. Longer identifiers and doubled backslashes remain literal.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
 
 Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`). Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
@@ -72,6 +73,11 @@ Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b
 <!-- code-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
+| Forall shortcut<br><code>\forall</code> | <img src="specimens/features/code-command-forall-on.svg" width="460" alt="Forall shortcut on: \forall"> | <img src="specimens/features/code-command-forall-off.svg" width="460" alt="Forall shortcut off: \forall"> |
+| Exists shortcut<br><code>\exists</code> | <img src="specimens/features/code-command-exists-on.svg" width="460" alt="Exists shortcut on: \exists"> | <img src="specimens/features/code-command-exists-off.svg" width="460" alt="Exists shortcut off: \exists"> |
+| Not shortcut<br><code>\not</code> | <img src="specimens/features/code-command-not-on.svg" width="460" alt="Not shortcut on: \not"> | <img src="specimens/features/code-command-not-off.svg" width="460" alt="Not shortcut off: \not"> |
+| Box shortcut<br><code>\box</code> | <img src="specimens/features/code-command-box-on.svg" width="460" alt="Box shortcut on: \box"> | <img src="specimens/features/code-command-box-off.svg" width="460" alt="Box shortcut off: \box"> |
+| Dia shortcut<br><code>\dia</code> | <img src="specimens/features/code-command-dia-on.svg" width="460" alt="Dia shortcut on: \dia"> | <img src="specimens/features/code-command-dia-off.svg" width="460" alt="Dia shortcut off: \dia"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
 | Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
 | Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="460" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="460" alt="Comparisons off: == === != !== &lt;= &gt;="> |
@@ -128,7 +134,7 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.1.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.2.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose either the variable font, the TTC collection or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
 

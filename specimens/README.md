@@ -19,7 +19,7 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-These specimens show Sans0.109, System0.117 and **Code1.035**. The Code
+These specimens show Sans0.109, System0.117 and **Code1.036**. The Code
 panel uses the same approved preview installed for Book350, including the
 two-storey @ with a tapered c-style wrap, balanced i, stronger delimiters, raised/heavier gapless underscore,
 wider hyphen and selected optical pair adjustments. The Code footer identifies
@@ -37,3 +37,5 @@ All three families are included in each coordinated release. Optional angle-pair
 [Logic sequence order](features/Logic-Order.pdf) shows the optional box/diamond order across weights.
 
 [Logic symbols](features/Logic-Symbols.pdf) shows negation and Unicode quantifiers across the three Code weights.
+
+[Standard Logic shortcuts](features/Logic-Shortcuts.pdf) shows the same shortcut rendering with Logic off and on.

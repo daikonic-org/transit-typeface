@@ -2,12 +2,12 @@
   "scale": 3,
   "review": "Actual on/off cells and Rust weight proof visually reviewed; SVG source manifest controls generated content.",
   "files": {
-    "specimens/features/Code-Characters.pdf": "b94d59c9557f65f415dd337d9b58ab0580dd954f1c8adc810e6d5003ad1fdf53",
+    "specimens/features/Code-Characters.pdf": "265d685f0d5f8941c491b8cd5935cc9b8b7c09f9463f47665bc7e497278dab89",
     "specimens/features/Code-Characters.png": "d905c4f6db2f0d0657809bad41dd710c7ab8a6be7e28b8200daff723de2eb852",
-    "specimens/features/Rust-Lifetimes.pdf": "e76c6243e0e0551b5291088a5d4b92f139d87ab607554b701f7f7b922dcb8565",
+    "specimens/features/Rust-Lifetimes.pdf": "c0a9defc33b22480dd97c643287add7946ac2449f85ed97501efbe54f99d2701",
     "specimens/features/Rust-Lifetimes.png": "a89d77c17c04d582369f67d5731bb16fa2a140fbc9d04c2d2f8e40983c8d034a",
-    "specimens/features/code-Features.pdf": "f6f74ebb113a6bb0987a7aaf6f1f9618108072817a9ab3ca6d4be0337000be40",
-    "specimens/features/code-Features.png": "571e97722f7f24ca2df82e305662118c88e69ad55c973570993713022e4b442c",
+    "specimens/features/code-Features.pdf": "79de037f9b79018ce892155afd2ab079f3b3f45dcfd18df595dd648b3dd2596f",
+    "specimens/features/code-Features.png": "142b8fc6eed14436a5251bb32dd345cabc9fee7e19714076edb63e41d6d70553",
     "specimens/features/sans-Features.pdf": "040df943af6287c9b1286848785d33cb4852ee20f1464d0cd32f5dffc3904ed8",
     "specimens/features/sans-Features.png": "e18f8f6271dc65b40256715ca9d68681d79e9cbab3b3475741ec4ec39c294453",
     "specimens/features/system-Features.pdf": "4183cff5b85c1239ba1117c5d67cb240b958b1648beeded33be9c9a0b8c59bd2",
@@ -17,9 +17,12 @@
     "specimens/features/Angle-Pairs.pdf": "a7af6428a522c30e9bc73a0eaef4e5a8186894691a1a58a651f19fa4a8dd2263",
     "specimens/features/Logic-Order.svg": "0271ddea56ff8c8edf0b435099189f2cfce16599ae95a156db731f2f48f05ae1",
     "specimens/features/Logic-Order.png": "efc489e32aef3536b37c431d7e64ea47f5ba0e96d8ca3adeafceb4ae5496361d",
-    "specimens/features/Logic-Order.pdf": "0abfde0a53a87513913bd0e96dae81f09f8bd6f38f8fc52986418351e5904e16",
+    "specimens/features/Logic-Order.pdf": "84511c3872b47e64886963d25a2268791e6f6c47a1286115eba23740db1716a8",
     "specimens/features/Logic-Symbols.svg": "533b15a22425bcbc6065b61a274357094bfe37a10bf2a3371700637d957a0506",
     "specimens/features/Logic-Symbols.png": "e5a4a63b4cbc39ef50df53e528109528d4564d9a3302db653d2c514186a2fffd",
-    "specimens/features/Logic-Symbols.pdf": "dad7754774d6bab49eb9046024fe27095cfba37d609f5dcaa3a0c3052fc9041a"
+    "specimens/features/Logic-Symbols.pdf": "83562bb1558322f28585aa3ea4dfa64741bc8cf099eff1a9c4675390614f7191",
+    "specimens/features/Logic-Shortcuts.svg": "000ef58e3180baf287e9b1b3c93437686fd315e6d5f22c892fb22937381ff4c1",
+    "specimens/features/Logic-Shortcuts.png": "d3b6f63b353ff4617a840fc4c57c3682d74d7e2dad6d19fa81070b62e724ccd7",
+    "specimens/features/Logic-Shortcuts.pdf": "4db6adcdcafcbfc86ea4cae922a2ad893163134a90135c0f4ee94e4da36ef38e"
   }
 }
