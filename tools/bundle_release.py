@@ -192,6 +192,16 @@ def check():
                         baseline = TTFont(reference)
                         for tag in ("glyf", "gvar", "hmtx", "cmap", "GSUB", "GPOS", "GDEF"):
                             assert variable.getTableData(tag) == baseline.getTableData(tag), tag
+                    elif settings.get("default_hairlining"):
+                        from code_compact_operators import build as build_operators, verify as verify_operators
+                        from code_hairline_toggle import verify_default
+
+                        operator_source = ROOT / settings["operator_source"]
+                        with tempfile.TemporaryDirectory() as temporary:
+                            plain = Path(temporary) / "Plain-Operators.ttf"
+                            build_operators(operator_source).save(plain)
+                            verify_operators(operator_source, plain)
+                            verify_default(plain, path)
                     else:
                         from code_compact_operators import verify
 
@@ -228,7 +238,7 @@ def check():
 
     verify_texture_healing(
         ROOT / RECIPE["typography"]["code"]["unhealed_font"],
-        ROOT / RECIPE["typography"]["code"]["font"]
+        ROOT / RECIPE["typography"]["code"].get("operator_source", RECIPE["typography"]["code"]["font"])
         if RECIPE["typography"]["code"].get("self_aligning")
         else OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
         default_on=True,
@@ -353,6 +363,9 @@ def package():
     notes = [
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
+        "- **Hairlining and Texture healing** are both on by default in upright Code. Enable `ss07` to disable Hairlining or `ss04` to disable Texture healing.",
+        "- **Arrow width** is matched across `->`, `<-`, `->>`, `<<-`, and `=>`. Each advances two cells.",
+        "- **Code examples** enable Loose Equality for TypeScript and Logic only for the logic sample. In Logic, `[<>]` draws a box then a diamond, while mixed pairs around text retain separate outlines.",
         "- **Self-aligning ligatures in upright Code** move following text left by one cell for selected operators. For example, `parse::<Vec<T>>()` puts the tall angle one cell earlier. Scope uses four plain diamonds with either Hairlining setting.",
         "- `?.`, `!.`, `::`, `//`, logical `||`, `<=` and `>=` advance one cell. The arrow and equality sets advance two cells by default.",
         "- **Loose Equality** (`ss06`) is off by default. It gives all four equality ligatures a one-cell advance and adds a tilde above the bars in `==` and `!=`.",

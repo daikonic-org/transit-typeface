@@ -47,15 +47,15 @@ FEATURES = {
         ),
         (
             "hairline-delimiters", "Delimiters", "|w| (x) [x] {x}  a | b",
-            {"ss05": True}, {"ss05": False},
+            {"ss05": True}, {"ss05": False, "ss07": True},
         ),
         (
             "hairline-scope", "Scope and generics", "path::item::<T>",
-            {"ss05": True}, {"ss05": False},
+            {"ss05": True}, {"ss05": False, "ss07": True},
         ),
         (
             "hairline-lifetimes", "Rust lifetime markers", "&'a 'static 'a'",
-            {"ss05": True}, {"ss05": False},
+            {"ss05": True}, {"ss05": False, "ss07": True},
         ),
         ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
         ("rust-turbofish", "Rust turbofish", "::<T> ::<_> ::<[_]>", ON, OFF),
@@ -205,10 +205,12 @@ def code_comparison(font):
         )),
         ("TypeScript", (
             "const key = row?.id ?? row!.id;",
-            "const check = (x: number) => x === 0;",
+            "const check = (x: number) =>",
+            "    x === 0 || x != 1;",
         )),
         ("Logic", (
             r"[]p -> <>q    \forall x    \exists y",
+            "<[p]>   [<q>]   [<>]   <[]>",
         )),
     )
     pane_width, padding, size, leading = 525, 20, 18, 25
@@ -229,20 +231,24 @@ def code_comparison(font):
         features = {
             **(ON if enabled else OFF),
             "kern": enabled,
-            "ss02": enabled,
             "ss03": enabled,
             "ss04": not enabled,
             "ss05": enabled,
-            "ss06": enabled,
+            "ss07": not enabled,
         }
         state = "Features on" if enabled else "Features off"
         body.append(
             f'<text x="{x}" y="35" font-family="Arial,sans-serif" font-size="16" '
             f'font-weight="700" fill="#aebbc6">{state}</text>'
         )
-        names = set()
         y = 72
         for language, lines in examples:
+            language_features = {
+                **features,
+                "ss02": enabled and language == "Logic",
+                "ss06": enabled and language == "TypeScript",
+            }
+            names = set()
             body.append(
                 f'<text x="{x}" y="{y}" font-family="Arial,sans-serif" '
                 f'font-size="13" fill="#aebbc6">{language}</text>'
@@ -250,21 +256,36 @@ def code_comparison(font):
             y += 22
             for line in lines:
                 if line:
-                    panel.text(line, x, y, size, 400, "#eeeddb", features=features)
-                    names.update(highlight_code_line(panel, line, features))
+                    panel.text(line, x, y, size, 400, "#eeeddb", features=language_features)
+                    names.update(highlight_code_line(panel, line, language_features))
                 y += leading
             y += 28
-        glyphs[enabled] = names
+            glyphs[enabled, language] = names
+
     required = {
-        "code.command.forall", "code.command.exists", "code.enclosureBox",
-        "code.enclosureDiamond", "logicalnot", "code.notEqual.loose", "code.strictEqual.loose",
-        "code.syntax00", "code.syntax01", "code.logicalOr", "code.commentSlash",
-        "code.scope.hairline", "less.generic.hairline", "bar.delimiterOpen.hairline", "l_l",
+        "Rust": {
+            "code.notEqual", "code.logicalOr", "code.commentSlash", "code.scope.hairline",
+            "less.generic.hairline", "bar.delimiterOpen.hairline", "l_l",
+        },
+        "TypeScript": {
+            "code.notEqual.loose", "code.strictEqual.loose",
+            "code.syntax00", "code.syntax01", "code.fatArrow",
+        },
+        "Logic": {
+            "code.command.forall", "code.command.exists", "code.enclosureBox", "code.enclosureDiamond",
+            "less.generic.hairline", "bracketleft.hairline",
+            "code.logicBoxDiamond", "code.logicDiamondBox",
+        },
     }
-    assert required <= glyphs[True] - glyphs[False], required - (glyphs[True] - glyphs[False])
-    assert any(name.startswith(("m.heal.", "w.heal.")) for name in glyphs[True])
-    assert all(".heal." not in name for name in glyphs[False])
-    assert any(name.startswith("quotesingle.lifetime.hairline") for name in glyphs[True])
+    for language, expected in required.items():
+        shown = glyphs[True, language] - glyphs[False, language]
+        assert expected <= shown, (language, expected - shown)
+    for language in ("Rust", "TypeScript"):
+        assert "logicalnot" not in glyphs[True, language]
+    assert not any(name.endswith(".loose") for name in glyphs[True, "Rust"])
+    assert any(name.startswith(("m.heal.", "w.heal.")) for name in glyphs[True, "Rust"])
+    assert all(".heal." not in name for name in glyphs[False, "Rust"])
+    assert any(name.startswith("quotesingle.lifetime.hairline") for name in glyphs[True, "Rust"])
     body.append(panel.body())
     return svg(
         "".join(body),

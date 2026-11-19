@@ -73,7 +73,7 @@ def compact_operator(path, token, *, loose=False, width=None):
     if token in ("<=", ">="):
         return path.transform(1, 0, 0, 1, shift, 0)
     left, _, right, _ = path.bounds
-    target = (512 if loose or token == "=>" else TWO_CELL_INK) if width is None else width
+    target = (512 if loose else TWO_CELL_INK) if width is None else width
     center = len(token) * CELL / 2
     if token in ARROWS:
         # Only the straight shaft changes length. Every point in both heads is translated rigidly.
@@ -297,7 +297,7 @@ def verify(source, trial):
             left, _, right, _ = shape_from_glyphs(glyphs, name).bounds
             assert 0 <= left < right <= advance, (token, weight, left, right)
             width = round(right - left)
-            if token in EQUALITY or (token in ARROWS and token != "=>"):
+            if token in EQUALITY or token in ARROWS:
                 assert width == TWO_CELL_INK, (token, weight, left, right)
             if weight == 350:
                 ink[token] = width
@@ -365,6 +365,15 @@ def verify(source, trial):
         compact = shape(new, new_engine, sequence, {})
         assert compact[-1][1] == len(sequence) - 1
         assert sum(row[2] for row in compact[:-1]) == (len(sequence) - 4) * CELL
+        for pair, expected in (("<[", ("less.generic", "bracketleft")),
+                               ("[<", ("bracketleft", "less.generic"))):
+            for hairlined in (False, True):
+                suffix = ".hairline" if hairlined else ""
+                for logic in (False, True):
+                    rows = shape(new, new_engine, pair, {"ss02": logic, "ss05": hairlined})
+                    assert [(name, advance, x) for name, _, advance, x, _ in rows] == [
+                        (expected[0] + suffix, CELL, 30), (expected[1] + suffix, CELL, -30),
+                    ], (pair, logic, hairlined, rows)
         for settings in ({}, {"ss05": True}, {"ss02": True}, {"ss05": True, "ss02": True}):
             for sample in ("a||b", "a ||b", "a|| b", "(a) || (b)", "a || !b"):
                 assert any(row[0] == "code.logicalOr"
@@ -444,7 +453,7 @@ def feature_proof(directory, config, trial):
                           x + 20, 378, 17, CREAM, True))
         panel = Panel(f"scope-{col}", {**config, "font": str(trial)})
         panel.text("foo::bar   parse::<Vec<T>>()", x + 20, 456, 28, 350, CREAM,
-                   features={"ss05": enabled})
+                   features={"ss05": enabled, "ss07": not enabled})
         body.append(panel.body())
         body.append(rect(x, 544, 616, 180, "#101821"))
         body.append(label("Optional access · " + ("one-cell ligatures" if enabled else "ligatures off"),
@@ -472,7 +481,7 @@ def main():
         return
     from bundle_release import RECIPE
 
-    source = (args.source or ROOT / RECIPE["typography"]["code"]["font"]).resolve()
+    source = (args.source or ROOT / RECIPE["typography"]["code"].get("operator_source", RECIPE["typography"]["code"]["font"])).resolve()
     trial = save_trial(build(source), directory, "Compact Optional Access")
     ink = verify(source, trial)
     proof(directory, config, trial)

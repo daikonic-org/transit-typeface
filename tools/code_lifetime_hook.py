@@ -216,7 +216,7 @@ def check(path, *, extended=True):
             for enabled in ([False, True] if extended else [False]):
                 for text, count in CASES.items():
                     shaped = run(
-                        path, text, {"wght": w}, {"calt": calt, "ss01": enabled}
+                        path, text, {"wght": w}, {"calt": calt, "ss01": enabled, "ss07": True}
                     )
                     assert sum(v[1] for v in shaped) == len(text) * 600
                     for name, advance, x, y in shaped:

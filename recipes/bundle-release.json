@@ -1,6 +1,6 @@
 {
-  "version": "2026.11.19.2",
-  "tag": "Transit-2026.11.19.2",
+  "version": "2026.11.19.3",
+  "tag": "Transit-2026.11.19.3",
   "families": [
     "sans",
     "system",
@@ -23,12 +23,14 @@
       "reuse": true
     },
     "code": {
-      "version": "1.040",
+      "version": "1.041",
       "unhealed_font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "italic_font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-Italic-VF.ttf",
-      "previous": "1.039",
-      "self_aligning": true
+      "font": "releases/2026.11.19.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "italic_font": "releases/2026.11.19.2/code/VF/DaikonicTransitCode-Italic-VF.ttf",
+      "previous": "1.040",
+      "self_aligning": true,
+      "operator_source": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
+      "default_hairlining": true
     }
   }
 }

@@ -1,4 +1,4 @@
-"""Build the heavier Code hairlines as an optional stylistic set."""
+"""Build and verify Code Hairlining and its default-on candidate."""
 
 import argparse
 from copy import deepcopy
@@ -18,6 +18,7 @@ from font_feature_tools import add_features, append_glyph, label_stylistic_set, 
 
 
 FEATURE = "ss05"
+OFF_FEATURE = "ss07"
 BAR_OPEN, BAR_CLOSE = "bar.delimiterOpen", "bar.delimiterClose"
 PAIRS = (
     ("less.generic", "bracketleft"), ("bracketleft", "less.generic"),
@@ -220,18 +221,91 @@ def check_release(reference, path):
             assert study.shape(font, engines[1], "a & b", flags)[2][3] == 0
 
 
+def default_hairlining(font):
+    """Run the existing hairline lookups with calt and allow an independent opt-out."""
+    for tag in ("GSUB", "GPOS"):
+        records = font[tag].table.FeatureList.FeatureRecord
+        hairline = next(r.Feature for r in records if r.FeatureTag == FEATURE)
+        for record in records:
+            if record.FeatureTag == "calt":
+                feature = record.Feature
+                feature.LookupListIndex = sorted(set(feature.LookupListIndex + hairline.LookupListIndex))
+                feature.LookupCount = len(feature.LookupListIndex)
+
+    glyphs = set(font.getGlyphOrder())
+    rules = [
+        f"sub {name} by {name.removesuffix('.hairline')};"
+        for name in sorted(glyphs)
+        if name.endswith(".hairline") and name.removesuffix(".hairline") in glyphs
+    ]
+    rules.extend(f"sub {name} by {study.MARKER};" for name in study.LEADERS)
+    add_features(font, "\n".join([
+        "languagesystem DFLT dflt;", "languagesystem latn dflt;",
+        f"feature {OFF_FEATURE} {{", *rules, f"}} {OFF_FEATURE};",
+    ]))
+    label_stylistic_set(font, OFF_FEATURE, "Disable Hairlining")
+
+
+def verify_default(source, path):
+    old, new = [TTFont(p) for p in (source, path)]
+    engines = [hb.Font(hb.Face(p.read_bytes())) for p in (source, path)]
+    samples = (
+        *study.EXAMPLE, study.CONTROL, "Vec::<Vec<T>>::new()", "&'a &'é &'a' '_'", "film x.m .w.",
+        "map(|| f(x))", "a||b", "a === b || c !== d", "obj?.value obj!.value",
+        "Vec<[T]> [<T>]", "[<>] <[]>", "$[x] $(x) ${x}", "|w|", "a | b",
+    )
+    for weight in study.WEIGHTS:
+        for engine in engines:
+            engine.set_variations({"wght": weight})
+        for heal in (False, True):
+            for hairline in (False, True):
+                settings = {"ss04": not heal, OFF_FEATURE: not hairline}
+                names = [row[0] for row in study.shape(new, engines[1], "film (x)", settings)]
+                assert any(name.startswith("m.heal.") for name in names) == heal
+                assert ("parenleft.hairline" in names) == hairline
+        for extras in ({}, {"ss02": True, "ss06": True}, {"ss04": True}):
+            for text in samples:
+                before, after = engines
+                shaded = study.shape(old, before, text, extras | ON)
+                assert study.shape(new, after, text, extras) == shaded, (text, weight, extras)
+                assert study.shape(new, after, text, extras | ON) == shaded
+                plain = study.shape(old, before, text, extras)
+                off = study.shape(new, after, text, extras | {OFF_FEATURE: True})
+                assert plain == off, (text, weight, extras, plain, off)
+                assert study.shape(new, after, text, extras | ON | {OFF_FEATURE: True}) == off
+    for tag in ("glyf", "gvar", "hmtx", "cmap", "GDEF", "STAT"):
+        assert old.getTableData(tag) == new.getTableData(tag), tag
+    with TemporaryDirectory() as tmp:
+        subprocess.run(
+            [ots.OTS_SANITIZE, str(path), str(Path(tmp) / "checked.ttf")],
+            check=True, capture_output=True,
+        )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--compare", type=Path)
     parser.add_argument("--proof", action="store_true", help="Render the selected release font")
+    parser.add_argument("--default-on", action="store_true", help="Build and proof default Hairlining")
     args = parser.parse_args()
     directory = args.directory.resolve()
     directory.mkdir(parents=True, exist_ok=True)
     config = study.specimen_families()["code"]
     source = study.ROOT / config["font"]
+    if args.default_on:
+        font = TTFont(source, recalcTimestamp=False)
+        default_hairlining(font)
+        trial = study.save_trial(font, directory, "Default Hairlining")
+        verify_default(source, trial)
+        study.proof(directory, config, [
+            ("Hairlining by default", trial, {}),
+            ("Hairlining off · ss07", trial, {OFF_FEATURE: True}),
+        ])
+        print(trial.name, "default and opt-out verified across 11 weights")
+        return
     if args.proof:
-        cuts = [("Off", source, {FEATURE: False}), ("Hairlining · ss05", source, ON)]
+        cuts = [("Off", source, {FEATURE: False, OFF_FEATURE: True}), ("Hairlining", source, ON)]
         study.proof(directory, config, cuts)
         return
     with TemporaryDirectory() as tmp:
