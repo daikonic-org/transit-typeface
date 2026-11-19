@@ -115,18 +115,15 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
 
-### Self-aligning ligatures
+### Texture healing
 
-Selected ligatures in upright Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
+Upright Code uses contextual alternates to fit wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation. Enable `ss04` to turn it off while keeping the other contextual features active. [Texture-healing specimen](releases/2026.11.19.1/specimens/Transit-Texture-Healing.svg)
 
-| Advance | Ligatures |
-| --- | --- |
-| One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
-| Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `==`, `!=`, `===`, `!==` |
-
-**Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
-
-[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)
+<!-- code-texture-healing -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
+<!-- /code-texture-healing -->
 
 ### Hairlining
 
@@ -140,22 +137,25 @@ Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters and a di
 | Rust lifetime markers<br><code>&amp;&#x27;a &#x27;static &#x27;a&#x27;</code> | <img src="specimens/features/code-hairline-lifetimes-on.svg" width="460" alt="Rust lifetime markers on: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> | <img src="specimens/features/code-hairline-lifetimes-off.svg" width="460" alt="Rust lifetime markers off: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> |
 <!-- /code-hairlining -->
 
-### Texture healing
+### Self-aligning ligatures
 
-Upright Code uses contextual alternates to fit wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation. Enable `ss04` to turn it off while keeping the other contextual features active. [Texture-healing specimen](releases/2026.11.19.1/specimens/Transit-Texture-Healing.svg)
+Selected ligatures in upright Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
 
-<!-- code-texture-healing -->
-| Feature / input | On | Off |
-| --- | --- | --- |
-| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
-<!-- /code-texture-healing -->
+| Advance | Ligatures |
+| --- | --- |
+| One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
+| Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `==`, `!=`, `===`, `!==` |
+
+**Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
+
+[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)
 
 ### Code example
 
-The same Rust example in Code Book with ligatures and contextual alternates on and off. Select the image to view it at full size.
+The same Rust, TypeScript, and logic examples in upright Code Book with ligatures, contextual alternates, Texture healing, Hairlining, Logic, and Loose Equality on and off. Select the image to view it at full size.
 
 <!-- code-characters -->
-[![The same syntax-highlighted Rust in Code Book with ligatures and contextual alternates on and off](specimens/features/Code-Characters.svg)](specimens/features/Code-Characters.svg)
+[![Rust, TypeScript, and logic in Code Book with features on and off](specimens/features/Code-Characters.svg)](specimens/features/Code-Characters.svg)
 <!-- /code-characters -->
 
 

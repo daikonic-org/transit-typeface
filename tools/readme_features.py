@@ -14,7 +14,7 @@ import uharfbuzz as hb
 from specimens import ROOT, DATA, Panel, specimen_families, weight_location
 from code_balance_study import bind
 from code_logic_shortcuts import COMMANDS
-from code_compact_operators import CELL, SAVED_CELL_GLYPHS
+from code_compact_operators import CELL, LOOSE_GLYPHS, SAVED_CELL_GLYPHS
 
 OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
@@ -136,14 +136,14 @@ def update_table(readme, marker, table):
     return pattern.sub(lambda _: replacement, readme)
 
 
-def highlight_rust_line(panel, text, features):
+def highlight_code_line(panel, text, features):
     """Color the already-shaped glyphs; lexical runs never split font context."""
     assert text.isascii(), "The specimen uses ASCII source offsets."
     colors = ["#eeeddb"] * len(text)
     tokens = re.compile(
         r'"(?:[^"\\]|\\.)*"|\'[A-Za-z_][A-Za-z_0-9]*|\b[0-9]+\b|\b[A-Za-z_][A-Za-z_0-9]*\b'
     )
-    keywords = {"struct", "fn", "let", "mut", "pub", "impl", "return", "self"}
+    keywords = {"const", "struct", "fn", "let", "mut", "pub", "impl", "return", "self"}
     types = {"usize", "str", "u8", "u64", "bool"}
     for match in tokens.finditer(text):
         token = match.group()
@@ -171,38 +171,50 @@ def highlight_rust_line(panel, text, features):
     buffer.guess_segment_properties()
     hb.shape(font, buffer, {**features, "tnum": False})
     names = [font.get_glyph_name(info.codepoint) for info in buffer.glyph_infos]
-    assert sum(pos.x_advance for pos in buffer.glyph_positions) == expected_code_advance(text, names)
+    actual = sum(pos.x_advance for pos in buffer.glyph_positions)
+    assert actual == expected_code_advance(text, names), (text, features, actual, names)
     element = ET.fromstring(panel.elements[-1])
     uses = list(element)
     assert len(uses) == len(buffer.glyph_infos)
     for use, info in zip(uses, buffer.glyph_infos):
         use.set("fill", colors[info.cluster])
     panel.elements[-1] = ET.tostring(element, encoding="unicode")
-    return [info.codepoint for info in buffer.glyph_infos]
+    return names
 
 
-def rust_comparison(font):
-    example = [
-        "struct IoRecord<'a> {",
-        "    user_id: usize,",
-        "    label: &'a str,",
-        "}",
-        "",
-        "fn collect_labels<'a>(",
-        "    rows: &'a [IoRecord<'a>],",
-        ") -> Vec<Vec<&'a str>> {",
-        "    rows.iter()",
-        "        .filter(|row| row.user_id != 0)",
-        "        .take(1)",
-        "        .map(|row| {",
-        '            vec![row.label, "film@host"]',
-        "        })",
-        "        .collect()",
-        "}",
-    ]
-    pane_width, padding, size, leading = 470, 20, 18, 25
-    width, height = 2 * pane_width, 65 + leading * len(example)
-    assert max(map(len, example)) * 600 * size / font["head"].unitsPerEm <= (
+def code_comparison(font):
+    examples = (
+        ("Rust", (
+            "struct IoRecord<'a> {",
+            "    user_id: usize,",
+            "    label: &'a str,",
+            "    active: bool,",
+            "}",
+            "",
+            "fn collect_labels<'a>(",
+            "    rows: &'a [IoRecord<'a>],",
+            ") -> Vec<Vec<&'a str>> {",
+            "    // Collect matching labels.",
+            "    rows.iter()",
+            "        .filter(|row| {",
+            "            row.user_id != 0 || !row.active",
+            "        })",
+            '        .map(|r| vec![r.label, "film@host"])',
+            "        .collect::<Vec<_>>()",
+            "}",
+        )),
+        ("TypeScript", (
+            "const key = row?.id ?? row!.id;",
+            "const check = (x: number) => x === 0;",
+        )),
+        ("Logic", (
+            r"[]p -> <>q    \forall x    \exists y",
+        )),
+    )
+    pane_width, padding, size, leading = 525, 20, 18, 25
+    width = 2 * pane_width
+    height = 52 + sum(50 + leading * len(lines) for _, lines in examples)
+    assert max(len(line) for _, lines in examples for line in lines) * CELL * size / font["head"].unitsPerEm <= (
         pane_width - 2 * padding
     )
     body = [
@@ -211,32 +223,61 @@ def rust_comparison(font):
     ]
     panel = Panel("code-example", DATA["families"]["code"])
     bind(panel, font)
-    shapes = {}
-    for column, (state, features) in enumerate((("On", ON), ("Off", OFF))):
+    glyphs = {}
+    for column, enabled in enumerate((True, False)):
         x = column * pane_width + padding
+        features = {
+            **(ON if enabled else OFF),
+            "kern": enabled,
+            "ss02": enabled,
+            "ss03": enabled,
+            "ss04": not enabled,
+            "ss05": enabled,
+            "ss06": enabled,
+        }
+        state = "Features on" if enabled else "Features off"
         body.append(
             f'<text x="{x}" y="35" font-family="Arial,sans-serif" font-size="16" '
             f'font-weight="700" fill="#aebbc6">{state}</text>'
         )
-        shapes[state] = []
-        for row, text in enumerate(example):
-            if text:
-                panel.text(
-                    text, x, 68 + leading * row, size, 400, "#eeeddb", features=features
-                )
-                shapes[state].append(highlight_rust_line(panel, text, features))
-    assert shapes["On"] != shapes["Off"], "The full example must show a shaping change"
+        names = set()
+        y = 72
+        for language, lines in examples:
+            body.append(
+                f'<text x="{x}" y="{y}" font-family="Arial,sans-serif" '
+                f'font-size="13" fill="#aebbc6">{language}</text>'
+            )
+            y += 22
+            for line in lines:
+                if line:
+                    panel.text(line, x, y, size, 400, "#eeeddb", features=features)
+                    names.update(highlight_code_line(panel, line, features))
+                y += leading
+            y += 28
+        glyphs[enabled] = names
+    required = {
+        "code.command.forall", "code.command.exists", "code.enclosureBox",
+        "code.enclosureDiamond", "logicalnot", "code.notEqual.loose", "code.strictEqual.loose",
+        "code.syntax00", "code.syntax01", "code.logicalOr", "code.commentSlash",
+        "code.scope.hairline", "less.generic.hairline", "bar.delimiterOpen.hairline", "l_l",
+    }
+    assert required <= glyphs[True] - glyphs[False], required - (glyphs[True] - glyphs[False])
+    assert any(name.startswith(("m.heal.", "w.heal.")) for name in glyphs[True])
+    assert all(".heal." not in name for name in glyphs[False])
+    assert any(name.startswith("quotesingle.lifetime.hairline") for name in glyphs[True])
     body.append(panel.body())
     return svg(
         "".join(body),
-        "Rust in Daikonic Transit Code Book with ligatures and contextual alternates on and off",
+        "Rust, TypeScript, and logic in Daikonic Transit Code Book with features on and off",
         width,
         height,
     )
 
 
 def expected_code_advance(text, names):
-    return CELL * (len(text) - sum(name in SAVED_CELL_GLYPHS for name in names))
+    loose_savings = {name: len(token) - 1 for token, name in LOOSE_GLYPHS.items()}
+    saved = sum(loose_savings.get(name, int(name in SAVED_CELL_GLYPHS)) for name in names)
+    return CELL * (len(text) - saved)
 
 
 def main(check=False):
@@ -348,11 +389,11 @@ def main(check=False):
             f"| <code>{html.escape(command)}</code> | {image(slug,command)} |"
         )
     readme = update_table(readme, "code-shortcuts", "\n".join(shortcuts))
-    emit(OUT / "Code-Characters.svg", rust_comparison(fonts["code"]))
+    emit(OUT / "Code-Characters.svg", code_comparison(fonts["code"]))
     readme = update_table(
         readme,
         "code-characters",
-        "[![The same syntax-highlighted Rust in Code Book with ligatures and contextual alternates on and off]"
+        "[![Rust, TypeScript, and logic in Code Book with features on and off]"
         "(specimens/features/Code-Characters.svg)](specimens/features/Code-Characters.svg)",
     )
     emit(ROOT / "README.md", readme)
