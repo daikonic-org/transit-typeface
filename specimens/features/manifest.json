@@ -17,7 +17,7 @@
     },
     "code": {
       "font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "b487339fdc159330001f915e9115b6e43ab03aa3736a1de4af4e226520711728",
+      "sha256": "814672ad5b5b7b8e351faf698e4f2cb3049fc43f14649a4ce7770f8e85659569",
       "location": {
         "wght": 350
       }
@@ -1298,7 +1298,7 @@
         [
           "ampersand",
           600,
-          0,
+          40,
           0
         ],
         [
@@ -2989,7 +2989,7 @@
         [
           "ampersand",
           600,
-          0,
+          40,
           0
         ],
         [
@@ -3198,7 +3198,7 @@
         [
           "ampersand",
           600,
-          0,
+          40,
           0
         ],
         [
@@ -4374,8 +4374,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "99c364d8c7a76628139a4434241dcb88bfb14b64e28848191c45389e169aafc6",
-    "code-Features.svg": "9029b478374b3c693a056ea14eb1ce4152e246be15e2076e5f031e438952ea10",
+    "Code-Characters.svg": "130e9ec50ce2cf9e1fb447e71eebbf54805b3bebe7b3e6d4f21eb1f421c62b3f",
+    "code-Features.svg": "eb3cece29f1d2aeeebf13cfb9bffe1c6d090725046840f94944504caca54f80a",
     "code-access-off.svg": "51c36197e4ae4f2973267bab53916f5739ab278d03f59a7ddf2c792c2047cbec",
     "code-access-on.svg": "8b6f96ed1cf2bac8d0d7fa221aef3bb4053313c7534f3953b197f40bf1b959c5",
     "code-arrows-off.svg": "f0c84890b357e99b770b4a201cbdc0a6e1309b1970dbc3d6b0f4dde96e0a3b89",
@@ -4397,7 +4397,7 @@
     "code-generics-on.svg": "a0f4daff49e8b4e065254641c744b92d843f50835b6871f5c95aaf492e915865",
     "code-hairline-delimiters-off.svg": "7ef24e01144aec3ca27fddbef7946570584efe28c0f12b27b6aff1df13442849",
     "code-hairline-delimiters-on.svg": "99e4751f15f8c814782484d624a25fe5994d99ec5f025082c762ad6715872b8b",
-    "code-hairline-lifetimes-off.svg": "c75b3dcc34f2cd15ac2f5f4c7fc22fd5db4f9c886170a8b157b23f87cc70817c",
+    "code-hairline-lifetimes-off.svg": "8e7344fc2f90cfeba2658b1619b2a67712785cc5f768d1fdd1e71e866a4ccd48",
     "code-hairline-lifetimes-on.svg": "6f0b9ee6ff53deb1c1b1a72355eb183deb101c0febcbbabfc78343e296107dab",
     "code-hairline-scope-off.svg": "20b9fbb43fdb177d02152c637dd6cac033380a7b0c059ac59783e5b1713e2974",
     "code-hairline-scope-on.svg": "2a6da27ec12f977b2e9609182feddcb7de46181ca3f9e73dedc64fc37bc4ba17",
@@ -4406,9 +4406,9 @@
     "code-interpolation-off.svg": "ec4ed1a83a55090aa8abb7680e4595163898f93aee6e9971badf502feaf9b93a",
     "code-interpolation-on.svg": "f59406a2e0a7d540544ad75486f830e7f57424bfd8541160ab18f82708ee0c07",
     "code-lifetime-literals-off.svg": "c509ad4eec09bb4709023a2e4fc7cbfcae43eb03d6deec5d58a69826397d7fd8",
-    "code-lifetime-literals-on.svg": "9d640c7eaed4ea6c6c7df8addf7847a075b1e3a207bc7ace7356d4b2b716893d",
+    "code-lifetime-literals-on.svg": "0570655f1ffdb3e2f7d46713743509b937bdd26e75450f418b6c7aeda1828d21",
     "code-lifetimes-off.svg": "4d0fc8e77b3935e6402fded5aadd8ce99885d728837574421b6b358c08d7bb65",
-    "code-lifetimes-on.svg": "b76a138658688a677860dee7ceb0fae017f15a2cb2219d2ab2976677960771d8",
+    "code-lifetimes-on.svg": "fff0550de0aa5a93ee6a09cd24f5736d931a33e5b42737acedc90734b76f6e0e",
     "code-logic-not-off.svg": "cfb3235198929dfec6cb47c50064edddc784b007ac4727008c908fa48cdee970",
     "code-logic-not-on.svg": "8b66fe9045fa15ce61beee2fa5c914ad670b190c476bde8b7d1338bc161ef381",
     "code-logic-off.svg": "e0a93d8fd4a10fca592cffaf78a368300793216457349e22a5c876f5fe264dfb",

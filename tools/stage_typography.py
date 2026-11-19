@@ -10,7 +10,7 @@ from fontTools.ttLib import TTFont
 from adopt_weighting import stamp
 from bundle_release import OUT, RECIPE
 import code_hairline_study as hairlines
-from code_hairline_toggle import build, remove_lifetime_toggle, verify
+from code_hairline_toggle import build, position_lifetime_ampersand, remove_lifetime_toggle, verify
 from specimens import DATA, ROOT
 
 
@@ -31,6 +31,7 @@ def stage(key, settings, scratch):
         upright, aliases = build(source, candidate, scratch, release=True)
         italic = TTFont(ROOT / settings["italic_font"], recalcTimestamp=False)
         remove_lifetime_toggle(italic)
+        position_lifetime_ampersand(italic)
         for font, suffix in ((upright, "-VF.ttf"), (italic, "-Italic-VF.ttf")):
             previous = settings["previous"]
             assert font["name"].getDebugName(5) == "Version " + previous

@@ -63,7 +63,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
-- A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
+- A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). The `&` in a recognized lifetime moves slightly toward the marker. Contextual matching preserves character literals such as `'a'` and `'_'`.
 - **Paired stems** (`liga`) for `ff`, `tt` and `ll` in upright and italic. The stems stay on the grid, with longer crossbars or hooks to balance the gaps. The foot of `i` aligns with the lowercase baseline.
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
@@ -117,7 +117,7 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 
 ### Hairlining
 
-Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters, outward rules to `::`, and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining also nudges `&` toward a recognized lifetime marker. It is off by default. [Hairlining specimen](releases/2026.11.19.1/specimens/Code-Hairlines.svg)
+Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters, outward rules to `::`, and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is off by default. [Hairlining specimen](releases/2026.11.19.1/specimens/Code-Hairlines.svg)
 
 <!-- code-hairlining -->
 | Feature / input | On | Off |

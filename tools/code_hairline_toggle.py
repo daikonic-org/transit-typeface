@@ -49,6 +49,9 @@ def build(source, candidate, directory, *, release=False):
         n for n in font.getGlyphOrder() if ".heal." in n and n.split(".")[0] in parameters
     }
     leaders = " ".join(study.LEADERS)
+    preview_borrow_rule = [] if release else [
+        f"pos ampersand' <{study.BORROW_INSET} 0 0 0> [{leaders}];"
+    ]
     lines = [
         "languagesystem DFLT dflt;",
         "languagesystem latn dflt;",
@@ -66,7 +69,7 @@ def build(source, candidate, directory, *, release=False):
         lines.append(f"pos {aliases[left]}' <30 0 0 0> {aliases[right]}' <-30 0 0 0>;")
     lines += [
         f"pos {aliases['code.scope']}' <18 0 0 0> {aliases['less.generic']}' <-18 0 0 0>;",
-        f"pos ampersand' <{study.BORROW_INSET} 0 0 0> [{leaders}];",
+        *preview_borrow_rule,
         "} ss05;",
         f"feature ss01 {{ pos {aliases['code.lifetimeOpen']} <40 45 0 0>; }} ss01;",
         "table GDEF {",
@@ -84,6 +87,7 @@ def build(source, candidate, directory, *, release=False):
     label_stylistic_set(font, FEATURE, "Hairline delimiters and markers")
     if release:
         remove_lifetime_toggle(font)
+        position_lifetime_ampersand(font, include_hairlines=True)
         return font, aliases
     return study.save_trial(font, directory, "Hairline Toggle"), aliases
 
@@ -111,6 +115,28 @@ def remove_lifetime_toggle(font):
                     lang.ReqFeatureIndex = new_indices.get(lang.ReqFeatureIndex, 65535)
                 lang.FeatureIndex = [new_indices[i] for i in lang.FeatureIndex if i in new_indices]
                 lang.FeatureCount = len(lang.FeatureIndex)
+
+
+def position_lifetime_ampersand(font, *, include_hairlines=False):
+    markers = (study.MARKER, *study.LEADERS) if include_hairlines else (study.MARKER,)
+    add_features(font, f"""
+        languagesystem DFLT dflt;
+        languagesystem latn dflt;
+        feature calt {{
+            pos ampersand' <{study.BORROW_INSET} 0 0 0> [{' '.join(markers)}];
+        }} calt;
+    """)
+
+
+def inward_ampersand(shaped, x_offset_index):
+    """Apply the permanent lifetime position to the released shaping reference."""
+    adjusted = []
+    for index, (name, *values) in enumerate(shaped):
+        if (name == "ampersand" and index + 1 < len(shaped)
+                and shaped[index + 1][0] == study.MARKER):
+            values[x_offset_index] += study.BORROW_INSET
+        adjusted.append((name, *values))
+    return adjusted
 
 
 def verify(source, candidate, trial, aliases, *, release=False):
@@ -142,7 +168,8 @@ def verify(source, candidate, trial, aliases, *, release=False):
                 old, auto, unchanged = [
                     study.shape(f, h, text, features) for f, h in zip(fonts, engines)
                 ]
-                assert old == unchanged, (text, weight, features)
+                expected = inward_ampersand(old, 2) if release else old
+                assert expected == unchanged, (text, weight, features)
                 switched = study.shape(toggle, engines[2], text, features | ON)
                 normalized = [(alias_sources.get(name, name), *rest) for name, *rest in switched]
                 assert auto == normalized, (text, weight, features, auto, normalized)
@@ -169,7 +196,7 @@ def check_release(reference, path):
         for engine in engines:
             engine.set_variations({"wght": weight})
         for value in (*study.EXAMPLE, study.CONTROL, "|x|  |w|  a | b", "'a' '_'", "Vec<Vec<T>>"):
-            expected = study.shape(original, engines[0], value, {})
+            expected = inward_ampersand(study.shape(original, engines[0], value, {}), 2)
             assert study.shape(font, engines[1], value, {"ss01": True}) == expected
             if upright:
                 result = study.shape(font, engines[1], value, ON)
@@ -187,6 +214,10 @@ def check_release(reference, path):
             assert not study.spans(rule, 600, 0)
             for low, high in study.spans(rule, rule.bounds[0] + 30, 0):
                 assert abs(high - low - study.HAIRLINE) < 0.01
+        for flags in ({}, ON, {"ss01": True}):
+            assert study.shape(font, engines[1], "&'a", flags)[0][3] == study.BORROW_INSET
+            assert study.shape(font, engines[1], "&'a'", flags)[0][3] == 0
+            assert study.shape(font, engines[1], "a & b", flags)[2][3] == 0
 
 
 def main():

@@ -182,7 +182,10 @@ def name_trial(font):
             )
 
 
-def verify(source, output, *, default_on=False):
+def verify(source, output, *, default_on=False, lifetime_ampersand=False):
+    if lifetime_ampersand:
+        from code_hairline_toggle import inward_ampersand
+
     font = TTFont(output)
     original = TTFont(source)
     assert font.getBestCmap() == original.getBestCmap()
@@ -273,9 +276,10 @@ def verify(source, output, *, default_on=False):
         for lifetime, logic in product(lifetime_options, (False, True)):
             features = {"calt": True, "ss01": lifetime, "ss02": logic}
             for value in cases + controls:
-                assert shape(engine, font, value, features | off) == shape(
-                    baseline, original, value, features
-                )
+                expected = shape(baseline, original, value, features)
+                if lifetime_ampersand:
+                    expected = inward_ampersand(expected, 1)
+                assert shape(engine, font, value, features | off) == expected
             for value in controls:
                 assert shape(engine, font, value, features | on) == shape(
                     engine, font, value, features | off

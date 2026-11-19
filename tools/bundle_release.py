@@ -220,6 +220,7 @@ def check():
         ROOT / RECIPE["typography"]["code"]["unhealed_font"],
         OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
         default_on=True,
+        lifetime_ampersand=True,
     )
 
 
@@ -341,7 +342,7 @@ def package():
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
         "- **Code Upright** adds optional 22-unit hairlining with `ss05`. It includes echoed delimiters, outward scope rules, and diamond lifetime leaders. Paired pipes such as `|w|` get matching echoes.",
-        "- **Code** retires the separate Rust lifetime toggle in upright and italic. Contextual lifetime hooks remain available by default.",
+        "- **Code** retires the separate Rust lifetime toggle in upright and italic. Contextual lifetime hooks remain available by default, with the ampersand positioned closer to the marker.",
         "- **Code Upright** applies texture healing by default with `calt`. Wider `m` and `w` fit beside selected punctuation as well as `a`, `i`, `j` and `l`. Enable `ss04` to opt out while keeping other contextual features active.",
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
