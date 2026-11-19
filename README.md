@@ -6,7 +6,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.2) includes **Sans 0.109, System 0.118 and Code 1.036**. All three fonts ship together in VF, TTF, TTC, OTF, WOFF2, editable-source and specimen packages.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.3) includes **Sans 0.110, System 0.119 and Code 1.037**, with upright and italic styles for all three typefaces.
+
+The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.18.3/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.18.3/specimens/Paired-Stems.svg).
 
 ## Daikonic Transit Sans
 
@@ -61,6 +63,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
 - A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Optional **extended lifetime hooks (`ss01`)**, lengthening the marker’s straight stroke into the following letter’s cell, with a slight upward and inward adjustment to the marker and preceding `&` / `<`. Off by default.
+- Optional [**texture healing**](releases/2026.11.18.3/specimens/Transit-Texture-Healing.svg) (`ss03`) in upright Code. It fits `m` and `w` beside narrower forms of `a`, `i`, `j` and `l` within the existing cells.
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
@@ -125,7 +128,7 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-Each typeface has its own [release](https://github.com/daikonic-org/transit-typeface/releases) and version number. Download the package for the format you need:
+All three typefaces ship together in each [release](https://github.com/daikonic-org/transit-typeface/releases), with their own version numbers. Choose the package for the format you need.
 
 | Package | Contents | Use |
 | --- | --- | --- |
@@ -138,7 +141,7 @@ Each typeface has its own [release](https://github.com/daikonic-org/transit-type
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Archives are named by format and coordinated release—for example, `TTC-daikonic-transit-2026.11.18.2.zip`—with separate Sans, System and Code folders inside. Font-menu names are simply **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.18.3.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose either the variable font, the TTC collection or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
 

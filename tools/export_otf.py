@@ -42,6 +42,7 @@ def convert(font, path):
             "FamilyName": f["name"].getDebugName(16),
             "Weight": f["name"].getDebugName(17),
             "version": str(f["head"].fontRevision),
+            "ItalicAngle": f["post"].italicAngle,
             "isFixedPitch": bool(f["post"].isFixedPitch),
         },
         strings,

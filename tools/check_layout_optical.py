@@ -10,7 +10,7 @@ from fontTools.pens.boundsPen import BoundsPen
 from fontTools.varLib.instancer import instantiateVariableFont
 import uharfbuzz as hb
 import ots
-from specimens import ROOT, specimen_families
+from specimens import DATA, ROOT, specimen_families
 from audit import shape_from_glyphs
 from derive_weights import topology
 from validate import TOKENS
@@ -121,7 +121,7 @@ def main():
         path = ROOT / rel
         sanitized(path)
         f = TTFont(path)
-        baseline = TTFont(positioned if key == "code" else ROOT / cfg[key]["font"])
+        baseline = TTFont(positioned if key == "code" else ROOT / DATA["families"][key]["font"])
         for name in baseline.getGlyphOrder():
             assert f["glyf"][name].compile(f["glyf"]) == baseline["glyf"][name].compile(
                 baseline["glyf"]

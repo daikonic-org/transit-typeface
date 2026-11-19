@@ -1,23 +1,23 @@
 {
   "sources": {
     "sans": {
-      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf",
+      "font": "releases/2026.11.18.3/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "7cdb231ba4c007b5dd68e9aabfe0257bbec506916c1b045cb4bd812c5e79587a",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/2026.11.18.2/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "40635984ecb714bca84569a67b099d35ea6dfd7e5670c7ffb6345c84c87b5c1d",
+      "font": "releases/2026.11.18.3/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "862a2011b6d949ed9d6a569b85af3eac56213a2a0e501e6b96432836acea64bc",
       "location": {
         "wght": 350,
         "opsz": 14
       }
     },
     "code": {
-      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "4a9983665334835b635c5cc364e1ccdb9aff2c5efca5171944129c973cabf77c",
+      "font": "releases/2026.11.18.3/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "bd16c984496eeb6292e81bcf28c6f06828836f62b2a74923f6a3712ac0ae5a11",
       "location": {
         "wght": 350
       }
@@ -3578,8 +3578,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "2e8c08f3d2849c009da5c3d08c765012a252673a734ed6d6cb77fd2c05422996",
-    "code-Features.svg": "d70d3f0334c0da4e91254ee8530333fffdd38e24743853809c5c897f9156d302",
+    "Code-Characters.svg": "c87dcfe92c1c5914a3c6e27a4c37cc508898c79b0321604d17c2266eaa377eb9",
+    "code-Features.svg": "cb0ac3d68270c61442648e74767157dae3a2e29056a503d408dcbe249253afe2",
     "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
     "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
     "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
@@ -3617,8 +3617,8 @@
     "code-logic-order-on.svg": "7e515686181e0b1b982b09171ae495b5bded467394b440b9f646cceb980cc2fd",
     "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
     "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
-    "code-pipe-delimiters-off.svg": "9098f689f03cbd2e623a3bdac5feb0631b5915c7ed7048c38065264135d69abb",
-    "code-pipe-delimiters-on.svg": "f58d53d96b25edda6b0c67b49daa39ee71dbfedc1767b753b9e315290c17407c",
+    "code-pipe-delimiters-off.svg": "0ab00cbea96c7900d59743498eb61b446dccfe1039f22f63b38bb07293760488",
+    "code-pipe-delimiters-on.svg": "a75243c8678a21c24e46c8b1edb8cf52dadfa88d30ea325d2e3e61e758b83305",
     "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
     "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
     "code-rust-inference-off.svg": "585f8df149036e6a86eba4649a85b2e86875af4f9f48ccf5a3e98721a5300e61",
@@ -3627,12 +3627,12 @@
     "code-rust-turbofish-on.svg": "df23baf74132d903b98180962b9f0593cf8a92f62f7437d51a636cd223df6d5d",
     "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
     "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
-    "sans-Features.svg": "bdec36e4f69d83bec055fef535c84c51332289cbd3ae5c5a8e0c2bcd136e4491",
+    "sans-Features.svg": "7e0a80d968316e0a30f79304b7d5cb1125a71e27dfe4f43880466d588a475c0d",
     "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
     "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
     "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
     "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
-    "system-Features.svg": "a1df3132704a7396eeac7ea5b92064fcfcd473994010ebc7e8e4192c992c1c0e",
+    "system-Features.svg": "0b1c2c3b625221a18601561f6804f17d806041768f0e54f214b68b64fa468836",
     "system-standard-off.svg": "0f8ea230e630f18de9c7003993140f1658e9de3bc0c6a7c92d6f3d4e146a7c0b",
     "system-standard-on.svg": "1d4c0f647b12a3ab566fb37b999113b302374a20b1bcaf5246deb06471605702",
     "system-tabular-off.svg": "cac0aa4514e7e12dad72f2bdc2bc8dc154121d559b9c8e441cf4a3e18af3d3ee",

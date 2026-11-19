@@ -1,10 +1,27 @@
 {
-  "version": "2026.11.18.2",
-  "tag": "Transit-2026.11.18.2",
+  "version": "2026.11.18.3",
+  "tag": "Transit-2026.11.18.3",
   "families": [
     "sans",
     "system",
     "code"
   ],
-  "policy": "Publish all three families together as a normal release; no preview releases."
+  "policy": "Publish all three families together as a normal release; no preview releases.",
+  "typography": {
+    "sans": {
+      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
+      "previous": "0.109",
+      "version": "0.110"
+    },
+    "system": {
+      "font": "releases/2026.11.18.2/system/VF/DaikonicTransitSystem-VF.ttf",
+      "previous": "0.118",
+      "version": "0.119"
+    },
+    "code": {
+      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "previous": "1.036",
+      "version": "1.037"
+    }
+  }
 }

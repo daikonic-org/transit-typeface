@@ -11,9 +11,10 @@ import subprocess
 import tempfile
 import zipfile
 import ots
+import uharfbuzz as hb
 from fontTools.ttLib import TTFont, TTCollection
 from adopt_weighting import instance
-from export_otf import STYLES
+from export_otf import STYLES, convert
 from specimens import ROOT, specimen_families
 
 RECIPE = json.loads((ROOT / "recipes/bundle-release.json").read_text())
@@ -50,8 +51,59 @@ def compress_source(directory):
             assert hashlib.file_digest(stream, "sha256").hexdigest() == digest(xml)
         xml.unlink()
     (directory / "rebuild.py").write_text(
-        "from pathlib import Path\nimport gzip\nfrom fontTools.ttLib import TTFont\nr=Path(__file__).resolve().parent\nf=TTFont(recalcTimestamp=False)\nwith gzip.open(next(r.glob('*.ttx.gz')), 'rb') as source:\n    f.importXML(source)\nf.save(r/'Rebuilt-VF.ttf')\n"
+        "from pathlib import Path\nimport gzip\nfrom fontTools.ttLib import TTFont\n"
+        "for path in sorted(Path(__file__).resolve().parent.glob('*.ttx.gz')):\n"
+        "    font = TTFont(recalcTimestamp=False)\n"
+        "    with gzip.open(path, 'rb') as source:\n"
+        "        font.importXML(source)\n"
+        "    font.save(path.with_name(path.name.removesuffix('.ttx.gz') + '-VF.ttf'))\n"
     )
+
+
+def generate_instances(vf, font, directory, config):
+    italic = bool(font["OS/2"].fsSelection & 1)
+    for item in font["fvar"].instances:
+        weight = item.coordinates["wght"]
+        optical = item.coordinates.get("opsz")
+        style = STYLES[weight]
+        if optical is not None:
+            style += " " + {10: "Caption", 14: "Text", 36: "Display"}[optical]
+        font_style = style + (" Italic" if italic else "")
+        stem = config["stem"] + "-" + font_style.replace(" ", "")
+        family = config["name"]
+        static = instance(vf, weight, optical)
+        static.recalcTimestamp = False
+        names = {
+            1: family if family.endswith("Code") and weight == 400 else family + " " + style,
+            2: "Italic" if italic else "Regular",
+            3: stem + " " + config["version"],
+            4: family + " " + font_style,
+            6: stem,
+            16: family,
+            17: font_style,
+        }
+        for record in static["name"].names:
+            if record.nameID in names:
+                record.string = names[record.nameID].encode(record.getEncoding())
+        static.save(directory / "TTF" / (stem + ".ttf"))
+        convert(static, directory / "OTF" / (stem + ".otf"))
+
+
+def generate_formats(vf, directory, config):
+    font = TTFont(vf, recalcTimestamp=False)
+    sanitize(deepcopy(font))
+    generate_instances(vf, font, directory, config)
+    font.flavor = "woff2"
+    font.save(directory / "WOFF2" / vf.with_suffix(".woff2").name)
+    font.flavor = None
+    xml = directory / "SOURCE" / (vf.stem.removesuffix("-VF") + ".ttx")
+    font.saveXML(xml)
+    rebuilt = TTFont(recalcTimestamp=False)
+    rebuilt.importXML(xml)
+    for tag in TABLES + ["gvar", "fvar", "HVAR"]:
+        if tag in font:
+            assert font.getTableData(tag) == rebuilt.getTableData(tag), (vf.name, tag)
+    sanitize(rebuilt)
 
 
 def build(only=None):
@@ -65,76 +117,20 @@ def build(only=None):
         if only and key not in only:
             continue
         directory = OUT / key
-        for fmt in ["VF", "TTF", "TTC", "WOFF2", "SOURCE"]:
+        for fmt in ["VF", "TTF", "TTC", "OTF", "WOFF2", "SOURCE"]:
             (directory / fmt).mkdir(parents=True, exist_ok=True)
         source = ROOT / cfg["font"]
         vf = directory / "VF" / (cfg["stem"] + "-VF.ttf")
         if source.resolve() != vf.resolve():
             shutil.copy2(source, vf)
-        font = TTFont(vf, recalcTimestamp=False)
-        sanitize(deepcopy(font))
-        if key == "code" or cfg["font"].startswith("releases/"):
-            for weight, style in STYLES.items():
-                if weight > cfg["heavy"]:
-                    continue
-                optical_values = (
-                    [10, 14, 36]
-                    if any(a.axisTag == "opsz" for a in font["fvar"].axes)
-                    else [None]
-                )
-                for optical in optical_values:
-                    style_name = style + (
-                        {10: " Caption", 14: " Text", 36: " Display"}[optical]
-                        if optical
-                        else ""
-                    )
-                    f = instance(vf, weight, optical)
-                    f.recalcTimestamp = False
-                    names = {
-                        1: (
-                            cfg["name"]
-                            if key == "code" and weight == 400
-                            else cfg["name"] + " " + style_name
-                        ),
-                        2: "Regular",
-                        3: cfg["stem"]
-                        + "-"
-                        + style_name.replace(" ", "")
-                        + " "
-                        + cfg["version"],
-                        4: cfg["name"] + " " + style_name,
-                        6: cfg["stem"] + "-" + style_name.replace(" ", ""),
-                        16: cfg["name"],
-                        17: style_name,
-                    }
-                    for record in f["name"].names:
-                        if record.nameID in names:
-                            record.string = names[record.nameID].encode(
-                                record.getEncoding()
-                            )
-                    f.save(
-                        directory
-                        / "TTF"
-                        / (cfg["stem"] + "-" + style_name.replace(" ", "") + ".ttf")
-                    )
-        else:
-            for path in (ROOT / "fonts" / key / "TTF").glob("*.ttf"):
-                shutil.copy2(path, directory / "TTF" / path.name)
+        italic = directory / "VF" / (cfg["stem"] + "-Italic-VF.ttf")
+        variables = [vf, italic]
+        for variant in variables:
+            generate_formats(variant, directory, cfg)
         paths = sorted((directory / "TTF").glob("*.ttf"))
         collection = TTCollection()
         collection.fonts = [TTFont(p, recalcTimestamp=False) for p in paths]
         collection.save(directory / "TTC" / (cfg["stem"] + ".ttc"), shareTables=True)
-        font.flavor = "woff2"
-        font.save(directory / "WOFF2" / (cfg["stem"] + "-VF.woff2"))
-        font.flavor = None
-        xml = directory / "SOURCE" / (cfg["stem"] + ".ttx")
-        font.saveXML(xml)
-        rebuilt = TTFont(recalcTimestamp=False)
-        rebuilt.importXML(xml)
-        for tag in TABLES + ["gvar", "fvar", "HVAR"]:
-            if tag in font:
-                assert font.getTableData(tag) == rebuilt.getTableData(tag), (key, tag)
-        sanitize(rebuilt)
         compress_source(directory / "SOURCE")
         report["families"][key] = {
             "name": cfg["name"],
@@ -142,6 +138,7 @@ def build(only=None):
             "source": str(source.relative_to(ROOT)),
             "source_sha256": digest(source),
             "static_files": [p.name for p in paths],
+            "variable_files": [p.name for p in variables],
             "ttc_faces": len(paths),
             "source_format": "Complete editable TTX with verified rebuild; historical native sources retained in repository.",
         }
@@ -157,6 +154,9 @@ def build(only=None):
         for p in sorted((OUT / key).rglob("*"))
         if p.is_file() and p.name != "selection.json"
     }
+    report["proofs"] = {
+        path.name: digest(path) for path in sorted((OUT / "specimens").glob("*"))
+    }
     (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\n")
     check()
 
@@ -167,13 +167,24 @@ def check():
     assert set(report["families"]) == set(RECIPE["families"])
     for rel, expected in report["files"].items():
         assert digest(OUT / rel) == expected, rel
+    for name, expected in report["proofs"].items():
+        assert digest(OUT / "specimens" / name) == expected, name
     for key, record in report["families"].items():
         assert digest(ROOT / record["source"]) == record["source_sha256"]
+        for filename in record["variable_files"]:
+            path = OUT / key / "VF" / filename
+            variable = TTFont(path)
+            sanitize(variable)
+            check_repeated_stems(variable, path, key)
+            web = TTFont(OUT / key / "WOFF2" / path.with_suffix(".woff2").name)
+            for tag in ("cmap", "GSUB", "GPOS", "GDEF", "fvar", "HVAR", "name"):
+                assert variable.getTableData(tag) == web.getTableData(tag), (filename, tag)
         path = next((OUT / key / "TTC").glob("*.ttc"))
         collection = TTCollection(path)
         assert len(collection.fonts) == record["ttc_faces"]
         for face, filename in zip(collection.fonts, record["static_files"]):
             original = TTFont(OUT / key / "TTF" / filename)
+            otf = TTFont(OUT / key / "OTF" / Path(filename).with_suffix(".otf"))
             assert "fvar" not in face
             for tag in TABLES:
                 if tag in original:
@@ -182,10 +193,37 @@ def check():
                         filename,
                         tag,
                     )
+            for tag in ("cmap", "hmtx", "GSUB", "GPOS", "GDEF"):
+                assert original.getTableData(tag) == otf.getTableData(tag), (filename, tag)
+            assert original["post"].italicAngle == otf["CFF "].cff.topDictIndex[0].ItalicAngle
             sanitize(face)
         print(
             key, "TTC faces verified against individual TTFs and sanitized", flush=True
         )
+    from code_texture_healing import verify as verify_texture_healing
+
+    verify_texture_healing(
+        ROOT / RECIPE["typography"]["code"]["font"],
+        OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
+    )
+
+
+def check_repeated_stems(font, path, family):
+    engine = hb.Font(hb.Face(path.read_bytes()))
+    for instance in font["fvar"].instances:
+        engine.set_variations(instance.coordinates)
+        glyphs = font.getGlyphSet(location=instance.coordinates)
+        for letter in "ft":
+            ligature = f"{letter}_{letter}"
+            for enable, names in ((True, [ligature]), (False, [letter, letter])):
+                buffer = hb.Buffer()
+                buffer.add_str(letter * 2)
+                buffer.guess_segment_properties()
+                hb.shape(engine, buffer, {"liga": enable})
+                assert [font.getGlyphName(item.codepoint) for item in buffer.glyph_infos] == names
+                if family == "code":
+                    assert sum(item.x_advance for item in buffer.glyph_positions) == 1200
+            assert abs(glyphs[ligature].width - 2 * glyphs[letter].width) < 0.01
 
 
 def package():
@@ -193,22 +231,13 @@ def package():
     destination = ROOT / ".dist/bundle" / RECIPE["version"]
     destination.mkdir(parents=True, exist_ok=True)
     families = specimen_families()
-    otf = json.loads((ROOT / "exports/otf/current/manifest.json").read_text())
     archives = []
     for fmt in ["VF", "TTF", "TTC", "OTF", "WOFF2", "SOURCE", "SPECIMEN"]:
         stem = fmt + "-daikonic-transit-" + RECIPE["version"]
         path = destination / (stem + ".zip")
         with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
             for key, cfg in families.items():
-                if fmt == "OTF":
-                    assert otf[key]["source_sha256"] == digest(ROOT / cfg["font"])
-                    files = [
-                        (ROOT / item["file"], Path(key) / Path(item["file"]).name)
-                        for item in otf[key]["exports"]
-                    ]
-                    for item in otf[key]["exports"]:
-                        assert digest(ROOT / item["file"]) == item["sha256"]
-                elif fmt == "SPECIMEN":
+                if fmt == "SPECIMEN":
                     files = []
                 else:
                     files = [
@@ -221,15 +250,14 @@ def package():
                 if fmt == "WOFF2":
                     z.writestr(
                         str(Path(stem) / key / "font.css"),
-                        "@font-face { font-family: '"
-                        + cfg["name"]
-                        + "'; src: url('./"
-                        + cfg["stem"]
-                        + "-VF.woff2') format('woff2'); font-weight: "
-                        + str(cfg["light"])
-                        + " "
-                        + str(cfg["heavy"])
-                        + "; font-style: normal; font-display: swap; }\n",
+                        "".join(
+                            "@font-face { "
+                            f"font-family: '{cfg['name']}'; "
+                            f"src: url('./{cfg['stem']}{suffix}-VF.woff2') format('woff2'); "
+                            f"font-weight: {cfg['light']} {cfg['heavy']}; font-style: {style}; "
+                            "font-display: swap; }\n"
+                            for suffix, style in (("", "normal"), ("-Italic", "italic"))
+                        ),
                     )
             if fmt == "SPECIMEN":
                 # Manifests select current proofs; historical study images stay in Git.
@@ -269,6 +297,8 @@ def package():
                         / "specimens"
                         / source.relative_to(ROOT / "specimens"),
                     )
+                for source in sorted((OUT / "specimens").glob("*")):
+                    z.write(source, Path(stem) / "specimens" / source.name)
             for name in ["OFL.txt", "NOTICE.txt", "README.md", "requirements.lock"]:
                 z.write(ROOT / name, Path(stem) / name)
             z.write(OUT / "manifest.json", Path(stem) / "manifest.json")
@@ -285,11 +315,9 @@ def package():
     notes = [
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
-        "System’s tabular `1` uses the unscaled Sans drawing, centered within its existing variable tabular cell. The proportional `1` keeps its normal spacing. The family includes five weights and Caption, Text and Display optical-size presets.",
-        "Code uses left-hook Rust lifetime markers matched to the character stroke weight. The optional `ss01` form extends the marker toward the following letter and applies the selected +40x/+45y inset to the marker and preceding `&` or `<`, while preserving 600-unit advances. Inference placeholders and completed turbofish pairs receive tall angles with balanced scope placement; unmatched angles remain short. Mixed angle/square enclosures keep separate glyphs, a closer optical fit and forced tall angles with or without Logic. Nested generic closer runs are tightened inside their original cells; ordinary shift operators stay unchanged. Interpolation dollars are vertically centered against their delimiters. Book 350 is the default.",
-        r"Standard Code shortcuts `\forall`, `\exists`, `\not`, `\box` and `\diamond` work independently of Logic. Optional `ss02` provides modal enclosures and prefix negation; Unicode ∀, ∃ and ¬ are also available directly. Both stylistic sets are off by default. Sans is included in its current 0.109 cut.",
-        "Packages: **VF** for variable fonts; **TTF** and **OTF** for named styles; **TTC** for one collection per family (Sans: 5 faces, System: 15, Code: 3); **WOFF2** with CSS for the web; **SOURCE** for complete editable TTX and verified rebuild scripts; **SPECIMEN** for matching PNG, vector PDF and outlined SVG samples. SHA256SUMS.txt covers all seven archives.",
-        "Validation covers interpolation, protected character literals, fixed-cell shaping, current-font specimens, TTC/TTF table parity, sanitizer checks and editable-source roundtrips. System’s tabular figures were checked at 91 weight/optical-size locations; Code’s marker weight and clearance were checked across 11 weights, with native CoreText checks for both fonts.",
+        "All three families add 9° italics with a single-storey `a`, a descending `f` and an open, single-storey `g`. Code’s italic `i` has a rightward foot. System Italic carries the Caption, Text and Display optical-size presets.",
+        "The `liga` feature adds optically fitted `ff` and `tt` pairs in upright and italic. Code’s pairs occupy exactly two cells. Its upright also adds optional texture healing (`ss03`) for `m` and `w` near `a`, `i`, `j` and `l`.",
+        "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]
     (destination / "Release.md").write_text("\n\n".join(notes) + "\n")

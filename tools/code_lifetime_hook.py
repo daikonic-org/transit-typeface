@@ -156,6 +156,10 @@ def check(path):
 
     if separate_enclosures(font):
         changed.update(INTERPOLATION)
+    if "m.heal.both" in font.getGlyphOrder():
+        from code_receiver_shapes import RECEIVERS
+
+        changed.update(RECEIVERS)
     for name in source.getGlyphOrder():
         if name not in changed:
             assert font["glyf"][name].compile(font["glyf"]) == source["glyf"][
