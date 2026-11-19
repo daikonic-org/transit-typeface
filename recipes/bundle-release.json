@@ -1,6 +1,6 @@
 {
-  "version": "2026.11.18.3",
-  "tag": "Transit-2026.11.18.3",
+  "version": "2026.11.19",
+  "tag": "Transit-2026.11.19",
   "families": [
     "sans",
     "system",
@@ -9,19 +9,26 @@
   "policy": "Publish all three families together as a normal release; no preview releases.",
   "typography": {
     "sans": {
-      "font": "fonts/sans/VF/DaikonicTransitSans-VF.ttf",
-      "previous": "0.109",
-      "version": "0.110"
+      "font": "releases/2026.11.18.3/sans/VF/DaikonicTransitSans-VF.ttf",
+      "previous": "0.110",
+      "version": "0.111",
+      "italic_font": "releases/2026.11.18.3/sans/VF/DaikonicTransitSans-Italic-VF.ttf"
     },
     "system": {
-      "font": "releases/2026.11.18.2/system/VF/DaikonicTransitSystem-VF.ttf",
-      "previous": "0.118",
-      "version": "0.119"
+      "font": "releases/2026.11.18.3/system/VF/DaikonicTransitSystem-VF.ttf",
+      "previous": "0.119",
+      "version": "0.120",
+      "previous_point_size": 11,
+      "italic_font": "releases/2026.11.18.3/system/VF/DaikonicTransitSystem-Italic-VF.ttf"
     },
     "code": {
-      "font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "previous": "1.036",
-      "version": "1.037"
+      "font": "releases/2026.11.18.3/code/VF/DaikonicTransitCode-VF.ttf",
+      "previous": "1.037",
+      "version": "1.038",
+      "previous_point_size": 11.5,
+      "unhealed_font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "unhealed_version": "1.036",
+      "italic_font": "releases/2026.11.18.3/code/VF/DaikonicTransitCode-Italic-VF.ttf"
     }
   }
 }

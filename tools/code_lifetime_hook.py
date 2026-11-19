@@ -160,6 +160,10 @@ def check(path):
         from code_receiver_shapes import RECEIVERS
 
         changed.update(RECEIVERS)
+    if font["glyf"]["i"].yMin == font["glyf"]["n"].yMin:
+        from code_i_baseline import align_i_baseline
+
+        align_i_baseline(source)
     for name in source.getGlyphOrder():
         if name not in changed:
             assert font["glyf"][name].compile(font["glyf"]) == source["glyf"][

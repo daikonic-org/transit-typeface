@@ -37,6 +37,13 @@ def specimen_families():
     return families
 
 
+def weight_location(font, weight):
+    return {
+        **{axis.axisTag: axis.defaultValue for axis in font["fvar"].axes},
+        "wght": weight,
+    }
+
+
 class Panel:
     def __init__(self, key, config):
         self.key, self.config = key, config
@@ -44,9 +51,10 @@ class Panel:
 
     def font(self, weight, tabular=False):
         if weight not in self.instances:
+            source = TTFont(ROOT / self.config["font"])
             f = instantiateVariableFont(
-                TTFont(ROOT / self.config["font"]),
-                {"wght": weight, **({"opsz": 14} if self.key == "system" else {})},
+                source,
+                weight_location(source, weight),
                 inplace=False,
             )
             out = BytesIO()

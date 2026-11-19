@@ -8,29 +8,41 @@ from fontTools.ttLib import TTFont
 
 from adopt_weighting import stamp
 from bundle_release import OUT, RECIPE
-from code_texture_healing import build as build_texture_healing, verify as verify_texture
-from italic_companions import build as build_italic
-from repeated_stems import add_repeated_stems
+from code_i_baseline import align_i_baseline
+from code_texture_healing import build as build_texture_healing
+from repeated_stems import add_monospace_l_pair, add_repeated_stems, fit_monospace_pairs
 from specimens import DATA, ROOT
+from font_size_calibration import recalibrate
 
 
 def stage(key, settings, scratch):
-    config = {**DATA["families"][key], **settings, "version": settings["previous"]}
+    config = DATA["families"][key]
     stem = config["stem"]
     destination = OUT / key / "VF"
     destination.mkdir(parents=True, exist_ok=True)
-    upright = ROOT / config["font"]
-    if key == "code":
-        textured = scratch / "textured.ttf"
-        build_texture_healing(upright, textured, trial=False)
-        verify_texture(upright, textured)
-        upright = textured
 
-    italic = build_italic(key, config, scratch, "cursive", descending_f=True)
-    for source, suffix in ((upright, "-VF.ttf"), (scratch / italic["font"], "-Italic-VF.ttf")):
+    upright = ROOT / settings["font"]
+    if key == "code":
+        upright = scratch / "textured.ttf"
+        build_texture_healing(
+            ROOT / settings["unhealed_font"], upright, trial=False, default_on=True
+        )
+
+    for source, italic in ((upright, False), (ROOT / settings["italic_font"], True)):
         font = TTFont(source, recalcTimestamp=False)
-        add_repeated_stems(font)
-        stamp(font, settings["previous"], settings["version"])
+        previous = settings["previous"]
+        if key == "code":
+            if not italic:
+                add_repeated_stems(font)
+                previous = settings["unhealed_version"]
+            fit_monospace_pairs(font)
+            add_monospace_l_pair(font)
+            align_i_baseline(font)
+        if "previous_point_size" in settings:
+            recalibrate(font, settings["previous_point_size"])
+        assert font["name"].getDebugName(5) == "Version " + previous, source
+        stamp(font, previous, settings["version"])
+        suffix = "-Italic-VF.ttf" if italic else "-VF.ttf"
         font.save(destination / (stem + suffix))
 
     selection = destination.parent / "selection.json"

@@ -42,7 +42,6 @@ CASES = {
 def check_legacy(path):
     f = TTFont(path)
     h = hb.Font(hb.Face(path.read_bytes()))
-    h.scale = (1000, 1000)
     results = []
     for weight in range(300, 401, 10):
         h.set_variations({"wght": weight})
@@ -153,7 +152,6 @@ def check(path):
 
         return check_hooks(path)
     h = hb.Font(hb.Face(path.read_bytes()))
-    h.scale = (1000, 1000)
 
     def run(text, calt, compact):
         b = hb.Buffer()

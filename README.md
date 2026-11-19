@@ -6,9 +6,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.18.3) includes **Sans 0.110, System 0.119 and Code 1.037**, with upright and italic styles for all three typefaces.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19) includes **Sans 0.111, System 0.120 and Code 1.038**, with upright and italic styles for all three typefaces.
 
-The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.18.3/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.18.3/specimens/Paired-Stems.svg).
+The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19/specimens/Paired-Stems.svg).
 
 ## Daikonic Transit Sans
 
@@ -30,10 +30,11 @@ The samples below use the actual Book font, with the listed feature enabled or d
 
 ## Daikonic Transit System
 
-An interface font for application navigation, controls, dashboards and short passages of screen text. Developed from Daikonic Transit Sans, System combines a larger lowercase, adjusted spacing and an optical-size range for smaller interface text, while keeping Sans’s capital-height proportions.
+An interface font for application navigation, controls, dashboards and short passages of screen text. Developed from Daikonic Transit Sans, System combines a taller lowercase relative to its capitals, adjusted spacing and an optical-size range for smaller interface text.
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, with a variable weight range of 300–600.
-- An independent **optical-size axis, 10–36**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
+- An independent **optical-size axis, 10.91–39.27**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
+- Recalibrated point sizing in upright and italic. Setting System to **12 pt** gives approximately the physical size of **11 pt** in the previous release.
 - Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` uses Sans’s original drawing, centered in the same-width cells as the other tabular digits.
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
@@ -53,6 +54,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 
 - Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
 - Fixed-width characters and coding ligatures that occupy the same total width as their original character sequences.
+- Recalibrated point sizing in upright and italic. **12 pt** uses approximately the previous **11.5 pt** scale.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
 - Heavier, inward-set parentheses, brackets and braces for legibility, using one weight step above the surrounding text. Contextual pipe delimiters receive the same treatment. Extended brace pinches help distinguish `{}` from `()`.
 - Optical centering and contextual positioning for selected character pairs, preserving the fixed 600-unit character advance.
@@ -63,7 +65,8 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
 - A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
 - Optional **extended lifetime hooks (`ss01`)**, lengthening the marker’s straight stroke into the following letter’s cell, with a slight upward and inward adjustment to the marker and preceding `&` / `<`. Off by default.
-- Optional [**texture healing**](releases/2026.11.18.3/specimens/Transit-Texture-Healing.svg) (`ss03`) in upright Code. It fits `m` and `w` beside narrower forms of `a`, `i`, `j` and `l` within the existing cells.
+- **Paired stems** (`liga`) for `ff`, `tt` and `ll` in upright and italic. The stems stay on the grid, with longer crossbars or hooks to balance the gaps. The foot of `i` aligns with the lowercase baseline.
+- **Texture healing** is enabled by default in upright Code with contextual alternates. It fits wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation within the existing cells. Enable `ss04` to disable healing. [Texture-healing specimen](releases/2026.11.19/specimens/Transit-Texture-Healing.svg)
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
@@ -91,6 +94,8 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 <!-- code-features -->
 | Feature / input | On | Off |
 | --- | --- | --- |
+| Paired stems / liga<br><code>coffee letter bell</code> | <img src="specimens/features/code-paired-stems-on.svg" width="460" alt="Paired stems / liga on: coffee letter bell"> | <img src="specimens/features/code-paired-stems-off.svg" width="460" alt="Paired stems / liga off: coffee letter bell"> |
+| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
 | Rust inference placeholders<br><code>&lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;</code> | <img src="specimens/features/code-rust-inference-on.svg" width="460" alt="Rust inference placeholders on: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> | <img src="specimens/features/code-rust-inference-off.svg" width="460" alt="Rust inference placeholders off: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> |
 | Rust turbofish<br><code>::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;</code> | <img src="specimens/features/code-rust-turbofish-on.svg" width="460" alt="Rust turbofish on: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> | <img src="specimens/features/code-rust-turbofish-off.svg" width="460" alt="Rust turbofish off: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
@@ -141,9 +146,9 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.18.3.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
-Choose either the variable font, the TTC collection or the individual static styles when installing a family. The available releases contain upright styles. [Editor setup](docs/editor-setup.md) and [source/build instructions](docs/build.md) are available separately.
+Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 
 ## Credits and tools
 

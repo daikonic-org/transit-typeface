@@ -14,8 +14,9 @@ import ots
 import uharfbuzz as hb
 from fontTools.ttLib import TTFont, TTCollection
 from adopt_weighting import instance
-from export_otf import STYLES, convert
+from export_otf import STYLES, convert, optical_styles
 from specimens import ROOT, specimen_families
+from font_size_calibration import NEW_POINT_SIZE, recalibrate
 
 RECIPE = json.loads((ROOT / "recipes/bundle-release.json").read_text())
 OUT = ROOT / "releases" / RECIPE["version"]
@@ -62,12 +63,11 @@ def compress_source(directory):
 
 def generate_instances(vf, font, directory, config):
     italic = bool(font["OS/2"].fsSelection & 1)
+    optical_names = optical_styles(font)
     for item in font["fvar"].instances:
         weight = item.coordinates["wght"]
         optical = item.coordinates.get("opsz")
-        style = STYLES[weight]
-        if optical is not None:
-            style += " " + {10: "Caption", 14: "Text", 36: "Display"}[optical]
+        style = " ".join(filter(None, (STYLES[weight], optical_names[optical])))
         font_style = style + (" Italic" if italic else "")
         stem = config["stem"] + "-" + font_style.replace(" ", "")
         family = config["name"]
@@ -100,7 +100,7 @@ def generate_formats(vf, directory, config):
     font.saveXML(xml)
     rebuilt = TTFont(recalcTimestamp=False)
     rebuilt.importXML(xml)
-    for tag in TABLES + ["gvar", "fvar", "HVAR"]:
+    for tag in TABLES + ["head", "STAT", "gvar", "fvar", "HVAR"]:
         if tag in font:
             assert font.getTableData(tag) == rebuilt.getTableData(tag), (vf.name, tag)
     sanitize(rebuilt)
@@ -171,13 +171,23 @@ def check():
         assert digest(OUT / "specimens" / name) == expected, name
     for key, record in report["families"].items():
         assert digest(ROOT / record["source"]) == record["source_sha256"]
+        settings = RECIPE["typography"][key]
+        previous_size = settings.get("previous_point_size", NEW_POINT_SIZE)
+        em = round(1000 * NEW_POINT_SIZE / previous_size)
         for filename in record["variable_files"]:
             path = OUT / key / "VF" / filename
             variable = TTFont(path)
+            assert variable["name"].getDebugName(16) == record["name"], filename
+            assert variable["name"].getDebugName(5) == "Version " + record["version"], filename
+            assert variable["head"].unitsPerEm == em, filename
             sanitize(variable)
             check_repeated_stems(variable, path, key)
+            if key == "system":
+                source = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
+                check_system_calibration(TTFont(source), variable, previous_size)
             web = TTFont(OUT / key / "WOFF2" / path.with_suffix(".woff2").name)
-            for tag in ("cmap", "GSUB", "GPOS", "GDEF", "fvar", "HVAR", "name"):
+            assert variable["head"].unitsPerEm == web["head"].unitsPerEm, filename
+            for tag in ("cmap", "GSUB", "GPOS", "GDEF", "fvar", "STAT", "HVAR", "name"):
                 assert variable.getTableData(tag) == web.getTableData(tag), (filename, tag)
         path = next((OUT / key / "TTC").glob("*.ttc"))
         collection = TTCollection(path)
@@ -186,6 +196,7 @@ def check():
             original = TTFont(OUT / key / "TTF" / filename)
             otf = TTFont(OUT / key / "OTF" / Path(filename).with_suffix(".otf"))
             assert "fvar" not in face
+            assert all(f["head"].unitsPerEm == em for f in (face, original, otf)), filename
             for tag in TABLES:
                 if tag in original:
                     assert original.getTableData(tag) == face.getTableData(tag), (
@@ -203,17 +214,27 @@ def check():
     from code_texture_healing import verify as verify_texture_healing
 
     verify_texture_healing(
-        ROOT / RECIPE["typography"]["code"]["font"],
+        ROOT / RECIPE["typography"]["code"]["unhealed_font"],
         OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
+        default_on=True,
     )
+
+
+def check_system_calibration(source, font, previous_size):
+    recalibrate(source, previous_size)
+    assert source["head"].unitsPerEm == font["head"].unitsPerEm
+    for tag in ("glyf", "gvar", "hmtx", "HVAR", "fvar", "STAT", "GSUB", "GPOS"):
+        assert source.getTableData(tag) == font.getTableData(tag), ("System calibration", tag)
 
 
 def check_repeated_stems(font, path, family):
     engine = hb.Font(hb.Face(path.read_bytes()))
+    caret_table = font["GDEF"].table.LigCaretList
+    carets = dict(zip(caret_table.Coverage.glyphs, caret_table.LigGlyph))
     for instance in font["fvar"].instances:
         engine.set_variations(instance.coordinates)
         glyphs = font.getGlyphSet(location=instance.coordinates)
-        for letter in "ft":
+        for letter in ("ftl" if family == "code" else "ft"):
             ligature = f"{letter}_{letter}"
             for enable, names in ((True, [ligature]), (False, [letter, letter])):
                 buffer = hb.Buffer()
@@ -223,7 +244,15 @@ def check_repeated_stems(font, path, family):
                 assert [font.getGlyphName(item.codepoint) for item in buffer.glyph_infos] == names
                 if family == "code":
                     assert sum(item.x_advance for item in buffer.glyph_positions) == 1200
+                    assert [v.Coordinate for v in carets[ligature].CaretValue] == [600]
             assert abs(glyphs[ligature].width - 2 * glyphs[letter].width) < 0.01
+        if family == "code":
+            assert font["glyf"]["i"].yMin == font["glyf"]["n"].yMin
+            accented = hb.Buffer()
+            accented.add_str("ll\u0301")
+            accented.guess_segment_properties()
+            hb.shape(engine, accented)
+            assert all(font.getGlyphName(g.codepoint) != "l_l" for g in accented.glyph_infos)
 
 
 def package():
@@ -315,8 +344,9 @@ def package():
     notes = [
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
-        "All three families add 9° italics with a single-storey `a`, a descending `f` and an open, single-storey `g`. Code’s italic `i` has a rightward foot. System Italic carries the Caption, Text and Display optical-size presets.",
-        "The `liga` feature adds optically fitted `ff` and `tt` pairs in upright and italic. Code’s pairs occupy exactly two cells. Its upright also adds optional texture healing (`ss03`) for `m` and `w` near `a`, `i`, `j` and `l`.",
+        "- **System** recalibrates point sizing in upright and italic. The new 12 pt setting matches the previous 11 pt setting and preserves the taller lowercase proportions. Caption, Text and Display now correspond to about 10.91, 15.27 and 39.27 pt.",
+        "- **Code** recalibrates 12 pt to the previous 11.5 pt scale in upright and italic. It aligns the foot of `i` with the lowercase baseline, refits the `ff` and `tt` crossbars, and adds an `ll` ligature. Each pair keeps its grid-aligned stems, two-cell advance and middle caret.",
+        "- **Code Upright** applies texture healing by default with `calt`. Wider `m` and `w` fit beside selected punctuation as well as `a`, `i`, `j` and `l`. Enable `ss04` to opt out while keeping other contextual features active.",
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]

@@ -1,4 +1,4 @@
-"""Render the real italic companions and Code's opt-in texture healing."""
+"""Render the italic companions, paired stems and Code's texture healing."""
 
 import argparse
 from html import escape
@@ -11,7 +11,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 
 from code_receiver_shapes import FORM_SHIFT
 from render_svg import render
-from specimens import Panel, specimen_families
+from specimens import ROOT, Panel, specimen_families
 
 BG = "#142330"
 CREAM = "#eeeddb"
@@ -97,7 +97,7 @@ def italic_proof(directory, families):
         rect(0, 0, 1200, 1015, BG),
         label("Daikonic Transit · 9° italic companions", 47, 52, 31, bold=True),
         label(
-            "Book 350 from the variable font files · System at optical size 14",
+            "Book 350 from the variable font files · System Text preset",
             47,
             82,
             15,
@@ -138,10 +138,15 @@ def italic_proof(directory, families):
     export(directory / "Transit-Italic-Companions.svg", body, 1200, 1015)
 
 
-def texture_proof(directory, families):
-    path = directory / "DaikonicTransitCode-TextureTrial-VF.ttf"
+def texture_proof(directory, families, *, default_on=False, font_path=None):
+    path = font_path or (directory / "DaikonicTransitCode-TextureTrial-VF.ttf")
     config = {**families["code"], "font": str(path)}
     panel = Panel("texture", config)
+    headings = (
+        ("DEFAULT · TEXTURE HEALING ON", "SS04 · TEXTURE HEALING OFF")
+        if default_on
+        else ("STANDARD", "TEXTURE HEALING · SS03")
+    )
     body = [
         rect(0, 0, 1200, 1220, BG),
         label("Transit Code · texture healing", 47, 54, 31, bold=True),
@@ -153,8 +158,8 @@ def texture_proof(directory, families):
             MUTED,
         ),
         rect(23, 112, 1154, 510, "#101821"),
-        label("STANDARD", COLS[0], 150, 13, MUTED, True),
-        label("TEXTURE HEALING · SS03", COLS[1], 150, 13, MUTED, True),
+        label(headings[0], COLS[0], 150, 13, MUTED, True),
+        label(headings[1], COLS[1], 150, 13, MUTED, True),
         f'<path d="M601 131V594" stroke="{MUTED}" stroke-opacity=".25"/>',
     ]
     rows = [
@@ -166,6 +171,17 @@ def texture_proof(directory, families):
         ("let always_wait = max(1, width);", 16, 516),
         ("// manual, railway, new_job", 14, 556),
     ]
+    if default_on:
+        rows[:3] = [
+            ("xmx  x.m  m.x  .m.", 32, 215),
+            ('xwx  x,w  w;x  "w"', 34, 283),
+            ("m.w  :m:  ?w!  iw.  :mi", 30, 350),
+        ]
+        rows[4:] = [
+            ("let layout = window.width();", 16, 477),
+            ('warn!("narrow window: {w}");', 16, 516),
+            ("// minimum, film, window, always", 14, 556),
+        ]
     for column, x in enumerate(COLS):
         for value, size, baseline in rows:
             panel.text(
@@ -175,7 +191,7 @@ def texture_proof(directory, families):
                 size,
                 350,
                 CREAM,
-                features={"ss03": bool(column)},
+                features={"ss04" if default_on else "ss03": bool(column)},
                 max_width=505,
             )
     body.append(panel.body())
@@ -217,13 +233,15 @@ def texture_proof(directory, families):
     export(directory / "Transit-Texture-Healing.svg", body, 1200, 1220)
 
 
-def italic_letterform_proof(directory, families, *, refined=False, focus=None):
+def italic_letterform_proof(
+    directory, families, *, refined=False, focus=None, italic_paths=None
+):
     height = 130 + 282 * len(families)
-    title = {"f": "Descending f", "g": "Cursive g", "ft": "Paired f and t"}.get(
+    title = {"f": "Descending f", "g": "Cursive g", "ft": "Paired stems"}.get(
         focus, "Italic letterforms"
     )
     subtitle = (
-        "9° italic · System at optical size 14"
+        "9° italic · System Text preset"
         if refined
         else "Book 350 · 9° lean · same a, f and i in both columns"
     )
@@ -251,7 +269,11 @@ def italic_letterform_proof(directory, families, *, refined=False, focus=None):
                 title = f"g FROM THE {construction} BOWL"
                 font_directory = directory / (construction + "-return")
             body.append(label(title, x, y + 64, 12, ink, True))
-            font = font_directory / (cfg["stem"] + "-Italic-VF.ttf")
+            font = (
+                italic_paths[key]
+                if italic_paths
+                else font_directory / (cfg["stem"] + "-Italic-VF.ttf")
+            )
             panel = Panel(key, {**cfg, "font": str(font)})
             panel.font(weight)
             panel.key += "-" + construction
@@ -294,12 +316,29 @@ def italic_letterform_proof(directory, families, *, refined=False, focus=None):
                     ("coffee, little, office, kettle, waffle", 14, 246),
                 ]
                 if key == "code":
+                    samples[0] = ("ff   tt   ll", 72, 139)
                     samples[2] = ("let offset = pattern.offset();", 16, 223)
-                    samples[3] = ("// buffer, layout_settings", 14, 250)
+                    samples[3] = ("// buffer, layout_settings, collect", 14, 250)
             for text, size, baseline in samples:
                 panel.text(text, x, y + baseline, size, weight, ink, max_width=506)
             body.append(panel.body())
-    export(directory / "Transit-Italic-Letterforms.svg", body, 1200, height)
+    name = "Paired-Stems" if focus == "ft" else "Italic-Letterforms"
+    export(directory / (name + ".svg"), body, 1200, height)
+
+
+def release_proofs(directory, families):
+    directory.mkdir(parents=True, exist_ok=True)
+    italic_paths = {
+        key: (ROOT / cfg["font"]).with_name(cfg["stem"] + "-Italic-VF.ttf")
+        for key, cfg in families.items()
+    }
+    for focus in (None, "ft"):
+        italic_letterform_proof(
+            directory, families, refined=True, focus=focus, italic_paths=italic_paths
+        )
+    texture_proof(
+        directory, families, default_on=True, font_path=ROOT / families["code"]["font"]
+    )
 
 
 if __name__ == "__main__":
@@ -312,13 +351,16 @@ if __name__ == "__main__":
     italic_mode.add_argument("--descending-f", action="store_true")
     italic_mode.add_argument("--cursive-g", action="store_true")
     italic_mode.add_argument("--paired-stems", action="store_true")
+    italic_mode.add_argument("--release", action="store_true")
     args = parser.parse_args()
     families = specimen_families()
     focus = next(
         (key for key, on in (("f", args.descending_f), ("g", args.cursive_g), ("ft", args.paired_stems)) if on),
         None,
     )
-    if args.compare_letterforms or args.refined_letterforms or focus:
+    if args.release:
+        release_proofs(args.italic_directory.resolve(), families)
+    elif args.compare_letterforms or args.refined_letterforms or focus:
         italic_letterform_proof(
             args.italic_directory.resolve(), families,
             refined=args.refined_letterforms or focus is not None,

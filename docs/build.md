@@ -54,10 +54,7 @@ See [scaling-lineage.md](scaling-lineage.md) and `recipes/weights.json` for the 
 
 ### Current specimen font selection
 
-specimens/font-selections.json can select an approved preview via its
-selection.json without changing the released-font configuration in family.json.
-The main Code panel currently uses preview1.032 and labels that status. The
-specimen packager resolves the same selection and verifies its font hash.
+`specimens/font-selections.json` selects the coordinated release fonts for the panels and feature samples. The specimen packager resolves the same selection and verifies its font hashes.
 
 ```sh
 python tools/specimens.py
@@ -90,7 +87,11 @@ The selected 1.032 preview freezes the opening-quote lifetime and contextual pip
 
 ## Coordinated releases
 
-Publish all three fonts together as normal releases; do not create preview releases. `recipes/bundle-release.json` records the release version and tag. `python tools/code_angle_pairs.py` derives Code 1.034 from the preserved 1.032 font without changing drawings. `python tools/bundle_release.py build` freezes the selected fonts, creates named-weight TTC collections and editable TTX snapshots, and checks reconstruction and collection parity. Regenerate specimens and OTFs from the selected fonts, then `python tools/release.py` packages all families by format. `python tools/bundle_release.py check` is the release CI gate. SOURCE archives contain full editable TTX; native Code Glyphs/UFO adoption beyond 1.017 remains pending.
+Publish Sans, System and Code together in a normal release. `recipes/bundle-release.json` records the source cuts, release versions and tag. `python tools/stage_typography.py` builds the selected variable fonts and updates the specimen selection.
+
+Regenerate the panels and README examples from that selection. Run `python tools/italic_texture_proofs.py releases/<version>/specimens --release` for the release-specific PNG, PDF and SVG proofs. Then run `python tools/bundle_release.py build` to generate and validate the static TTF and OTF styles, TTC collections, WOFF2 and editable TTX. `python tools/bundle_release.py package` assembles and checks the format archives in `.dist/bundle/<version>/`.
+
+The Fonts workflow runs `python tools/bundle_release.py check` against the committed artifacts. The SOURCE archive contains complete editable TTX for the current release. The native Code Glyphs and UFO sources capture Code 1.017.
 
 Code angle matching resolves innermost pairs first, preserving nesting depth in temporary glyph forms, then propagates a generic parent’s style only inside its matched closing boundary. Cleanup restores ordinary glyphs for unmatched angles. The finite font lookup system supports 16 levels and 60 non-mark glyphs per pair. The normal and compact lifetime opener preserve their existing positioning; unmatched compact openers use an ordinary short angle in the shifted cell.
 

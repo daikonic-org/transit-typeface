@@ -18,6 +18,22 @@ OUT = ROOT / "exports/otf"
 STYLES = {300: "Light", 350: "Book", 400: "Regular", 500: "Medium", 600: "SemiBold"}
 
 
+def optical_styles(font):
+    """Resolve the named optical settings in the same coordinates as fvar."""
+    if not any(axis.axisTag == "opsz" for axis in font["fvar"].axes):
+        return {None: ""}
+    stat = font["STAT"].table
+    index = next(
+        i for i, axis in enumerate(stat.DesignAxisRecord.Axis) if axis.AxisTag == "opsz"
+    )
+    return {
+        getattr(value, "NominalValue" if value.Format == 2 else "Value"):
+            font["name"].getDebugName(value.ValueNameID)
+        for value in stat.AxisValueArray.AxisValue
+        if value.Format in (1, 2, 3) and value.AxisIndex == index
+    }
+
+
 def convert(font, path):
     f = deepcopy(font)
     f.recalcTimestamp = False
@@ -122,11 +138,7 @@ def main():
         if key in optical:
             source = ROOT / optical[key]
         original = TTFont(source)
-        optical_values = (
-            [10, 14, 36]
-            if any(a.axisTag == "opsz" for a in original["fvar"].axes)
-            else [None]
-        )
+        optical_values = optical_styles(original)
         weights = sorted({i.coordinates["wght"] for i in original["fvar"].instances})
         out = OUT / ("optical-trial" if args.optical else "current") / key
         out.mkdir(parents=True, exist_ok=True)
@@ -135,9 +147,7 @@ def main():
             for size in optical_values:
                 loc = {"wght": weight, **({"opsz": size} if size else {})}
                 f = instantiateVariableFont(deepcopy(original), loc, inplace=True)
-                style = STYLES[weight] + (
-                    {10: " Caption", 14: " Text", 36: " Display"}[size] if size else ""
-                )
+                style = " ".join(filter(None, (STYLES[weight], optical_values[size])))
                 family = original["name"].getDebugName(16)
                 stem = family.replace(" ", "")
                 for r in f["name"].names:

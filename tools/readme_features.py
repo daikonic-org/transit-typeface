@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 import uharfbuzz as hb
-from specimens import ROOT, DATA, Panel, specimen_families
+from specimens import ROOT, DATA, Panel, specimen_families, weight_location
 from code_balance_study import bind
 from code_logic_shortcuts import COMMANDS
 
@@ -36,6 +36,14 @@ FEATURES = {
         ),
     ],
     "code": [
+        (
+            "paired-stems", "Paired stems / liga", "coffee letter bell",
+            {"liga": True}, {"liga": False},
+        ),
+        (
+            "texture-healing", "Texture healing", "film x.m .w.",
+            {"ss04": False}, {"ss04": True},
+        ),
         ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
         ("rust-turbofish", "Rust turbofish", "::<T> ::<_> ::<[_]>", ON, OFF),
         (
@@ -89,7 +97,7 @@ def shaped(font, text, features):
     data = BytesIO()
     font.save(data)
     h = hb.Font(hb.Face(data.getvalue()))
-    h.scale = (1000, 1000)
+    h.scale = (font["head"].unitsPerEm,) * 2
     b = hb.Buffer()
     b.add_str(text)
     b.guess_segment_properties()
@@ -187,7 +195,7 @@ def main(check=False):
     for key, c in cfg.items():
         source = ROOT / c["font"]
         f = TTFont(source)
-        loc = {"wght": 350, **({"opsz": 14} if key == "system" else {})}
+        loc = weight_location(f, 350)
         fonts[key] = instantiateVariableFont(f, loc, inplace=True)
         manifest["sources"][key] = {
             "font": c["font"],
@@ -273,11 +281,11 @@ def main(check=False):
         "    label: &'a str,",
         "}",
         "",
-        "fn labels<'a>(rows: &'a [IoRecord<'a>]) -> Vec<Vec<&'a str>> {",
+        "fn collect_labels<'a>(rows: &'a [IoRecord<'a>]) -> Vec<Vec<&'a str>> {",
         "    rows.iter()",
         "        .filter(|row| row.user_id != 0)",
         "        .take(1)",
-        '        .map(|row| vec![row.label, "user@host"])',
+        '        .map(|row| vec![row.label, "film@host"])',
         "        .collect()",
         "}",
     ]

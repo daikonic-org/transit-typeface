@@ -1,4 +1,4 @@
-"""Build an independent ss03 texture-healing candidate for upright Transit Code."""
+"""Build contextual texture healing for upright Transit Code."""
 
 import argparse
 from hashlib import sha256
@@ -25,6 +25,8 @@ DONORS = "aijl"
 DONOR_SHIFT = 18
 WIDTH = 600
 FEATURE = "ss03"
+OFF_FEATURE = "ss04"
+PUNCTUATION = '.,:;!?"‘’“”'
 # The preserved 550-unit A Bowl Trial moved the left bowl edge by 20 units.
 # Scale that correction from its x-height to the current Code x-height.
 BOWL_RETURN = 20 * 530 / 473
@@ -75,7 +77,7 @@ def donor_adjustment(letter, x, y):
     return 32 * (1 - ramp(x, 152, 318)) * hook
 
 
-def build(source, output, *, trial=True):
+def build(source, output, *, trial=True, default_on=False):
     font = TTFont(source, recalcTimestamp=False)
     for letter in DONORS:
         add_centered_donor(font, letter)
@@ -101,6 +103,11 @@ def build(source, output, *, trial=True):
     }
     groups["FromLeft"] = groups["DonatedLeft"] + groups["DonatedCenter"]
     groups["FromRight"] = groups["DonatedRight"] + groups["DonatedCenter"]
+    if default_on:
+        cmap = font.getBestCmap()
+        punctuation = [cmap[ord(char)] for char in PUNCTUATION]
+        groups["FromLeft"] += punctuation
+        groups["FromRight"] += punctuation
     for group, names in groups.items():
         rules.append(f"@{group} = [" + " ".join(names) + "];")
     marks = set(font["GDEF"].table.GlyphClassDef.classDefs)
@@ -114,8 +121,9 @@ def build(source, output, *, trial=True):
     rules.append(
         "@HealingQuotes = [quotesingle quotesingle.lifetime quotesingle.lifetime.compact];"
     )
+    activate = "calt" if default_on else FEATURE
     rules += [
-        "feature ss03 {",
+        f"feature {activate} {{",
         "lookup GiveSpace {",
         "ignore sub @Donor' @HealingMarks;",
         "ignore sub @HealingQuotes @Donor';",
@@ -132,10 +140,22 @@ def build(source, output, *, trial=True):
         "sub @FromLeft @Receive' by @ReceiveLeft;",
         "sub @Receive' @FromRight by @ReceiveRight;",
         "} TakeSpace;",
-        "} ss03;",
+        f"}} {activate};",
     ]
+    if default_on:
+        rules.extend((
+            f"feature {FEATURE} {{ lookup GiveSpace; lookup TakeSpace; }} {FEATURE};",
+            f"feature {OFF_FEATURE} {{",
+        ))
+        for letters, third in ((DONORS, "center"), (RECEIVERS, "both")):
+            for letter in letters:
+                names = " ".join(f"{letter}.heal.{side}" for side in ("left", "right", third))
+                rules.append(f"sub [{names}] by {letter};")
+        rules.append(f"}} {OFF_FEATURE};")
     add_features(font, "\n".join(rules))
     label_stylistic_set(font, FEATURE, "Texture healing")
+    if default_on:
+        label_stylistic_set(font, OFF_FEATURE, "Disable texture healing")
     if trial:
         name_trial(font)
     font.save(output)
@@ -162,10 +182,14 @@ def name_trial(font):
             )
 
 
-def verify(source, output):
+def verify(source, output, *, default_on=False):
     font = TTFont(output)
     original = TTFont(source)
     assert font.getBestCmap() == original.getBestCmap()
+    if font["glyf"]["i"].yMin == font["glyf"]["n"].yMin:
+        from code_i_baseline import align_i_baseline
+
+        align_i_baseline(original)
     for name in original.getGlyphOrder():
         if name in RECEIVERS:
             continue
@@ -187,14 +211,26 @@ def verify(source, output):
         "&'a Vec<Vec<T>> &'mi &'im",
         "[<>] <[]>",
         "áw mą mí j\u0301w",
-        "a.w i m j/w xmx xwx",
+        "i m j/w xmx xwx" if default_on else "a.w i m j/w xmx xwx",
     ]
+    on = {} if default_on else {FEATURE: True}
+    off = {OFF_FEATURE: True} if default_on else {FEATURE: False}
+    punctuation_cases = []
+    if default_on:
+        for char, letter in product(PUNCTUATION, RECEIVERS):
+            punctuation_cases.extend((
+                (f"{char}{letter}x", ".heal.left"),
+                (f"x{letter}{char}", ".heal.right"),
+                (f"{char}{letter}{char}", ".heal.both"),
+            ))
+        cases.extend(value for value, _ in punctuation_cases)
 
     def shape(engine, tt, value, features):
         buffer = hb.Buffer()
         buffer.add_str(value)
         buffer.guess_segment_properties()
-        hb.shape(engine, buffer, features)
+        # Paired stems have their own checks. Inspect individual donor cells here.
+        hb.shape(engine, buffer, {"liga": False, **features})
         return [
             (tt.getGlyphName(info.codepoint), pos.x_advance, pos.x_offset, pos.y_offset)
             for info, pos in zip(buffer.glyph_infos, buffer.glyph_positions)
@@ -234,13 +270,20 @@ def verify(source, output):
         for lifetime, logic in product((False, True), repeat=2):
             features = {"calt": True, "ss01": lifetime, "ss02": logic}
             for value in cases + controls:
-                assert shape(engine, font, value, features) == shape(
+                assert shape(engine, font, value, features | off) == shape(
                     baseline, original, value, features
                 )
             for value in controls:
-                assert shape(engine, font, value, features | {FEATURE: True}) == shape(
-                    engine, font, value, features
+                assert shape(engine, font, value, features | on) == shape(
+                    engine, font, value, features | off
                 )
+        for value, suffix in punctuation_cases:
+            enabled = shape(engine, font, value, on)
+            disabled = shape(engine, font, value, off)
+            assert enabled[1][0] == value[1] + suffix, (weight, value, enabled)
+            assert enabled[0] == disabled[0] and enabled[2] == disabled[2]
+            assert shape(engine, font, value, {FEATURE: True}) == enabled
+            assert shape(engine, font, value, {FEATURE: True} | off) == disabled
         for letter in RECEIVERS:
             for case, suffix in (
                 ("x{}x", ""),
@@ -249,7 +292,7 @@ def verify(source, output):
                 ("i{}i", ".heal.both"),
             ):
                 context = case.format(letter)
-                actual = shape(engine, font, context, {FEATURE: True})
+                actual = shape(engine, font, context, on)
                 assert actual[1][0] == letter + suffix, (context, actual)
         for case, position, expected in (
             ("im", 1, "m.heal.both"),
@@ -257,7 +300,7 @@ def verify(source, output):
             ("lmx", 1, "m.heal.left"),
             ("xml", 1, "m.heal.right"),
         ):
-            actual = shape(engine, font, case, {FEATURE: True})
+            actual = shape(engine, font, case, on)
             assert actual[position][0] == expected, (case, actual)
         for donor in DONORS:
             for case, position, side in (
@@ -265,10 +308,10 @@ def verify(source, output):
                 ("m" + donor, 1, "right"),
                 ("m" + donor + "m", 1, "center"),
             ):
-                actual = shape(engine, font, case, {FEATURE: True})
+                actual = shape(engine, font, case, on)
                 assert actual[position][0] == donor + ".heal." + side, (case, actual)
         for value in cases:
-            shaped = shape(engine, font, value, {FEATURE: True})
+            shaped = shape(engine, font, value, on)
             assert all(
                 advance == WIDTH and not x and not y for _, advance, x, y in shaped
             )
@@ -298,6 +341,8 @@ def verify(source, output):
         "syntax_controls": controls,
         "advance": WIDTH,
         "feature": FEATURE,
+        "default_on": default_on,
+        "opt_out_feature": OFF_FEATURE if default_on else None,
         "source_sha256": sha256(source.read_bytes()).hexdigest(),
         "sha256": sha256(output.read_bytes()).hexdigest(),
     }

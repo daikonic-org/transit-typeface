@@ -18,7 +18,6 @@ from validate import TOKENS as EXISTING
 def run(path, text, loc, features=None):
     font = TTFont(path)
     h = hb.Font(hb.Face(path.read_bytes()))
-    h.scale = (1000, 1000)
     h.set_variations(loc)
     b = hb.Buffer()
     b.add_str(text)

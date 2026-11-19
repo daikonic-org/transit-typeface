@@ -1,23 +1,23 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/2026.11.18.3/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "7cdb231ba4c007b5dd68e9aabfe0257bbec506916c1b045cb4bd812c5e79587a",
+      "font": "releases/2026.11.19/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "63a564ddcca9d7cc183464106e65528a755a2b38ffe6c2b6d8a31c7850053f1b",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/2026.11.18.3/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "862a2011b6d949ed9d6a569b85af3eac56213a2a0e501e6b96432836acea64bc",
+      "font": "releases/2026.11.19/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "0633745b18afdac74a27b3f02bd4da19cc996fe3b85c00d37a3854160d58672f",
       "location": {
         "wght": 350,
-        "opsz": 14
+        "opsz": 15.272720336914062
       }
     },
     "code": {
-      "font": "releases/2026.11.18.3/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "bd16c984496eeb6292e81bcf28c6f06828836f62b2a74923f6a3712ac0ae5a11",
+      "font": "releases/2026.11.19/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "21dcf11ac498cbf3259f8fa821195b8e6d5d1f0959f00f1dbfa9cec76f31ab55",
       "location": {
         "wght": 350
       }
@@ -375,6 +375,374 @@
         [
           "zero",
           574,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-paired-stems": {
+      "text": "coffee letter bell",
+      "on_features": {
+        "liga": true
+      },
+      "off_features": {
+        "liga": false
+      },
+      "on_shaping": [
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "o",
+          600,
+          0,
+          0
+        ],
+        [
+          "f_f",
+          1200,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "t_t",
+          1200,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "r",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "l_l",
+          1200,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "c",
+          600,
+          0,
+          0
+        ],
+        [
+          "o",
+          600,
+          0,
+          0
+        ],
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "r",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "b",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-texture-healing": {
+      "text": "film x.m .w.",
+      "on_features": {
+        "ss04": false
+      },
+      "off_features": {
+        "ss04": true
+      },
+      "on_shaping": [
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "l.heal.left",
+          600,
+          0,
+          0
+        ],
+        [
+          "m.heal.left",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "m.heal.left",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "w.heal.both",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "l",
+          600,
+          0,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "w",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
           0,
           0
         ]
@@ -2731,13 +3099,13 @@
           0
         ],
         [
-          "m",
+          "m.heal.right",
           600,
           0,
           0
         ],
         [
-          "a",
+          "a.heal.right",
           600,
           0,
           0
@@ -3578,64 +3946,68 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "c87dcfe92c1c5914a3c6e27a4c37cc508898c79b0321604d17c2266eaa377eb9",
-    "code-Features.svg": "cb0ac3d68270c61442648e74767157dae3a2e29056a503d408dcbe249253afe2",
-    "code-access-off.svg": "15225cebfd2a3488aa144066b81121b9f748d4787ce9222e79a13d3e44a01e87",
-    "code-access-on.svg": "86357f9ba5225d9cda56aa869607194c13c73b6d50c2d08bab8e0b5547e68af3",
-    "code-arrows-off.svg": "6bedd46ac934acebaaf3cb58553c9d0f5b60a5237fc0725812717a904cfebcac",
-    "code-arrows-on.svg": "4be9439aa1dec2e344121c8136316c429d87e0b93e63b32fe1c0ed127783147e",
-    "code-assignment-off.svg": "d856dbf094c5efcc58238954fd767b5ea4bd89f0029dfb580cfa43f9c8bec385",
-    "code-assignment-on.svg": "6bf9f23497b9002dc47303082d4f7059274330585e1d4ab6f1bc446a048b8fbf",
-    "code-at-repeat-off.svg": "28674eea5dd5abd91eb270d0aba3d1c7e501222c037edcc11da0e518d7ebee2f",
-    "code-at-repeat-on.svg": "98a1539247285a007c22e02c9bfbf6a4a03426e784bd80c2aa62ca30122088d0",
-    "code-command-box.svg": "2f5a549444d6ce5b54f6a4fa6115febb406a2a90dc7ae6002087445b6738cc2b",
-    "code-command-diamond.svg": "72fd0bba88bc7cabb15b74359002864eb78cf982f66e3595e51f0fc3d257cd8f",
-    "code-command-exists.svg": "789197fedf158a41c2b14638ccbed0899e41609eefc79a6251ee1bc096463e92",
-    "code-command-forall.svg": "160c2f87ecfa6e2b1b5ef3449f8e58cd05fe0d66c075d5bd374efc7861a4fe5b",
-    "code-command-not.svg": "a6b5802d510b2c3ca518cfbeb82b4e49bd1666df1e584f985691c4d3b0ffb691",
-    "code-comparisons-off.svg": "f28c0085db456652504540fde0377da4f611e59f6304295b9b7cebca1e78e9ca",
-    "code-comparisons-on.svg": "5c424134416368fe617ede0fb65be47315dbfa188cffe1a163f72d4baa2dce91",
-    "code-ellipsis-off.svg": "b744a83427f5018ef820e42469652b12b43a586d6932bec54c591b91771c5c8c",
-    "code-ellipsis-on.svg": "fb04b8083f14456fc9f91a649845ff5e05d6644bb472d08dd2349698d062f545",
-    "code-generics-off.svg": "bda082a993d3a59da8dee508b89465fdb8f26c63a1a4a78a46a9e8c601c803c6",
-    "code-generics-on.svg": "0cc5645a0572abcadd1607a4f94c39977ee89fc0c02f73523e78287be7d7d7ad",
-    "code-hashes-off.svg": "5d4ff56763ba71306320574ad2ff6690f53d3b8f864a878b5ff239456ee60cbd",
-    "code-hashes-on.svg": "b8a15ec7845c5988f3506633a0b632b715983ecc6044f410b6d9f91d36a47979",
-    "code-interpolation-off.svg": "a9fe4f3cd122d41866ae81f77af5ba1141250e5cdd88d590ded469370090319f",
-    "code-interpolation-on.svg": "54add49934029664d0707943516559e57cc2db07e514d3e9c44e6263b592fa32",
-    "code-lifetime-literals-off.svg": "f876df6c8d5a7c05bec460902d766f21d489537a7fc432883cd7bca851c45ae6",
-    "code-lifetime-literals-on.svg": "a34976ca3a66c3544734fdf89988e3ec79c4d05019b10f44b5bb5e47336d09ce",
-    "code-lifetime-placement-off.svg": "03c41dded227a4a9a517bb98eeb7741993cd8e7b8c6b3936fee09523fb28e16c",
-    "code-lifetime-placement-on.svg": "735b9c1f154f91ba958d98e89a47d7477acb793c62a2e1218cf0b57670cf2395",
-    "code-lifetimes-off.svg": "262a5942e23de25931816624f157a0018bae8fd107b0917d6a26218564f34005",
-    "code-lifetimes-on.svg": "7a69cb81af44a6cfdea30a73bdf3223b15a09b4f86b92d46c356f29c7b302b8f",
-    "code-logic-not-off.svg": "83357b06a4a1025de6e1e6c49c1126b62ac3580752797ddccd08e49a7b63cf5d",
-    "code-logic-not-on.svg": "01df8863ea7e142d0d517f7492587aa6cbebea97f2d8e34491d7af4299077c80",
-    "code-logic-off.svg": "6f6ec8e9848ea7d71a2810a2bf79f3e62866b05d49169eed72e40317a540cead",
-    "code-logic-on.svg": "80fa824ee44fdd59232deed73e0417b95cc81e01d63b13f59e3ea8aef166d539",
-    "code-logic-order-off.svg": "d43ccabee6bf67823c12b9618e267320878244bbc46b4cd40049be27408248fd",
-    "code-logic-order-on.svg": "7e515686181e0b1b982b09171ae495b5bded467394b440b9f646cceb980cc2fd",
-    "code-optical-off.svg": "6c5fc638efe17bc2a27ebd1b62dd73aca32f799f765df590e84f1489d79c1a9d",
-    "code-optical-on.svg": "d3b4568979d38c9fd9e95602371dc71909ab0611e81e782f131f2b9ab9ab34d9",
-    "code-pipe-delimiters-off.svg": "0ab00cbea96c7900d59743498eb61b446dccfe1039f22f63b38bb07293760488",
-    "code-pipe-delimiters-on.svg": "a75243c8678a21c24e46c8b1edb8cf52dadfa88d30ea325d2e3e61e758b83305",
-    "code-ranges-off.svg": "5db171d5880a1dfebe97b07eea172562c167f2d15c5b88a6038ec4589a64a523",
-    "code-ranges-on.svg": "e02c61d613f296d735f5a0c09d7c298b05a03f92df09551f910b87ac1e2eeeff",
-    "code-rust-inference-off.svg": "585f8df149036e6a86eba4649a85b2e86875af4f9f48ccf5a3e98721a5300e61",
-    "code-rust-inference-on.svg": "e6fb115efec8a8a1c8d5b39d503845631c13711a1684e6663cd1c156a76bd5c9",
-    "code-rust-turbofish-off.svg": "c42ff46f3a20cd7a6062c97b88cce1735c1b8f7e2910d5318a31bb4b6578b51e",
-    "code-rust-turbofish-on.svg": "df23baf74132d903b98180962b9f0593cf8a92f62f7437d51a636cd223df6d5d",
-    "code-scope-off.svg": "53c48f26c7e3fb35ef653ced9cced1eaffe3bc361baa47d641e4f1995d39ec6e",
-    "code-scope-on.svg": "48677e60f05e4b98138d95c2fe45f86e7fcc37b036bbc472f6b6c0e8651d3ec3",
+    "Code-Characters.svg": "90c5e1a4baf8b24c3e3027583282ce018d6b642630bb450bd07ef815d8b75adb",
+    "code-Features.svg": "97563fd5459c8b93ac451e1bd4a5f1c189870856780cc0cfea92014055dfd80b",
+    "code-access-off.svg": "51c36197e4ae4f2973267bab53916f5739ab278d03f59a7ddf2c792c2047cbec",
+    "code-access-on.svg": "8b6f96ed1cf2bac8d0d7fa221aef3bb4053313c7534f3953b197f40bf1b959c5",
+    "code-arrows-off.svg": "f0c84890b357e99b770b4a201cbdc0a6e1309b1970dbc3d6b0f4dde96e0a3b89",
+    "code-arrows-on.svg": "1e598551c8c1a23503c20263e1c9fdf50d248d34310ee313ab08d3d3acd11c17",
+    "code-assignment-off.svg": "95aef514a7c309273803b5da82ff92b90e89b18ee5ced020134ec0265f501805",
+    "code-assignment-on.svg": "2903cf1d2541370380ba60dee28f4c5ce19c6bdef502d884fbdd1607a12bce43",
+    "code-at-repeat-off.svg": "920c168b079e57b39ddbf35706471f75194bca521967b977e521d72e4ee3f2dc",
+    "code-at-repeat-on.svg": "8b2fe2ae1505a3206625c6c02d45935072bb77ba1d5141e5440a02a1e5b6df6c",
+    "code-command-box.svg": "d75fcb4683184a97ff3b0c5b66ac5a20eded92b11bfd0bd0b4a1cc5ccd7d4a4e",
+    "code-command-diamond.svg": "2545b9257d9521dad06b302036d68e3aff76642b9040aada24c5fc63e8d8d98a",
+    "code-command-exists.svg": "a2a90cda068651d5613c503c3e5c81df33ad11b23e040abf6eb3dbbab4f1e1d2",
+    "code-command-forall.svg": "593b5b60895c5999d002ed8af6063812a5f73f024e387ba48cce600ed3da9565",
+    "code-command-not.svg": "d58bcad28de8906c444fbdc031ecd2fa1bd4749865ba84178f3b51e2135c4438",
+    "code-comparisons-off.svg": "da6e4e573519a4096f1917e729285a335cd54bf73dce8848eb00fc54da5bfc3d",
+    "code-comparisons-on.svg": "df426d02af9e6ee326c15bf38713881a6244992d8bbb3e1c1a7b88df8493026d",
+    "code-ellipsis-off.svg": "b3243c8f4939c136be32cbd46ac97ee7d8207f560f168e66ef2dd924346557e5",
+    "code-ellipsis-on.svg": "a24b2678f1e256fd31e738e034c9f1c273ad06a6eabb85a7ac937b14f09fe6e6",
+    "code-generics-off.svg": "c028b3620778da7ebd8b213b3b2fac9ca8f68d589e043cf54212a84a18f25ea0",
+    "code-generics-on.svg": "a0f4daff49e8b4e065254641c744b92d843f50835b6871f5c95aaf492e915865",
+    "code-hashes-off.svg": "98ffe883c9e184f1cd3ed6960278ba783025a4b79f4bad657bb51647e541bc0b",
+    "code-hashes-on.svg": "412844382ed440d8107bfe6973421db195552e13bf4f52b033218a0d8e0eeb3f",
+    "code-interpolation-off.svg": "ec4ed1a83a55090aa8abb7680e4595163898f93aee6e9971badf502feaf9b93a",
+    "code-interpolation-on.svg": "f59406a2e0a7d540544ad75486f830e7f57424bfd8541160ab18f82708ee0c07",
+    "code-lifetime-literals-off.svg": "c509ad4eec09bb4709023a2e4fc7cbfcae43eb03d6deec5d58a69826397d7fd8",
+    "code-lifetime-literals-on.svg": "9d640c7eaed4ea6c6c7df8addf7847a075b1e3a207bc7ace7356d4b2b716893d",
+    "code-lifetime-placement-off.svg": "522fbe701ba191f69507cc481106ea82ad0d42171466ffc2f6c9291a29d4c468",
+    "code-lifetime-placement-on.svg": "2afda4dcf1b7eb2667880d843740a1ab88fc08dc23a3906c91b033c96795acac",
+    "code-lifetimes-off.svg": "4d0fc8e77b3935e6402fded5aadd8ce99885d728837574421b6b358c08d7bb65",
+    "code-lifetimes-on.svg": "b76a138658688a677860dee7ceb0fae017f15a2cb2219d2ab2976677960771d8",
+    "code-logic-not-off.svg": "cfb3235198929dfec6cb47c50064edddc784b007ac4727008c908fa48cdee970",
+    "code-logic-not-on.svg": "8b66fe9045fa15ce61beee2fa5c914ad670b190c476bde8b7d1338bc161ef381",
+    "code-logic-off.svg": "e0a93d8fd4a10fca592cffaf78a368300793216457349e22a5c876f5fe264dfb",
+    "code-logic-on.svg": "66448db51d6694d0a1a8278e062c47f55c3342670a2f3377aaec2f19c32d00a7",
+    "code-logic-order-off.svg": "b2961319e4c9eb9b3eb99b7deeedecc4f977dd21dda3138aef977ea557c569da",
+    "code-logic-order-on.svg": "66cb504e32876625471d377e0a803ac855978a46e11608f85e89f04b6ce884e2",
+    "code-optical-off.svg": "cf35807545f139a420e219f3fdb0d00caca037a634311fdad46f264a809a55ab",
+    "code-optical-on.svg": "31052e5f3efa27763cb20603a012df0d545b3e7f2b94f9d6ff4da3034123c9b0",
+    "code-paired-stems-off.svg": "804b3c11698a09cec293558f1d6a7ae526ae23f90696a8803f4e4d6d14d53aea",
+    "code-paired-stems-on.svg": "d197dfca3b54d7370d32cda94e5adc39027385e23711c6769618dc0b7b067de6",
+    "code-pipe-delimiters-off.svg": "db0895449fa3d7d0225a21f48a8016c1026b21e2717efc68f7f5fc9f8b0fea76",
+    "code-pipe-delimiters-on.svg": "f950d9e0c2364620c1e2d4ded166bba157dda2652c9a2d9a9bd5f286a495d8ce",
+    "code-ranges-off.svg": "87508c8d4f27346d6ac85fb476b3efa91dfc8a7632c917c7516c94c95be01889",
+    "code-ranges-on.svg": "36eb655087882e0eed1006764b2022a9658694d107584c84fae784b3c3c06bcc",
+    "code-rust-inference-off.svg": "e564d225bf6a893b0bef5ebc8c48621fdfe31e0378e5f224d6a712e9b1341b1f",
+    "code-rust-inference-on.svg": "8368bb33e824811f6aef722be98d1c9cab09f31aa7db4599291b9e9493e8b9c2",
+    "code-rust-turbofish-off.svg": "d960b3d6ec51a8515b827487d40b45ed317708fe4f95bfe8cddcbd59727a2bf0",
+    "code-rust-turbofish-on.svg": "b171857617bacabaa7950fe1137368fda30e99ef2c8baff61f9928d6eb29335a",
+    "code-scope-off.svg": "8e9a94b340e2b816042ef6d9bffc88b72e5e3ca9121c74fa252c4a7b8f6d23d3",
+    "code-scope-on.svg": "6fe0ba96330599802b1466927d669acb62657b9538e9f86256996e7d520d39de",
+    "code-texture-healing-off.svg": "8f1fb0335c79cf0859de7b2e0a578fe6348440f8f655da8a2e8a5c1108fbecca",
+    "code-texture-healing-on.svg": "c357605878e84a007baadebc39d729e15790e05d76fe5a045954c1f5a302c056",
     "sans-Features.svg": "7e0a80d968316e0a30f79304b7d5cb1125a71e27dfe4f43880466d588a475c0d",
     "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
     "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
     "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
     "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
-    "system-Features.svg": "0b1c2c3b625221a18601561f6804f17d806041768f0e54f214b68b64fa468836",
-    "system-standard-off.svg": "0f8ea230e630f18de9c7003993140f1658e9de3bc0c6a7c92d6f3d4e146a7c0b",
-    "system-standard-on.svg": "1d4c0f647b12a3ab566fb37b999113b302374a20b1bcaf5246deb06471605702",
-    "system-tabular-off.svg": "cac0aa4514e7e12dad72f2bdc2bc8dc154121d559b9c8e441cf4a3e18af3d3ee",
-    "system-tabular-on.svg": "dae4fdf911e0d8d9973ee50899022a6961e307e2973ce2abb0f4ca7366da6f32"
+    "system-Features.svg": "cdfdeedd4e06c02f01240dc941994f782271cd5228ddc8c8375166f9593288bf",
+    "system-standard-off.svg": "6ad08e7356bb33dd1a946b8840cbfd6a64bc4135e79a8b2b1d309fe36353f34d",
+    "system-standard-on.svg": "838a96eb4c216f995bd720cd57e7fface9a106b01eb3becb611981daa3500327",
+    "system-tabular-off.svg": "bcfc0a34d706b624d3eeb28e9e07b23bac25522d313fa6cb705e70b9b6960bb0",
+    "system-tabular-on.svg": "07b31b6825ef8a8eb7ddea6ba126a368cc8bf5090cc6aec1bdf39425a972c896"
   }
 }
