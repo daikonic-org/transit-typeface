@@ -140,7 +140,7 @@ def build():
     return OUT
 
 
-def check(path):
+def check(path, *, extended=True):
     from check_rust_lifetimes import CASES
 
     font = TTFont(path)
@@ -209,7 +209,7 @@ def check(path):
                 stem,
             )
         for calt in [False, True]:
-            for enabled in [False, True]:
+            for enabled in ([False, True] if extended else [False]):
                 for text, count in CASES.items():
                     shaped = run(
                         path, text, {"wght": w}, {"calt": calt, "ss01": enabled}
@@ -237,7 +237,7 @@ def check(path):
                         text,
                         shaped,
                     )
-        for letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_é":
+        for letter in ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_é" if extended else ""):
             for prefix in ["'", "&'", "<'"]:
                 shaped = run(
                     path, prefix + letter, {"wght": w}, {"calt": True, "ss01": True}
@@ -266,21 +266,21 @@ def check(path):
                     ink.bounds,
                 )
         report.append({"weight": w, "normal": list(a), "extended": list(b)})
-    (PROOF.parent / "extension-checks.json").write_text(
-        json.dumps(report, indent=2) + "\n"
-    )
+    if extended:
+        (PROOF.parent / "extension-checks.json").write_text(
+            json.dumps(report, indent=2) + "\n"
+        )
     result = {
         "font": str(path.relative_to(ROOT)),
         "weights": report,
-        "feature": "ss01",
-        "label": "Extended Rust lifetime hooks",
+        "feature": "ss01" if extended else "calt",
+        "label": "Extended Rust lifetime hooks" if extended else "Rust lifetime hooks",
         "default": "left downward hook in its own cell",
-        "toggle": "extend stroke to680; opt-in marker and leaders +40x/+45y; advances fixed",
         "advance": "600 per input character",
     }
-    print(
-        "Lifetime hooks: 11 weights, contextual selection, fixed cells, anchored extension and ASCII/é collision checks passed"
-    )
+    if extended:
+        result["toggle"] = "extend stroke to680; opt-in marker and leaders +40x/+45y; advances fixed"
+    print("Lifetime hooks: 11 weights, contextual selection and fixed cells verified")
     return result
 
 

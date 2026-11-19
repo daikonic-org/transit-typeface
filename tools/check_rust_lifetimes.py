@@ -142,15 +142,15 @@ def check(path):
     if "quotesingle.lifetime.compact" not in f.getGlyphOrder():
         return check_legacy(path)
     record = next(
-        r for r in f["GSUB"].table.FeatureList.FeatureRecord if r.FeatureTag == "ss01"
+        (r for r in f["GSUB"].table.FeatureList.FeatureRecord if r.FeatureTag == "ss01"), None
     )
-    if (
+    if record is None or (
         f["name"].getDebugName(record.Feature.FeatureParams.UINameID)
         == "Extended Rust lifetime hooks"
     ):
         from code_lifetime_hook import check as check_hooks
 
-        return check_hooks(path)
+        return check_hooks(path, extended=record is not None)
     h = hb.Font(hb.Face(path.read_bytes()))
 
     def run(text, calt, compact):

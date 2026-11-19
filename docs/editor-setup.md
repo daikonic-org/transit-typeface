@@ -44,6 +44,8 @@ Merge these font settings into existing configuration, rather than replacing oth
 
 ## Optional Code features
 
-The current Code release provides **Extended Rust lifetime hooks (`ss01`)** and **Logic (`ss02`)** independently; both are off by default. Enable the desired tag alongside `calt`, `clig` and `liga`: WezTerm accepts `ss01=1` / `ss02=1`; VS Code accepts an explicit font-feature string; Zed accepts `"ss01": true` / `"ss02": true` in its font-feature settings. Logic joins `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` use separate, tightly fitted glyphs and forced tall angles with or without Logic.
+Upright Code includes **Hairlining (`ss05`)**, which is off by default. Enable `ss05=1` in WezTerm, `'ss05' on` in VS Code, or `"ss05": true` in Zed. The hairline set includes the diamond Rust lifetime form.
+
+**Logic (`ss02`)** is optional in upright and italic. It joins `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` use separate, tightly fitted glyphs and forced tall angles.
 
 Upright Code applies texture healing with `calt`. To turn healing off while keeping the other contextual features active, enable `ss04=1` in WezTerm, `'ss04' on` in VS Code, or `"ss04": true` in Zed. Paired `ff`, `tt` and `ll` use `liga` in both upright and italic.

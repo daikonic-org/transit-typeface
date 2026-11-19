@@ -44,6 +44,18 @@ FEATURES = {
             "texture-healing", "Texture healing", "film x.m .w.",
             {"ss04": False}, {"ss04": True},
         ),
+        (
+            "hairline-delimiters", "Delimiters", "|w| (x) [x] {x}  a | b",
+            {"ss05": True}, {"ss05": False},
+        ),
+        (
+            "hairline-scope", "Scope and generics", "path::item::<T>",
+            {"ss05": True}, {"ss05": False},
+        ),
+        (
+            "hairline-lifetimes", "Rust lifetime markers", "&'a 'static 'a'",
+            {"ss05": True}, {"ss05": False},
+        ),
         ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
         ("rust-turbofish", "Rust turbofish", "::<T> ::<_> ::<[_]>", ON, OFF),
         (
@@ -64,13 +76,6 @@ FEATURES = {
         ("hashes", "Hash groups", "## ### #### ##### ######", ON, OFF),
         ("lifetimes", "Rust lifetime marker", "&'a <'a> 'static", ON, OFF),
         ("lifetime-literals", "Lifetimes / character literals", "&'a 'a' '_'", ON, OFF),
-        (
-            "lifetime-placement",
-            "Extended lifetime hooks / ss01",
-            "&'a <'a> 'static",
-            {**ON, "ss01": True},
-            {**ON, "ss01": False},
-        ),
         ("logic", "Logic / ss02", "<> []", {**ON, "ss02": True}, {**ON, "ss02": False}),
         (
             "logic-order",
@@ -259,7 +264,8 @@ def main(check=False):
             "location": loc,
         }
     for key, rows in FEATURES.items():
-        table = ["| Feature / input | On | Off |", "| --- | --- | --- |"]
+        header = ["| Feature / input | On | Off |", "| --- | --- | --- |"]
+        table, hairlining, healing = header.copy(), header.copy(), header.copy()
         board = []
         for row, (slug, label, text, on, off) in enumerate(rows):
             samples = []
@@ -295,7 +301,10 @@ def main(check=False):
                 "off_shaping": off_shape,
             }
             escaped = html.escape(text).replace("|", "&#124;")
-            table.append(
+            section = hairlining if slug.startswith("hairline-") else (
+                healing if slug == "texture-healing" else table
+            )
+            section.append(
                 f"| {label}<br><code>{escaped}</code> | {samples[0]} | {samples[1]} |"
             )
             p = Panel("label-" + key + slug, DATA["families"][key])
@@ -318,6 +327,9 @@ def main(check=False):
             ),
         )
         readme = update_table(readme, key + "-features", "\n".join(table))
+        if key == "code":
+            readme = update_table(readme, "code-hairlining", "\n".join(hairlining))
+            readme = update_table(readme, "code-texture-healing", "\n".join(healing))
     manifest["shortcuts"] = {}
     shortcuts = ["| Input | Rendered form |", "| --- | --- |"]
     for command in COMMANDS:

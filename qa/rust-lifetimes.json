@@ -1,5 +1,5 @@
 {
-  "font": "releases/2026.11.19/code/VF/DaikonicTransitCode-VF.ttf",
+  "font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
   "weights": [
     {
       "weight": 300,
@@ -167,9 +167,8 @@
       ]
     }
   ],
-  "feature": "ss01",
-  "label": "Extended Rust lifetime hooks",
+  "feature": "calt",
+  "label": "Rust lifetime hooks",
   "default": "left downward hook in its own cell",
-  "toggle": "extend stroke to680; opt-in marker and leaders +40x/+45y; advances fixed",
   "advance": "600 per input character"
 }

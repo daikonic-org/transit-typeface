@@ -267,7 +267,10 @@ def verify(source, output, *, default_on=False):
         pth = {}
         for f in (engine := hb.Font(new_face), baseline := hb.Font(old_face)):
             f.set_variations(location)
-        for lifetime, logic in product((False, True), repeat=2):
+        lifetime_options = (False, True) if any(
+            record.FeatureTag == "ss01" for record in font["GSUB"].table.FeatureList.FeatureRecord
+        ) else (False,)
+        for lifetime, logic in product(lifetime_options, (False, True)):
             features = {"calt": True, "ss01": lifetime, "ss02": logic}
             for value in cases + controls:
                 assert shape(engine, font, value, features | off) == shape(

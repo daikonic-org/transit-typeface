@@ -6,9 +6,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19) includes **Sans 0.111, System 0.120 and Code 1.038**, with upright and italic styles for all three typefaces.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.1) includes **Sans 0.111, System 0.120 and Code 1.039**, with upright and italic styles for all three typefaces.
 
-The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19/specimens/Paired-Stems.svg).
+The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19.1/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19.1/specimens/Paired-Stems.svg).
 
 ## Daikonic Transit Sans
 
@@ -64,9 +64,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
 - A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). Contextual matching preserves character literals such as `'a'` and `'_'`.
-- Optional **extended lifetime hooks (`ss01`)**, lengthening the marker’s straight stroke into the following letter’s cell, with a slight upward and inward adjustment to the marker and preceding `&` / `<`. Off by default.
 - **Paired stems** (`liga`) for `ff`, `tt` and `ll` in upright and italic. The stems stay on the grid, with longer crossbars or hooks to balance the gaps. The foot of `i` aligns with the lowercase baseline.
-- **Texture healing** is enabled by default in upright Code with contextual alternates. It fits wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation within the existing cells. Enable `ss04` to disable healing. [Texture-healing specimen](releases/2026.11.19/specimens/Transit-Texture-Healing.svg)
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
 - Ligature caret positions for editors that support positioning the cursor inside a ligature.
@@ -95,7 +93,6 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Feature / input | On | Off |
 | --- | --- | --- |
 | Paired stems / liga<br><code>coffee letter bell</code> | <img src="specimens/features/code-paired-stems-on.svg" width="460" alt="Paired stems / liga on: coffee letter bell"> | <img src="specimens/features/code-paired-stems-off.svg" width="460" alt="Paired stems / liga off: coffee letter bell"> |
-| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
 | Rust inference placeholders<br><code>&lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;</code> | <img src="specimens/features/code-rust-inference-on.svg" width="460" alt="Rust inference placeholders on: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> | <img src="specimens/features/code-rust-inference-off.svg" width="460" alt="Rust inference placeholders off: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> |
 | Rust turbofish<br><code>::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;</code> | <img src="specimens/features/code-rust-turbofish-on.svg" width="460" alt="Rust turbofish on: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> | <img src="specimens/features/code-rust-turbofish-off.svg" width="460" alt="Rust turbofish off: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
@@ -110,7 +107,6 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="460" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="460" alt="Hash groups off: ## ### #### ##### ######"> |
 | Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="460" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="460" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Lifetimes / character literals<br><code>&amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;</code> | <img src="specimens/features/code-lifetime-literals-on.svg" width="460" alt="Lifetimes / character literals on: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> | <img src="specimens/features/code-lifetime-literals-off.svg" width="460" alt="Lifetimes / character literals off: &amp;&#x27;a &#x27;a&#x27; &#x27;_&#x27;"> |
-| Extended lifetime hooks / ss01<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetime-placement-on.svg" width="460" alt="Extended lifetime hooks / ss01 on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetime-placement-off.svg" width="460" alt="Extended lifetime hooks / ss01 off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
 | Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
@@ -118,6 +114,28 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: ke Ke KE vi il"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
+
+### Hairlining
+
+Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters, outward rules to `::`, and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining also nudges `&` toward a recognized lifetime marker. It is off by default. [Hairlining specimen](releases/2026.11.19.1/specimens/Code-Hairlines.svg)
+
+<!-- code-hairlining -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Delimiters<br><code>&#124;w&#124; (x) [x] {x}  a &#124; b</code> | <img src="specimens/features/code-hairline-delimiters-on.svg" width="460" alt="Delimiters on: &#124;w&#124; (x) [x] {x}  a &#124; b"> | <img src="specimens/features/code-hairline-delimiters-off.svg" width="460" alt="Delimiters off: &#124;w&#124; (x) [x] {x}  a &#124; b"> |
+| Scope and generics<br><code>path::item::&lt;T&gt;</code> | <img src="specimens/features/code-hairline-scope-on.svg" width="460" alt="Scope and generics on: path::item::&lt;T&gt;"> | <img src="specimens/features/code-hairline-scope-off.svg" width="460" alt="Scope and generics off: path::item::&lt;T&gt;"> |
+| Rust lifetime markers<br><code>&amp;&#x27;a &#x27;static &#x27;a&#x27;</code> | <img src="specimens/features/code-hairline-lifetimes-on.svg" width="460" alt="Rust lifetime markers on: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> | <img src="specimens/features/code-hairline-lifetimes-off.svg" width="460" alt="Rust lifetime markers off: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> |
+<!-- /code-hairlining -->
+
+### Texture healing
+
+Upright Code uses contextual alternates to fit wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation. Enable `ss04` to turn it off while keeping the other contextual features active. [Texture-healing specimen](releases/2026.11.19.1/specimens/Transit-Texture-Healing.svg)
+
+<!-- code-texture-healing -->
+| Feature / input | On | Off |
+| --- | --- | --- |
+| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
+<!-- /code-texture-healing -->
 
 ### Code example
 
@@ -146,7 +164,7 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.1.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 

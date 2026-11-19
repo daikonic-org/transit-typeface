@@ -1,51 +1,44 @@
-"""Build the selected upright and italic variable fonts for the release."""
+"""Stage the coordinated release's selected variable fonts."""
 
 import json
 from pathlib import Path
+import shutil
 from tempfile import TemporaryDirectory
 
 from fontTools.ttLib import TTFont
 
 from adopt_weighting import stamp
 from bundle_release import OUT, RECIPE
-from code_i_baseline import align_i_baseline
-from code_texture_healing import build as build_texture_healing
-from repeated_stems import add_monospace_l_pair, add_repeated_stems, fit_monospace_pairs
+import code_hairline_study as hairlines
+from code_hairline_toggle import build, remove_lifetime_toggle, verify
 from specimens import DATA, ROOT
-from font_size_calibration import recalibrate
 
 
 def stage(key, settings, scratch):
     config = DATA["families"][key]
     stem = config["stem"]
-    destination = OUT / key / "VF"
-    destination.mkdir(parents=True, exist_ok=True)
+    folder = OUT / key
+    destination = folder / "VF"
+    source = ROOT / settings["font"]
+    if settings.get("reuse"):
+        assert settings["previous"] == settings["version"]
+        shutil.copytree(source.parent.parent, folder, dirs_exist_ok=True)
+    else:
+        assert key == "code"
+        destination.mkdir(parents=True, exist_ok=True)
+        candidate, targets = hairlines.build(source, scratch, shifted=True)
+        hairlines.verify(source, candidate, targets, shifted=True)
+        upright, aliases = build(source, candidate, scratch, release=True)
+        italic = TTFont(ROOT / settings["italic_font"], recalcTimestamp=False)
+        remove_lifetime_toggle(italic)
+        for font, suffix in ((upright, "-VF.ttf"), (italic, "-Italic-VF.ttf")):
+            previous = settings["previous"]
+            assert font["name"].getDebugName(5) == "Version " + previous
+            stamp(font, previous, settings["version"])
+            font.save(destination / (stem + suffix))
+        verify(source, candidate, destination / (stem + "-VF.ttf"), aliases, release=True)
 
-    upright = ROOT / settings["font"]
-    if key == "code":
-        upright = scratch / "textured.ttf"
-        build_texture_healing(
-            ROOT / settings["unhealed_font"], upright, trial=False, default_on=True
-        )
-
-    for source, italic in ((upright, False), (ROOT / settings["italic_font"], True)):
-        font = TTFont(source, recalcTimestamp=False)
-        previous = settings["previous"]
-        if key == "code":
-            if not italic:
-                add_repeated_stems(font)
-                previous = settings["unhealed_version"]
-            fit_monospace_pairs(font)
-            add_monospace_l_pair(font)
-            align_i_baseline(font)
-        if "previous_point_size" in settings:
-            recalibrate(font, settings["previous_point_size"])
-        assert font["name"].getDebugName(5) == "Version " + previous, source
-        stamp(font, previous, settings["version"])
-        suffix = "-Italic-VF.ttf" if italic else "-VF.ttf"
-        font.save(destination / (stem + suffix))
-
-    selection = destination.parent / "selection.json"
+    selection = folder / "selection.json"
     selection.write_text(json.dumps({
         "family": config["name"],
         "version": settings["version"],

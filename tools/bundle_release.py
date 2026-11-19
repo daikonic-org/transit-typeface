@@ -16,7 +16,6 @@ from fontTools.ttLib import TTFont, TTCollection
 from adopt_weighting import instance
 from export_otf import STYLES, convert, optical_styles
 from specimens import ROOT, specimen_families
-from font_size_calibration import NEW_POINT_SIZE, recalibrate
 
 RECIPE = json.loads((ROOT / "recipes/bundle-release.json").read_text())
 OUT = ROOT / "releases" / RECIPE["version"]
@@ -125,13 +124,15 @@ def build(only=None):
             shutil.copy2(source, vf)
         italic = directory / "VF" / (cfg["stem"] + "-Italic-VF.ttf")
         variables = [vf, italic]
-        for variant in variables:
-            generate_formats(variant, directory, cfg)
         paths = sorted((directory / "TTF").glob("*.ttf"))
-        collection = TTCollection()
-        collection.fonts = [TTFont(p, recalcTimestamp=False) for p in paths]
-        collection.save(directory / "TTC" / (cfg["stem"] + ".ttc"), shareTables=True)
-        compress_source(directory / "SOURCE")
+        if not RECIPE["typography"][key].get("reuse"):
+            for variant in variables:
+                generate_formats(variant, directory, cfg)
+            paths = sorted((directory / "TTF").glob("*.ttf"))
+            collection = TTCollection()
+            collection.fonts = [TTFont(p, recalcTimestamp=False) for p in paths]
+            collection.save(directory / "TTC" / (cfg["stem"] + ".ttc"), shareTables=True)
+            compress_source(directory / "SOURCE")
         report["families"][key] = {
             "name": cfg["name"],
             "version": cfg["version"],
@@ -142,12 +143,7 @@ def build(only=None):
             "ttc_faces": len(paths),
             "source_format": "Complete editable TTX with verified rebuild; historical native sources retained in repository.",
         }
-        print(
-            key,
-            len(paths),
-            "static styles and one TTC built; editable TTX roundtrip verified",
-            flush=True,
-        )
+        print(key, len(paths), "static styles and one TTC staged", flush=True)
     report["files"] = {
         str(p.relative_to(OUT)): digest(p)
         for key in families
@@ -172,8 +168,13 @@ def check():
     for key, record in report["families"].items():
         assert digest(ROOT / record["source"]) == record["source_sha256"]
         settings = RECIPE["typography"][key]
-        previous_size = settings.get("previous_point_size", NEW_POINT_SIZE)
-        em = round(1000 * NEW_POINT_SIZE / previous_size)
+        prior = ROOT / settings["font"]
+        em = TTFont(prior)["head"].unitsPerEm
+        if settings.get("reuse"):
+            previous = json.loads((prior.parents[2] / "manifest.json").read_text())
+            for filename, expected in previous["files"].items():
+                if filename.startswith(key + "/"):
+                    assert report["files"][filename] == expected, filename
         for filename in record["variable_files"]:
             path = OUT / key / "VF" / filename
             variable = TTFont(path)
@@ -182,9 +183,11 @@ def check():
             assert variable["head"].unitsPerEm == em, filename
             sanitize(variable)
             check_repeated_stems(variable, path, key)
-            if key == "system":
-                source = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
-                check_system_calibration(TTFont(source), variable, previous_size)
+            if key == "code":
+                from code_hairline_toggle import check_release
+
+                reference = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
+                check_release(reference, path)
             web = TTFont(OUT / key / "WOFF2" / path.with_suffix(".woff2").name)
             assert variable["head"].unitsPerEm == web["head"].unitsPerEm, filename
             for tag in ("cmap", "GSUB", "GPOS", "GDEF", "fvar", "STAT", "HVAR", "name"):
@@ -218,13 +221,6 @@ def check():
         OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
         default_on=True,
     )
-
-
-def check_system_calibration(source, font, previous_size):
-    recalibrate(source, previous_size)
-    assert source["head"].unitsPerEm == font["head"].unitsPerEm
-    for tag in ("glyf", "gvar", "hmtx", "HVAR", "fvar", "STAT", "GSUB", "GPOS"):
-        assert source.getTableData(tag) == font.getTableData(tag), ("System calibration", tag)
 
 
 def check_repeated_stems(font, path, family):
@@ -344,8 +340,8 @@ def package():
     notes = [
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
-        "- **System** recalibrates point sizing in upright and italic. The new 12 pt setting matches the previous 11 pt setting and preserves the taller lowercase proportions. Caption, Text and Display now correspond to about 10.91, 15.27 and 39.27 pt.",
-        "- **Code** recalibrates 12 pt to the previous 11.5 pt scale in upright and italic. It aligns the foot of `i` with the lowercase baseline, refits the `ff` and `tt` crossbars, and adds an `ll` ligature. Each pair keeps its grid-aligned stems, two-cell advance and middle caret.",
+        "- **Code Upright** adds optional 22-unit hairlining with `ss05`. It includes echoed delimiters, outward scope rules, and diamond lifetime leaders. Paired pipes such as `|w|` get matching echoes.",
+        "- **Code** retires the separate Rust lifetime toggle in upright and italic. Contextual lifetime hooks remain available by default.",
         "- **Code Upright** applies texture healing by default with `calt`. Wider `m` and `w` fit beside selected punctuation as well as `a`, `i`, `j` and `l`. Enable `ss04` to opt out while keeping other contextual features active.",
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
