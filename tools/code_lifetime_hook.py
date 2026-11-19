@@ -164,6 +164,10 @@ def check(path, *, extended=True):
         from code_i_baseline import align_i_baseline
 
         align_i_baseline(source)
+    if "code.equal.loose" in font.getGlyphOrder():
+        from code_compact_operators import CHANGED_BASE_GLYPHS
+
+        changed.update(CHANGED_BASE_GLYPHS)
     for name in source.getGlyphOrder():
         if name not in changed:
             assert font["glyf"][name].compile(font["glyf"]) == source["glyf"][

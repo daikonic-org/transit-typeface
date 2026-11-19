@@ -1,14 +1,14 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/2026.11.19.1/sans/VF/DaikonicTransitSans-VF.ttf",
+      "font": "releases/2026.11.19.2/sans/VF/DaikonicTransitSans-VF.ttf",
       "sha256": "63a564ddcca9d7cc183464106e65528a755a2b38ffe6c2b6d8a31c7850053f1b",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/2026.11.19.1/system/VF/DaikonicTransitSystem-VF.ttf",
+      "font": "releases/2026.11.19.2/system/VF/DaikonicTransitSystem-VF.ttf",
       "sha256": "0633745b18afdac74a27b3f02bd4da19cc996fe3b85c00d37a3854160d58672f",
       "location": {
         "wght": 350,
@@ -16,8 +16,8 @@
       }
     },
     "code": {
-      "font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "814672ad5b5b7b8e351faf698e4f2cb3049fc43f14649a4ce7770f8e85659569",
+      "font": "releases/2026.11.19.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "566f9cb13e4d9fd19cc164146c77c62ee1751f3b3b701a50900f5f6271073681",
       "location": {
         "wght": 350
       }
@@ -1060,7 +1060,7 @@
         ],
         [
           "code.scope.hairline",
-          1200,
+          600,
           0,
           0
         ],
@@ -1090,7 +1090,7 @@
         ],
         [
           "code.scope.hairline",
-          1200,
+          600,
           18,
           0
         ],
@@ -1140,7 +1140,7 @@
         ],
         [
           "code.scope",
-          1200,
+          600,
           0,
           0
         ],
@@ -1170,7 +1170,7 @@
         ],
         [
           "code.scope",
-          1200,
+          600,
           18,
           50
         ],
@@ -1587,7 +1587,7 @@
       "on_shaping": [
         [
           "code.scope",
-          1200,
+          600,
           18,
           50
         ],
@@ -1617,7 +1617,7 @@
         ],
         [
           "code.scope",
-          1200,
+          600,
           18,
           50
         ],
@@ -1647,7 +1647,7 @@
         ],
         [
           "code.scope",
-          1200,
+          600,
           18,
           50
         ],
@@ -1870,7 +1870,7 @@
         ],
         [
           "code.notStrict",
-          1800,
+          1200,
           0,
           0
         ],
@@ -1882,7 +1882,7 @@
         ],
         [
           "code.syntax01",
-          1200,
+          600,
           0,
           0
         ]
@@ -1944,7 +1944,7 @@
         ],
         [
           "code.notStrict",
-          1800,
+          1200,
           0,
           0
         ],
@@ -1956,7 +1956,7 @@
         ],
         [
           "code.syntax01",
-          1200,
+          600,
           0,
           0
         ]
@@ -1989,7 +1989,7 @@
         ],
         [
           "code.arrowDouble",
-          1800,
+          1200,
           0,
           0
         ],
@@ -2025,7 +2025,7 @@
         ],
         [
           "code.leftDouble",
-          1800,
+          1200,
           0,
           0
         ]
@@ -2156,7 +2156,7 @@
         ],
         [
           "code.strictEqual",
-          1800,
+          1200,
           0,
           0
         ],
@@ -2180,7 +2180,7 @@
         ],
         [
           "code.notStrict",
-          1800,
+          1200,
           0,
           0
         ],
@@ -2192,7 +2192,7 @@
         ],
         [
           "code.lessEqual",
-          1200,
+          600,
           0,
           0
         ],
@@ -2204,7 +2204,7 @@
         ],
         [
           "code.greaterEqual",
-          1200,
+          600,
           0,
           0
         ]
@@ -2341,7 +2341,7 @@
       "on_shaping": [
         [
           "code.scope",
-          1200,
+          600,
           0,
           0
         ]
@@ -2376,7 +2376,7 @@
       "on_shaping": [
         [
           "code.syntax00",
-          1200,
+          600,
           0,
           0
         ],
@@ -2388,7 +2388,7 @@
         ],
         [
           "code.syntax01",
-          1200,
+          600,
           0,
           0
         ]
@@ -4374,12 +4374,12 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "130e9ec50ce2cf9e1fb447e71eebbf54805b3bebe7b3e6d4f21eb1f421c62b3f",
-    "code-Features.svg": "eb3cece29f1d2aeeebf13cfb9bffe1c6d090725046840f94944504caca54f80a",
+    "Code-Characters.svg": "19b8e82afc231fde14ab240ea89f925a3be97bcbed64b1a6985709423350c4f5",
+    "code-Features.svg": "21980b356a4dd86e6a106879cab34f56cdf44b67a28d82153f0c09ac643a4fbb",
     "code-access-off.svg": "51c36197e4ae4f2973267bab53916f5739ab278d03f59a7ddf2c792c2047cbec",
-    "code-access-on.svg": "8b6f96ed1cf2bac8d0d7fa221aef3bb4053313c7534f3953b197f40bf1b959c5",
+    "code-access-on.svg": "0d5d1400ee3d3e777091158b3d6bc1d999c881ca146c0c6c53158e5121abf029",
     "code-arrows-off.svg": "f0c84890b357e99b770b4a201cbdc0a6e1309b1970dbc3d6b0f4dde96e0a3b89",
-    "code-arrows-on.svg": "1e598551c8c1a23503c20263e1c9fdf50d248d34310ee313ab08d3d3acd11c17",
+    "code-arrows-on.svg": "a4d192527770a66be143590d135fa13682745c436fca02f40f7c1579ca64adb8",
     "code-assignment-off.svg": "95aef514a7c309273803b5da82ff92b90e89b18ee5ced020134ec0265f501805",
     "code-assignment-on.svg": "2903cf1d2541370380ba60dee28f4c5ce19c6bdef502d884fbdd1607a12bce43",
     "code-at-repeat-off.svg": "920c168b079e57b39ddbf35706471f75194bca521967b977e521d72e4ee3f2dc",
@@ -4390,7 +4390,7 @@
     "code-command-forall.svg": "593b5b60895c5999d002ed8af6063812a5f73f024e387ba48cce600ed3da9565",
     "code-command-not.svg": "d58bcad28de8906c444fbdc031ecd2fa1bd4749865ba84178f3b51e2135c4438",
     "code-comparisons-off.svg": "da6e4e573519a4096f1917e729285a335cd54bf73dce8848eb00fc54da5bfc3d",
-    "code-comparisons-on.svg": "df426d02af9e6ee326c15bf38713881a6244992d8bbb3e1c1a7b88df8493026d",
+    "code-comparisons-on.svg": "4ae2632f91acace74ee67d3e6f377d50282b8bd212ff823a6a3811310b0b6465",
     "code-ellipsis-off.svg": "b3243c8f4939c136be32cbd46ac97ee7d8207f560f168e66ef2dd924346557e5",
     "code-ellipsis-on.svg": "a24b2678f1e256fd31e738e034c9f1c273ad06a6eabb85a7ac937b14f09fe6e6",
     "code-generics-off.svg": "c028b3620778da7ebd8b213b3b2fac9ca8f68d589e043cf54212a84a18f25ea0",
@@ -4399,8 +4399,8 @@
     "code-hairline-delimiters-on.svg": "99e4751f15f8c814782484d624a25fe5994d99ec5f025082c762ad6715872b8b",
     "code-hairline-lifetimes-off.svg": "8e7344fc2f90cfeba2658b1619b2a67712785cc5f768d1fdd1e71e866a4ccd48",
     "code-hairline-lifetimes-on.svg": "6f0b9ee6ff53deb1c1b1a72355eb183deb101c0febcbbabfc78343e296107dab",
-    "code-hairline-scope-off.svg": "20b9fbb43fdb177d02152c637dd6cac033380a7b0c059ac59783e5b1713e2974",
-    "code-hairline-scope-on.svg": "2a6da27ec12f977b2e9609182feddcb7de46181ca3f9e73dedc64fc37bc4ba17",
+    "code-hairline-scope-off.svg": "5545dd794f495587adef3930f1fda9c43afce805eba008b05dae55cf40cbcdec",
+    "code-hairline-scope-on.svg": "f82e2817e3a994e65cf9e272488f90777f64a69377196fb2ea6cc62bf388213b",
     "code-hashes-off.svg": "98ffe883c9e184f1cd3ed6960278ba783025a4b79f4bad657bb51647e541bc0b",
     "code-hashes-on.svg": "412844382ed440d8107bfe6973421db195552e13bf4f52b033218a0d8e0eeb3f",
     "code-interpolation-off.svg": "ec4ed1a83a55090aa8abb7680e4595163898f93aee6e9971badf502feaf9b93a",
@@ -4409,8 +4409,8 @@
     "code-lifetime-literals-on.svg": "0570655f1ffdb3e2f7d46713743509b937bdd26e75450f418b6c7aeda1828d21",
     "code-lifetimes-off.svg": "4d0fc8e77b3935e6402fded5aadd8ce99885d728837574421b6b358c08d7bb65",
     "code-lifetimes-on.svg": "fff0550de0aa5a93ee6a09cd24f5736d931a33e5b42737acedc90734b76f6e0e",
-    "code-logic-not-off.svg": "cfb3235198929dfec6cb47c50064edddc784b007ac4727008c908fa48cdee970",
-    "code-logic-not-on.svg": "8b66fe9045fa15ce61beee2fa5c914ad670b190c476bde8b7d1338bc161ef381",
+    "code-logic-not-off.svg": "15f41561165548842da73a108a6060ce0c34a343007ab34846a378c74b4a2afe",
+    "code-logic-not-on.svg": "91bad76f1598076a32ef894bbbe45a0e047b18763391fb56570884a53e5eb60f",
     "code-logic-off.svg": "e0a93d8fd4a10fca592cffaf78a368300793216457349e22a5c876f5fe264dfb",
     "code-logic-on.svg": "66448db51d6694d0a1a8278e062c47f55c3342670a2f3377aaec2f19c32d00a7",
     "code-logic-order-off.svg": "b2961319e4c9eb9b3eb99b7deeedecc4f977dd21dda3138aef977ea557c569da",
@@ -4426,9 +4426,9 @@
     "code-rust-inference-off.svg": "e564d225bf6a893b0bef5ebc8c48621fdfe31e0378e5f224d6a712e9b1341b1f",
     "code-rust-inference-on.svg": "8368bb33e824811f6aef722be98d1c9cab09f31aa7db4599291b9e9493e8b9c2",
     "code-rust-turbofish-off.svg": "d960b3d6ec51a8515b827487d40b45ed317708fe4f95bfe8cddcbd59727a2bf0",
-    "code-rust-turbofish-on.svg": "b171857617bacabaa7950fe1137368fda30e99ef2c8baff61f9928d6eb29335a",
+    "code-rust-turbofish-on.svg": "509bf8b8be9e3362e6885fd7ba33cc0dddb60b8875195b1e1cc85473a46f6aac",
     "code-scope-off.svg": "8e9a94b340e2b816042ef6d9bffc88b72e5e3ca9121c74fa252c4a7b8f6d23d3",
-    "code-scope-on.svg": "6fe0ba96330599802b1466927d669acb62657b9538e9f86256996e7d520d39de",
+    "code-scope-on.svg": "6b6a803cc44a506d8ea0e60d22302075c042cfe2a437dda1888321b037474faa",
     "code-texture-healing-off.svg": "8f1fb0335c79cf0859de7b2e0a578fe6348440f8f655da8a2e8a5c1108fbecca",
     "code-texture-healing-on.svg": "c357605878e84a007baadebc39d729e15790e05d76fe5a045954c1f5a302c056",
     "sans-Features.svg": "7e0a80d968316e0a30f79304b7d5cb1125a71e27dfe4f43880466d588a475c0d",

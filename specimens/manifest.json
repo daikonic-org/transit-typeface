@@ -1,6 +1,6 @@
 {
   "sans": {
-    "font": "releases/2026.11.19.1/sans/VF/DaikonicTransitSans-VF.ttf",
+    "font": "releases/2026.11.19.2/sans/VF/DaikonicTransitSans-VF.ttf",
     "sha256": "63a564ddcca9d7cc183464106e65528a755a2b38ffe6c2b6d8a31c7850053f1b",
     "version": "0.111",
     "status": "release",
@@ -23,7 +23,7 @@
     "optional_tabular_1_callout": false
   },
   "system": {
-    "font": "releases/2026.11.19.1/system/VF/DaikonicTransitSystem-VF.ttf",
+    "font": "releases/2026.11.19.2/system/VF/DaikonicTransitSystem-VF.ttf",
     "sha256": "0633745b18afdac74a27b3f02bd4da19cc996fe3b85c00d37a3854160d58672f",
     "version": "0.120",
     "status": "release",
@@ -46,9 +46,9 @@
     "optional_tabular_1_callout": true
   },
   "code": {
-    "font": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
-    "sha256": "814672ad5b5b7b8e351faf698e4f2cb3049fc43f14649a4ce7770f8e85659569",
-    "version": "1.039",
+    "font": "releases/2026.11.19.2/code/VF/DaikonicTransitCode-VF.ttf",
+    "sha256": "566f9cb13e4d9fd19cc164146c77c62ee1751f3b3b701a50900f5f6271073681",
+    "version": "1.040",
     "status": "release",
     "weights": [
       300,

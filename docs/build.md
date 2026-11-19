@@ -93,6 +93,8 @@ Regenerate the panels and README examples from that selection. Run `python tools
 
 The Fonts workflow runs `python tools/bundle_release.py check` against the committed artifacts. The SOURCE archive contains complete editable TTX for the current release. The native Code Glyphs and UFO sources capture Code 1.017.
 
+Code 1.040 derives upright Code from the frozen 1.039 font with `tools/code_compact_operators.py`. The bundle check verifies the intended changes against that source and confirms that other glyphs retain their outlines and metrics. Run `python tools/code_compact_operators.py releases/<version>/specimens --proof` to regenerate the self-aligning ligature and Loose Equality specimens from the selected release.
+
 Code angle matching resolves innermost pairs first, preserving nesting depth in temporary glyph forms, then propagates a generic parent’s style only inside its matched closing boundary. Cleanup restores ordinary glyphs for unmatched angles. The finite font lookup system supports 16 levels and 60 non-mark glyphs per pair. The normal and compact lifetime opener preserve their existing positioning; unmatched compact openers use an ordinary short angle in the shifted cell.
 
 `code_logic_sequences.py` gives `[<>]` and `<[]>` priority over shorter Logic tokens, using four-cell ligatures with three internal caret positions. It reuses the existing closed box and diamond. The angle-pair stage then derives the current Code font from that source, so enclosing generic pairs recognize these Logic forms as content. Coordinated patch release 2026.11.18.1 contains Code 1.035 with unchanged Sans/System.

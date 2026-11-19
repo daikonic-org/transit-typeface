@@ -187,7 +187,17 @@ def check():
                 from code_hairline_toggle import check_release
 
                 reference = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
-                check_release(reference, path)
+                if settings.get("self_aligning"):
+                    if "-Italic" in filename:
+                        baseline = TTFont(reference)
+                        for tag in ("glyf", "gvar", "hmtx", "cmap", "GSUB", "GPOS", "GDEF"):
+                            assert variable.getTableData(tag) == baseline.getTableData(tag), tag
+                    else:
+                        from code_compact_operators import verify
+
+                        verify(reference, path)
+                else:
+                    check_release(reference, path)
             web = TTFont(OUT / key / "WOFF2" / path.with_suffix(".woff2").name)
             assert variable["head"].unitsPerEm == web["head"].unitsPerEm, filename
             for tag in ("cmap", "GSUB", "GPOS", "GDEF", "fvar", "STAT", "HVAR", "name"):
@@ -218,7 +228,9 @@ def check():
 
     verify_texture_healing(
         ROOT / RECIPE["typography"]["code"]["unhealed_font"],
-        OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
+        ROOT / RECIPE["typography"]["code"]["font"]
+        if RECIPE["typography"]["code"].get("self_aligning")
+        else OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
         default_on=True,
         lifetime_ampersand=True,
     )
@@ -341,9 +353,10 @@ def package():
     notes = [
         "Daikonic Transit — coordinated release " + RECIPE["version"] + ".",
         versions + ". All three families ship together as a normal release.",
-        "- **Code Upright** adds optional 22-unit hairlining with `ss05`. It includes echoed delimiters, outward scope rules, and diamond lifetime leaders. Paired pipes such as `|w|` get matching echoes.",
-        "- **Code** retires the separate Rust lifetime toggle in upright and italic. Contextual lifetime hooks remain available by default, with the ampersand positioned closer to the marker.",
-        "- **Code Upright** applies texture healing by default with `calt`. Wider `m` and `w` fit beside selected punctuation as well as `a`, `i`, `j` and `l`. Enable `ss04` to opt out while keeping other contextual features active.",
+        "- **Self-aligning ligatures in upright Code** move following text left by one cell for selected operators. For example, `parse::<Vec<T>>()` puts the tall angle one cell earlier. Scope uses four plain diamonds with either Hairlining setting.",
+        "- `?.`, `!.`, `::`, `//`, logical `||`, `<=` and `>=` advance one cell. The arrow and equality sets advance two cells by default.",
+        "- **Loose Equality** (`ss06`) is off by default. It gives all four equality ligatures a one-cell advance and adds a tilde above the bars in `==` and `!=`.",
+        "- These advances apply when an app follows font shaping. Fixed-grid editors and terminals can retain source-column placement.",
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]

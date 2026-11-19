@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.1) includes **Sans 0.111, System 0.120 and Code 1.039**, with upright and italic styles for all three typefaces.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.2) includes **Sans 0.111, System 0.120 and Code 1.040**, with upright and italic styles for all three typefaces.
 
 The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19.1/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19.1/specimens/Paired-Stems.svg).
 
@@ -53,7 +53,7 @@ Tabular figures are optional (`tnum`). The default proportional `1` stays unchan
 A monospace font with coding-friendly glyphs, ligatures and optically adjusted proportions and spacing for source editors, terminals and code examples. Derived from Daikonic Transit Sans, Code carries its Johnston-inspired character into a fixed-width design with reworked letters, numerals, punctuation and operators for programming and aligned text.
 
 - Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
-- Fixed-width characters and coding ligatures that occupy the same total width as their original character sequences.
+- Fixed-width characters with [self-aligning ligatures](#self-aligning-ligatures) in upright Code.
 - Recalibrated point sizing in upright and italic. **12 pt** uses approximately the previous **11.5 pt** scale.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
 - Heavier, inward-set parentheses, brackets and braces for legibility, using one weight step above the surrounding text. Contextual pipe delimiters receive the same treatment. Extended brace pinches help distinguish `{}` from `()`.
@@ -87,7 +87,7 @@ Complete backslash commands use `calt` independently of Logic. They retain their
 
 ### Ligatures and contextual features
 
-On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Each Code ligature preserves the total width of its original characters. Generic-angle fitting uses capitalized or mixed-case type names and type arguments, with up to 32 adjacent identifier glyphs for the type-name decision. Individual angles remain ordinary operators; tall forms require matched pairs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
+On and Off show the same text rendered in Code Book, with contextual/ligature features enabled or disabled. Generic-angle fitting uses capitalized or mixed-case type names and type arguments, with up to 32 adjacent identifier glyphs for the type-name decision. Individual angles remain ordinary operators; tall forms require matched pairs. Lifetime matching uses nearby characters and protects quoted identifiers up to 32 characters; it does not parse Rust strings or comments.
 
 <!-- code-features -->
 | Feature / input | On | Off |
@@ -115,9 +115,22 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
 
+### Self-aligning ligatures
+
+Selected ligatures in upright Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
+
+| Advance | Ligatures |
+| --- | --- |
+| One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
+| Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `==`, `!=`, `===`, `!==` |
+
+**Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
+
+[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)](releases/2026.11.19.2/specimens/Compact-Punctuation.svg)
+
 ### Hairlining
 
-Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters, outward rules to `::`, and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is off by default. [Hairlining specimen](releases/2026.11.19.1/specimens/Code-Hairlines.svg)
+Enable `ss05` in upright Code to add 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is off by default. [Hairlining specimen](releases/2026.11.19.2/specimens/Code-Hairlines.svg)
 
 <!-- code-hairlining -->
 | Feature / input | On | Off |
@@ -164,7 +177,7 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.1.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.2.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 

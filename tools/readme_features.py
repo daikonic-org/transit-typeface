@@ -14,6 +14,7 @@ import uharfbuzz as hb
 from specimens import ROOT, DATA, Panel, specimen_families, weight_location
 from code_balance_study import bind
 from code_logic_shortcuts import COMMANDS
+from code_compact_operators import CELL, SAVED_CELL_GLYPHS
 
 OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
@@ -169,7 +170,8 @@ def highlight_rust_line(panel, text, features):
     buffer.add_str(text)
     buffer.guess_segment_properties()
     hb.shape(font, buffer, {**features, "tnum": False})
-    assert sum(pos.x_advance for pos in buffer.glyph_positions) == 600 * len(text)
+    names = [font.get_glyph_name(info.codepoint) for info in buffer.glyph_infos]
+    assert sum(pos.x_advance for pos in buffer.glyph_positions) == expected_code_advance(text, names)
     element = ET.fromstring(panel.elements[-1])
     uses = list(element)
     assert len(uses) == len(buffer.glyph_infos)
@@ -233,6 +235,10 @@ def rust_comparison(font):
     )
 
 
+def expected_code_advance(text, names):
+    return CELL * (len(text) - sum(name in SAVED_CELL_GLYPHS for name in names))
+
+
 def main(check=False):
     OUT.mkdir(exist_ok=True)
     prior_files = (
@@ -288,11 +294,10 @@ def main(check=False):
                 "feature has no visible shaping change",
             )
             if key == "code":
-                assert (
-                    sum(v[1] for v in on_shape)
-                    == sum(v[1] for v in off_shape)
-                    == 600 * len(text)
-                )
+                for result in (on_shape, off_shape):
+                    assert sum(advance for _, advance, *_ in result) == expected_code_advance(
+                        text, (name for name, *_ in result)
+                    ), (slug, result)
             manifest["rows"][key + "-" + slug] = {
                 "text": text,
                 "on_features": on,
@@ -370,7 +375,7 @@ def main(check=False):
                 hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == expected
             ), rel
     print(
-        "Generated font-rendered README tables: all on/off rows shape differently; Code advances unchanged"
+        "Generated font-rendered README tables: all on/off rows shape differently; Code advances verified"
     )
 
 
