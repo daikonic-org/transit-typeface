@@ -121,10 +121,10 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 
 ### Code example
 
-A syntax-highlighted Rust example rendered in Code Book.
+The same Rust example in Code Book with ligatures and contextual alternates on and off. Select the image to view it at full size.
 
 <!-- code-characters -->
-<img src="specimens/features/Code-Characters.svg" width="1100" alt="Syntax-highlighted Rust rendered in Daikonic Transit Code Book">
+[![The same syntax-highlighted Rust in Code Book with ligatures and contextual alternates on and off](specimens/features/Code-Characters.svg)](specimens/features/Code-Characters.svg)
 <!-- /code-characters -->
 
 

@@ -130,7 +130,7 @@ def update_table(readme, marker, table):
     return pattern.sub(lambda _: replacement, readme)
 
 
-def highlight_rust_line(panel, text):
+def highlight_rust_line(panel, text, features):
     """Color the already-shaped glyphs; lexical runs never split font context."""
     assert text.isascii(), "The specimen uses ASCII source offsets."
     colors = ["#eeeddb"] * len(text)
@@ -163,13 +163,69 @@ def highlight_rust_line(panel, text):
     buffer = hb.Buffer()
     buffer.add_str(text)
     buffer.guess_segment_properties()
-    hb.shape(font, buffer, {**ON, "tnum": False})
+    hb.shape(font, buffer, {**features, "tnum": False})
+    assert sum(pos.x_advance for pos in buffer.glyph_positions) == 600 * len(text)
     element = ET.fromstring(panel.elements[-1])
     uses = list(element)
     assert len(uses) == len(buffer.glyph_infos)
     for use, info in zip(uses, buffer.glyph_infos):
         use.set("fill", colors[info.cluster])
     panel.elements[-1] = ET.tostring(element, encoding="unicode")
+    return [info.codepoint for info in buffer.glyph_infos]
+
+
+def rust_comparison(font):
+    example = [
+        "struct IoRecord<'a> {",
+        "    user_id: usize,",
+        "    label: &'a str,",
+        "}",
+        "",
+        "fn collect_labels<'a>(",
+        "    rows: &'a [IoRecord<'a>],",
+        ") -> Vec<Vec<&'a str>> {",
+        "    rows.iter()",
+        "        .filter(|row| row.user_id != 0)",
+        "        .take(1)",
+        "        .map(|row| {",
+        '            vec![row.label, "film@host"]',
+        "        })",
+        "        .collect()",
+        "}",
+    ]
+    pane_width, padding, size, leading = 470, 20, 18, 25
+    width, height = 2 * pane_width, 65 + leading * len(example)
+    assert max(map(len, example)) * 600 * size / font["head"].unitsPerEm <= (
+        pane_width - 2 * padding
+    )
+    body = [
+        f'<rect width="{width}" height="{height}" fill="#0d1218"/>',
+        f'<path d="M{pane_width} 0V{height}" stroke="#2c3945"/>',
+    ]
+    panel = Panel("code-example", DATA["families"]["code"])
+    bind(panel, font)
+    shapes = {}
+    for column, (state, features) in enumerate((("On", ON), ("Off", OFF))):
+        x = column * pane_width + padding
+        body.append(
+            f'<text x="{x}" y="35" font-family="Arial,sans-serif" font-size="16" '
+            f'font-weight="700" fill="#aebbc6">{state}</text>'
+        )
+        shapes[state] = []
+        for row, text in enumerate(example):
+            if text:
+                panel.text(
+                    text, x, 68 + leading * row, size, 400, "#eeeddb", features=features
+                )
+                shapes[state].append(highlight_rust_line(panel, text, features))
+    assert shapes["On"] != shapes["Off"], "The full example must show a shaping change"
+    body.append(panel.body())
+    return svg(
+        "".join(body),
+        "Rust in Daikonic Transit Code Book with ligatures and contextual alternates on and off",
+        width,
+        height,
+    )
 
 
 def main(check=False):
@@ -275,49 +331,12 @@ def main(check=False):
             f"| <code>{html.escape(command)}</code> | {image(slug,command)} |"
         )
     readme = update_table(readme, "code-shortcuts", "\n".join(shortcuts))
-    example = [
-        "struct IoRecord<'a> {",
-        "    user_id: usize,",
-        "    label: &'a str,",
-        "}",
-        "",
-        "fn collect_labels<'a>(rows: &'a [IoRecord<'a>]) -> Vec<Vec<&'a str>> {",
-        "    rows.iter()",
-        "        .filter(|row| row.user_id != 0)",
-        "        .take(1)",
-        '        .map(|row| vec![row.label, "film@host"])',
-        "        .collect()",
-        "}",
-    ]
-    p = Panel("code-example", DATA["families"]["code"])
-    bind(p, fonts["code"])
-    for line, text in enumerate(example):
-        if text:
-            p.text(
-                text,
-                30,
-                84 + 34 * line,
-                24,
-                400,
-                "#eeeddb",
-                features=ON,
-                max_width=1040,
-            )
-            highlight_rust_line(p, text)
-    height = 112 + 34 * len(example)
-    body = '<rect width="1100" height="' + str(height) + '" fill="#0d1218"/>'
-    body += '<text x="30" y="32" font-family="Arial" font-size="14" fill="#aebbc6">Daikonic Transit Code · Book 350</text>'
-    body += p.body()
-    emit(
-        OUT / "Code-Characters.svg",
-        svg(
-            body, "Syntax-highlighted Rust in Daikonic Transit Code Book", 1100, height
-        ),
-    )
+    emit(OUT / "Code-Characters.svg", rust_comparison(fonts["code"]))
     readme = update_table(
         readme,
         "code-characters",
-        '<img src="specimens/features/Code-Characters.svg" width="1100" alt="Syntax-highlighted Rust rendered in Daikonic Transit Code Book">',
+        "[![The same syntax-highlighted Rust in Code Book with ligatures and contextual alternates on and off]"
+        "(specimens/features/Code-Characters.svg)](specimens/features/Code-Characters.svg)",
     )
     emit(ROOT / "README.md", readme)
     manifest["files"] = {
