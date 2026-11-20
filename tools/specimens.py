@@ -26,7 +26,7 @@ def specimen_families():
         record = json.loads(selected.read_text())
         cfg = families[key]
         assert record["family"] == cfg["name"]
-        assert record["weight_range"] == [cfg["light"], cfg["heavy"]]
+        cfg["light"], cfg["heavy"] = record["weight_range"]
         cfg.update(
             font=str(
                 (selected.parent / "VF" / (cfg["stem"] + "-VF.ttf")).relative_to(ROOT)

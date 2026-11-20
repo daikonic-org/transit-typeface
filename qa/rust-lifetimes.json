@@ -1,174 +1,46 @@
 {
-  "font": "releases/2026.11.19.3/code/VF/DaikonicTransitCode-VF.ttf",
+  "font": "releases/2026.11.20/code/VF/DaikonicTransitCode-VF.ttf",
+  "cases": {
+    "'a": 1,
+    "&'a": 1,
+    "&'static str": 1,
+    "Vec<'a>": 1,
+    "for<'a>": 1,
+    "<'a, 'b>": 2,
+    "&'_": 1,
+    "'outer: loop { break 'outer; }": 2,
+    "T: 'static": 1,
+    "'\u00e9": 1,
+    "&'a mut T": 1,
+    "<'a, 'b, 'static, '_>": 4,
+    "'a'": 0,
+    "'_'": 0,
+    "'\u00e9'": 0,
+    "'x' + &'a": 1,
+    "<'a'>": 0,
+    "&'a'": 0,
+    "'\\n'": 0,
+    "'\\''": 0,
+    "'\\u{1F600}'": 0,
+    "don't": 0,
+    "foo'a": 0,
+    "'123": 0,
+    "'word'": 0,
+    "'abcdefghijklmnopqrstuvwxyzabcdef'": 0,
+    "&'x": 1,
+    "&'T": 1,
+    "<'\u00e1>": 1
+  },
   "weights": [
-    {
-      "weight": 300,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 310,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 320,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 330,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 340,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 350,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 360,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 370,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 380,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 390,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    },
-    {
-      "weight": 400,
-      "normal": [
-        165.0,
-        490.0,
-        435.0,
-        700.0
-      ],
-      "extended": [
-        165.0,
-        490.0,
-        680.0,
-        700.0
-      ]
-    }
+    350.0,
+    400.0,
+    500.0
   ],
-  "feature": "calt",
-  "label": "Rust lifetime hooks",
-  "default": "left downward hook in its own cell",
-  "advance": "600 per input character"
+  "widths": [
+    94,
+    100,
+    108
+  ],
+  "features": "contextual lifetimes with Hairlining on and off",
+  "advance": "one cell per lifetime marker"
 }

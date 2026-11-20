@@ -13,7 +13,8 @@ from fontTools.varLib.instancer import instantiateVariableFont
 import uharfbuzz as hb
 from specimens import ROOT, DATA, Panel, specimen_families, weight_location
 from code_balance_study import bind
-from code_logic_shortcuts import COMMANDS
+from code_logic_shortcuts import COMMANDS, glyph_name
+from code_glyph_names import sequence_name
 from code_compact_operators import CELL, LOOSE_GLYPHS, SAVED_CELL_GLYPHS
 
 OUT = ROOT / "specimens/features"
@@ -165,14 +166,14 @@ def highlight_code_line(panel, text, features):
             color = "#82aaff"
         if color:
             colors[match.start() : match.end()] = [color] * len(token)
-    _, font = panel.font(400)
+    instance, font = panel.font(400)
     buffer = hb.Buffer()
     buffer.add_str(text)
     buffer.guess_segment_properties()
     hb.shape(font, buffer, {**features, "tnum": False})
     names = [font.get_glyph_name(info.codepoint) for info in buffer.glyph_infos]
     actual = sum(pos.x_advance for pos in buffer.glyph_positions)
-    assert actual == expected_code_advance(text, names), (text, features, actual, names)
+    assert actual == expected_code_advance(instance, text, names), (text, features, actual, names)
     element = ET.fromstring(panel.elements[-1])
     uses = list(element)
     assert len(uses) == len(buffer.glyph_infos)
@@ -278,6 +279,7 @@ def code_comparison(font):
         },
     }
     for language, expected in required.items():
+        expected = {current_name(font, name) for name in expected}
         shown = glyphs[True, language] - glyphs[False, language]
         assert expected <= shown, (language, expected - shown)
     for language in ("Rust", "TypeScript"):
@@ -295,9 +297,14 @@ def code_comparison(font):
     )
 
 
-def expected_code_advance(text, names):
-    loose_savings = {name: len(token) - 1 for token, name in LOOSE_GLYPHS.items()}
-    saved = sum(loose_savings.get(name, int(name in SAVED_CELL_GLYPHS)) for name in names)
+def current_name(font, name):
+    return name if name in font.getGlyphOrder() else sequence_name(font.getBestCmap(), name)
+
+
+def expected_code_advance(font, text, names):
+    loose_savings = {current_name(font, name): len(token) - 1 for token, name in LOOSE_GLYPHS.items()}
+    saved_glyphs = {current_name(font, name) for name in SAVED_CELL_GLYPHS}
+    saved = sum(loose_savings.get(name, int(name in saved_glyphs)) for name in names)
     return CELL * (len(text) - saved)
 
 
@@ -358,7 +365,7 @@ def main(check=False):
             if key == "code":
                 for result in (on_shape, off_shape):
                     assert sum(advance for _, advance, *_ in result) == expected_code_advance(
-                        text, (name for name, *_ in result)
+                        fonts[key], text, (name for name, *_ in result)
                     ), (slug, result)
             manifest["rows"][key + "-" + slug] = {
                 "text": text,
@@ -401,7 +408,7 @@ def main(check=False):
     shortcuts = ["| Input | Rendered form |", "| --- | --- |"]
     for command in COMMANDS:
         rendered = shaped(fonts["code"], command, ON)
-        assert len(rendered) == 1 and rendered[0][0] == "code.command." + command[1:]
+        assert len(rendered) == 1 and rendered[0][0] == current_name(fonts["code"], glyph_name(command))
         manifest["shortcuts"][command] = {"shaping": rendered, "features": ON}
         slug = "code-command-" + command[1:]
         body = cell(slug, fonts["code"], command, ON)

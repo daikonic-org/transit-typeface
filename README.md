@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.3) includes **Sans 0.111, System 0.120 and Code 1.041**, with upright and italic styles for all three typefaces.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20) includes **Sans 0.111, System 0.120 and Code 1.042**, with upright and italic styles for all three typefaces.
 
 The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19.1/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19.1/specimens/Paired-Stems.svg).
 
@@ -52,7 +52,7 @@ Tabular figures are optional (`tnum`). The default proportional `1` stays unchan
 
 A monospace font with coding-friendly glyphs, ligatures and optically adjusted proportions and spacing for source editors, terminals and code examples. Derived from Daikonic Transit Sans, Code carries its Johnston-inspired character into a fixed-width design with reworked letters, numerals, punctuation and operators for programming and aligned text.
 
-- Three named weights: **Light, Book and Regular**, with a variable weight range of 300–400. **Book** is the default.
+- Three named weights: **Book, Regular and Medium**, with a variable weight range of 350–500. **Regular** is the default. The variable width range is 94–108%.
 - Fixed-width characters with [self-aligning ligatures](#self-aligning-ligatures) in upright Code.
 - Recalibrated point sizing in upright and italic. **12 pt** uses approximately the previous **11.5 pt** scale.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
@@ -127,7 +127,7 @@ Upright Code uses contextual alternates to fit wider forms of `m` and `w` beside
 
 ### Hairlining
 
-Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is on by default. Enable `ss07` to turn it off. [Hairlining specimen](releases/2026.11.19.3/specimens/Code-Hairlines.svg)
+Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is on by default. Enable `ss07` to turn it off. [Hairlining specimen](releases/2026.11.20/specimens/Code-Hairlines.svg)
 
 <!-- code-hairlining -->
 | Feature / input | On | Off |
@@ -148,7 +148,7 @@ Selected ligatures in upright Code use one fewer cell and pull following text le
 
 **Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
 
-[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.19.3/specimens/Compact-Punctuation.svg)](releases/2026.11.19.3/specimens/Compact-Punctuation.svg)
+[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.20/specimens/Compact-Punctuation.svg)](releases/2026.11.20/specimens/Compact-Punctuation.svg)
 
 ### Code example
 
@@ -177,7 +177,7 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.19.3.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.20.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 
@@ -213,10 +213,8 @@ Install **Daikonic Transit Code** from the VF or TTC package. In VS Code, open *
 
 ### Width on macOS
 
-[Download the Code and System width presets (TTC)](https://github.com/daikonic-org/transit-typeface/releases/download/Transit-2026.11.19.3/Daikonic-Transit-Width-Presets.zip) · [Download the width trial variable fonts (TTF)](https://github.com/daikonic-org/transit-typeface/releases/download/Transit-2026.11.19.3/Daikonic-Transit-Width-Variable.zip)
+Install the Code variable TTFs in Font Book to choose any width from 94% to 108%. In VS Code, set `editor.fontVariations` to `"'wght' 350, 'wdth' 94"` for Narrow Book. Use `400` for Regular or `500` for Medium. [Font Book installation](https://support.apple.com/guide/font-book/welcome/mac) · [VS Code variation settings](https://code.visualstudio.com/updates/v1_74#_new-font-setting-for-opentype-fonts)
 
-The separate **Daikonic Transit Code Weight Width Trial** has a width axis from 94% to 108%, with 100% as the default. In Font Book, choose **File → Add Fonts to Current User** and install the trial’s upright and italic variable TTFs. In VS Code, change `editor.fontFamily` to `"'Daikonic Transit Code Weight Width Trial', monospace"` and set `editor.fontVariations` to `"'wght' 350, 'wdth' 94"`. Use `400` for Regular or `500` for Medium, and change `94` to any supported width. [Apple Font Book guide](https://support.apple.com/guide/font-book/welcome/mac) · [VS Code variation settings](https://code.visualstudio.com/updates/v1_74#_new-font-setting-for-opentype-fonts)
+The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-For apps with a font picker, install the separate **Daikonic Transit Code Weight Width Presets** TTC. One file contains Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose the family and a style such as **Book Narrow** or **Regular Wide**.
-
-**Daikonic Transit System Width Presets** uses the same three widths and keeps System’s existing Light, Book, Regular, Medium, and SemiBold weights. The static faces use its default optical size. The separate System width VF retains adjustable optical size. [Width trial build script](tools/code_weight_width_trial.py) · [WezTerm and Zed setup](docs/editor-setup.md)
+System width presets and variable fonts are available separately for review. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.3)

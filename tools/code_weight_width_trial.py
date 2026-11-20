@@ -50,7 +50,7 @@ def name_trial(font, family, weight_style="Regular", width=100, *, variable=Fals
     return ps_name
 
 
-def recalibrate(font):
+def recalibrate(font, family=FAMILY):
     italic = bool(font["head"].macStyle & 2)
     axis, = font["fvar"].axes
     axis.minValue, axis.defaultValue, axis.maxValue = 350, 400, 500
@@ -61,7 +61,7 @@ def recalibrate(font):
         if italic:
             style = "Italic" if weight == 400 else style + " Italic"
         instance.subfamilyNameID = font["name"].addName(style)
-        instance.postscriptNameID = font["name"].addName(STEM + "-" + style.replace(" ", ""))
+        instance.postscriptNameID = font["name"].addName(family.replace(" ", "") + "-" + style.replace(" ", ""))
     font["OS/2"].usWeightClass = 400
     if not italic:
         font["OS/2"].fsSelection |= 1 << 6
@@ -75,7 +75,7 @@ def recalibrate(font):
         axes.append({"tag": "ital", "name": "Italic", "values": [{"value": 1, "name": "Italic"}]})
     buildStatTable(font, axes)
     add_width(font, scale_carets=True)
-    return name_trial(font, FAMILY, variable=True)
+    return name_trial(font, family, variable=True)
 
 
 def verify(source, variable_path):

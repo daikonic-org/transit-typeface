@@ -62,6 +62,19 @@ def compress_source(directory):
 
 def generate_instances(vf, font, directory, config):
     italic = bool(font["OS/2"].fsSelection & 1)
+    if any(axis.axisTag == "wdth" for axis in font["fvar"].axes):
+        from code_weight_width_trial import WIDTH_PRESETS, name_trial
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        for item in font["fvar"].instances:
+            style = STYLES[item.coordinates["wght"]]
+            for width in WIDTH_PRESETS:
+                static = instantiateVariableFont(TTFont(vf, recalcTimestamp=False),
+                                                 item.coordinates | {"wdth": width})
+                stem = name_trial(static, config["name"], style, width)
+                static.save(directory / "TTF" / (stem + ".ttf"))
+                convert(static, directory / "OTF" / (stem + ".otf"))
+        return
     optical_names = optical_styles(font)
     for item in font["fvar"].instances:
         weight = item.coordinates["wght"]
@@ -187,7 +200,13 @@ def check():
                 from code_hairline_toggle import check_release
 
                 reference = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
-                if settings.get("self_aligning"):
+                if settings.get("punctuation"):
+                    from code_punctuation_size import release_font
+
+                    expected = release_font(reference, record["name"], record["version"])
+                    for tag in ("glyf", "gvar", "hmtx", "cmap", "GSUB", "GPOS", "GDEF", "fvar", "STAT", "HVAR"):
+                        assert variable.getTableData(tag) == expected.getTableData(tag), (filename, tag)
+                elif settings.get("self_aligning"):
                     if "-Italic" in filename:
                         baseline = TTFont(reference)
                         for tag in ("glyf", "gvar", "hmtx", "cmap", "GSUB", "GPOS", "GDEF"):
@@ -231,6 +250,18 @@ def check():
                 assert original.getTableData(tag) == otf.getTableData(tag), (filename, tag)
             assert original["post"].italicAngle == otf["CFF "].cff.topDictIndex[0].ItalicAngle
             sanitize(face)
+        if settings.get("punctuation"):
+            from code_weight_width_trial import WEIGHTS, WIDTH_PRESETS
+
+            expected_cells = {
+                (weight, width * 6, italic)
+                for weight in WEIGHTS for width in WIDTH_PRESETS for italic in (False, True)
+            }
+            actual_cells = {
+                (face["OS/2"].usWeightClass, face["hmtx"]["space"][0], bool(face["OS/2"].fsSelection & 1))
+                for face in collection.fonts
+            }
+            assert len(collection.fonts) == len(expected_cells) and actual_cells == expected_cells
         print(
             key, "TTC faces verified against individual TTFs and sanitized", flush=True
         )
@@ -239,7 +270,7 @@ def check():
     verify_texture_healing(
         ROOT / RECIPE["typography"]["code"]["unhealed_font"],
         ROOT / RECIPE["typography"]["code"].get("operator_source", RECIPE["typography"]["code"]["font"])
-        if RECIPE["typography"]["code"].get("self_aligning")
+        if any(RECIPE["typography"]["code"].get(mode) for mode in ("self_aligning", "punctuation"))
         else OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
         default_on=True,
         lifetime_ampersand=True,
@@ -303,7 +334,8 @@ def package():
                             f"font-family: '{cfg['name']}'; "
                             f"src: url('./{cfg['stem']}{suffix}-VF.woff2') format('woff2'); "
                             f"font-weight: {cfg['light']} {cfg['heavy']}; font-style: {style}; "
-                            "font-display: swap; }\n"
+                            + ("font-stretch: 94% 108%; " if RECIPE["typography"][key].get("punctuation") else "")
+                            + "font-display: swap; }\n"
                             for suffix, style in (("", "normal"), ("-Italic", "italic"))
                         ),
                     )
@@ -373,6 +405,12 @@ def package():
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]
+    if RECIPE["typography"]["code"].get("punctuation"):
+        notes[2:2] = [
+            "- **Code punctuation** includes centered commas and semicolons, taller quotes and lifetime markers, larger punctuation diamonds, and more prominent tildes and carets.",
+            "- **Code widths and weights** run from 94% to 108% and Book 350 to Medium 500, with Regular 400 as the default. The Code TTC includes Narrow, standard, and Wide in upright and italic at every named weight.",
+            "- **Unicode comparisons** include literal `≤`, `≥`, and `≠` alongside the existing programming ligatures.",
+        ]
     (destination / "Release.md").write_text("\n\n".join(notes) + "\n")
     print(destination.relative_to(ROOT), flush=True)
 

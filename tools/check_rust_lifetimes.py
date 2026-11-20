@@ -137,8 +137,58 @@ def check_legacy(path):
     return report
 
 
+
+def check_width_lifetimes(path, font):
+    from itertools import product
+
+    import pathops
+    from code_glyph_names import shape
+
+    engine = hb.Font(hb.Face(path.read_bytes()))
+    marker = "quotesingle.lifetime"
+    weights = [item.coordinates["wght"] for item in font["fvar"].instances]
+    samples = CASES | {"&'x": 1, "&'T": 1, "<'á>": 1}
+
+    for weight, width, off in product(weights, (94, 100, 108), (False, True)):
+        location = {"wght": weight, "wdth": width}
+        engine.set_variations(location)
+        glyphs = font.getGlyphSet(location=location)
+        for text, expected in samples.items():
+            run = shape(engine, text, {"ss07": off})
+            names = [font.getGlyphName(row[0]) for row in run]
+            assert sum(name.startswith(marker) for name in names) == expected, (
+                weight, width, off, text, names
+            )
+            positions = []
+            x = 0
+            for name, (_, _, advance, dx, dy) in zip(names, run):
+                positions.append((x + dx, dy))
+                x += advance
+            for i, name in enumerate(names):
+                if not name.startswith(marker):
+                    continue
+                assert run[i][2] == width * 6, (text, name)
+                ink = shape_from_glyphs(glyphs, name).transform(1, 0, 0, 1, *positions[i])
+                for j in (i - 1, i + 1):
+                    if not 0 <= j < len(run):
+                        continue
+                    other = shape_from_glyphs(glyphs, names[j])
+                    if len(other):
+                        other = other.transform(1, 0, 0, 1, *positions[j])
+                        intersection = pathops.op(ink, other, pathops.PathOp.INTERSECTION)
+                        assert abs(intersection.area) < 1, (weight, width, off, text, names[j])
+    print("Rust lifetime marker forms and adjacent ink clearance verified across named weights and widths")
+    return {"font": str(path.relative_to(ROOT)), "cases": samples,
+            "weights": weights, "widths": [94, 100, 108],
+            "features": "contextual lifetimes with Hairlining on and off",
+            "advance": "one cell per lifetime marker"}
+
+
+
 def check(path):
     f = TTFont(path)
+    if any(axis.axisTag == "wdth" for axis in f["fvar"].axes):
+        return check_width_lifetimes(path, f)
     if "quotesingle.lifetime.compact" not in f.getGlyphOrder():
         return check_legacy(path)
     record = next(

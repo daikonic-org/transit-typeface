@@ -1,6 +1,8 @@
 """Show the current specimen Code cut's refinements across named weights."""
 
-from specimens import ROOT, DATA, Panel, specimen_families
+from export_otf import STYLES
+from specimens import ROOT, Panel, specimen_families
+from fontTools.ttLib import TTFont
 
 
 def main():
@@ -27,12 +29,13 @@ def main():
         "#194454",
     )
     parts.append(heading.body())
-    for row, (weight, name) in enumerate(
-        [(300, "Light"), (350, "Book"), (400, "Regular")]
-    ):
+    font = TTFont(ROOT / cfg["font"])
+    weights = sorted({item.coordinates["wght"] for item in font["fvar"].instances})
+    for row, weight in enumerate(weights):
+        name = STYLES[weight]
         p = Panel("code", cfg)
         y = 110 + row * 235
-        p.text(f"{name} / {weight}", 25, y, 16, weight, "#194454")
+        p.text(f"{name} / {weight:g}", 25, y, 16, weight, "#194454")
         p.text("o@o  i l 1", 25, y + 76, 54, weight, "#101712")
         p.text("snake_case  value-key", 25, y + 122, 27, weight, "#101712")
         p.text("user@example.com  @name  @@  @@@", 25, y + 160, 16, weight, "#101712")

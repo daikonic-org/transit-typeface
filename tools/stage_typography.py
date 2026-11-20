@@ -24,6 +24,13 @@ def stage(key, settings, scratch):
     if settings.get("reuse"):
         assert settings["previous"] == settings["version"]
         shutil.copytree(source.parent.parent, folder, dirs_exist_ok=True)
+    elif settings.get("punctuation"):
+        from code_punctuation_size import release_font
+
+        destination.mkdir(parents=True, exist_ok=True)
+        for variant, suffix in (("font", "-VF.ttf"), ("italic_font", "-Italic-VF.ttf")):
+            font = release_font(ROOT / settings[variant], config["name"], settings["version"])
+            font.save(destination / (stem + suffix))
     elif settings.get("self_aligning"):
         assert key == "code"
         destination.mkdir(parents=True, exist_ok=True)
@@ -62,7 +69,7 @@ def stage(key, settings, scratch):
         "family": config["name"],
         "version": settings["version"],
         "status": "release",
-        "weight_range": [config["light"], config["heavy"]],
+        "weight_range": [350, 500] if settings.get("punctuation") else [config["light"], config["heavy"]],
     }, indent=2) + "\n")
     return str(selection.relative_to(ROOT))
 
