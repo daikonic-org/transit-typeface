@@ -197,3 +197,26 @@ Development, scripting and documentation were assisted by OpenAI ChatGPT/Codex. 
 ## License
 
 The fonts are distributed under the [SIL Open Font License 1.1](OFL.txt). Original copyright and reserved-name notices are retained in [NOTICE.txt](NOTICE.txt).
+
+## Code editor setup
+
+Install **Daikonic Transit Code** from the VF or TTC package. In VS Code, open **Preferences: Open User Settings (JSON)** from the Command Palette and merge these settings for Book with coding ligatures enabled.
+
+```json
+{
+  "editor.fontFamily": "'Daikonic Transit Code', monospace",
+  "editor.fontWeight": "350",
+  "editor.fontVariations": true,
+  "editor.fontLigatures": true
+}
+```
+
+### Width on macOS
+
+[Download the Code and System width presets (TTC)](https://github.com/daikonic-org/transit-typeface/releases/download/Transit-2026.11.19.3/Daikonic-Transit-Width-Presets.zip) · [Download the width trial variable fonts (TTF)](https://github.com/daikonic-org/transit-typeface/releases/download/Transit-2026.11.19.3/Daikonic-Transit-Width-Variable.zip)
+
+The separate **Daikonic Transit Code Weight Width Trial** has a width axis from 94% to 108%, with 100% as the default. In Font Book, choose **File → Add Fonts to Current User** and install the trial’s upright and italic variable TTFs. In VS Code, change `editor.fontFamily` to `"'Daikonic Transit Code Weight Width Trial', monospace"` and set `editor.fontVariations` to `"'wght' 350, 'wdth' 94"`. Use `400` for Regular or `500` for Medium, and change `94` to any supported width. [Apple Font Book guide](https://support.apple.com/guide/font-book/welcome/mac) · [VS Code variation settings](https://code.visualstudio.com/updates/v1_74#_new-font-setting-for-opentype-fonts)
+
+For apps with a font picker, install the separate **Daikonic Transit Code Weight Width Presets** TTC. One file contains Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose the family and a style such as **Book Narrow** or **Regular Wide**.
+
+**Daikonic Transit System Width Presets** uses the same three widths and keeps System’s existing Light, Book, Regular, Medium, and SemiBold weights. The static faces use its default optical size. The separate System width VF retains adjustable optical size. [Width trial build script](tools/code_weight_width_trial.py) · [WezTerm and Zed setup](docs/editor-setup.md)
