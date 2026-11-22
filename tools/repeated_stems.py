@@ -29,14 +29,18 @@ def horizontal_extent(outline):
     return max(max(xs) - min(xs) for xs in rows.values())
 
 
-def pair_outline(outline, advance):
+def pair_positions(outline, advance):
     left, _, right, _ = outline.bounds
     separation = max(advance * 0.83, min(advance, horizontal_extent(outline) + 32))
     # Stay within the pair's original outer bounds so surrounding glyphs
     # have at least the clearance they had with the separately set letters.
     start = max(0, min(advance - separation, advance - (left + right + separation) / 2))
+    return start, start + separation
+
+
+def pair_outline(outline, advance):
     pair = pathops.Path()
-    for x in (start, start + separation):
+    for x in pair_positions(outline, advance):
         pair.addPath(outline.transform(1, 0, 0, 1, x, 0))
     return pair
 

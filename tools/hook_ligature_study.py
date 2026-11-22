@@ -142,9 +142,9 @@ def trim_old_a_foot(a, hook):
         nxt[1][-1]
         for prev, nxt in zip(segments, segments[1:])
         if prev[0] == nxt[0] == "lineTo"
-        and prev[1][-1][1] <= 0
-        and prev[1][-1][0] == nxt[1][-1][0]
-        and nxt[1][-1][1] > 0
+        and abs(prev[1][-1][1]) <= 12
+        and abs(prev[1][-1][0] - nxt[1][-1][0]) <= 2
+        and nxt[1][-1][1] > prev[1][-1][1] + 6
     ]
     assert len(joints) == 1, joints
     x0, y0 = joints[0]

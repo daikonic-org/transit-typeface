@@ -12,6 +12,14 @@ from fontTools.misc.roundTools import otRound
 from fontTools.varLib.iup import iup_delta
 
 
+def feature_subtables(font):
+    table = font["GSUB"].table
+    for record in table.FeatureList.FeatureRecord:
+        for index in record.Feature.LookupListIndex:
+            for subtable in table.LookupList.Lookup[index].SubTable:
+                yield record.FeatureTag, getattr(subtable, "ExtSubTable", subtable)
+
+
 def expanded_variations(font, name):
     old = font["glyf"][name]
     result = {}

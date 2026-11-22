@@ -27,6 +27,12 @@
   },
   "families": {
     "sans": {
+      "geometry_classes": {
+        "archival_artwork": {
+          "codepoints": ["2619", "2766", "2767"],
+          "exclude_axes": ["wght"]
+        }
+      },
       "target_H_stems": {
         "300": 85,
         "350": 97.5,

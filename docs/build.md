@@ -21,6 +21,48 @@ Sans 0.109 adopts the selected hook ligatures with two explicit metric exception
 see [Sans hook sources and validation](sans-hooks.md). Its SOURCE archive includes
 the same exceptions in the portable rebuild script.
 
+## Transit Sans component baseline trial
+
+Run from the repository root with the locked dependencies installed.
+
+```sh
+python tools/sans_baseline_trial.py .build/sans-component-baseline
+```
+
+The command rebuilds the reviewed upright variable font from the pinned Metropolitan Line Regular and [the Transit drawing and variation recipe](../sources/sans-component-baseline/TransitSans.ttx.gz). It verifies the variable font against the reviewed checksum and emits a Regular snapshot, the upstream reference, a component report and an outlined SVG specimen.
+
+The recipe references upstream outlines and composites directly where their construction matches. It stores Transit-specific outlines, component definitions, weight deltas, metrics and shaping tables. The shared four-point `diamond.dot` supplies the dots in punctuation and accents. The `ai` and `li` construction starts with the `a`, `l` and `i` primitives, including the lower `l` hook that shapes the clearance under the `i`. [The ligature drawing script](../tools/hook_ligature_study.py) shows the joins and cuts. The recipe preserves the final outlines of those ligatures.
+
+To refresh the recipe after approving a new component baseline, run `python tools/sans_baseline_trial.py --capture path/to/reviewed-VF.ttf`.
+
+## Building the upright Sans candidate
+
+```sh
+python tools/build_sans.py .build/sans-upright
+```
+
+The builder starts from the Regular component baseline and moves its existing control points to generate the weight axis. It preserves square proportions, shared junctions and clearance. Subscript, superscript and other miniature forms use the same weighting rule with the weight change scaled by their Regular height relative to the full-size form. Relationships come from Unicode and OpenType substitutions. Pointed terminals retain their clearance where weighting would close an existing opening. When thinning breaks a terminal away, the builder restores its local taper. Archival artwork uses the Regular outline throughout the weight axis and follows the existing advance widths. Sans geometry classes live in `recipes/weights.json`. A class can select encoded characters with `codepoints` or source glyphs with `glyphs`. Standalone drawings can exclude the `wght` axis with `exclude_axes`. Use `exclude_transforms` to skip a shared pass, such as `aperture_clearance`, `contour_clearance` or `component_placement`.
+
+Composites follow the weighted shapes they assemble. Facing edges guide component placement. Repeated components keep even spacing and the assembly retains its intended alignment. The comma and semicolon share their punctuation construction, approved mirror pairs share outlines, and minus, equals and division share a bar. The builder regenerates ligatures from current letters. Its outline audit compares structure across weights and reports changes for review.
+
+The output includes the upright VF, static TTFs and OTFs, a TTC, WOFF2, rebuildable TTX source, a specimen and the glyph proof under `Proof/`. The italic and coordinated release have separate build steps.
+
+To regenerate the glyph proof on its own, run:
+
+```sh
+python tools/sans_glyph_proof.py .build/sans-upright/VF/DaikonicTransitSans-VF.ttf .build/sans-glyph-proof
+```
+
+The proof compares all five named weights side by side on each page. It covers A–Z, a–z and 0–9, then stylistic-set letter alternates, remaining components and their alternates, and punctuation, symbols and marks composed entirely from those remaining components. Cap height, x-height, operator axis, baseline, descender and vertical center guides are shown for every glyph. Each page has a PNG and SVG, and the combined PDF is suitable for distribution with the font. Additional pages show encoded punctuation, symbols, numeral variants and script forms that do not appear in the component sections.
+
+## Reviewing the upright Sans outlines
+
+To review the complete outline pipeline without packaging a font, generate the proof and structural report:
+
+```sh
+python tools/build_sans.py .build/sans-direct-proof --direct-proof
+```
+
 ## Editing in Glyphs or UFO tools
 
 Each `sources/<family>/` includes a `.glyphs` file, UFO masters and a native designspace. Open the Glyphs file directly, or independently compile it:
