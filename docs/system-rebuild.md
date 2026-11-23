@@ -40,3 +40,13 @@ The calibration can run earlier in the implementation if later operations use th
 | 8. Final review | Run the shared pair-clearance pass on both styles. Generate the shared browser and PDF proofs and validate the installable font files. | Inspect the artifacts, audit the requirement list, and verify the final font files against the build report. |
 
 The earlier figure, mark, optical, width and italic work supplies tested algorithms and comparison values. Its results need to be reproduced on the Sans-only build. Complete those steps in this order unless a shared dependency requires an earlier implementation.
+
+## Working references and progress
+
+The earlier System family was derived from Sans. The current working references are the Primary Y review, the Caption Spacing review, and the System Width Trial including its italic. They record the approved design decisions. The Primary Y review binary carries the calibrated optical axis and proportional/tabular forms. The Width Trial carries the Narrow and Wide range in both styles. Preserve these decisions while reinstating their generation rules on the rebuilt Sans.
+
+The Sans-only foundation is buildable now. It defines the design space, applies the point-size calibration once, and carries the established ligature selection. This intermediate file is for validating input, axes, and layout selection. The following drawing, spacing, and style steps still need to run on it.
+
+```sh
+python tools/system_foundation.py releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-sans-foundation
+```
