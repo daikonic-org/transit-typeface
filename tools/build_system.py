@@ -35,6 +35,7 @@ from system_caption_spacing import add_spacing
 from system_figures import rebuild_figures
 from system_marks import reflected_mark_attachment
 from system_proportions import enlarge_lowercase, set_ascender
+from system_width import add_system_width
 
 
 FAMILY = "Daikonic Transit System Curve Review"
@@ -326,12 +327,14 @@ if __name__ == "__main__":
         with TTFont(args.metropolitan) as upstream:
             add_primary_y(source, upstream)
         changed, accents = build(source, donor, font)
-    if not args.outline_only:
-        with TTFont(font, recalcTimestamp=False) as finished:
+    with TTFont(font, recalcTimestamp=False) as finished:
+        add_system_width(finished)
+        if not args.outline_only:
             locations = master_locations(finished)[1] if args.named_instances else None
             spacing = repair_kerning(finished, locations=locations)
-            finished.save(font)
-            sanitize(finished)
+        finished.save(font)
+        sanitize(finished)
+    if not args.outline_only:
         font.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
     build_proof(font, args.output / "Proof", flagged=args.review_glyph, svg_only=not args.export_proof)
     print("Rebuilt", len(changed), "lowercase bases and", len(accents), "accented forms")

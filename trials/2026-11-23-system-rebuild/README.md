@@ -55,3 +55,7 @@ The upright ascenders retain the System heights. The shared diamond tittle sits 
 ## 9. Optical spacing and point size
 
 Caption and optical sizes through 12 receive the reviewed 0.01 em spacing increase. It tapers to zero at Text. The half-cell tabular separators receive half of the increase and tabular outlines stay centered. The build recognizes the 1091-unit System calibration, which carries the earlier 11-point cut at a nominal 12 points. Its Caption, Text, and Display presets retain the calibrated optical coordinates. [Caption proof](System-Caption-Lowercase.svg)
+
+## 10. Width
+
+System includes a width axis from 94 to 108 with 100 as the default. Narrow and Wide have named instances at Text optical size. The width transform compensates the horizontal component of stroke weight and transforms advances, kerning, mark anchors and carets together. [Narrow proof](System-Narrow-Lowercase.svg) · [Wide proof](System-Wide-Lowercase.svg)

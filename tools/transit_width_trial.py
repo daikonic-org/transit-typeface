@@ -32,11 +32,17 @@ def width_ratio(width):
     return (width - 100) / 100
 
 
-def extend_outlines(font):
+def rounded_width_delta(value, factor, multiple=1):
+    return multiple * otRound(value * factor / multiple)
+
+
+def extend_outlines(font, grids):
     glyf = font["glyf"]
     variations = font["gvar"].variations
     for name in font.getGlyphOrder():
-        assert not glyf[name].isComposite(), name
+        if glyf[name].isComposite():
+            assert all(part.getComponentInfo()[1][1:3] == (0, 0)
+                       for part in glyf[name].components), name
         base, controls = glyf._getCoordinatesAndControls(name, font["hmtx"].metrics)
         tuples = variations.setdefault(name, [])
         coordinates_by_support = {}
@@ -53,6 +59,9 @@ def extend_outlines(font):
             factor = width_ratio(width)
             for axes, points in coordinates_by_support.items():
                 delta = [(otRound(x * factor), 0) for x in points]
+                if name in grids:
+                    advance = rounded_width_delta(points[-3] - points[-4], factor, grids[name])
+                    delta[-3] = (delta[-4][0] + advance, 0)
                 if any(x for x, _ in delta):
                     tuples.append(TupleVariation(dict(axes) | {"wdth": support}, delta))
 
@@ -66,15 +75,11 @@ def advance_row(store, index):
     return {}
 
 
-def extend_advances(font):
-    hvar = font["HVAR"].table
-    assert hvar.AdvWidthMap and not hvar.LsbMap and not hvar.RsbMap
-    store = hvar.VarStore
+def width_regions(store, tags):
     append_axis_to_store(store)
     regions = store.VarRegionList.Region
     original_count = len(regions)
-    tags = [axis.axisTag for axis in font["fvar"].axes]
-    width_regions = []
+    output = []
     for width, support in WIDTHS:
         base_region = len(regions)
         regions.append(buildVarRegion({"wdth": support}, tags))
@@ -89,25 +94,37 @@ def extend_advances(font):
                 regions.append(buildVarRegion(coordinates | {"wdth": support}, tags))
             else:
                 crossed[index] = base_region
-        width_regions.append((width_ratio(width), base_region, crossed))
+        output.append((width_ratio(width), base_region, crossed))
     store.VarRegionList.RegionCount = len(regions)
+    return output
+
+
+def scaled_row(store, basis, index, value, cache, *, multiple=1):
+    key = index, value, multiple
+    if key not in cache:
+        row = advance_row(store, index)
+        values = row.copy()
+        for factor, base, crossed in basis:
+            values[base] = rounded_width_delta(value, factor, multiple)
+            for old_region, delta in row.items():
+                region = crossed[old_region]
+                values[region] = values.get(region, 0) + rounded_width_delta(delta, factor, multiple)
+        cache[key] = len(store.VarData) << 16
+        store.VarData.append(buildVarData(list(values), [list(values.values())]))
+        store.VarDataCount = len(store.VarData)
+    return cache[key]
+
+
+def extend_advances(font, grids):
+    hvar = font["HVAR"].table
+    assert hvar.AdvWidthMap and not hvar.LsbMap and not hvar.RsbMap
+    store = hvar.VarStore
+    basis = width_regions(store, [axis.axisTag for axis in font["fvar"].axes])
     mapping = hvar.AdvWidthMap.mapping
     cache = {}
     for name, index in mapping.items():
-        advance = font["hmtx"][name][0]
-        key = index, advance
-        if key not in cache:
-            row = advance_row(store, index)
-            values = row.copy()
-            for factor, base, crossed in width_regions:
-                values[base] = otRound(advance * factor)
-                for old_region, delta in row.items():
-                    region = crossed[old_region]
-                    values[region] = values.get(region, 0) + otRound(delta * factor)
-            cache[key] = len(store.VarData) << 16
-            store.VarData.append(buildVarData(list(values), [list(values.values())]))
-        mapping[name] = cache[key]
-    store.VarDataCount = len(store.VarData)
+        mapping[name] = scaled_row(store, basis, index, font["hmtx"][name][0], cache,
+                                   multiple=grids.get(name, 1))
 
 
 def extend_carets(font):
@@ -133,8 +150,9 @@ def extend_carets(font):
         caret.DeviceTable = buildVarDevTable(indices_by_position[caret.Coordinate])
 
 
-def add_width(font, *, scale_carets=False):
-    extend_outlines(font)
+def add_width(font, *, scale_carets=False, scale_layout=None, grids=None):
+    grids = grids or {}
+    extend_outlines(font, grids)
     axis = Axis()
     axis.axisTag, axis.minValue, axis.defaultValue, axis.maxValue = "wdth", 94, 100, 108
     axis.flags = 0
@@ -150,8 +168,11 @@ def add_width(font, *, scale_carets=False):
     record.AxisOrdering = max(a.AxisOrdering for a in stat.DesignAxisRecord.Axis) + 1
     stat.DesignAxisRecord.Axis.append(record)
     stat.DesignAxisCount = len(stat.DesignAxisRecord.Axis)
-    extend_advances(font)
-    append_axis_to_store(font["GDEF"].table.VarStore)
+    extend_advances(font, grids)
+    if scale_layout is not None:
+        scale_layout(font)
+    else:
+        append_axis_to_store(font["GDEF"].table.VarStore)
     if scale_carets:
         extend_carets(font)
 
