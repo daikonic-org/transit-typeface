@@ -37,7 +37,7 @@ The calibration can run earlier in the implementation if later operations use th
 | 4. Tabular grid | Keep proportional figures by default. Build the ten `tnum` digits and three half-cell separators as live components. Center the approved Sans `1` in the tabular cell and center the tabular colon on the cap-height midpoint. | The variable and static fonts agree on digit and separator advances. `pnum` restores proportional variants. |
 | 5. Optical size and calibration | Apply the established Caption/Text/Display spacing and diamond profiles. Include the reviewed increase through optical size 12 and taper it to zero at Text. Carry the 11-to-12-point calibration as an explicit System step derived from Sans. | Verify calibrated `fvar` and `STAT` coordinates, rendered size, zero-advance marks, and half-grid consistency across the optical interval. |
 | 6. Width | Carry the 94–108 range with a 100 default. Preserve the normal-width drawings and compensate horizontal stem weight. Scale advances, kerning, carets, and anchors coherently. | Narrow, Normal, and Wide proofs, with endpoint and intermediate measurements across weight and optical size. Confirm the named width instances and static metrics. |
-| 7. Italic | Derive the 9° italic from the rebuilt System geometry. Use the live single-storey `a`, cursive `g`, descending `f` and shared ligature parts. Preserve width behavior, upright diamond tittles, and tabular alignment. | The same inventory and axes ship in both styles. Check outlines, slopes, accents, joint geometry and variable/static advances on the compiled fonts. |
+| 7. Italic | Derive the 9° italic from the rebuilt System geometry. Use the live single-storey `a`, cursive `g`, descending `f` and shared ligature parts. Fit the cursive `g` and its accents using italic `q` as the reference for sidebearings, advance, and kerning on both sides. Preserve width behavior, upright diamond tittles, and tabular alignment. | The same inventory and axes ship in both styles. Check outlines, slopes, accents, joint geometry and variable/static advances on the compiled fonts. |
 | 8. Final review | Derive shared vertical metrics from both faces. Run collision repair, check the reviewed near-contact pairs, and generate the glyph proofs. | Verify the recorded vertical bounds and pair clearances, inspect the proofs, and validate the installable files. |
 
 The earlier figure, mark, optical, width and italic work supplies tested algorithms and comparison values. Its results need to be reproduced on the Sans-only build. Complete those steps in this order unless a shared dependency requires an earlier implementation.
@@ -48,7 +48,7 @@ The earlier System family was derived from Sans. The current working references 
 
 The Sans-only builder produces review TTFs for both styles and their browser proofs. It measures the top and bottom of the drawn glyphs at the masters and adds the established 12-unit safety margin. Both faces share the resulting native and Windows metrics. The source hash, axes, and measured vertical bounds are recorded in `build.json`.
 
-After collision repair, the builder checks the six upright and ten italic pairs in the
+After collision repair, the builder checks the reviewed pairs in the
 [System spacing recipe](../recipes/system-pair-spacing.json). For a measured gap below one
 font unit, it adds variable kerning in whole units to reach at least four. The pass samples
 weight every 12.5 units and uses the existing width and optical-size grid. The

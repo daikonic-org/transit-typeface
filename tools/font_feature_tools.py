@@ -13,6 +13,56 @@ from fontTools.misc.roundTools import otRound
 from fontTools.varLib.iup import iup_delta
 
 
+def inherit_pair_positioning(font, aliases, *, replace=False, lookup_indices=None):
+    """Copy both sides of an existing pair-positioning reference to other glyphs."""
+    targets = {source: (names,) if isinstance(names, str) else tuple(names)
+               for source, names in aliases.items()}
+    receivers = {name for names in targets.values() for name in names}
+    sort = font.getGlyphID
+    lookups = font["GPOS"].table.LookupList.Lookup
+    indices = range(len(lookups)) if lookup_indices is None else lookup_indices
+    for index in indices:
+        for wrapped in lookups[index].SubTable:
+            table = getattr(wrapped, "ExtSubTable", wrapped)
+            if not hasattr(table, "ValueFormat2"):
+                continue
+            if table.Format == 1:
+                rows = dict(zip(table.Coverage.glyphs, table.PairSet))
+                for row in rows.values():
+                    pair_records = [record for record in row.PairValueRecord
+                                    if not replace or record.SecondGlyph not in receivers]
+                    for record in row.PairValueRecord:
+                        for target in targets.get(record.SecondGlyph, ()):
+                            added = deepcopy(record)
+                            added.SecondGlyph = target
+                            pair_records.append(added)
+                    row.PairValueRecord = sorted(pair_records, key=lambda record: sort(record.SecondGlyph))
+                    row.PairValueCount = len(pair_records)
+                if replace:
+                    rows = {left: row for left, row in rows.items()
+                            if left not in receivers and row.PairValueCount}
+                rows.update({name: rows[source] for source, names in targets.items()
+                             if source in rows for name in names})
+                table.Coverage.glyphs = sorted(rows, key=sort)
+                table.PairSet = [rows[name] for name in table.Coverage.glyphs]
+                table.PairSetCount = len(table.PairSet)
+            elif table.Format == 2:
+                for classes in (table.ClassDef1, table.ClassDef2):
+                    definitions = classes.classDefs
+                    if replace:
+                        for name in receivers:
+                            definitions.pop(name, None)
+                    definitions.update({name: definitions[source] for source, names in targets.items()
+                                        if source in definitions for name in names})
+                coverage = set(table.Coverage.glyphs)
+                if replace:
+                    coverage.difference_update(receivers)
+                table.Coverage.glyphs = sorted(
+                    coverage | {name for source in coverage if source in targets for name in targets[source]},
+                    key=sort,
+                )
+
+
 def layout_lookup_records(value):
     if isinstance(value, (otTables.SubstLookupRecord, otTables.PosLookupRecord)):
         yield value

@@ -167,7 +167,7 @@ def clearance(left, right, origin, first, second, padding):
     return move
 
 
-def scan(font, features, locations, padding):
+def scan(font, features, locations, padding, *, involving=None):
     """Measure all positive-advance, ink-bearing pairs at each axis location."""
     layout = font["GPOS"].table
     gdef = font["GDEF"].table
@@ -194,6 +194,8 @@ def scan(font, features, locations, padding):
                 widths[name] = width
         right_order = sorted(bounds, key=lambda name: bounds[name][0])
         left_edges = [bounds[name][0] for name in right_order]
+        scoped_order = [name for name in right_order if involving and name in involving]
+        scoped_edges = [bounds[name][0] for name in scoped_order]
         normalized = font.normalizeLocation(location) if location else {}
         variations = VarStoreInstancer(store, font["fvar"].axes, normalized) if store else None
         lookups = {number: lookup_rows(layout.LookupList.Lookup[number], variations)
@@ -211,13 +213,17 @@ def scan(font, features, locations, padding):
             return ink_extents(outline(name))
 
         for route, result in fixes.items():
-            pair_count += len(bounds) ** 2
             for left, (_, bottom, right_edge, top) in bounds.items():
+                if involving is not None and left not in involving:
+                    order, edges = scoped_order, scoped_edges
+                else:
+                    order, edges = right_order, left_edges
+                pair_count += len(order)
                 advance = widths[left]
                 active = [lookups[number][left] for number in route if left in lookups[number]]
                 minimum = sum(min(0, *(value for _, value in rows)) for rows in active)
-                end = bisect_right(left_edges, right_edge - advance - minimum)
-                for right in right_order[:end]:
+                end = bisect_right(edges, right_edge - advance - minimum)
+                for right in order[:end]:
                     x, y, _, high = bounds[right]
                     if high <= bottom or y >= top:
                         continue
@@ -302,14 +308,14 @@ def max_pair_adjustments(fixes):
     return {" ".join(pair): amount for pair, amount in sorted(maxima.items())}
 
 
-def repair_kerning(font, *, locations=None, padding=None):
+def repair_kerning(font, *, locations=None, padding=None, involving=None):
     """Add only the clearance needed by colliding pairs, without moving any outlines."""
     if locations is None:
         locations = axis_locations(font)
     features = kern_features(font)
     if padding is None:
         padding = max(1, otRound(font["head"].unitsPerEm * .004))
-    fixes, checked = scan(font, features, locations, padding)
+    fixes, checked = scan(font, features, locations, padding, involving=involving)
     if any(fixes.values()):
         cover_interpolation(fixes, locations)
         install(font, features, fixes, locations)
@@ -387,11 +393,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--involving", action="append", metavar="GLYPH",
+                        help="review pairs involving this glyph, on either side")
     args = parser.parse_args()
     if args.source.resolve() == args.output.resolve():
         parser.error("choose a separate output font")
     with TTFont(args.source, recalcTimestamp=False) as font:
-        report = repair_kerning(font)
+        report = repair_kerning(font, involving=set(args.involving) if args.involving else None)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         font.save(args.output)
     args.output.with_suffix(".kerning.json").write_text(json.dumps(report, indent=2) + "\n")

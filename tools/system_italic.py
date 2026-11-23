@@ -1,6 +1,7 @@
 """Construct System’s italic from the rebuilt upright and its shared components."""
 
 from copy import deepcopy
+from statistics import median
 
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
@@ -9,10 +10,11 @@ from fontTools.varLib.models import VariationModel
 
 from audit import shape_from_glyphs
 from build_sans_italic import apply_slant, reuse_single_storey_a
-from font_feature_tools import master_locations
-from italic_companions import set_style
+from font_feature_tools import expanded_variations, inherit_pair_positioning, master_locations
+from italic_companions import apply_shape, set_style
 from italic_letterforms import fit_bowl
 from italic_returns import raw_outline, splice_return
+from kern_clearance import ink_extents, kern_features
 from sans_aperture import apertures_for
 from sans_baseline_trial import components
 from sans_complete_rebuild import box_center
@@ -100,6 +102,55 @@ def center_tabular_ink(font):
         install_masters(font, font, tabular, glyph, points, model, default)
 
 
+def fit_cursive_g(font):
+    """Fit the cursive g and its live accents to the spacing of the donor q bowl."""
+    glyphs = font.getGlyphSet()
+    g, q = (ink_extents(shape_from_glyphs(glyphs, name), step=1) for name in ("g", "q"))
+    height = font["OS/2"].sxHeight
+    shift = otRound(median(q[y][0] - g[y][0] for y in g.keys() & q.keys()
+                          if .15 * height <= y + .5 <= .85 * height))
+    donor = expanded_variations(font, "q")
+    widths = font["HVAR"].table.AdvWidthMap.mapping
+    advance = font["hmtx"]["q"][0]
+    glyf = font["glyf"]
+    accents = [name for name in font.getGlyphOrder() if glyf[name].isComposite()
+               and any(part.glyphName == "g" for part in glyf[name].components)]
+    fitted = {"g", *accents}
+    for name in ("g", *accents):
+        glyph = deepcopy(glyf[name])
+        if name == "g":
+            glyph.coordinates.translate((shift, 0))
+            count = len(glyph.coordinates)
+        else:
+            for part in glyph.components:
+                if part.glyphName != "g":
+                    part.x += shift
+            count = len(glyph.components)
+        variations = expanded_variations(font, name)
+        for key in donor.keys() | variations.keys():
+            points = variations.setdefault(key, [(0, 0)] * (count + 4))
+            metrics = donor.get(key)
+            width_delta = metrics[-3][0] - metrics[-4][0] if metrics else 0
+            points[-3] = points[-4][0] + width_delta, points[-3][1]
+        font["hmtx"][name] = advance, font["hmtx"][name][1]
+        widths[name] = widths["q"]
+        apply_shape(font, name, glyph, variations)
+
+    for lookup in font["GPOS"].table.LookupList.Lookup:
+        for wrapped in lookup.SubTable:
+            table = getattr(wrapped, "ExtSubTable", wrapped)
+            if not hasattr(table, "BaseArray"):
+                continue
+            for name, record in zip(table.BaseCoverage.glyphs, table.BaseArray.BaseRecord):
+                if name in fitted:
+                    record.BaseAnchor = deepcopy(record.BaseAnchor)
+                    for anchor in record.BaseAnchor:
+                        if anchor is not None:
+                            anchor.XCoordinate += shift
+    indices = sorted({index for feature in kern_features(font) for index in feature.LookupListIndex})
+    inherit_pair_positioning(font, {"q": ("g", *accents)}, replace=True, lookup_indices=indices)
+
+
 def make_italic(upright):
     font = deepcopy(upright)
     locations, model, default = designspace(font)
@@ -109,6 +160,7 @@ def make_italic(upright):
     rebuild_ligatures(font, upright, locations, model, default)
     add_system_width(font)
     apply_slant(font, metrics, dotted=("i", "j"), variable_anchors=True)
+    fit_cursive_g(font)
     center_tabular_ink(font)
     name = font["name"].getBestFamilyName()
     set_style(font, {"name": name, "stem": name.replace(" ", ""),

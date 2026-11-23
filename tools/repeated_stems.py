@@ -10,7 +10,7 @@ from fontTools.varLib.builder import buildVarData
 import pathops
 
 from audit import Samples, shape_from_glyphs, spans
-from font_feature_tools import add_features, compose, from_paths, master_locations
+from font_feature_tools import add_features, compose, from_paths, inherit_pair_positioning, master_locations
 
 
 def horizontal_extent(outline):
@@ -135,38 +135,6 @@ def double_advance(font, source, target):
         buildVarData(data.VarRegionIndex, [[2 * delta for delta in data.Item[inner]]])
     )
     store.VarDataCount = len(store.VarData)
-
-
-def inherit_pair_positioning(font, aliases):
-    """Use the boundary letters' positioning on either side of the ligature."""
-    sort = font.getGlyphID
-    for lookup in font["GPOS"].table.LookupList.Lookup:
-        for wrapped in lookup.SubTable:
-            table = getattr(wrapped, "ExtSubTable", wrapped)
-            if not hasattr(table, "ValueFormat2"):
-                continue
-            if table.Format == 1:
-                records = dict(zip(table.Coverage.glyphs, table.PairSet))
-                for pair_set in records.values():
-                    additions = []
-                    for record in pair_set.PairValueRecord:
-                        if record.SecondGlyph in aliases:
-                            added = deepcopy(record)
-                            added.SecondGlyph = aliases[record.SecondGlyph]
-                            additions.append(added)
-                    pair_set.PairValueRecord.extend(additions)
-                    pair_set.PairValueRecord.sort(key=lambda record: sort(record.SecondGlyph))
-                    pair_set.PairValueCount = len(pair_set.PairValueRecord)
-                records.update({alias: records[base] for base, alias in aliases.items() if base in records})
-                table.Coverage.glyphs = sorted(records, key=sort)
-                table.PairSet = [records[n] for n in table.Coverage.glyphs]
-                table.PairSetCount = len(table.PairSet)
-            elif table.Format == 2:
-                for classes in (table.ClassDef1, table.ClassDef2):
-                    classes.classDefs.update({alias: classes.classDefs[base] for base, alias in aliases.items() if base in classes.classDefs})
-                table.Coverage.glyphs = sorted(
-                    set(table.Coverage.glyphs) | {aliases[n] for n in table.Coverage.glyphs if n in aliases}, key=sort,
-                )
 
 
 def add_repeated_stems(font):
