@@ -1,340 +1,201 @@
-"""Build and proof System’s upright lowercase on the rebuilt Sans curves."""
+"""Build System’s upright and italic from a single rebuilt Sans variable font."""
 
 from argparse import ArgumentParser
 from copy import deepcopy
+from hashlib import file_digest
 import json
-from math import cos, radians
 from pathlib import Path
 from string import ascii_lowercase
 
-from fontTools.misc.bezierTools import splitQuadratic
 from fontTools.misc.roundTools import otRound
-from fontTools.misc.transform import Transform
-from fontTools.pens.boundsPen import BoundsPen
-from fontTools.pens.cu2quPen import Cu2QuPen
-from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
-from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
 from fontTools.varLib.instancer import instantiateVariableFont
-from fontTools.varLib.models import VariationModel, supportScalar
 
-from audit import Samples, shape_from_glyphs, spans
+from audit import shape_from_glyphs
 from bundle_release import sanitize
-from code_weight_width_trial import name_trial
-from font_feature_tools import append_glyph, expanded_variations, master_locations
-from font_size_calibration import ensure_system_calibration
+from font_feature_tools import append_glyph, feature_subtables, master_locations
 from glyph_proof import build_proof
-from italic_returns import raw_outline, segments as outline_segments
 from kern_clearance import repair_kerning
 from sans_baseline_trial import build_variations, clear_hints
+from sans_complete_rebuild import box_center
 from sans_direct_weight import direct_points
-from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
-from system_accents import install_masters, rebuild_accents
-from system_caption_spacing import add_spacing
-from system_figures import rebuild_figures
+from system_accents import bounds, install_masters, rebuild_accents
+from system_caption_spacing import add_spacing, spacing_glyphs
+from system_figures import optical_diamonds, rebuild_figures
+from system_foundation import FAMILY, PROFILES, from_sans
+from system_italic import designspace, make_italic, rebuild_ligatures
 from system_marks import reflected_mark_attachment
-from system_proportions import enlarge_lowercase, set_ascender
+from system_metrics import set_advances, set_vertical_metrics
+from system_proportions import FACTOR, enlarge_lowercase, set_ascender
 from system_width import add_system_width
 
 
-FAMILY = "Daikonic Transit System Curve Review"
+ROOT = Path(__file__).resolve().parents[1]
 DOT = "diamond.dot.system"
 LETTERS = ascii_lowercase + "ıȷ"
 
 
-CUT = -80
+def lowercase_dot(glyf, weight, xheight):
+    """Keep the shared tittle within System's approved vertical range."""
+    dot = deepcopy(glyf["diamond.dot"])
+    points = glyf["uni0307"].getCoordinates(glyf)[0]
+    left, bottom, right, top = points.calcBounds()
+    target = 720 + otRound(max(0, weight - 400) * 22 / 200)
+    scale = min(1, (target - xheight - 45) / (top - bottom))
+    cx = box_center((left, bottom, right, top), 0)
+    cy = box_center((left, bottom, right, top), 1)
+    dot.coordinates = GlyphCoordinates(
+        (otRound(cx + (x - cx) * scale), otRound(cy + (y - cy) * scale))
+        for x, y in points
+    )
+    return dot, target - max(y for _, y in dot.coordinates)
 
 
-def donor_hook(upstream, scale):
-    """Keep the original quadratic hook segments between two cuts at the same height."""
-    outline = raw_outline(upstream.getGlyphSet(), "y").transform(scale, 0, 0, scale, 0, 0)
-    edges = outline_segments(next(iter(outline.contours)))
-    clipped = []
-    for edge in edges:
-        if min(edge.start[1], edge.end[1]) < CUT < max(edge.start[1], edge.end[1]):
-            if edge.controls:
-                clipped.extend(splitQuadratic(edge.start, *edge.controls, edge.end, CUT, True))
-            else:
-                a, b = edge.start, edge.end
-                t = (CUT - a[1]) / (b[1] - a[1])
-                cut = (a[0] + (b[0] - a[0]) * t, CUT)
-                clipped.extend(((a, cut), (cut, b)))
-        else:
-            clipped.append((edge.start, *edge.controls, edge.end))
-    enter = next(i for i, e in enumerate(clipped) if abs(e[0][1] - CUT) < 0.001 and e[-1][1] < CUT)
-    leave = next(i for i, e in enumerate(clipped) if e[0][1] < CUT and abs(e[-1][1] - CUT) < 0.001)
-    rotated = clipped[enter:] + clipped[:enter]
-    return rotated[:(leave - enter) % len(clipped) + 1]
+def primary_y(donors):
+    recipe = json.loads((ROOT / "recipes/system-y.json").read_text())
+    base = Glyph()
+    base.numberOfContours = 1
+    base.coordinates = GlyphCoordinates(recipe["points"])
+    base.endPtsOfContours = [len(base.coordinates) - 1]
+    base.flags = bytearray(recipe["on_curve"])
+    clear_hints(base)
+    outlines = {weight: master.getGlyphSet() for weight, master in donors.items()}
+    anchor = outlines[recipe["weight"]]
+    stem = vertical_stem(shape_from_glyphs(anchor, "n"), .4)
+    left = bounds(anchor, "y")[0]
+    for weight, master in outlines.items():
+        amount = vertical_stem(shape_from_glyphs(master, "n"), .4) - stem
+        origin = bounds(master, "y")[0] - left
+        points = direct_points(base, amount, .72, 3, origin)
+        glyph = deepcopy(base)
+        glyph.coordinates = points
+        yield weight, glyph
 
 
-def rails(reference, xheight):
-    """Read the four straight diagonals of the approved Regular C design."""
-    probe = Samples()
-    reference.draw(probe)
-    a, b = 0.54 * xheight, 0.88 * xheight
-    prior = [v for span in probe.spans(a, 1) for v in span]
-    later = [v for span in probe.spans(b, 1) for v in span]
-    assert len(prior) == len(later) == 4
-    slopes = [(right - left) / (b - a) for left, right in zip(prior, later)]
-    intercepts = [x - a * slope for x, slope in zip(prior, slopes)]
-    tips = [(intercept + slope * xheight, xheight)
-            for intercept, slope in zip(intercepts, slopes)]
-    yl, yr = slopes[1:3]
-    x1, x2 = intercepts[1:3]
-    fork = (x1 - x2) / (yr - yl)
-    return slopes, intercepts, tips, (x1 + yl * fork, fork)
+def lowercase(font, source, donors, locations, model, default):
+    cmap = font.getBestCmap()
+    bases = {cmap[ord(char)] for char in LETTERS}
+    alternates = {target for tag, table in feature_subtables(source) if tag.startswith("ss")
+                  for name, target in getattr(table, "mapping", {}).items()
+                  if name in bases and target in font["glyf"]}
+    names = bases | alternates
+    masters = {weight: enlarge_lowercase(master, alternates=alternates)[0]
+               for weight, master in donors.items()}
+    cap = font["OS/2"].sCapHeight
+    ascenders = dict.fromkeys("b d h k l".split(), cap) | {"t": 610, "f": 730}
+    drawings = {}
+    widths = {}
+    hooks = dict(primary_y(donors))
+    height = otRound(source["OS/2"].sxHeight * FACTOR)
+    font["OS/2"].sxHeight = height
 
-
-def bridge(pen, start, slope, end, end_slope):
-    distance = (end[1] - start[1]) / 3
-    pen.curveTo((start[0] + distance * slope, start[1] + distance),
-                (end[0] - distance * end_slope, end[1] - distance), end)
-
-
-def derivative(a, b):
-    return (b[0] - a[0]) / (b[1] - a[1])
-
-
-def regular_y(font, upstream):
-    xheight = font["OS/2"].sxHeight
-    gs = font.getGlyphSet(location={"wght": 400})
-    reference = shape_from_glyphs(gs, "y")
-    slopes, intercepts, tips, inner = rails(reference, xheight)
-    original = donor_hook(upstream, xheight / upstream["OS/2"].sxHeight)
-    left, right = spans(reference, CUT, 1)[0]
-    end, start = original[-1][-1][0], original[0][0][0]
-    factor = (right - left) / (start - end)
-    transform = Transform(factor, 0, 0, 1, left - factor * end, 0)
-    preserved = [tuple(map(transform.transformPoint, part)) for part in original]
-    hook_in, hook_out = preserved[0][0], preserved[-1][-1]
-    outer_join_y = -32
-    outer_join = (intercepts[3] + slopes[3] * outer_join_y, outer_join_y)
-    fork = (intercepts[0], 0)
-
-    true_type = TTGlyphPen(None)
-    pen = Cu2QuPen(true_type, max_err=0.35)
-    pen.moveTo(tips[0])
-    pen.lineTo(tips[1])
-    pen.lineTo(inner)
-    pen.lineTo(tips[2])
-    pen.lineTo(tips[3])
-    pen.lineTo(outer_join)
-    bridge(pen, outer_join, slopes[3], hook_in, derivative(*preserved[0][:2]))
-    for part in preserved:
-        if len(part) == 2:
-            pen.lineTo(part[-1])
-        else:
-            pen.qCurveTo(*part[1:])
-    bridge(pen, hook_out, derivative(*preserved[-1][-2:]), fork, -slopes[0])
-    pen.closePath()
-    return true_type.glyph()
-
-
-def add_primary_y(font, upstream):
-    system = deepcopy(font)
-    regular = regular_y(system, upstream)
-    _, locations = master_locations(system)
-    normalized = [{k: v for k, v in system.normalizeLocation(loc).items() if v}
-                  for loc in locations]
-    model = VariationModel(normalized, axisOrder=["wght", "opsz"])
-    default = normalized.index({})
-    original_width = system["hmtx"]["y"][0]
-    base = vertical_stem(shape_from_glyphs(system.getGlyphSet(location={"wght": 400}), "n"), .4)
-    weighted = {}
-    for loc in locations:
-        weight = loc["wght"]
-        if weight not in weighted:
-            gs = system.getGlyphSet(location={"wght": weight})
-            measured = vertical_stem(shape_from_glyphs(gs, "n"), .4)
-            weighted[weight] = direct_points(regular, measured - base, .72, 3, 0)
-
-    coordinates = []
-    for loc in locations:
-        current = system.getGlyphSet(location=loc)
-        target_left = shape_from_glyphs(current, "y").bounds[0]
-        points = weighted[loc["wght"]].copy()
-        shift = otRound(target_left - min(x for x, _ in points))
-        points.translate((shift, 0))
-        coordinates.append(points)
-    drawing = deepcopy(regular)
-    drawing.coordinates = coordinates[default]
-    append_glyph(font, "y", drawing,
-                 build_variations(model, coordinates, expanded_variations(system, "y")),
-                 original_width, metric_source="y")
-
-
-def bbox(glyphs, name):
-    pen = BoundsPen(glyphs)
-    glyphs[name].draw(pen)
-    return pen.bounds
-
-
-def rounded_points(values):
-    return GlyphCoordinates((otRound(p.real), otRound(p.imag)) for p in values)
-
-
-def joined_y(template, glyph):
-    """Carry the direction through smooth joins in the original curve topology."""
-    points = [complex(x, y) for x, y in glyph.coordinates]
-    original = [complex(x, y) for x, y in template.coordinates]
-    for contour in stored_segments(template):
-        for index, (start, control, end) in enumerate(contour):
-            incoming = contour[index - 1][1] or contour[index - 1][0]
-            outgoing = control or end
-            if not all(len(part) == 1 for part in (incoming, start, outgoing)):
-                continue
-            a, b, c = (next(iter(part)) for part in (incoming, start, outgoing))
-            u, v = original[b] - original[a], original[c] - original[b]
-            if not u or not v or (u.conjugate() * v).real < abs(u * v) * cos(radians(8)):
-                continue
-            if control and contour[index - 1][1]:
-                fraction = abs(u) / (abs(u) + abs(v))
-                points[b] = points[a] + (points[c] - points[a]) * fraction
-            elif control:
-                direction = (points[b] - points[a]) / abs(points[b] - points[a])
-                points[c] = points[b] + direction * abs(points[c] - points[b])
-            elif contour[index - 1][1]:
-                direction = (points[b] - points[c]) / abs(points[b] - points[c])
-                points[a] = points[b] + direction * abs(points[a] - points[b])
-    return rounded_points(points)
-
-
-def build(source, donor, output):
-    result = deepcopy(source)
-    cmap = source.getBestCmap()
-    names = {cmap[ord(c)] for c in LETTERS}
-    _, locations = master_locations(source)
-    normalized = [{tag: value for tag, value in source.normalizeLocation(loc).items() if value}
-                  for loc in locations]
-    model = VariationModel(normalized, axisOrder=["wght", "opsz"])
-    default = normalized.index({})
-    donor_masters = {weight: instantiateVariableFont(donor, {"wght": weight})
-                     for weight in sorted({loc["wght"] for loc in locations})}
-    weight_donors = {weight: enlarge_lowercase(master)[0] for weight, master in donor_masters.items()}
-    source_y = source.getGlyphSet(location={"wght": 400})["y"]._getGlyphInstance()
-    masters = []
-
-    for loc in locations:
-        authored = weight_donors[loc["wght"]]
-        target = source.getGlyphSet(location=loc)
-        drawing = deepcopy(authored)
-        alphabet = drawing["glyf"]
-        adjusted = {}
-
-        def place(name):
-            if name in adjusted:
-                return adjusted[name]
-            glyph = alphabet[name]
-            desired = bbox(target, name)
-            if glyph.isComposite():
-                for part in glyph.components:
-                    if part.glyphName in names:
-                        shift = place(part.glyphName)
-                        dx, dy = Transform(*part.getComponentInfo()[1]).transformVector((shift, 0))
-                        part.x -= otRound(dx)
-                        part.y -= otRound(dy)
-            elif desired[3] > source["OS/2"].sxHeight + 10:
-                # Ascenders retain System's existing heights above the enlarged x-height.
-                reference = drawing["OS/2"].sxHeight
-                top = bbox(authored.getGlyphSet(), name)[3]
-                set_ascender(glyph, reference, top, desired[3])
-            current = bbox(drawing.getGlyphSet(), name)
-            shift = otRound((desired[0] + desired[2] - current[0] - current[2]) / 2)
-            if glyph.isComposite():
-                for part in glyph.components:
-                    part.x += shift
-            else:
-                glyph.coordinates.translate((shift, 0))
-            glyph.recalcBounds(alphabet)
-            drawing["hmtx"][name] = drawing["hmtx"][name][0], glyph.xMin
-            adjusted[name] = shift
-            return shift
-
-        for name in sorted(names - {"y"}):
-            place(name)
-        y = deepcopy(target["y"]._getGlyphInstance())
-        y.coordinates = joined_y(source_y, y)
-        alphabet["y"] = y
-        dot = deepcopy(alphabet["diamond.dot"])
-        dot.coordinates = deepcopy(alphabet["uni0307"].getCoordinates(alphabet)[0])
-        alphabet[DOT] = dot
+    for weight, master in masters.items():
+        glyf = master["glyf"]
+        glyphs = master.getGlyphSet()
+        for name, top in ascenders.items():
+            if not glyf[name].isComposite():
+                glyph = glyf[name]
+                set_ascender(glyph, height, bounds(glyphs, name)[3], top)
+        dot, dot_shift = lowercase_dot(glyf, weight, height)
         for name in ("i", "j"):
-            for part in alphabet[name].components:
+            for part in glyf[name].components:
                 if part.glyphName == "uni0307":
                     part.glyphName = DOT
-                    part.y = otRound(bbox(target, name)[3] - max(y for _, y in dot.coordinates))
-        masters.append({name: alphabet[name] for name in names | {DOT}})
+                    part.y = dot_shift
+        glyf[DOT] = dot
+        glyf["y"] = hooks[weight]
+        drawings[weight] = {name: glyf[name] for name in names | {DOT}}
+        widths[weight] = {name: master["hmtx"][name][0] for name in names}
 
-    dot = deepcopy(masters[default][DOT])
-    clear_hints(dot)
-    append_glyph(result, DOT, dot,
-                 build_variations(model, [items[DOT].coordinates for items in masters]), 0)
-    result["GDEF"].table.GlyphClassDef.classDefs[DOT] = 3
-
-    # Component base glyphs must be installed before their dependants.
-    order = sorted(names, key=lambda name: (masters[default][name].isComposite(), name))
+    face = drawings[locations[default]["wght"]]
+    dot = deepcopy(face[DOT])
+    append_glyph(font, DOT, dot, build_variations(
+        model, [drawings[loc["wght"]][DOT].coordinates for loc in locations]), 0)
+    font["GDEF"].table.GlyphClassDef.classDefs[DOT] = 3
+    order = sorted(names, key=lambda name: (face[name].isComposite(), name))
     for name in order:
-        drawing = deepcopy(masters[default][name])
-        if drawing.isComposite():
-            points = [GlyphCoordinates((part.x, part.y) for part in owned[name].components)
-                      for owned in masters]
-        else:
-            points = [owned[name].coordinates for owned in masters]
-        assert all(len(p) == len(points[0]) for p in points), name
-        install_masters(result, source, name, drawing, points, model, default)
-
-    accents = rebuild_accents(result, source, donor_masters, locations, model,
-                              locations[default], names, DOT)
-    figures = rebuild_figures(result, source, donor_masters, locations, model, default)
-    reflected_mark_attachment(result, locations, model)
-    tracking = add_spacing(result, tabular=figures)
-    name_trial(result, FAMILY, variable=True)
-    result.recalcTimestamp = False
-    result.save(output)
-    with TTFont(output) as built:
-        sanitize(built)
-        for tag in ("cmap", "GSUB", "fvar", "STAT"):
-            assert built.getTableData(tag) == source.getTableData(tag), tag
-        for loc in locations:
-            a, b = (f.getGlyphSet(location=loc) for f in (source, built))
-            at = built.normalizeLocation(loc)
-            for name in source.getGlyphOrder():
-                expected = sum(delta * supportScalar(at, {"opsz": support})
-                               for support, delta in tracking.get(name, ()))
-                assert abs(b[name].width - a[name].width - expected) < .01, (loc, name)
-    return order, accents
+        drawing = deepcopy(face[name])
+        items = [drawings[loc["wght"]][name] for loc in locations]
+        points = ([GlyphCoordinates((part.x, part.y) for part in item.components) for item in items]
+                  if drawing.isComposite() else [item.coordinates for item in items])
+        install_masters(font, source, name, drawing, points, model, default)
+    return bases, {name: [widths[loc["wght"]][name] for loc in locations] for name in names}
 
 
-if __name__ == "__main__":
+def build(source):
+    font = from_sans(source)
+    pristine = deepcopy(font)
+    locations, model, default = designspace(font)
+    donors = {weight: instantiateVariableFont(source, {"wght": weight})
+              for weight in sorted({loc["wght"] for loc in locations})}
+    bases, advances = lowercase(font, pristine, donors, locations, model, default)
+    accents = rebuild_accents(font, pristine, donors, locations, model, locations[default], bases, DOT)
+    cmap = font.getBestCmap()
+    for codepoint in accents:
+        name = cmap[codepoint]
+        if font["glyf"][name].isComposite():
+            base = font["glyf"][name].components[0].glyphName
+            if base in advances:
+                advances[name] = advances[base].copy()
+    optical = next(axis for axis in font["fvar"].axes if axis.axisTag == "opsz")
+    gaps = dict(zip((optical.minValue, optical.defaultValue, optical.maxValue),
+                    (profile[2] for profile in PROFILES)))
+    samples = [pristine.getGlyphSet(location=loc) for loc in locations]
+    for name in spacing_glyphs(font):
+        values = advances.get(name, [sample[name].width for sample in samples])
+        advances[name] = [value + 2 * gaps[loc["opsz"]] for value, loc in zip(values, locations)]
+    set_advances(font, advances, model)
+    optical_diamonds(font, donors, locations, model, default)
+    rebuild_ligatures(font, pristine, locations, model, default)
+    figures = rebuild_figures(font, locations, model, default)
+    reflected_mark_attachment(font, locations, model)
+    add_spacing(font, tabular=figures)
+    return font, len(bases), len(accents)
+
+
+def main():
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("system", type=Path)
     parser.add_argument("sans", type=Path)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--metropolitan", type=Path, default=UPSTREAM)
     sampling = parser.add_mutually_exclusive_group()
-    sampling.add_argument("--outline-only", action="store_true", help="reproduce the outline proof")
+    sampling.add_argument("--outline-only", action="store_true", help="build before the kerning pass")
     sampling.add_argument("--named-instances", action="store_true",
-                          help="check pair clearance at the named weight and optical-size locations")
+                          help="check pair clearance at the weight, optical-size and width masters")
     parser.add_argument("--review-glyph", action="append", default=[], metavar="NAME",
                         help="also show this glyph in a focused proof")
     parser.add_argument("--export-proof", action="store_true", help="also export the proof as PNG and PDF")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    font = args.output / "DaikonicTransitSystemCurveReview-VF.ttf"
-    with TTFont(args.system, recalcTimestamp=False) as source, TTFont(args.sans) as donor:
-        ensure_system_calibration(source)
-        with TTFont(args.metropolitan) as upstream:
-            add_primary_y(source, upstream)
-        changed, accents = build(source, donor, font)
-    with TTFont(font, recalcTimestamp=False) as finished:
-        add_system_width(finished)
+    with TTFont(args.sans, recalcTimestamp=False) as source:
+        upright, bases, accents = build(source)
+    italic = make_italic(upright)
+    add_system_width(upright)
+    vertical = set_vertical_metrics(upright, italic)
+    stem = FAMILY.replace(" ", "")
+    for font, suffix, folder in ((upright, "", "Proof"), (italic, "-Italic", "Proof Italic")):
+        path = args.output / f"{stem}{suffix}-VF.ttf"
         if not args.outline_only:
-            locations = master_locations(finished)[1] if args.named_instances else None
-            spacing = repair_kerning(finished, locations=locations)
-        finished.save(font)
-        sanitize(finished)
-    if not args.outline_only:
-        font.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
-    build_proof(font, args.output / "Proof", flagged=args.review_glyph, svg_only=not args.export_proof)
-    print("Rebuilt", len(changed), "lowercase bases and", len(accents), "accented forms")
+            locations = master_locations(font)[1] if args.named_instances else None
+            spacing = repair_kerning(font, locations=locations)
+            path.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
+        font.save(path)
+        sanitize(font)
+        build_proof(path, args.output / folder, flagged=args.review_glyph, svg_only=not args.export_proof)
+    with args.sans.open("rb") as source:
+        digest = file_digest(source, "sha256").hexdigest()
+    report = {
+        "source_sha256": digest,
+        "units_per_em": upright["head"].unitsPerEm,
+        "axes": {axis.axisTag: [axis.minValue, axis.defaultValue, axis.maxValue]
+                 for axis in upright["fvar"].axes},
+        "encoded_characters": len(upright.getBestCmap()),
+        "vertical_metrics": vertical,
+    }
+    (args.output / "build.json").write_text(json.dumps(report, indent=2) + "\n")
+    print("Rebuilt", bases, "lowercase bases and", accents, "accented forms from Sans")
+
+
+if __name__ == "__main__":
+    main()

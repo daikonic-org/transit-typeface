@@ -47,9 +47,12 @@ def clear_hints(glyph):
 
 def build_variations(model, masters, metrics=None):
     count = len(masters[0])
+    # Several optical locations can share one drawing. The variation model
+    # subtracts deltas in place when given mutable GlyphCoordinates.
+    deltas = model.getDeltas([GlyphCoordinates(points) for points in masters])
     supports = {
         tuple(sorted(support.items())): [(otRound(x), otRound(y)) for x, y in values] + [(0, 0)] * 4
-        for support, values in zip(model.supports, model.getDeltas(masters)) if support
+        for support, values in zip(model.supports, deltas) if support
     }
     for key, values in (metrics or {}).items():
         supports.setdefault(key, [(0, 0)] * (count + 4))[-4:] = values[-4:]

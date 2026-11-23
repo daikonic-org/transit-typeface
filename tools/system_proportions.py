@@ -47,13 +47,13 @@ def set_ascender(glyph, xheight, old_top, new_top):
         )
 
 
-def enlarge_lowercase(original):
+def enlarge_lowercase(original, *, alternates=()):
     """Scale around the baseline and offset the existing contours in place."""
     font = deepcopy(original)
     source, target = original["glyf"], font["glyf"]
     glyphs = original.getGlyphSet()
     compensation = lowercase_compensation(glyphs)
-    names = {original.getBestCmap()[ord(c)] for c in ascii_lowercase + "ıȷ"}
+    names = {original.getBestCmap()[ord(c)] for c in ascii_lowercase + "ıȷ"} | set(alternates)
     shifts = {}
 
     def enlarge(name):

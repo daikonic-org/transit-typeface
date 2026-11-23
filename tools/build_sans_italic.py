@@ -35,10 +35,14 @@ from sans_weight_refinement import fitting_context
 from specimens import DATA
 
 
-def reuse_single_storey_a(font):
+def reuse_single_storey_a(font, *, designspace=None):
     """Share the existing alternate, keeping the established italic advances."""
     glyf = font["glyf"]
-    _, _, _, _, model, masters, _ = fitting_context(font)
+    if designspace is None:
+        _, _, _, _, model, masters, _ = fitting_context(font)
+        default = 0
+    else:
+        model, masters, default = designspace
     alternate = "a.ss01"
     source_metrics = expanded_variations(font, alternate)
     advance = font["hmtx"][alternate][0]
@@ -62,7 +66,7 @@ def reuse_single_storey_a(font):
                     [(part.x + (shift if i else 0), part.y)
                      for i, part in enumerate(current.components)]
                 ))
-            for part, (x, y) in zip(glyph.components, placements[0]):
+            for part, (x, y) in zip(glyph.components, placements[default]):
                 part.x, part.y = x, y
         font["hmtx"][name] = advance, font["hmtx"][name][1]
         widths[name] = widths[alternate]
@@ -71,7 +75,7 @@ def reuse_single_storey_a(font):
     return sources
 
 
-def transformed_components(font, name, slant, pivot):
+def transformed_components(font, name, slant, pivot, *, dotted=("i",)):
     """Conjugate each component so its already-slanted source can stay live."""
     original = font["glyf"][name]
     glyph = deepcopy(original)
@@ -80,7 +84,7 @@ def transformed_components(font, name, slant, pivot):
     for i, part in enumerate(glyph.components):
         base, matrix = part.getComponentInfo()
         parent = slant
-        if name == "i":
+        if name in dotted:
             # The previous italic carries the i tittle along the slant as an upright diamond.
             mark = font["glyf"][base]
             if mark.yMin + part.y > font["OS/2"].sxHeight + 30:
@@ -161,6 +165,14 @@ def italicize(font, config):
         font, "cursive", family="sans", descending_f=True, live_components=True,
         donor_returns=True,
     )
+    composites = apply_slant(font, metric_sources)
+    add_proportional_italic_kerning(font)
+    add_descender_kerning(font)
+    set_style(font, config)
+    return metric_sources, sorted(custom), composites
+
+
+def apply_slant(font, metric_sources, *, dotted=("i",), variable_anchors=False):
     glyf = font["glyf"]
     order = font.getGlyphOrder()
     pivot = font["OS/2"].sxHeight / 2
@@ -169,15 +181,13 @@ def italicize(font, config):
         (name for name in order if glyf[name].isComposite()),
         key=lambda name: glyf[name].getCompositeMaxpValues(glyf).maxComponentDepth,
     )
-    revised_parts = {name: transformed_components(font, name, slant, pivot) for name in composites}
+    revised_parts = {name: transformed_components(font, name, slant, pivot, dotted=dotted)
+                     for name in composites}
     shear_drawn_outlines(font, set(order), pivot, {})
     for name in composites:
         apply_shape(font, name, *revised_parts[name])
-    italicize_anchors(font, set(order), pivot, {}, metric_sources)
-    add_proportional_italic_kerning(font)
-    add_descender_kerning(font)
-    set_style(font, config)
-    return metric_sources, sorted(custom), composites
+    italicize_anchors(font, set(order), pivot, {}, metric_sources, variable=variable_anchors)
+    return composites
 
 
 def validate_italic(upright, italic, metric_sources):

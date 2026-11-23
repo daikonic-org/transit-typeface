@@ -44,19 +44,22 @@ def feature_subtables(font, *, contextual=False):
 
 
 def expanded_variations(font, name):
-    old = font["glyf"][name]
+    coordinates = ends = None
     result = {}
     for v in font["gvar"].variations.get(name, []):
         key = tuple(sorted(v.axes.items()))
-        values = (
-            iup_delta(
-                v.coordinates,
-                list(old.coordinates) + [(0, 0)] * 4,
-                old.endPtsOfContours,
-            )
-            if any(d is None for d in v.coordinates)
-            else v.coordinates
-        )
+        values = v.coordinates
+        if None in values:
+            if coordinates is None:
+                vmetrics = font["vmtx"].metrics if "vmtx" in font else None
+                coordinates, controls = font["glyf"]._getCoordinatesAndControls(
+                    name, font["hmtx"].metrics, vmetrics
+                )
+                # Each composite component is a separate point for IUP.
+                ends = controls.endPts
+                if controls.numberOfContours < 1:
+                    ends = list(range(len(ends)))
+            values = iup_delta(values, coordinates, ends)
         if key not in result:
             result[key] = [(0, 0)] * len(values)
         result[key] = [(a + c, b + d) for (a, b), (c, d) in zip(result[key], values)]
@@ -236,6 +239,11 @@ def append_layout_variations(font, appended):
         gdef.Version = max(gdef.Version, 0x00010003)
         gdef.VarStore = appended
         return
+    append_variation_rows(original, appended)
+
+
+def append_variation_rows(original, appended):
+    """Append an item variation store while keeping existing outer indices live."""
     regions = original.VarRegionList.Region
     offset = len(regions)
     regions.extend(appended.VarRegionList.Region)

@@ -84,14 +84,18 @@ def width_regions(store, tags):
         base_region = len(regions)
         regions.append(buildVarRegion({"wdth": support}, tags))
         crossed = {}
+        by_coordinates = {}
         for index in range(original_count):
             source = regions[index]
             coordinates = {tag: (axis.StartCoord, axis.PeakCoord, axis.EndCoord)
                            for tag, axis in zip(tags, source.VarRegionAxis)
                            if axis.PeakCoord}
             if coordinates:
-                crossed[index] = len(regions)
-                regions.append(buildVarRegion(coordinates | {"wdth": support}, tags))
+                key = tuple(coordinates.items())
+                if key not in by_coordinates:
+                    by_coordinates[key] = len(regions)
+                    regions.append(buildVarRegion(coordinates | {"wdth": support}, tags))
+                crossed[index] = by_coordinates[key]
             else:
                 crossed[index] = base_region
         output.append((width_ratio(width), base_region, crossed))
@@ -105,10 +109,12 @@ def scaled_row(store, basis, index, value, cache, *, multiple=1):
         row = advance_row(store, index)
         values = row.copy()
         for factor, base, crossed in basis:
-            values[base] = rounded_width_delta(value, factor, multiple)
+            combined = {base: value}
             for old_region, delta in row.items():
                 region = crossed[old_region]
-                values[region] = values.get(region, 0) + rounded_width_delta(delta, factor, multiple)
+                combined[region] = combined.get(region, 0) + delta
+            values.update({region: rounded_width_delta(delta, factor, multiple)
+                           for region, delta in combined.items()})
         cache[key] = len(store.VarData) << 16
         store.VarData.append(buildVarData(list(values), [list(values.values())]))
         store.VarDataCount = len(store.VarData)

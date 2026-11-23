@@ -12,6 +12,7 @@ from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables import otTables
 from fontTools.ttLib.tables.TupleVariation import TupleVariation
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+from fontTools.varLib.builder import buildVarData, buildVarDevTable
 
 from code_receiver_shapes import build_receivers
 from font_feature_tools import add_features, expanded_variations
@@ -100,7 +101,38 @@ def shear_drawn_outlines(font, selected, pivot, fit):
         apply_shape(font, name, new, variations)
 
 
-def italicize_anchors(font, selected, pivot, fit, metric_sources):
+def italicize_anchors(font, selected, pivot, fit, metric_sources, *, variable=False):
+    cache = {}
+    store = font["GDEF"].table.VarStore if variable else None
+
+    def index(device):
+        if device is None:
+            return None
+        assert device.DeltaFormat == 0x8000
+        return device.StartSize << 16 | device.EndSize
+
+    def row(key):
+        if key is None:
+            return {}
+        outer, inner = divmod(key, 65536)
+        data = store.VarData[outer]
+        return dict(zip(data.VarRegionIndex, data.Item[inner]))
+
+    def shear_variation(anchor):
+        y = index(getattr(anchor, "YDeviceTable", None))
+        if y is None:
+            return
+        x = index(getattr(anchor, "XDeviceTable", None))
+        key = x, y
+        if key not in cache:
+            values = row(x)
+            for region, delta in row(y).items():
+                values[region] = values.get(region, 0) + otRound(delta * SHEAR)
+            cache[key] = len(store.VarData) << 16
+            store.VarData.append(buildVarData(list(values), [list(values.values())]))
+            store.VarDataCount = len(store.VarData)
+        anchor.XDeviceTable = buildVarDevTable(cache[key])
+
     def move(anchors, name):
         if name in selected:
             for anchor in anchors:
@@ -108,6 +140,8 @@ def italicize_anchors(font, selected, pivot, fit, metric_sources):
                     anchor.XCoordinate += otRound(
                         SHEAR * (anchor.YCoordinate - pivot)
                     ) + fit.get(name, 0)
+                    if variable:
+                        shear_variation(anchor)
 
     for lookup in font["GPOS"].table.LookupList.Lookup:
         for table in lookup.SubTable:

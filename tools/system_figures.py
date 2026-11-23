@@ -1,18 +1,18 @@
-"""Rebuild proportional and tabular System figures from shared Sans outlines."""
+"""Build System’s tabular grid from the proportional Sans drawings."""
 
 from copy import deepcopy
+from math import ceil
 from string import digits
 
 from fontTools.misc.roundTools import otRound
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 
-from font_feature_tools import append_glyph, expanded_variations, feature_subtables
-from sans_baseline_trial import build_variations, components, install
+from font_feature_tools import add_features, append_glyph, feature_subtables
+from sans_baseline_trial import build_variations, components
 from sans_complete_rebuild import box_center
 from system_accents import bounds, install_masters
-
-
-OPTICAL_DOT_SCALES = (1.10, 1.06, 1.0)
+from system_foundation import PROFILES
+from system_metrics import set_advances
 
 
 def tabular_substitutions(font):
@@ -20,62 +20,47 @@ def tabular_substitutions(font):
             for name, alternate in table.mapping.items()}
 
 
-def rebuild_figures(font, source, donors, locations, model, default):
-    """Install clean drawings, then give each tabular form a live base component."""
-    pairs = tabular_substitutions(source)
-    cmap = source.getBestCmap()
-    numeral_names = {cmap[ord(char)] for char in digits}
-    separator_names = {cmap[ord(char)] for char in ".,:"}
-    assert pairs.keys() == numeral_names | separator_names
-    optical = next(axis for axis in source["fvar"].axes if axis.axisTag == "opsz")
-    dot_scale = dict(zip((optical.minValue, optical.defaultValue, optical.maxValue), OPTICAL_DOT_SCALES))
-    donor = donors[locations[default]["wght"]]
-    original = [source.getGlyphSet(location=loc) for loc in locations]
-    masters = [donors[loc["wght"]] for loc in locations]
-    dot_name = "diamond.dot"
-    dot = deepcopy(donor["glyf"][dot_name])
-    dot_masters = []
-    for loc, face in zip(locations, masters):
-        assert loc["opsz"] in dot_scale, loc
-        scale = dot_scale[loc["opsz"]]
-        dot_masters.append(GlyphCoordinates((otRound(x * scale), otRound(y * scale))
-                                            for x, y in face["glyf"][dot_name].coordinates))
-    dot.coordinates = dot_masters[default]
-    append_glyph(font, dot_name, dot, build_variations(model, dot_masters), 0)
-    font["GDEF"].table.GlyphClassDef.classDefs[dot_name] = 3
+def optical_diamonds(font, donors, locations, model, default):
+    """Apply System's optical profiles to the common punctuation diamond."""
+    optical = next(axis for axis in font["fvar"].axes if axis.axisTag == "opsz")
+    scales = dict(zip((optical.minValue, optical.defaultValue, optical.maxValue),
+                      (profile[-1] for profile in PROFILES)))
+    name = "diamond.dot"
+    points = [GlyphCoordinates((otRound(x * scales[loc["opsz"]]), otRound(y * scales[loc["opsz"]]))
+                                for x, y in donors[loc["wght"]]["glyf"][name].coordinates)
+              for loc in locations]
+    glyph = deepcopy(donors[locations[default]["wght"]]["glyf"][name])
+    install_masters(font, font, name, glyph, points, model, default)
 
-    for name in pairs:
-        glyph = deepcopy(donor["glyf"][name])
-        points = []
-        for face, target in zip(masters, original):
-            item = face["glyf"][name]
-            shift = otRound(box_center(bounds(target, name), 0)
-                            - box_center(bounds(face.getGlyphSet(), name), 0))
-            if glyph.isComposite():
-                assert all(part.glyphName == dot_name for part in item.components), name
-                points.append(GlyphCoordinates((part.x + shift, part.y) for part in item.components))
-            else:
-                coords = item.coordinates.copy()
-                coords.translate((shift, 0))
-                points.append(coords)
-        install_masters(font, source, name, glyph, points, model, default)
 
-    shifted = [font.getGlyphSet(location=loc) for loc in locations]
-    width_map = font["HVAR"].table.AdvWidthMap.mapping
-    columns = (pairs[cmap[ord("0")]], pairs[cmap[ord(".")]])
-    metrics = [expanded_variations(source, name) for name in columns]
+def rebuild_figures(font, locations, model, default):
+    """Install tabular substitutions and live derivatives from the same digit shapes."""
+    cmap = font.getBestCmap()
+    numerals = [cmap[ord(char)] for char in digits]
+    separators = [cmap[ord(char)] for char in ".,:"]
+    pairs = {name: name + ".tnum" for name in numerals + separators}
+    masters = [font.getGlyphSet(location=loc) for loc in locations]
+    cells = [ceil(max(glyphs[name].width for name in numerals) / 10) * 10 for glyphs in masters]
+    advances = {}
     for name, tabular in pairs.items():
-        column = 0 if name in numeral_names else 1
-        axis_metrics = metrics[column]
+        widths = cells if name in numerals else [cell // 2 for cell in cells]
         placements = []
-        for glyphs in shifted:
+        for glyphs, width in zip(masters, widths):
             box = bounds(glyphs, name)
-            x = otRound(glyphs[columns[column]].width / 2 - box_center(box, 0))
+            x = otRound(width / 2 - box_center(box, 0))
             y = otRound(font["OS/2"].sCapHeight / 2 - box_center(box, 1)) if name == cmap[ord(":")] else 0
             placements.append(GlyphCoordinates([(x, y)]))
         glyph = components([(name, placements[default][0])])
-        install(font, tabular, glyph, build_variations(model, placements, axis_metrics))
-        width_map[tabular] = width_map[columns[column]]
-        assert font["hmtx"][tabular][0] == font["hmtx"][columns[column]][0], tabular
+        append_glyph(font, tabular, glyph, build_variations(model, placements), widths[default])
+        advances[tabular] = widths
+    # Round the digit grid in half-cell units so each variation delta is twice
+    # the corresponding separator delta.
+    set_advances(font, advances, model, multiples={pairs[name]: 2 for name in numerals})
 
+    lines = ["languagesystem DFLT dflt;", "languagesystem latn dflt;"]
+    for tag, mapping in (("tnum", pairs), ("pnum", {right: left for left, right in pairs.items()})):
+        lines.append(f"feature {tag} {{")
+        lines.extend(f"sub {left} by {right};" for left, right in mapping.items())
+        lines.append(f"}} {tag};")
+    add_features(font, "\n".join(lines))
     return pairs
