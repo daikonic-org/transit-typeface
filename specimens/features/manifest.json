@@ -1,14 +1,14 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/2026.11.20/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "63a564ddcca9d7cc183464106e65528a755a2b38ffe6c2b6d8a31c7850053f1b",
+      "font": "releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "bad2e874ca12f75a1baaa78fcbf4d5625d547fb23432c396687a69ce43d39dd5",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf",
+      "font": "releases/2026.11.22/system/VF/DaikonicTransitSystem-VF.ttf",
       "sha256": "0633745b18afdac74a27b3f02bd4da19cc996fe3b85c00d37a3854160d58672f",
       "location": {
         "wght": 350,
@@ -16,7 +16,7 @@
       }
     },
     "code": {
-      "font": "releases/2026.11.20/code/VF/DaikonicTransitCode-VF.ttf",
+      "font": "releases/2026.11.22/code/VF/DaikonicTransitCode-VF.ttf",
       "sha256": "6ed27a63b7a8ee37b134c84d9072facc5d2b57e410dad1ac6d512f1c124d10f7",
       "location": {
         "wght": 350,
@@ -4435,11 +4435,11 @@
     "code-scope-on.svg": "983ba5a404279dfe1cf9df299e63836bd6ccf00802c161faa620de1cfb5f1a78",
     "code-texture-healing-off.svg": "585303649ef57e4e20c5cbee8611032196a654ada822bef589eda8a922a85a6d",
     "code-texture-healing-on.svg": "4f56ac10a06122f84e915d2b2805805ca3abd26bbd7e9293725174685656ad76",
-    "sans-Features.svg": "7e0a80d968316e0a30f79304b7d5cb1125a71e27dfe4f43880466d588a475c0d",
-    "sans-hooks-off.svg": "8ee5ed949c81c25d088f2e995f4212d34294c39747f3184d96c5753eb3469d07",
-    "sans-hooks-on.svg": "8167ceabec9de62235d343742d9b2cbe7ad5bcd1669b7c421aa178d8dc3ba810",
-    "sans-standard-off.svg": "247c02b871f102c6e8f17fbe70d29ec0f31f17b32e50380ed0b862bf5c62a501",
-    "sans-standard-on.svg": "8755427648064284551e05d67ea98e0c91606454ad827cd58b628b7f89714136",
+    "sans-Features.svg": "9efa5ff036d0e9c11838bbf477e3c6dab5290bf90e987b4264a4dfcc5e9b9d28",
+    "sans-hooks-off.svg": "891d154f27b92240ddfec399d5c96c0e1ec202f413fe511b0bfc1287c14ed874",
+    "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",
+    "sans-standard-off.svg": "c16b127853b32545d65b7f0d2d3098935e245ffecfd35fa63a2436a67ddfde5b",
+    "sans-standard-on.svg": "089ea74e6d911c56a3a0b5c674718249caa32d54f3b82cea1d8b99c12ccd7bdb",
     "system-Features.svg": "cdfdeedd4e06c02f01240dc941994f782271cd5228ddc8c8375166f9593288bf",
     "system-standard-off.svg": "6ad08e7356bb33dd1a946b8840cbfd6a64bc4135e79a8b2b1d309fe36353f34d",
     "system-standard-on.svg": "838a96eb4c216f995bd720cd57e7fface9a106b01eb3becb611981daa3500327",

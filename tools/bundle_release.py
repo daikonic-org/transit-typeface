@@ -1,6 +1,7 @@
 """Build and verify one coordinated release containing all three Transit families."""
 
 from pathlib import Path
+from collections import Counter
 import argparse
 from copy import deepcopy
 import hashlib
@@ -170,6 +171,36 @@ def build(only=None):
     check()
 
 
+def check_sans_coverage(prior_path, current):
+    """Check the rebuilt Sans against its previously released counterpart."""
+    with TTFont(prior_path) as prior:
+        names = prior.getGlyphOrder()
+        assert current.getGlyphOrder()[:len(names)] == names
+        for tag in ("cmap", "GSUB", "GDEF"):
+            assert current.getTableData(tag) == prior.getTableData(tag), (prior_path, tag)
+        assert all(current["glyf"][name].numberOfContours != 0
+                   for name in names if prior["glyf"][name].numberOfContours != 0)
+        assert current["post"].italicAngle == prior["post"].italicAngle
+        def weight_settings(font):
+            return (
+                [(axis.axisTag, axis.minValue, axis.defaultValue, axis.maxValue)
+                 for axis in font["fvar"].axes],
+                [(instance.coordinates, font["name"].getDebugName(instance.subfamilyNameID))
+                 for instance in font["fvar"].instances],
+            )
+
+        assert weight_settings(current) == weight_settings(prior)
+        if current["post"].italicAngle == 0:
+            assert current.getTableData("GPOS") == prior.getTableData("GPOS")
+        else:
+            features = lambda font: Counter(
+                entry.FeatureTag for entry in font["GPOS"].table.FeatureList.FeatureRecord
+            )
+            assert features(current) == features(prior)
+            layout = lambda font: font["GPOS"].table.LookupList.Lookup
+            assert not Counter(k.LookupType for k in layout(prior)) - Counter(k.LookupType for k in layout(current))
+
+
 def check():
     report = json.loads((OUT / "manifest.json").read_text())
     assert report["version"] == RECIPE["version"] and report["tag"] == RECIPE["tag"]
@@ -196,7 +227,9 @@ def check():
             assert variable["head"].unitsPerEm == em, filename
             sanitize(variable)
             check_repeated_stems(variable, path, key)
-            if key == "code":
+            if settings.get("sans_rebuild"):
+                check_sans_coverage(ROOT / settings["italic_font" if "-Italic" in filename else "font"], variable)
+            if key == "code" and not settings.get("reuse"):
                 from code_hairline_toggle import check_release
 
                 reference = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
@@ -405,7 +438,13 @@ def package():
         "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]
-    if RECIPE["typography"]["code"].get("punctuation"):
+    if RECIPE["typography"]["sans"].get("sans_rebuild"):
+        notes = notes[:2] + [
+            "- **Sans 0.112** rebuilds upright and italic from shared, curve-based sources. Related forms reuse components, including the diamond dot and the comma in the semicolon. The italic has a continuous descending `f` and an open, upturned `g` return.",
+            "- **Coverage** preserves the 427 encoded characters, ligature and alternate substitutions, and five named weights from Sans 0.111. The specimen archive includes full upright and italic glyph proofs.",
+            "- System 0.120 and Code 1.042 are carried forward from the previous release.",
+        ] + notes[-2:]
+    if RECIPE["typography"]["code"].get("punctuation") and not RECIPE["typography"]["code"].get("reuse"):
         notes[2:2] = [
             "- **Code punctuation** includes centered commas and semicolons, taller quotes and lifetime markers, larger punctuation diamonds, and more prominent tildes and carets.",
             "- **Code widths and weights** run from 94% to 108% and Book 350 to Medium 500, with Regular 400 as the default. The Code TTC includes Narrow, standard, and Wide in upright and italic at every named weight.",

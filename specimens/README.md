@@ -19,11 +19,10 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-These specimens show Sans0.109, System0.117 and **Code1.036**. The Code
-panel uses the same approved preview installed for Book350, including the
-two-storey @ with a tapered c-style wrap, balanced i, stronger delimiters, raised/heavier gapless underscore,
-wider hyphen and selected optical pair adjustments. The Code footer identifies
-it as a preview. Released font packages remain separate.
+The current specimens show Sans 0.112, System 0.120 and Code 1.042.
+The [Sans upright glyph proof](../releases/2026.11.22/specimens/Sans-Upright-Glyph-Proof.pdf)
+and [Sans italic glyph proof](../releases/2026.11.22/specimens/Sans-Italic-Glyph-Proof.pdf)
+show every named weight.
 
 [Code detail sheet PNG](TransitCode-Details.png) · [Code detail sheet PDF](TransitCode-Details.pdf)
 shows all three Code weights with email/decorator samples, repeat @ fitting,

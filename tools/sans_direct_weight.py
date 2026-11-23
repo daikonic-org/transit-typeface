@@ -220,7 +220,7 @@ def keep_junctions(glyph, points, reach):
             if not 0 <= gap <= reach:
                 continue
             current = along(points[c]) - along(points[b])
-            if current < gap:
+            if current < 1:
                 correction = direction * (gap - current) / 2
                 points[b] -= correction
                 points[c] += correction
@@ -240,7 +240,29 @@ def keep_junctions(glyph, points, reach):
                 points[i] = average
 
 
-def direct_points(glyph, change, ratio, miter, x_shift, *, apertures=(), contour_gaps=True):
+def keep_crossbar_height(glyph, points, height):
+    """Hold an authored x-height crossbar shoulder on its original line."""
+    if height is None:
+        return
+    start = 0
+    for end in glyph.endPtsOfContours:
+        for index in range(start, end + 1):
+            nxt = start if index == end else index + 1
+            before = end if index == start else index - 1
+            after = start if nxt == end else nxt + 1
+            if not all(glyph.flags[i] & 1 for i in (before, index, nxt, after)):
+                continue
+            x0, y0 = glyph.coordinates[before]
+            x1, y = glyph.coordinates[index]
+            x2, y2 = glyph.coordinates[nxt]
+            x3, y3 = glyph.coordinates[after]
+            if abs(y - height) <= 1 and y2 == y and x0 == x1 and x2 == x3 and (y - y0) * (y3 - y) > 0:
+                points[index] = complex(points[index].real, y)
+                points[nxt] = complex(points[nxt].real, y)
+        start = end + 1
+
+
+def direct_points(glyph, change, ratio, miter, x_shift, *, apertures=(), contour_gaps=True, x_height=None):
     """Move each point using only its contour's adjacent directions."""
     if not change:
         if not x_shift:
@@ -276,4 +298,5 @@ def direct_points(glyph, change, ratio, miter, x_shift, *, apertures=(), contour
     if contour_gaps:
         keep_contour_gaps(glyph, result)
     result = preserve_apertures(glyph, result, change, x_shift, apertures)
+    keep_crossbar_height(glyph, result, x_height)
     return GlyphCoordinates((otRound(p.real), otRound(p.imag)) for p in result)

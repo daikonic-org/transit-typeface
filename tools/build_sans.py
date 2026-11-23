@@ -88,16 +88,21 @@ def direct_weight_proof(output):
     }, indent=2) + "\n")
 
 
+def name_upright(font, family):
+    stem = family["stem"]
+    for instance in font["fvar"].instances:
+        label = font["name"].getDebugName(instance.subfamilyNameID)
+        instance.postscriptNameID = font["name"].addName(f"{stem}-{label.replace(' ', '')}")
+    name_trial(font, family["name"], variable=True)
+
+
 def build(output):
     payload, baseline_report = load_baseline()
     family = DATA["families"]["sans"]
     stem = family["stem"]
     with TTFont(BytesIO(payload), recalcTimestamp=False) as font:
         rebuild_report, mirrored, normalized, ligatures, attachments = complete_outline_pipeline(font)
-        for instance in font["fvar"].instances:
-            label = font["name"].getDebugName(instance.subfamilyNameID)
-            instance.postscriptNameID = font["name"].addName(f"{stem}-{label.replace(' ', '')}")
-        name_trial(font, family["name"], variable=True)
+        name_upright(font, family)
         for fmt in ("VF", "TTF", "TTC", "OTF", "WOFF2", "SOURCE"):
             (output / fmt).mkdir(parents=True, exist_ok=True)
         variable = output / "VF" / f"{stem}-VF.ttf"

@@ -103,7 +103,8 @@ def rebuild_drawn_outlines(font):
             direct_points(glyph, scale * change,
                           settings["horizontal_growth_ratio"], settings["miter_limit"],
                           (instance[name].width - advance) / 2, apertures=apertures,
-                          contour_gaps="contour_clearance" not in excluded)
+                          contour_gaps="contour_clearance" not in excluded,
+                          x_height=font["OS/2"].sxHeight)
             for change, instance in zip(weight_changes, named)
         ]
         variations[name] = build_variations(model, masters, expanded_variations(font, name))

@@ -6,9 +6,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20) includes **Sans 0.111, System 0.120 and Code 1.042**, with upright and italic styles for all three typefaces.
+The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.22) includes **Sans 0.112, System 0.120 and Code 1.042**, with upright and italic styles for all three typefaces.
 
-The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.19.1/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.19.1/specimens/Paired-Stems.svg).
+The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.22/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.22/specimens/Paired-Stems.svg).
 
 ## Daikonic Transit Sans
 
@@ -18,6 +18,8 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Proportional spacing, kerning and accented-character positioning.
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
+
+[Upright glyph proof](releases/2026.11.22/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/2026.11.22/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -177,7 +179,7 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.20.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.22.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 

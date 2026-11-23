@@ -72,6 +72,34 @@ def apply_shape(font, name, glyph, variations):
     font["hmtx"][name] = (font["hmtx"][name][0], glyph.xMin)
 
 
+def shear_drawn_outlines(font, selected, pivot, fit):
+    for name in font.getGlyphOrder():
+        glyph = font["glyf"][name]
+        if name not in selected or glyph.numberOfContours <= 0:
+            continue
+        top = font["OS/2"].sxHeight
+        dots = {
+            i
+            for contour in contours(glyph)
+            if name == "i" and min(glyph.coordinates[i][1] for i in contour) > top + 30
+            for i in contour
+        }
+        dot_center = (glyph.yMax + top + 30) / 2
+
+        def transform(i, x, y):
+            return (
+                x
+                + SHEAR * ((dot_center if i in dots else y) - pivot)
+                + fit.get(name, 0),
+                y,
+            )
+
+        new, variations = shaped_copy(
+            font, name, name, range(len(glyph.coordinates)), transform
+        )
+        apply_shape(font, name, new, variations)
+
+
 def italicize_anchors(font, selected, pivot, fit, metric_sources):
     def move(anchors, name):
         if name in selected:
@@ -167,6 +195,24 @@ def set_style(font, config):
     font["OS/2"].fsSelection = (font["OS/2"].fsSelection | 1) & ~64
 
 
+def add_proportional_italic_kerning(font):
+    add_features(
+        font,
+        """
+        languagesystem DFLT dflt;
+        languagesystem latn dflt;
+        feature kern {
+            pos g [fi fl] 40;
+            pos underscore [fi fl] 52;
+            pos [parenleft bracketleft braceleft] [fi fl] 24;
+            lookup BracketF {
+                pos [bracketleft braceleft] f 24;
+            } BracketF;
+        } kern;
+        """,
+    )
+
+
 def build(key, config, output, g_source=None, *, descending_f=False):
     original = ROOT / config["font"]
     font = TTFont(original, recalcTimestamp=False)
@@ -196,31 +242,7 @@ def build(key, config, output, g_source=None, *, descending_f=False):
     # Shift only the handful of Code letters that collide with the upright
     # ampersand at Regular. Leave their advances and the ampersand unchanged.
     fit = CODE_FIT if key == "code" else {}
-    for name in font.getGlyphOrder():
-        glyph = glyphs[name]
-        if name not in selected or glyph.numberOfContours <= 0:
-            continue
-        top = font["OS/2"].sxHeight
-        dots = {
-            i
-            for contour in contours(glyph)
-            if name == "i" and min(glyph.coordinates[i][1] for i in contour) > top + 30
-            for i in contour
-        }
-        dot_center = (glyph.yMax + top + 30) / 2
-
-        def transform(i, x, y):
-            return (
-                x
-                + SHEAR * ((dot_center if i in dots else y) - pivot)
-                + fit.get(name, 0),
-                y,
-            )
-
-        new, variations = shaped_copy(
-            font, name, name, range(len(glyph.coordinates)), transform
-        )
-        apply_shape(font, name, new, variations)
+    shear_drawn_outlines(font, selected, pivot, fit)
     italicize_anchors(font, selected, pivot, fit, metric_sources)
     if key == "code":
         has_descender = descending_f or g_source in ("a", "q", "refined")
@@ -241,21 +263,7 @@ def build(key, config, output, g_source=None, *, descending_f=False):
         """,
         )
     elif g_source == "refined" or descending_f:
-        add_features(
-            font,
-            """
-            languagesystem DFLT dflt;
-            languagesystem latn dflt;
-            feature kern {
-                pos g [fi fl] 40;
-                pos underscore [fi fl] 52;
-                pos [parenleft bracketleft braceleft] [fi fl] 24;
-                lookup BracketF {
-                    pos [bracketleft braceleft] f 24;
-                } BracketF;
-            } kern;
-            """,
-        )
+        add_proportional_italic_kerning(font)
     set_style(font, config)
     output.mkdir(parents=True, exist_ok=True)
     target = output / (config["stem"] + "-Italic-VF.ttf")

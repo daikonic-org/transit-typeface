@@ -24,6 +24,11 @@ def stage(key, settings, scratch):
     if settings.get("reuse"):
         assert settings["previous"] == settings["version"]
         shutil.copytree(source.parent.parent, folder, dirs_exist_ok=True)
+    elif settings.get("sans_rebuild"):
+        from build_sans_italic import build_fonts
+
+        assert key == "sans"
+        build_fonts(destination, version=settings["version"])
     elif settings.get("punctuation"):
         from code_punctuation_size import release_font
 

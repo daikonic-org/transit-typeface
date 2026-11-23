@@ -240,11 +240,12 @@ def italic_letterform_proof(
     title = {"f": "Descending f", "g": "Cursive g", "ft": "Paired stems"}.get(
         focus, "Italic letterforms"
     )
-    subtitle = (
-        "9° italic · System Text preset"
-        if refined
-        else "Book 350 · 9° lean · same a, f and i in both columns"
-    )
+    if refined:
+        subtitle = "9° italic"
+        if "system" in families:
+            subtitle += " · System Text preset"
+    else:
+        subtitle = "Book 350 · 9° lean · same a, f and i in both columns"
     body = [
         rect(0, 0, 1200, height, BG),
         label(f"Daikonic Transit · {title}", 47, 52, 31, bold=True),

@@ -58,6 +58,21 @@ class Samples(BasePen):
         if self.last != self.start:
             self._lineTo(self.start)
 
+    def spans(self, value, axis):
+        return self.spans_from_edges(self.lines, value, axis)
+
+    @staticmethod
+    def spans_from_edges(edges, value, axis):
+        crossings = []
+        for a, b in edges:
+            if (a[axis] <= value < b[axis]) or (b[axis] <= value < a[axis]):
+                crossings.append(
+                    a[1 - axis]
+                    + (value - a[axis]) * (b[1 - axis] - a[1 - axis]) / (b[axis] - a[axis])
+                )
+        crossings.sort()
+        return list(zip(crossings[::2], crossings[1::2]))
+
 
 def shape(font, name):
     glyphs = font.getGlyphSet()
@@ -73,15 +88,7 @@ def shape_from_glyphs(glyphs, name):
 def spans(p, value, axis):
     pen = Samples()
     p.draw(pen)
-    crossings = []
-    for a, b in pen.lines:
-        if (a[axis] <= value < b[axis]) or (b[axis] <= value < a[axis]):
-            crossings.append(
-                a[1 - axis]
-                + (value - a[axis]) * (b[1 - axis] - a[1 - axis]) / (b[axis] - a[axis])
-            )
-    crossings.sort()
-    return list(zip(crossings[::2], crossings[1::2]))
+    return pen.spans(value, axis)
 
 
 def run(font, text):

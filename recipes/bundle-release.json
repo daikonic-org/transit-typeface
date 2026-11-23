@@ -1,6 +1,6 @@
 {
-  "version": "2026.11.20",
-  "tag": "Transit-2026.11.20",
+  "version": "2026.11.22",
+  "tag": "Transit-2026.11.22",
   "families": [
     "sans",
     "system",
@@ -9,28 +9,29 @@
   "policy": "Publish all three families together as a normal release; no preview releases.",
   "typography": {
     "sans": {
-      "version": "0.111",
-      "font": "releases/2026.11.19/sans/VF/DaikonicTransitSans-VF.ttf",
-      "italic_font": "releases/2026.11.19/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
+      "version": "0.112",
+      "font": "releases/2026.11.20/sans/VF/DaikonicTransitSans-VF.ttf",
+      "italic_font": "releases/2026.11.20/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
       "previous": "0.111",
-      "reuse": true
+      "sans_rebuild": true
     },
     "system": {
       "version": "0.120",
-      "font": "releases/2026.11.19/system/VF/DaikonicTransitSystem-VF.ttf",
-      "italic_font": "releases/2026.11.19/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
+      "font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf",
+      "italic_font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
       "previous": "0.120",
       "reuse": true
     },
     "code": {
       "version": "1.042",
       "unhealed_font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "font": "releases/2026.11.19.3/code/VF/DaikonicTransitCode-VF.ttf",
-      "italic_font": "releases/2026.11.19.3/code/VF/DaikonicTransitCode-Italic-VF.ttf",
-      "previous": "1.041",
+      "font": "releases/2026.11.20/code/VF/DaikonicTransitCode-VF.ttf",
+      "italic_font": "releases/2026.11.20/code/VF/DaikonicTransitCode-Italic-VF.ttf",
+      "previous": "1.042",
       "operator_source": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
       "default_hairlining": true,
-      "punctuation": true
+      "punctuation": true,
+      "reuse": true
     }
   }
 }

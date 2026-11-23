@@ -63,6 +63,14 @@ To review the complete outline pipeline without packaging a font, generate the p
 python tools/build_sans.py .build/sans-direct-proof --direct-proof
 ```
 
+## Building the upright-derived Sans Italic
+
+```sh
+python tools/build_sans_italic.py .build/sans-italic
+```
+
+The italic builder starts with the complete upright reconstruction, then applies the established 9° shear. Default and stylistic-set single-storey `a` share the same outline, with live accents. The cursive `g` joins the `q` bowl to a reflected `l` return whose tip continues along the curve approximately to the left edge of the slanted bowl. The descending `f` uses the reflected hook with its reach shortened by a fifth in `f`, `fi` and `fl`. The builder measures extra pair spacing around the longer return across the weight axis. The upright weight build pins authored x-height crossbar shoulders so the `fi` join stays level through interpolation. Live components retain their references through the shear. The output contains the variable TTF, a guided proof across the five weights, a text specimen and an audit of the components and advances.
+
 ## Editing in Glyphs or UFO tools
 
 Each `sources/<family>/` includes a `.glyphs` file, UFO masters and a native designspace. Open the Glyphs file directly, or independently compile it:

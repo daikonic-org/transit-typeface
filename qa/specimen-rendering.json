@@ -3,23 +3,23 @@
   "device_scale_factor": 3,
   "fonts": "selected specimen cuts; see specimens/font-selections.json and manifest.json; actual outlined font paths",
   "files": {
-    "Transit-Family.pdf": "0a64c951a4db7ffe3a2ed251b0a297ad9f265ea5df3af019306d5d8be029de00",
-    "Transit-Family.png": "50d68cd38736f13775f56e586ea15ea7e608a372c949f05f493be94758cf1cc2",
-    "Transit-Family.svg": "c6e8817a0a2e78f75e471e8b368e87469fcedc1513f88b8ab5781f5328ebb6a6",
+    "Transit-Family.pdf": "1a3394c9d39689ea6e721d902b91bd854cbc032fcaf8bd1f5a994ec3e749c392",
+    "Transit-Family.png": "c39f6b349a70c3b360e42b335bcd419590944601a80173d3cceef14d4705cf6e",
+    "Transit-Family.svg": "8452457ba082edb559345e27a4008aac4d6ff28bcbd27cb3203ead8d88f22633",
     "TransitCode-Details.pdf": "085e505f19be754b204c2d8f7f80c4a990136ad70e26a0cea67519e344459841",
     "TransitCode-Details.png": "cf3656c922065987d38fecf4c0a818116a4a4bdf3a55ee45b35b1f96ab8efee6",
     "TransitCode-Details.svg": "88cace4e8402dff8dc643345f57f01fdd2159248f94683ecef7c0f506f81fb36",
     "TransitCode.pdf": "735793ac9fdf1698d971e9b1aeeee1048f834c141dfefca60490fb3403038012",
     "TransitCode.png": "0fab92bb9cf9ec420d98249772a8a1baa48f92cc31406e9db1eb8b948d850491",
     "TransitCode.svg": "d180bcebb06020a75162462900a17e8cc8fd155628c3d3816c03fc6e3d22b0b5",
-    "TransitSans.pdf": "87d2f0fa90502000ba85199a53a48454783d92fac5d951ecf3a17facc6d2f276",
-    "TransitSans.png": "9d9749898d18ab4d6b646c0409455e77aa1e338f201d7777927d23ba4c8a60a0",
-    "TransitSans.svg": "5c44f1b2d98c6eafc23584134d29def79213825247e556b44b9870a4e8c05d1b",
+    "TransitSans.pdf": "95f1fa3aabe3528b5b64144fe214c97dba8a8a5ca59822e3f16083c9f885506e",
+    "TransitSans.png": "6f8f141b8c427eef6821293c90deec308efe889d660ea0a92643232e2cd2c780",
+    "TransitSans.svg": "a4f7bb7b6b07890c58ccb10aa051007dee74877541bb966684310a78f28140c7",
     "TransitSystem.pdf": "17b952f8d97de22efe74c01f7cb32eba428920a4feccf7c4791c76cc17b7e935",
     "TransitSystem.png": "e1fa29ca737598f9343fa7b39dc0a956428b6708301368e9679cbf1b9ca74370",
     "TransitSystem.svg": "342268846a698c1cba6eb8e0cc4c8179c41d903441685ddc70337b66c2fdb474"
   },
-  "revision": "Transit-2026.11.18.3",
+  "revision": "Transit-2026.11.22",
   "system_figures": [
     {
       "weight": 300,
@@ -38,22 +38,10 @@
     }
   ],
   "main_system_numeral_rows": "tnum disabled; default proportional figures",
-  "visual_review": "Opened refreshed Code panel, family board and Code detail sheet. Code1.021 preview shows approved single-storey at, selected i, delimiters, underscore, hyphen and spacing/ligatures across Light/Book/Regular. System proportional figures and separate tabular1 callout retained; Sans/System panel compositions unchanged. PNG/PDF use identical SVG artwork.",
+  "visual_review": "Updated Sans 0.112 in the Sans panel and family board. PNG and PDF use the outlined SVG artwork.",
   "font_versions": {
-    "sans": {
-      "version": "0.109",
-      "status": "released",
-      "font_sha256": "f5c27095e692febabcd2cc96be00730c25d1624527cf57de7c3a62f0cf39edbf"
-    },
-    "system": {
-      "version": "0.117",
-      "status": "released",
-      "font_sha256": "ac904d3966ef7d244dd05b1cbfb7121925013c85fb8464a4bc2d8e69cb201102"
-    },
-    "code": {
-      "version": "1.021",
-      "status": "preview",
-      "font_sha256": "d66b32eaee4d71529276ee7721a5c04390352f83fca8a5f2a0cf9f5401798ced"
-    }
+    "sans": "0.112",
+    "system": "0.120",
+    "code": "1.042"
   }
 }

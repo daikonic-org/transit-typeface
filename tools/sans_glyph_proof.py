@@ -161,9 +161,10 @@ def outline(glyph_set, name, center, baseline, origin, scale):
 
 def sheet(font, title, entries, weights, target):
     upm = font["head"].unitsPerEm
+    family = "Daikonic Transit Sans Italic" if font["post"].italicAngle else "Daikonic Transit Sans"
     pieces = [
         f'<rect width="{WIDTH}" height="{HEIGHT}" fill="#fff"/>',
-        '<text x="28" y="43" font-size="27" font-weight="700">Daikonic Transit Sans</text>',
+        f'<text x="28" y="43" font-size="27" font-weight="700">{family}</text>',
         f'<text x="28" y="76" font-size="20" font-weight="700">{escape(title)}</text>',
     ]
     guides = guide_metrics(font)
@@ -228,7 +229,7 @@ def build_proof(source, output, *, flagged=()):
         weights = []
         instances = sorted(font["fvar"].instances, key=lambda item: item.coordinates["wght"])
         for instance in instances:
-            name = font["name"].getDebugName(instance.subfamilyNameID)
+            name = font["name"].getDebugName(instance.subfamilyNameID).removesuffix(" Italic")
             weights.append((f'{name} {instance.coordinates["wght"]:g}',
                             font.getGlyphSet(location=instance.coordinates)))
         capacity = 2 * ROWS

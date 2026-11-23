@@ -7,6 +7,7 @@ import pathops
 from audit import shape_from_glyphs, spans
 from code_receiver_shapes import HorizontalMapPen, remap
 from font_feature_tools import from_paths, master_locations
+from italic_returns import raw_outline, splice_return
 
 
 def polygon(points):
@@ -24,7 +25,7 @@ def crop(path, left, bottom, right, top):
     return pathops.op(path, clip, pathops.PathOp.INTERSECTION)
 
 
-def fit_bowl(outline, original, target="a"):
+def fit_bowl(outline, original, target="a", *, retain_segments=False):
     """Fit white space within the bowl while holding the stem thickness."""
     left, bottom, right, top = outline.bounds
     bound_left, _, bound_right, _ = original.bounds
@@ -47,7 +48,7 @@ def fit_bowl(outline, original, target="a"):
     outline.draw(
         HorizontalMapPen(fitted.getPen(), lambda x: remap(x, old, new), lambda y: y)
     )
-    return pathops.simplify(fitted, fix_winding=True, clockwise=True)
+    return fitted if retain_segments else pathops.simplify(fitted, fix_winding=True, clockwise=True)
 
 
 def g_return(bowl, original, construction):
@@ -120,7 +121,7 @@ def rotated_f_hook(source):
 
 def rounded_return(
     source, *, cut, bottom, reach, rise, trim=False, turn_ceiling=None,
-    bevel=0.18, broad_turn=False,
+    bevel=0.18, broad_turn=False, matching_curves=False, tip_extension=0,
 ):
     """Continue the right stem into a curved leftward terminal."""
     join = cut + 12
@@ -128,13 +129,30 @@ def rounded_return(
     stem = right - left
     stroke = stem * 0.94
     radius_x = max(stem + 10, reach * 0.64 if broad_turn else min(reach * 0.72, stem * 1.68))
-    rise_to_stem = max(stem * 1.50, -bottom * 0.66) if broad_turn else stem * 1.50
+    turn_fraction = 0.74 if matching_curves else 0.66
+    rise_to_stem = max(stem * 1.50, -bottom * turn_fraction) if broad_turn else stem * 1.50
     radius_y = min(cut - bottom - 10, rise_to_stem)
     if turn_ceiling is not None:
         radius_y = min(radius_y, turn_ceiling - bottom)
     turn_x, turn_y = right - radius_x, bottom + radius_y
-    tip_x = right - reach
+    tip_x = right - reach - tip_extension
     arc = 0.5523
+    tail_length = turn_x - tip_x
+    cap_offset = stroke * bevel
+    outer_controls = (
+        (turn_x - tail_length * 0.42, bottom),
+        (tip_x + tail_length * 0.35, bottom + rise * 0.44),
+    )
+    if matching_curves:
+        inner_controls = (
+            (outer_controls[1][0] + cap_offset * 0.5, outer_controls[1][1] + stroke),
+            (outer_controls[0][0], outer_controls[0][1] + stroke),
+        )
+    else:
+        inner_controls = (
+            (tip_x + tail_length * 0.42, bottom + stroke + rise * 0.36),
+            (turn_x - tail_length * 0.49, bottom + stroke),
+        )
 
     hook = pathops.Path()
     pen = hook.getPen()
@@ -167,7 +185,7 @@ def rounded_return(
     return pathops.op(upper, hook, pathops.PathOp.UNION)
 
 
-def cursive_g(bowl, original):
+def cursive_g(bowl, original, *, smooth=False):
     """Finish a q-based bowl with an open, round return at the g depth."""
     left, _, right, _ = bowl.bounds
     bottom = original.bounds[1]
@@ -180,10 +198,11 @@ def cursive_g(bowl, original):
         trim=True,
         bevel=0.10,
         broad_turn=True,
+        matching_curves=smooth,
     )
 
 
-def f_return(source, xheight, *, extended=False):
+def f_return(source, xheight, *, extended=False, tip_extension=0):
     if extended:
         # Let the stem continue below the baseline before turning. Keep the
         # reach wide enough for a full-weight inside curve at heavier masters.
@@ -197,6 +216,7 @@ def f_return(source, xheight, *, extended=False):
             rise=12,
             turn_ceiling=-14,
             bevel=0.04,
+            tip_extension=tip_extension,
         )
     return rounded_return(
         source, cut=62, bottom=-0.28 * xheight, reach=0.40 * xheight, rise=15
@@ -238,7 +258,10 @@ def replace_layout_a_ligature(font):
                     del ligatures[first]
 
 
-def redraw_italic_letters(font, construction, *, family, descending_f=False):
+def redraw_italic_letters(
+    font, construction, *, family, descending_f=False, live_components=False,
+    smooth_g=False, f_tip_extension=0, donor_returns=False,
+):
     _, locations = master_locations(font)
     glyphsets = [font.getGlyphSet(location=location) for location in locations]
     xheight = font["OS/2"].sxHeight
@@ -262,6 +285,11 @@ def redraw_italic_letters(font, construction, *, family, descending_f=False):
             if unicodedata.normalize("NFD", chr(cp))[0] == "i":
                 bases[name] = "i"
         bases["dotlessi"] = "i"
+    if live_components:
+        # The Sans rebuild supplies a via its live alternate. Keep existing
+        # accents live, and draw the descending return on the joined f forms.
+        bases = {name: base for name, base in bases.items()
+                 if base != "a" and (name in f_forms or not font["glyf"][name].isComposite())}
     by_location = []
     for glyphs in glyphsets:
         single = shape_from_glyphs(glyphs, "a.ss01")
@@ -272,21 +300,37 @@ def redraw_italic_letters(font, construction, *, family, descending_f=False):
         )
         designs = {"a": a}
         if rounded_f:
-            designs.update(
-                (
-                    name,
-                    f_return(shape_from_glyphs(glyphs, name), xheight, extended=descending_f),
+            if donor_returns:
+                donor = raw_outline(glyphs, "l")
+                floor, donor_cut = -0.34 * xheight, 210
+                cut = donor_cut + floor - donor.bounds[1]
+                for name in f_forms:
+                    upper = (raw_outline if name == "f" else shape_from_glyphs)(glyphs, name)
+                    designs[name] = splice_return(
+                        upper, donor, cut=cut, donor_cut=donor_cut, floor=floor,
+                        reflect=True, reach_factor=0.8,
+                    )
+            else:
+                designs.update(
+                    (name, f_return(shape_from_glyphs(glyphs, name), xheight, extended=descending_f,
+                                    tip_extension=f_tip_extension))
+                    for name in f_forms
                 )
-                for name in f_forms
-            )
         if keep_johnston:
             by_location.append(designs)
             continue
         original_g = shape_from_glyphs(glyphs, "g")
-        g_source = shape_from_glyphs(glyphs, "q") if construction != "a" else single
-        bowl = fit_bowl(g_source, original_g, target="g")
-        if cursive:
-            g = cursive_g(bowl, original_g)
+        q_outline = raw_outline if donor_returns else shape_from_glyphs
+        g_source = q_outline(glyphs, "q") if construction != "a" else single
+        bowl = fit_bowl(g_source, original_g, target="g", retain_segments=donor_returns)
+        if cursive and donor_returns:
+            width = bowl.bounds[2] - bowl.bounds[0]
+            g = splice_return(
+                bowl, raw_outline(glyphs, "l"), cut=-43, donor_cut=210,
+                floor=original_g.bounds[1], reach=width * 0.69, reflect=True, extension=width * 0.18,
+            )
+        elif cursive:
+            g = cursive_g(bowl, original_g, smooth=smooth_g)
         elif refined:
             g = rounded_return(
                 bowl,
