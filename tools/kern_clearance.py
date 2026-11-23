@@ -50,12 +50,13 @@ def overlaps(left, right, *, tolerance=None):
         return False
 
 
-def axis_locations(font):
+def axis_locations(font, *, weight_step=None):
     if "fvar" not in font:
         return [{}]
     coordinates = []
     axes = font["fvar"].axes
-    weight_step = 12.5 if len(axes) == 1 else 25
+    if weight_step is None:
+        weight_step = 12.5 if len(axes) == 1 else 25
     for axis in axes:
         tag = axis.axisTag
         knots = sorted({axis.minValue, axis.defaultValue, axis.maxValue}
@@ -80,7 +81,7 @@ def kern_features(font):
     return features
 
 
-def lookup_rows(lookup, variations):
+def lookup_rows(lookup, variations, pairs=None):
     """Find the advance lookup for a left glyph and a lower bound on its values."""
     if lookup.LookupType not in (2, 9) or lookup.LookupFlag & ~8:
         raise ValueError("Clearance supports horizontal pair lookups with optional IgnoreMarks")
@@ -105,14 +106,19 @@ def lookup_rows(lookup, variations):
             raise ValueError("Clearance requires kerning expressed as first-glyph advances")
         if table.Format == 1:
             for left, pair_set in zip(table.Coverage.glyphs, table.PairSet):
-                pairs = {r.SecondGlyph: advance(r.Value1) for r in pair_set.PairValueRecord}
-                if pairs:
-                    rows[left].append((pairs.get, min(pairs.values())))
+                if pairs is not None and left not in pairs:
+                    continue
+                records = {r.SecondGlyph: advance(r.Value1) for r in pair_set.PairValueRecord
+                           if pairs is None or r.SecondGlyph in pairs[left]}
+                if records:
+                    rows[left].append((records.get, min(records.values())))
         elif table.Format == 2:
             classes = table.ClassDef2.classDefs
             advances = [[advance(item.Value1) for item in row.Class2Record]
                         for row in table.Class1Record]
             for left in table.Coverage.glyphs:
+                if pairs is not None and left not in pairs:
+                    continue
                 row = advances[table.ClassDef1.classDefs.get(left, 0)]
                 rows[left].append((lambda right, row=row, classes=classes: row[classes.get(right, 0)],
                                    min(row)))
@@ -129,15 +135,16 @@ def adjustment(rows, right):
     return 0
 
 
-def ink_extents(path):
+def ink_extents(path, *, step=2, tolerance=.2):
     """Measure the two outside edges at the same horizontal slices for each glyph."""
-    pen = Samples(tolerance=.2)
+    pen = Samples(tolerance=tolerance)
     path.draw(pen)
     edges = {}
+    offset = min(step / 2, .5)
     for a, b in pen.lines:
         low, high = sorted((a[1], b[1]))
-        for row in range(ceil((low - 0.5) / 2), ceil((high - 0.5) / 2)):
-            y = row * 2 + 0.5
+        for row in range(ceil((low - offset) / step), ceil((high - offset) / step)):
+            y = row * step + offset
             x = a[0] + (y - a[1]) * (b[0] - a[0]) / (b[1] - a[1])
             left, right = edges.get(row, (x, x))
             edges[row] = (min(left, x), max(right, x))
@@ -287,6 +294,14 @@ def install(font, features, fixes, locations):
         append_layout_variations(font, builder.finish())
 
 
+def max_pair_adjustments(fixes):
+    maxima = {}
+    for pairs in fixes.values():
+        for pair, values in pairs.items():
+            maxima[pair] = max(maxima.get(pair, 0), max(values))
+    return {" ".join(pair): amount for pair, amount in sorted(maxima.items())}
+
+
 def repair_kerning(font, *, locations=None, padding=None):
     """Add only the clearance needed by colliding pairs, without moving any outlines."""
     if locations is None:
@@ -298,13 +313,73 @@ def repair_kerning(font, *, locations=None, padding=None):
     if any(fixes.values()):
         cover_interpolation(fixes, locations)
         install(font, features, fixes, locations)
-    pair_maxima = {}
-    for pairs in fixes.values():
-        for pair, values in pairs.items():
-            pair_maxima[pair] = max(pair_maxima.get(pair, 0), max(values))
     return {
         "locations": locations, "comparisons": checked, "clearance_padding": padding,
-        "corrected_pairs": {" ".join(pair): amount for pair, amount in sorted(pair_maxima.items())},
+        "corrected_pairs": max_pair_adjustments(fixes),
+    }
+
+
+def pair_clearances(font, features, locations, pairs, limit):
+    """Measure the closest facing edges of selected pairs with current GPOS applied."""
+    by_left = defaultdict(set)
+    for left, right in pairs:
+        by_left[left].add(right)
+    layout = font["GPOS"].table.LookupList.Lookup
+    store = getattr(font["GDEF"].table, "VarStore", None)
+    routes = {tuple(sorted(set(feature.LookupListIndex))) for feature in features}
+    lookup_ids = {index for route in routes for index in route}
+    for index, location in enumerate(locations):
+        glyphs = font.getGlyphSet(location=location)
+        variations = (VarStoreInstancer(store, font["fvar"].axes, font.normalizeLocation(location))
+                      if store else None)
+        lookups = {number: lookup_rows(layout[number], variations, by_left) for number in lookup_ids}
+
+        @lru_cache(None)
+        def outline(name):
+            try:
+                return shape_from_glyphs(glyphs, name)
+            except pathops.PathOpsError:
+                return raw_outline(glyphs, name)
+
+        @lru_cache(None)
+        def extents(name):
+            return ink_extents(outline(name), step=.5, tolerance=.045)
+
+        for route in sorted(routes):
+            for left, right in pairs:
+                origin = otRound(glyphs[left].width) + sum(
+                    adjustment(lookups[number].get(left, ()), right) for number in route
+                )
+                if origin + outline(right).bounds[0] - outline(left).bounds[2] >= limit:
+                    continue
+                first, second = extents(left), extents(right)
+                gap = min((origin + second[row][0] - first[row][1]
+                           for row in first.keys() & second.keys()), default=float("inf"))
+                if gap < limit:
+                    yield index, route, (left, right), gap
+
+
+def repair_near_contacts(font, pairs, *, locations=None, trigger=1, target=4):
+    """Open reviewed sub-unit gaps after the collision repair has been installed."""
+    if not 0 < trigger <= target:
+        raise ValueError("Expected a positive trigger at or below the target")
+    pairs = sorted(set(pairs))
+    if locations is None:
+        locations = axis_locations(font, weight_step=12.5)
+    features = kern_features(font)
+    fixes = defaultdict(dict)
+    for index, route, pair, gap in pair_clearances(font, features, locations, pairs, trigger):
+        if gap >= 0:
+            values = fixes[route].setdefault(pair, [0] * len(locations))
+            values[index] = ceil(target - gap)
+    if fixes:
+        install(font, features, fixes, locations)
+    return {
+        "trigger": trigger,
+        "target": target,
+        "locations_checked": len(locations),
+        "candidate_pairs": [" ".join(pair) for pair in pairs],
+        "corrected_pairs": max_pair_adjustments(fixes),
     }
 
 

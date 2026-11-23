@@ -16,7 +16,7 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from font_feature_tools import append_glyph, feature_subtables, master_locations
 from glyph_proof import build_proof
-from kern_clearance import repair_kerning
+from kern_clearance import repair_kerning, repair_near_contacts
 from sans_baseline_trial import build_variations, clear_hints
 from sans_complete_rebuild import box_center
 from sans_direct_weight import direct_points
@@ -174,11 +174,17 @@ def main():
     add_system_width(upright)
     vertical = set_vertical_metrics(upright, italic)
     stem = FAMILY.replace(" ", "")
+    pair_review = json.loads((ROOT / "recipes/system-pair-spacing.json").read_text())
     for font, suffix, folder in ((upright, "", "Proof"), (italic, "-Italic", "Proof Italic")):
         path = args.output / f"{stem}{suffix}-VF.ttf"
         if not args.outline_only:
             locations = master_locations(font)[1] if args.named_instances else None
             spacing = repair_kerning(font, locations=locations)
+            style = "italic" if suffix else "upright"
+            spacing["near_contact"] = repair_near_contacts(
+                font, map(tuple, pair_review[style]),
+                trigger=pair_review["trigger"], target=pair_review["target"],
+            )
             path.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
         font.save(path)
         sanitize(font)
