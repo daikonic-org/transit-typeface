@@ -1,0 +1,52 @@
+{
+  "source_sha256": "bad2e874ca12f75a1baaa78fcbf4d5625d547fb23432c396687a69ce43d39dd5",
+  "scale": 1.12,
+  "x_height": 532,
+  "cap_height": 700,
+  "weights": {
+    "Light": {
+      "n_stem_before": 75.0,
+      "n_stem_after": 75.0,
+      "compensation": -9.0,
+      "topology_changes": [],
+      "letters_checked": 28,
+      "e_points": 31
+    },
+    "Book": {
+      "n_stem_before": 88.0,
+      "n_stem_after": 89.0,
+      "compensation": -10.56,
+      "topology_changes": [
+        "y"
+      ],
+      "letters_checked": 28,
+      "e_points": 31
+    },
+    "Regular": {
+      "n_stem_before": 100.0,
+      "n_stem_after": 100.0,
+      "compensation": -12.0,
+      "topology_changes": [],
+      "letters_checked": 28,
+      "e_points": 31
+    },
+    "Medium": {
+      "n_stem_before": 120.0,
+      "n_stem_after": 121.0,
+      "compensation": -14.4,
+      "topology_changes": [],
+      "letters_checked": 28,
+      "e_points": 31
+    },
+    "SemiBold": {
+      "n_stem_before": 140.0,
+      "n_stem_after": 141.0,
+      "compensation": -16.8,
+      "topology_changes": [
+        "y"
+      ],
+      "letters_checked": 28,
+      "e_points": 31
+    }
+  }
+}
