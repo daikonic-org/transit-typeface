@@ -27,13 +27,32 @@ MITER = 3
 WEIGHTS = {"Light": 300, "Book": 350, "Regular": 400, "Medium": 500, "SemiBold": 600}
 
 
+def lowercase_compensation(glyphs):
+    return -vertical_stem(shape_from_glyphs(glyphs, "n"), .4) * (FACTOR - 1)
+
+
+def scale_lowercase_outline(glyph, compensation):
+    glyph.coordinates = GlyphCoordinates((otRound(x * FACTOR), otRound(y * FACTOR))
+                                         for x, y in glyph.coordinates)
+    apertures = apertures_for(glyph, abs(compensation) * MITER)
+    glyph.coordinates = direct_points(glyph, compensation, 1, MITER, 0, apertures=apertures)
+
+
+def set_ascender(glyph, xheight, old_top, new_top):
+    if old_top > xheight:
+        multiplier = (new_top - xheight) / (old_top - xheight)
+        glyph.coordinates = GlyphCoordinates(
+            (x, otRound(xheight + (y - xheight) * multiplier) if y > xheight else y)
+            for x, y in glyph.coordinates
+        )
+
+
 def enlarge_lowercase(original):
     """Scale around the baseline and offset the existing contours in place."""
     font = deepcopy(original)
     source, target = original["glyf"], font["glyf"]
     glyphs = original.getGlyphSet()
-    stem = vertical_stem(shape_from_glyphs(glyphs, "n"), .4)
-    compensation = -stem * (FACTOR - 1)
+    compensation = lowercase_compensation(glyphs)
     names = {original.getBestCmap()[ord(c)] for c in ascii_lowercase + "ıȷ"}
     shifts = {}
 
@@ -59,13 +78,7 @@ def enlarge_lowercase(original):
                     x, y = x + dx * (FACTOR - 1), y + dy * (FACTOR - 1)
                 new_part.x, new_part.y = otRound(x), otRound(y)
         else:
-            new.coordinates = GlyphCoordinates(
-                (otRound(x * FACTOR), otRound(y * FACTOR)) for x, y in old.coordinates
-            )
-            apertures = apertures_for(new, abs(compensation) * MITER)
-            new.coordinates = direct_points(
-                new, compensation, 1, MITER, 0, apertures=apertures
-            )
+            scale_lowercase_outline(new, compensation)
         new.recalcBounds(target)
         shift = old.xMin - new.xMin
         if old.isComposite():
@@ -96,7 +109,7 @@ def enlarge_lowercase(original):
     flat_crossing = shape_from_glyphs(revised, "x")
     assert flat_crossing.bounds[1] == 0 and flat_crossing.bounds[3] == font["OS/2"].sxHeight
     return font, {
-        "n_stem_before": round(stem, 2),
+        "n_stem_before": round(-compensation / (FACTOR - 1), 2),
         "n_stem_after": round(vertical_stem(shape_from_glyphs(revised, "n"), .4), 2),
         "compensation": round(compensation, 2),
         "topology_changes": failures,

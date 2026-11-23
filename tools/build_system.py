@@ -33,7 +33,7 @@ from sans_direct_weight import direct_points
 from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
 from system_accents import install_masters, rebuild_accents
-from system_proportions import enlarge_lowercase
+from system_proportions import enlarge_lowercase, set_ascender
 
 
 FAMILY = "Daikonic Transit System Curve Review"
@@ -257,12 +257,7 @@ def build(source, donor, output):
                 # Ascenders retain System's existing heights above the enlarged x-height.
                 reference = drawing["OS/2"].sxHeight
                 top = bbox(authored.getGlyphSet(), name)[3]
-                if top > reference:
-                    multiplier = (desired[3] - reference) / (top - reference)
-                    glyph.coordinates = GlyphCoordinates(
-                        (x, otRound(reference + (y - reference) * multiplier) if y > reference else y)
-                        for x, y in glyph.coordinates
-                    )
+                set_ascender(glyph, reference, top, desired[3])
             current = bbox(drawing.getGlyphSet(), name)
             shift = otRound((desired[0] + desired[2] - current[0] - current[2]) / 2)
             if glyph.isComposite():

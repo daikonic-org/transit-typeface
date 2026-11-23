@@ -14,23 +14,30 @@ from audit import shape_from_glyphs
 from font_feature_tools import expanded_variations
 from italic_returns import raw_outline
 from kern_clearance import overlaps
-from sans_baseline_trial import build_variations, clear_hints, install
+from sans_baseline_trial import build_variations, clear_hints, install, subset_contours
 from sans_complete_rebuild import (
     box_center, component_offsets, joins, separation, signed_gap,
 )
+from system_proportions import lowercase_compensation, scale_lowercase_outline, set_ascender
+
+
+def accent_sources(source, donor, bases):
+    source_cmap = source.getBestCmap()
+    donor_cmap = donor.getBestCmap()
+    for codepoint, target in source_cmap.items():
+        decomposition = normalize("NFD", chr(codepoint))
+        if len(decomposition) < 2 or not all(map(combining, decomposition[1:])):
+            continue
+        base = source_cmap.get(ord(decomposition[0]))
+        donor_name = donor_cmap.get(codepoint)
+        if base in bases and donor_name is not None:
+            yield codepoint, target, donor_name, base, decomposition[1:]
 
 
 def recipes(source, donor, bases):
     output = {}
     codepoints = []
-    donor_cmap = donor.getBestCmap()
-    for codepoint, target in source.getBestCmap().items():
-        decomposition = normalize("NFD", chr(codepoint))
-        if len(decomposition) < 2 or not all(map(combining, decomposition[1:])):
-            continue
-        donor_name = donor_cmap.get(codepoint)
-        if donor_name is None:
-            continue
+    for codepoint, target, donor_name, _, _ in accent_sources(source, donor, bases):
         glyph = donor["glyf"][donor_name]
         if glyph.isComposite() and glyph.components[0].glyphName in bases:
             output[target] = donor_name
@@ -69,6 +76,49 @@ def install_masters(font, source, name, glyph, points, model, default):
         glyph.coordinates = points[default]
     clear_hints(glyph)
     install(font, name, glyph, build_variations(model, points, expanded_variations(source, name)))
+
+
+def contour_path(glyph, glyphs):
+    path = pathops.Path()
+    glyph.draw(path.getPen(), glyphs)
+    return path
+
+
+def side_caron_parts(glyph, glyphs):
+    if glyph.numberOfContours != 2:
+        return None
+    parts = [subset_contours(glyph, {end})[0] for end in reversed(glyph.endPtsOfContours)]
+    boxes = [contour_path(part, glyphs).bounds for part in parts]
+    body, mark = sorted(range(2), key=lambda index: boxes[index][1])
+    if (boxes[body][1] < boxes[mark][1] < boxes[body][3]
+            and boxes[mark][0] > box_center(boxes[body], 0)):
+        return parts, parts[body], parts[mark]
+    return None
+
+
+def inherit_side_accent(font, source, name, donor_name, base, static, locations, model, default):
+    """Use the authored shorter body and side mark from an existing two-contour glyph."""
+    points = []
+    for master, location in zip(static, locations):
+        glyf = master["glyf"]
+        parts, body, caron = side_caron_parts(glyf[donor_name], glyf)
+
+        scale_lowercase_outline(body, lowercase_compensation(master.getGlyphSet()))
+        inherited = source.getGlyphSet(location=location)
+        body_top = contour_path(body, glyf).bounds[3]
+        set_ascender(body, font["OS/2"].sxHeight, body_top, bounds(inherited, base)[3])
+        left, _, right, top = bounds(inherited, name)
+        body.coordinates.translate((otRound(left - contour_path(body, glyf).bounds[0]), 0))
+        mark = contour_path(caron, glyf)
+        offset_x = otRound(right - mark.bounds[2])
+        offset_y = otRound(top - mark.bounds[3])
+        body_shape = contour_path(body, glyf)
+        while overlaps(body_shape, mark.transform(translateX=offset_x, translateY=offset_y)):
+            offset_x += 1
+        caron.coordinates.translate((offset_x, offset_y))
+        points.append(GlyphCoordinates(point for part in parts for point in part.coordinates))
+    glyph = deepcopy(static[default]["glyf"][donor_name])
+    install_masters(font, source, name, glyph, points, model, default)
 
 
 def movements(parts, glyphs, dot):
@@ -192,4 +242,10 @@ def rebuild_accents(font, source, donors, locations, model, default, bases, dot)
     for name, donor_name in layout.items():
         glyph = deepcopy(reference["glyf"][donor_name])
         install_masters(font, source, name, glyph, positions[name], model, default_index)
-    return codepoints
+    reference_glyphs = reference["glyf"]
+    for codepoint, name, donor_name, base, accents in accent_sources(source, reference, bases):
+        if accents == "\u030c" and side_caron_parts(reference_glyphs[donor_name], reference_glyphs):
+            inherit_side_accent(font, source, name, donor_name, base,
+                                static, locations, model, default_index)
+            codepoints.append(codepoint)
+    return sorted(codepoints)

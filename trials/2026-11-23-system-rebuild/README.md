@@ -36,3 +36,7 @@ The build reuses the Sans component recipes for 85 lowercase accented letters. T
 [Lowercase accent proof across five weights](System-Lowercase-Accents.pdf)
 
 Run the same System build with `--named-instances` and export `System-Lowercase-Accents.svg` to reproduce the proof.
+
+## 5. Dedicated side caron
+
+The accent build also inherits the two-contour side caron in Sans’s `ť`, which comes from Metropolitan Line. The shortened letter body uses the shared lowercase enlargement, stroke compensation, and ascender rules. The mark keeps its source drawing and uses System’s existing placement. The same proof now covers all 86 upright lowercase accents.
