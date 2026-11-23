@@ -1,5 +1,7 @@
 # Daikonic Transit System rebuild
 
+The [current Sans-only rebuild checklist and flow](../../docs/system-rebuild.md) supersede the build inputs used in these earlier trials.
+
 ## 1. Lowercase proportions
 
 The approved proof applies the same 112% enlargement to the lowercase width and height in each named Sans weight. It compensates for the stroke gain with the same curve-preserving adjustment throughout the alphabet. The x-height is 532 units and the cap height is 700.
