@@ -12,6 +12,7 @@ from fontTools.ttLib import TTCollection, TTFont
 
 from bundle_release import compress_source, digest, generate_formats
 from code_weight_width_trial import name_trial
+from kern_clearance import repair_kerning
 from render_svg import render
 from sans_baseline_trial import load_baseline, specimen
 from sans_component_relationships import apply_relationships
@@ -109,14 +110,17 @@ def build(output):
         font.save(variable)
 
     baseline = TTFont(BytesIO(payload))
-    finished = TTFont(variable)
+    finished = TTFont(variable, recalcTimestamp=False)
     validate_outlines(baseline, finished, mirrored, ligatures)
+    kerning = repair_kerning(finished)
+    finished.save(variable)
 
     (output / "complete-rebuild-report.json").write_text(json.dumps({
         "drawn_outlines": direct_outline_findings(finished, rebuild_report),
         "components": check_composites(baseline, finished),
         "ligatures": ligatures,
         "attachment_adjustments": attachments,
+        "kerning_clearance": kerning,
         "empty": [name for name in finished.getGlyphOrder() if finished["glyf"][name].numberOfContours == 0],
     }, indent=2) + "\n")
 

@@ -5,11 +5,9 @@ from copy import deepcopy
 from functools import lru_cache
 from io import BytesIO
 import json
-from math import ceil
 from pathlib import Path
 import unicodedata
 
-import pathops
 import uharfbuzz as hb
 
 from fontTools.misc.roundTools import otRound
@@ -20,7 +18,7 @@ from fontTools.ttLib.tables._g_l_y_f import (
 )
 
 from adopt_weighting import stamp
-from audit import Samples, shape_from_glyphs
+from audit import shape_from_glyphs
 from build_sans import complete_outline_pipeline, name_upright, validate_outlines
 from bundle_release import sanitize
 from font_feature_tools import add_features, expanded_variations
@@ -30,7 +28,7 @@ from italic_companions import (
 )
 from italic_letterforms import redraw_italic_letters, related_glyphs
 from italic_texture_proofs import italic_letterform_proof
-from sans_complete_rebuild import intersects
+from kern_clearance import overlaps, repair_kerning
 from sans_baseline_trial import build_variations, components, install, load_baseline
 from sans_glyph_proof import build_proof
 from sans_weight_refinement import fitting_context
@@ -99,31 +97,6 @@ def transformed_components(font, name, slant, pivot):
             dx, dy = parent.transformVector(changes[i])
             changes[i] = otRound(x + dx) - part.x, otRound(y + dy) - part.y
     return glyph, deltas
-
-
-def overlaps(left, right):
-    try:
-        return intersects(left, right)
-    except pathops.PathOpsError:
-        # Near-tangent quadratic curves can make the Boolean operation fail.
-        bottom = max(left.bounds[1], right.bounds[1])
-        top = min(left.bounds[3], right.bounds[3])
-        rows = range(ceil(bottom - 0.5), ceil(top - 0.5))
-        scan_edges = []
-        for path in (left, right):
-            pen = Samples()
-            path.draw(pen)
-            by_row = {row: [] for row in rows}
-            for start, end in pen.lines:
-                lo, hi = sorted((start[1], end[1]))
-                for row in range(max(rows.start, ceil(lo - 0.5)), min(rows.stop, ceil(hi - 0.5))):
-                    by_row[row].append((start, end))
-            scan_edges.append(by_row)
-        for row in rows:
-            a_spans, b_spans = (Samples.spans_from_edges(edges[row], row + 0.5, 1) for edges in scan_edges)
-            if any(min(b, d) - max(a, c) > 0.02 for a, b in a_spans for c, d in b_spans):
-                return True
-        return False
 
 
 def return_clearance(font):
@@ -220,7 +193,7 @@ def validate_italic(upright, italic, metric_sources):
                    for name in italic.getGlyphOrder()), weight
 
 
-def build_fonts(output, *, version=None):
+def build_fonts(output, *, version=None, repair_spacing=False):
     payload, report = load_baseline()
     flavor = DATA["families"]["sans"]
     output.mkdir(parents=True, exist_ok=True)
@@ -233,13 +206,19 @@ def build_fonts(output, *, version=None):
             name_upright(font, flavor)
         buffer = BytesIO()
         font.save(buffer)
-        if version is not None:
+        if version is not None and not repair_spacing:
             (output / (flavor["stem"] + "-VF.ttf")).write_bytes(buffer.getvalue())
         buffer.seek(0)
-        with TTFont(BytesIO(payload)) as baseline, TTFont(buffer) as upright:
+        spacing = {}
+        with TTFont(BytesIO(payload)) as baseline, TTFont(buffer, recalcTimestamp=False) as upright:
             validate_outlines(baseline, upright, mirrors, ligatures)
+            if version is not None and repair_spacing:
+                spacing["upright"] = repair_kerning(upright)
+                upright.save(output / (flavor["stem"] + "-VF.ttf"))
             config = {**flavor, "version": font["name"].getDebugName(5).removeprefix("Version ")}
             metrics, custom, composites = italicize(font, config)
+            if repair_spacing:
+                spacing["italic"] = repair_kerning(font)
             font.save(target)
             with TTFont(target) as italic:
                 validate_italic(upright, italic, metrics)
@@ -251,11 +230,12 @@ def build_fonts(output, *, version=None):
         "custom_drawings": custom,
         "live_composites": composites,
         "advance_sources": metrics,
+        **({"kerning_clearance": spacing} if spacing else {}),
     }
 
 
 def build(output):
-    target, report = build_fonts(output)
+    target, report = build_fonts(output, repair_spacing=True)
     (output / "italic-build.json").write_text(json.dumps(report, indent=2) + "\n")
     build_proof(target, output / "Proof")
     italic_letterform_proof(output, {"sans": DATA["families"]["sans"]}, refined=True,

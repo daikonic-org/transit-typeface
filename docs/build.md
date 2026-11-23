@@ -71,6 +71,16 @@ python tools/build_sans_italic.py .build/sans-italic
 
 The italic builder starts with the complete upright reconstruction, then applies the established 9° shear. Default and stylistic-set single-storey `a` share the same outline, with live accents. The cursive `g` joins the `q` bowl to a reflected `l` return whose tip continues along the curve approximately to the left edge of the slanted bowl. The descending `f` uses the reflected hook with its reach shortened by a fifth in `f`, `fi` and `fl`. The builder measures extra pair spacing around the longer return across the weight axis. The upright weight build pins authored x-height crossbar shoulders so the `fi` join stays level through interpolation. Live components retain their references through the shear. The output contains the variable TTF, a guided proof across the five weights, a text specimen and an audit of the components and advances.
 
+## Checking pair clearance after outline construction
+
+The local Sans builders run a shared kerning pass after the outlines, advances and existing positioning are ready. The same pass can run on the rebuilt System font.
+
+```sh
+python tools/kern_clearance.py input-vf.ttf review-vf.ttf
+```
+
+The pass checks all ordered pairs of spacing glyphs with ink, including alternates and ligatures. It honors each existing kerning route. It checks named instances and intervening weight and optical-size locations, adds positive clearance where outlines collide, and writes a JSON report beside the font. The changes use variable OpenType pair positioning. Outlines, advances, substitutions and mark positioning stay intact. The scan samples the continuous axes at the locations reported in JSON.
+
 ## Editing in Glyphs or UFO tools
 
 Each `sources/<family>/` includes a `.glyphs` file, UFO masters and a native designspace. Open the Glyphs file directly, or independently compile it:

@@ -15,8 +15,9 @@ DATA = json.loads((ROOT / "family.json").read_text())
 
 
 class Samples(BasePen):
-    def __init__(self):
+    def __init__(self, *, tolerance=None):
         super().__init__(None)
+        self.tolerance = tolerance
         self.lines = []
         self.last = self.start = None
 
@@ -27,10 +28,19 @@ class Samples(BasePen):
         self.lines.append((self.last, point))
         self.last = point
 
+    def curve_steps(self, points):
+        if self.tolerance is None:
+            return 64
+        triples = zip(points, points[1:], points[2:])
+        curvature = max(math.hypot(a[0] - 2 * b[0] + c[0], a[1] - 2 * b[1] + c[1])
+                        for a, b, c in triples)
+        return max(1, math.ceil(math.sqrt(curvature / self.tolerance)))
+
     def _qCurveToOne(self, control, end):
         start = self.last
-        for step in range(1, 65):
-            t = step / 64
+        steps = self.curve_steps((start, control, end))
+        for step in range(1, steps + 1):
+            t = step / steps
             q = 1 - t
             self._lineTo(
                 tuple(
@@ -41,8 +51,9 @@ class Samples(BasePen):
 
     def _curveToOne(self, first, second, end):
         start = self.last
-        for step in range(1, 65):
-            t = step / 64
+        steps = self.curve_steps((start, first, second, end))
+        for step in range(1, steps + 1):
+            t = step / steps
             q = 1 - t
             self._lineTo(
                 tuple(

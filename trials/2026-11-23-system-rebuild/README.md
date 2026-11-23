@@ -19,8 +19,12 @@ System’s lowercase alphabet and dotless bases use the curves from the proporti
 [Lowercase and primary y proof](System-Lowercase-Curves.pdf)
 
 ```sh
-python tools/build_system.py releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-rebuild
+python tools/build_system.py releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-rebuild --outline-only
 inkscape .build/system-rebuild/System-Lowercase-Curves.svg --export-filename=.build/system-rebuild/System-Lowercase-Curves.pdf
 ```
 
 The review build covers upright basic lowercase and the `y` family. The wider inventory, remaining accent compositions, and italic rebuild are tracked separately.
+
+## 3. Kerning clearance
+
+The System build runs the same outline-based pair check as Sans after rebuilding the outlines. Run the build command above without `--outline-only` to generate a spaced review font and proof. Use `--named-instances` for a faster review at the 15 named weight and optical-size combinations. The default also checks intermediate sizes and weights. The JSON report records the locations and pair adjustments. See [build notes](../../docs/build.md#checking-pair-clearance-after-outline-construction).

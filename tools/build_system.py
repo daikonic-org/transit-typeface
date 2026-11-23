@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from copy import deepcopy
+import json
 from math import cos, radians
 from pathlib import Path
 from string import ascii_lowercase
@@ -25,6 +26,7 @@ from bundle_release import sanitize
 from code_weight_width_trial import name_trial
 from font_feature_tools import append_glyph, expanded_variations, master_locations
 from italic_returns import raw_outline, segments as outline_segments
+from kern_clearance import repair_kerning
 from sans_baseline_trial import build_variations, clear_hints, components, install, subset_contours
 from sans_direct_weight import direct_points
 from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
@@ -371,6 +373,10 @@ if __name__ == "__main__":
     parser.add_argument("sans", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--metropolitan", type=Path, default=UPSTREAM)
+    sampling = parser.add_mutually_exclusive_group()
+    sampling.add_argument("--outline-only", action="store_true", help="reproduce the outline proof")
+    sampling.add_argument("--named-instances", action="store_true",
+                          help="check pair clearance at the named weight and optical-size locations")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     font = args.output / "DaikonicTransitSystemCurveReview-VF.ttf"
@@ -378,5 +384,12 @@ if __name__ == "__main__":
         with TTFont(args.metropolitan) as upstream:
             add_primary_y(source, upstream)
         changed = build(source, donor, font)
+    if not args.outline_only:
+        with TTFont(font, recalcTimestamp=False) as finished:
+            locations = master_locations(finished)[1] if args.named_instances else None
+            spacing = repair_kerning(finished, locations=locations)
+            finished.save(font)
+            sanitize(finished)
+        font.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
     proof(font, args.output / "System-Lowercase-Curves.svg")
     print("Rebuilt", len(changed), "lowercase bases and verified all advances")
