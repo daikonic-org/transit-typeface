@@ -1,18 +1,19 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "bad2e874ca12f75a1baaa78fcbf4d5625d547fb23432c396687a69ce43d39dd5",
+      "font": "releases/1.0.0/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "1e8ecf99421b204e6b900e8749f93544036883d9c6b27226b0090f01cdbe0d22",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "0633745b18afdac74a27b3f02bd4da19cc996fe3b85c00d37a3854160d58672f",
+      "font": "releases/1.0.0/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "94b6f5e9312b0fc8b484ebf2851e49c1d9d869803087b85e99d57e84b9908c9e",
       "location": {
         "wght": 350,
-        "opsz": 15.272720336914062
+        "opsz": 15.272720336914062,
+        "wdth": 100.0
       }
     },
     "code": {
@@ -162,7 +163,7 @@
       "on_shaping": [
         [
           "fi",
-          608,
+          491,
           0,
           0
         ],
@@ -174,7 +175,7 @@
         ],
         [
           "fl",
-          752,
+          615,
           0,
           0
         ]
@@ -182,7 +183,7 @@
       "off_shaping": [
         [
           "f",
-          390,
+          391,
           0,
           0
         ],
@@ -200,13 +201,13 @@
         ],
         [
           "f",
-          390,
+          391,
           0,
           0
         ],
         [
           "l",
-          362,
+          358,
           0,
           0
         ]
@@ -4440,10 +4441,10 @@
     "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",
     "sans-standard-off.svg": "c16b127853b32545d65b7f0d2d3098935e245ffecfd35fa63a2436a67ddfde5b",
     "sans-standard-on.svg": "089ea74e6d911c56a3a0b5c674718249caa32d54f3b82cea1d8b99c12ccd7bdb",
-    "system-Features.svg": "cdfdeedd4e06c02f01240dc941994f782271cd5228ddc8c8375166f9593288bf",
-    "system-standard-off.svg": "6ad08e7356bb33dd1a946b8840cbfd6a64bc4135e79a8b2b1d309fe36353f34d",
-    "system-standard-on.svg": "838a96eb4c216f995bd720cd57e7fface9a106b01eb3becb611981daa3500327",
-    "system-tabular-off.svg": "bcfc0a34d706b624d3eeb28e9e07b23bac25522d313fa6cb705e70b9b6960bb0",
-    "system-tabular-on.svg": "07b31b6825ef8a8eb7ddea6ba126a368cc8bf5090cc6aec1bdf39425a972c896"
+    "system-Features.svg": "27019b5eaede0d425be6c4d19c10bf8b704c533346d07fa7c89b998d81f1d98c",
+    "system-standard-off.svg": "6619c882c3059b97f0088868efe4fb84c8bb7172c4fa40150381255928bb765b",
+    "system-standard-on.svg": "c7ac37ef3765e2cf539a9c50545fa41db531390e5de04aef79130a4c2bb0ab60",
+    "system-tabular-off.svg": "e8501b53b4b0c946d0f348290bd5715fec3aad9898dce0dd9cf24694fabfd9fd",
+    "system-tabular-on.svg": "49f27e184dee55d4dac842cd1f4b7faa627e77a5352cfec42889d10764acc47d"
   }
 }

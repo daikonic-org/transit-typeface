@@ -21,7 +21,14 @@ def stage(key, settings, scratch):
     folder = OUT / key
     destination = folder / "VF"
     source = ROOT / settings["font"]
-    if settings.get("reuse"):
+    if settings.get("approved_binary"):
+        for label, suffix in (("font", "-VF.ttf"), ("italic_font", "-Italic-VF.ttf")):
+            path = destination / (stem + suffix)
+            assert path == ROOT / settings[label]
+            with TTFont(path) as font:
+                assert font["name"].getDebugName(16) == config["name"]
+                assert font["name"].getDebugName(5) == "Version " + settings["version"]
+    elif settings.get("reuse"):
         assert settings["previous"] == settings["version"]
         shutil.copytree(source.parent.parent, folder, dirs_exist_ok=True)
     elif settings.get("sans_rebuild"):

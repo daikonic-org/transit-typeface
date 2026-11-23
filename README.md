@@ -4,9 +4,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 ![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-[Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
+[Download Sans and System 1.0.0](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
 
-[Sans 0.112](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.22) is available in upright and italic. [System 0.120 and Code 1.042](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20) are available in the earlier coordinated release.
+Sans and System come in upright and italic. [Download Code 1.042](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20).
 
 The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.22/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.22/specimens/Paired-Stems.svg).
 
@@ -19,7 +19,7 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
-[Upright glyph proof](releases/2026.11.22/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/2026.11.22/specimens/Sans-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.0.0/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.0.0/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -35,13 +35,13 @@ The samples below use the actual Book font, with the listed feature enabled or d
 An interface font for application navigation, controls, dashboards and short passages of screen text. Developed from Daikonic Transit Sans, System combines a taller lowercase relative to its capitals, adjusted spacing and an optical-size range for smaller interface text.
 
 - Five named weights: **Light, Book, Regular, Medium and SemiBold**, with a variable weight range of 300–600.
-- An independent **optical-size axis, 10.91–39.27**, with Caption, Text and Display presets. It adapts the design to its intended text size without selecting a different weight.
-- Recalibrated point sizing in upright and italic. Setting System to **12 pt** gives approximately the physical size of **11 pt** in the previous release.
+- An independent **optical-size axis** with Caption, Text and Display presets for small labels, running text and larger interface type.
+- A **width axis from 94% to 108%** with Narrow, standard and Wide presets. Width compensation keeps stroke weights close as the letters change width.
 - Proportional figures for running text and optional **tabular figures** for aligned values, tables and clocks (`pnum` / `tnum`). The tabular `1` uses Sans’s original drawing, centered in the same-width cells as the other tabular digits.
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-Tabular figures are optional (`tnum`). The default proportional `1` stays unchanged.
+[Upright glyph proof](releases/1.0.0/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.0.0/specimens/System-Italic-Glyph-Proof.pdf)
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -170,16 +170,16 @@ Each typeface has its own version number. Choose the package for the format you 
 
 | Package | Contents | Use |
 | --- | --- | --- |
-| **VF** | One variable TrueType font | Adjustable weights in applications that support variable fonts; System also includes optical size. |
-| **TTC** | One TrueType collection per family, containing all named static styles | Install all weights together; System also includes Caption, Text and Display styles. |
+| **VF** | Variable TrueType fonts | Adjustable weights in applications that support variable fonts. System also includes width and optical size. |
+| **TTC** | One TrueType collection per family, containing all named static styles | Install all weights together, including System’s width and optical-size presets. |
 | **OTF** | Static CFF OpenType fonts with the same glyphs, spacing and layout features | Desktop applications and publishing workflows that prefer CFF outlines. |
-| **TTF** | Individual named-weight TrueType fonts | Applications that use separate font styles. System includes Caption, Text and Display cuts. |
+| **TTF** | Individual static TrueType fonts | Applications that use separate font styles. |
 | **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
 | **SOURCE** | Complete editable TTX snapshots and portable rebuild scripts | Editing or building the typefaces. Historical native Glyphs/UFO/designspace sources remain in the repository at their documented versions; current TTX snapshots include every outline and layout feature. |
-| **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
+| **SPECIMEN** | PNG, PDF and SVG specimens, plus the interactive proof | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-The Sans 0.112 TTC contains all ten upright and italic styles. Archives that ship several typefaces use a separate folder for each family. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+The Sans 1.0.0 TTC contains 10 upright and italic styles. The System TTC contains 90 styles across five weights, three widths, and three optical sizes in upright and italic. Archives that ship several typefaces use a separate folder for each family. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 
@@ -219,4 +219,4 @@ Install the Code variable TTFs in Font Book to choose any width from 94% to 108%
 
 The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-System width presets and variable fonts are available separately for review. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.19.3)
+Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0)

@@ -63,20 +63,26 @@ def compress_source(directory):
 
 def generate_instances(vf, font, directory, config):
     italic = bool(font["OS/2"].fsSelection & 1)
+    optical_names = optical_styles(font)
     if any(axis.axisTag == "wdth" for axis in font["fvar"].axes):
         from code_weight_width_trial import WIDTH_PRESETS, name_trial
         from fontTools.varLib.instancer import instantiateVariableFont
 
-        for item in font["fvar"].instances:
-            style = STYLES[item.coordinates["wght"]]
-            for width in WIDTH_PRESETS:
-                static = instantiateVariableFont(TTFont(vf, recalcTimestamp=False),
-                                                 item.coordinates | {"wdth": width})
+        axis = next(axis for axis in font["fvar"].axes if axis.axisTag == "wdth")
+        coords = sorted({tuple(sorted((tag, value) for tag, value in item.coordinates.items() if tag != "wdth"))
+                         for item in font["fvar"].instances})
+        for pairs in coords:
+            location = dict(pairs)
+            labels = STYLES[location["wght"]], optical_names[location.get("opsz")]
+            style = " ".join(filter(None, labels))
+            for width in (width for width in WIDTH_PRESETS if axis.minValue <= width <= axis.maxValue):
+                static = instantiateVariableFont(font, location | {"wdth": width})
                 stem = name_trial(static, config["name"], style, width)
-                static.save(directory / "TTF" / (stem + ".ttf"))
-                convert(static, directory / "OTF" / (stem + ".otf"))
+                snapshot = directory / "TTF" / (stem + ".ttf")
+                static.save(snapshot)
+                with TTFont(snapshot) as compiled:
+                    convert(compiled, directory / "OTF" / (stem + ".otf"))
         return
-    optical_names = optical_styles(font)
     for item in font["fvar"].instances:
         weight = item.coordinates["wght"]
         optical = item.coordinates.get("opsz")
@@ -170,7 +176,8 @@ def build(only=None):
         if p.is_file() and p.name != "selection.json"
     }
     report["proofs"] = {
-        path.name: digest(path) for path in sorted((OUT / "specimens").glob("*"))
+        str(path.relative_to(OUT / "specimens")): digest(path)
+        for path in sorted((OUT / "specimens").rglob("*")) if path.is_file()
     }
     (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\n")
     check()
@@ -272,6 +279,9 @@ def check():
         path = next((OUT / key / "TTC").glob("*.ttc"))
         collection = TTCollection(path)
         assert len(collection.fonts) == record["ttc_faces"]
+        assert len({face["name"].getDebugName(6) for face in collection.fonts}) == len(collection.fonts)
+        if settings.get("expected_static_faces"):
+            assert len(collection.fonts) == settings["expected_static_faces"]
         for face, filename in zip(collection.fonts, record["static_files"]):
             original = TTFont(OUT / key / "TTF" / filename)
             otf = TTFont(OUT / key / "OTF" / Path(filename).with_suffix(".otf"))
@@ -334,7 +344,13 @@ def check_repeated_stems(font, path, family):
                 if family == "code":
                     assert sum(item.x_advance for item in buffer.glyph_positions) == 1200
                     assert [v.Coordinate for v in carets[ligature].CaretValue] == [600]
-            assert abs(glyphs[ligature].width - 2 * glyphs[letter].width) < 0.01
+            advance = glyphs[letter].width
+            combined = glyphs[ligature].width
+            if family == "system":
+                # Larger lowercase and caption spacing allow tighter proportional pairs.
+                assert advance < combined <= 2 * advance + 0.01, (family, instance.coordinates, ligature)
+            else:
+                assert abs(combined - 2 * advance) < 0.01
         if family == "code":
             assert font["glyf"]["i"].yMin == font["glyf"]["n"].yMin
             accented = hb.Buffer()
@@ -374,6 +390,8 @@ def package():
                 for source, member in files:
                     z.write(source, Path(stem) / member)
                 if fmt == "WOFF2":
+                    with TTFont(OUT / key / "VF" / (cfg["stem"] + "-VF.ttf")) as variable:
+                        width = next((axis for axis in variable["fvar"].axes if axis.axisTag == "wdth"), None)
                     z.writestr(
                         str(Path(stem) / key / "font.css"),
                         "".join(
@@ -381,7 +399,7 @@ def package():
                             f"font-family: '{cfg['name']}'; "
                             f"src: url('./{cfg['stem']}{suffix}-VF.woff2') format('woff2'); "
                             f"font-weight: {cfg['light']} {cfg['heavy']}; font-style: {style}; "
-                            + ("font-stretch: 94% 108%; " if RECIPE["typography"][key].get("punctuation") else "")
+                            + (f"font-stretch: {width.minValue:g}% {width.maxValue:g}%; " if width else "")
                             + "font-display: swap; }\n"
                             for suffix, style in (("", "normal"), ("-Italic", "italic"))
                         ),
@@ -417,9 +435,9 @@ def package():
                         "features/Rust-Lifetimes.svg",
                     ]
                 )
-                if len(families) == 1:
-                    paths = {p for p in paths if p.stem == f"Transit{key.title()}"
-                             or p.name.startswith(f"{key}-")}
+                if set(families) != set(specimen_families()):
+                    paths = {p for p in paths if any(p.stem == f"Transit{key.title()}"
+                             or p.name.startswith(f"{key}-") for key in families)}
                 for source in sorted(paths):
                     z.write(
                         source,
@@ -427,8 +445,9 @@ def package():
                         / "specimens"
                         / source.relative_to(ROOT / "specimens"),
                     )
-                for source in sorted((OUT / "specimens").glob("*")):
-                    z.write(source, Path(stem) / "specimens" / source.name)
+                for name in sorted((OUT / "specimens").rglob("*")):
+                    if name.is_file():
+                        z.write(name, Path(stem) / "specimens" / name.relative_to(OUT / "specimens"))
             for name in ["OFL.txt", "NOTICE.txt", "README.md", "requirements.lock"]:
                 z.write(ROOT / name, Path(stem) / name)
             z.write(OUT / "manifest.json", Path(stem) / "manifest.json")
@@ -467,6 +486,8 @@ def package():
             "- **Code widths and weights** run from 94% to 108% and Book 350 to Medium 500, with Regular 400 as the default. The Code TTC includes Narrow, standard, and Wide in upright and italic at every named weight.",
             "- **Unicode comparisons** include literal `≤`, `≥`, and `≠` alongside the existing programming ligatures.",
         ]
+    if RECIPE.get("notes"):
+        notes = [versions + ".", *RECIPE["notes"]] + [line for line in notes if line.startswith("The **VF**")]
     (destination / "Release.md").write_text("\n\n".join(notes) + "\n")
     print(destination.relative_to(ROOT), flush=True)
 

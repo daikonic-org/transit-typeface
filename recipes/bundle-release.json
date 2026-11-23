@@ -1,24 +1,45 @@
 {
-  "version": "2026.11.22",
-  "tag": "Transit-2026.11.22",
+  "version": "1.0.0",
+  "tag": "Transit-1.0.0",
   "families": [
-    "sans"
+    "sans",
+    "system"
   ],
-  "policy": "Publish the selected family as a stable release.",
+  "policy": "Publish Sans and System together as a stable release.",
   "typography": {
     "sans": {
-      "version": "0.112",
-      "font": "releases/2026.11.20/sans/VF/DaikonicTransitSans-VF.ttf",
-      "italic_font": "releases/2026.11.20/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
-      "previous": "0.111",
-      "sans_rebuild": true
+      "version": "1.0.0",
+      "font": "releases/1.0.0/sans/VF/DaikonicTransitSans-VF.ttf",
+      "italic_font": "releases/1.0.0/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
+      "approved_binary": true,
+      "expected_static_faces": 10,
+      "reviewed_inputs": {
+        "font": {
+          "sha256": "bad2e874ca12f75a1baaa78fcbf4d5625d547fb23432c396687a69ce43d39dd5",
+          "review": "releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf"
+        },
+        "italic_font": {
+          "sha256": "f9edbf82ddf96d2efe4b3a7c34dd1265e8478bfd217bd208cdc5bd35744da1e6",
+          "review": "releases/2026.11.22/sans/VF/DaikonicTransitSans-Italic-VF.ttf"
+        }
+      }
     },
     "system": {
-      "version": "0.120",
-      "font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf",
-      "italic_font": "releases/2026.11.20/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
-      "previous": "0.120",
-      "reuse": true
+      "version": "1.0.0",
+      "font": "releases/1.0.0/system/VF/DaikonicTransitSystem-VF.ttf",
+      "italic_font": "releases/1.0.0/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
+      "approved_binary": true,
+      "expected_static_faces": 90,
+      "reviewed_inputs": {
+        "font": {
+          "sha256": "485bdb1b843ae8723015577f567fff635c229261dbd7efa45c94c54a511ea80e",
+          "review": "Pair Spacing Review"
+        },
+        "italic_font": {
+          "sha256": "8bc1eb2f6f81a7a391e4eb36f33445e591346b4a6e52480a114a1586ce4cefb1",
+          "review": "Italic G Spacing Review"
+        }
+      }
     },
     "code": {
       "version": "1.042",
@@ -31,5 +52,11 @@
       "punctuation": true,
       "reuse": true
     }
-  }
+  },
+  "notes": [
+    "- **Sans** brings the curve-based upright and italic rebuild to 1.0.0, including the shared punctuation components and fitted repeated-letter ligatures.",
+    "- **System** derives its larger lowercase and shared components from rebuilt Sans. It includes calibrated optical sizing, a compensated 94\u2013108% width axis, and optional tabular figures.",
+    "- **System Italic** uses italic `q` as the spacing and kerning reference for cursive `g` and its accented forms.",
+    "- **Interactive proofs** let you type a sample, compare axes, and inspect individual glyphs in both families. [Try Daikonic Transit](https://daikonic-org.github.io/transit-typeface/)"
+  ]
 }

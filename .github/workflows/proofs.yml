@@ -1,0 +1,40 @@
+name: Publish type proofs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Find the proof site for the current release
+        id: site
+        run: |
+          version=$(jq -r .version recipes/bundle-release.json)
+          site="releases/$version/specimens/interactive"
+          test -f "$site/index.html"
+          echo "path=$site" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: ${{ steps.site.outputs.path }}
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: stage
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.release.outputs.page_url }}
+    steps:
+      - id: release
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

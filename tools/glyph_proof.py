@@ -329,7 +329,7 @@ def json_for_script(value):
     return json.dumps(value).replace("<", "\\u003c")
 
 
-def write_viewer(output, title, pages, pdfs, *, rows, comparison):
+def write_viewer(output, title, pages, pdfs, *, rows, comparison, site_prefix=None):
     first, first_label = pages[0]
     template = Template(Path(__file__).with_name("glyph_proof_viewer.html").read_text())
     options = "".join(f'<option value="{escape(page.name)}" data-title="{escape(label)}">{i}. {escape(label)}</option>'
@@ -341,10 +341,15 @@ def write_viewer(output, title, pages, pdfs, *, rows, comparison):
         rows=json_for_script(rows), header_y=ROW_TOP - DETAIL_HEADER_HEIGHT, detail_header=DETAIL_HEADER_HEIGHT,
         comparison=json_for_script(comparison),
         compare_script=(Path(__file__).with_name("glyph_proof_compare.js").read_text() if comparison else ""),
+        site_style=(f'<link rel="stylesheet" href="{escape(site_prefix)}assets/proof-site.css">'
+                    if site_prefix else ""),
+        site_navigation=(f'<a class="proof-back" href="{escape(site_prefix)}">← All proofs</a>'
+                         if site_prefix else ""),
     ))
 
 
-def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False, interactive_axes=False):
+def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
+                interactive_axes=False, site_prefix=None):
     output.mkdir(parents=True, exist_ok=True)
     pages = []
     rows = {}
@@ -383,7 +388,8 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
     all_pages = [*pages, *review_pages]
     title = f"{display} Glyph Proof"
     if svg_only:
-        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison)
+        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison,
+                     site_prefix=site_prefix)
         return
     for page, _ in all_pages:
         render(page, scale=2, pdf=False)
@@ -394,7 +400,8 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
         review_pdf = output / f"{stem}-Flagged-Outlines.pdf"
         render_pdf([page for page, _ in review_pages], review_pdf, title=f"{display} Flagged Outlines")
         pdfs.append((review_pdf, "Review PDF"))
-    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison)
+    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison,
+                 site_prefix=site_prefix)
 
 
 def main():

@@ -36,7 +36,8 @@ def stamp(font, old, new):
     for record in font["name"].names:
         value = record.toUnicode().replace(old, new)
         record.string = value.encode(record.getEncoding())
-    font["head"].fontRevision = float(new)
+    # OpenType stores a single fixed-point revision. The name keeps all version fields.
+    font["head"].fontRevision = float(".".join(new.split(".")[:2]))
 
 
 def instance(path, weight, optical):
