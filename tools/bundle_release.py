@@ -1,4 +1,4 @@
-"""Build and verify one coordinated release containing all three Transit families."""
+"""Build and verify the selected Transit families for a release."""
 
 from pathlib import Path
 from collections import Counter
@@ -119,13 +119,18 @@ def generate_formats(vf, directory, config):
     sanitize(rebuilt)
 
 
+def release_families():
+    selections = specimen_families()
+    assert set(RECIPE["families"]) <= set(RECIPE["typography"])
+    return {key: selections[key] for key in RECIPE["families"]}
+
+
 def build(only=None):
-    families = specimen_families()
+    families = release_families()
     report = {"version": RECIPE["version"], "tag": RECIPE["tag"], "families": {}}
     if only:
         report = json.loads((OUT / "manifest.json").read_text())
         report.update(version=RECIPE["version"], tag=RECIPE["tag"])
-    assert set(families) == set(RECIPE["families"])
     for key, cfg in families.items():
         if only and key not in only:
             continue
@@ -298,16 +303,17 @@ def check():
         print(
             key, "TTC faces verified against individual TTFs and sanitized", flush=True
         )
-    from code_texture_healing import verify as verify_texture_healing
+    if "code" in report["families"]:
+        from code_texture_healing import verify as verify_texture_healing
 
-    verify_texture_healing(
-        ROOT / RECIPE["typography"]["code"]["unhealed_font"],
-        ROOT / RECIPE["typography"]["code"].get("operator_source", RECIPE["typography"]["code"]["font"])
-        if any(RECIPE["typography"]["code"].get(mode) for mode in ("self_aligning", "punctuation"))
-        else OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
-        default_on=True,
-        lifetime_ampersand=True,
-    )
+        verify_texture_healing(
+            ROOT / RECIPE["typography"]["code"]["unhealed_font"],
+            ROOT / RECIPE["typography"]["code"].get("operator_source", RECIPE["typography"]["code"]["font"])
+            if any(RECIPE["typography"]["code"].get(mode) for mode in ("self_aligning", "punctuation"))
+            else OUT / "code" / "VF" / "DaikonicTransitCode-VF.ttf",
+            default_on=True,
+            lifetime_ampersand=True,
+        )
 
 
 def check_repeated_stems(font, path, family):
@@ -342,10 +348,18 @@ def package():
     check()
     destination = ROOT / ".dist/bundle" / RECIPE["version"]
     destination.mkdir(parents=True, exist_ok=True)
-    families = specimen_families()
+    families = release_families()
     archives = []
+    if len(families) == 1:
+        key, config = next(iter(families.items()))
+        label = key.title() + "-" + config["version"]
+        suffix = "daikonic-transit-" + label.lower()
+        checksums = f"SHA256SUMS-{label}.txt"
+    else:
+        suffix = "daikonic-transit-" + RECIPE["version"]
+        checksums = "SHA256SUMS.txt"
     for fmt in ["VF", "TTF", "TTC", "OTF", "WOFF2", "SOURCE", "SPECIMEN"]:
-        stem = fmt + "-daikonic-transit-" + RECIPE["version"]
+        stem = fmt + "-" + suffix
         path = destination / (stem + ".zip")
         with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
             for key, cfg in families.items():
@@ -403,6 +417,9 @@ def package():
                         "features/Rust-Lifetimes.svg",
                     ]
                 )
+                if len(families) == 1:
+                    paths = {p for p in paths if p.stem == f"Transit{key.title()}"
+                             or p.name.startswith(f"{key}-")}
                 for source in sorted(paths):
                     z.write(
                         source,
@@ -419,7 +436,7 @@ def package():
             assert z.testzip() is None
             assert len(z.namelist()) == len(set(z.namelist()))
         archives.append(path)
-    (destination / "SHA256SUMS.txt").write_text(
+    (destination / checksums).write_text(
         "".join(digest(p) + "  " + p.name + "\n" for p in archives)
     )
     versions = ", ".join(
@@ -435,16 +452,16 @@ def package():
         "- `?.`, `!.`, `::`, `//`, logical `||`, `<=` and `>=` advance one cell. The arrow and equality sets advance two cells by default.",
         "- **Loose Equality** (`ss06`) is off by default. It gives all four equality ligatures a one-cell advance and adds a tilde above the bars in `==` and `!=`.",
         "- These advances apply when an app follows font shaping. Fixed-grid editors and terminals can retain source-column placement.",
-        "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `SHA256SUMS.txt` covers all seven archives.",
+        "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `" + checksums + "` covers all seven archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]
-    if RECIPE["typography"]["sans"].get("sans_rebuild"):
-        notes = notes[:2] + [
+    if RECIPE["typography"].get("sans", {}).get("sans_rebuild"):
+        notes = [versions + "."] + [
             "- **Sans 0.112** rebuilds upright and italic from shared, curve-based sources. Related forms reuse components, including the diamond dot and the comma in the semicolon. The italic has a continuous descending `f` and an open, upturned `g` return.",
             "- **Coverage** preserves the 427 encoded characters, ligature and alternate substitutions, and five named weights from Sans 0.111. The specimen archive includes full upright and italic glyph proofs.",
-            "- System 0.120 and Code 1.042 are carried forward from the previous release.",
-        ] + notes[-2:]
-    if RECIPE["typography"]["code"].get("punctuation") and not RECIPE["typography"]["code"].get("reuse"):
+        ] + notes[-2:-1]
+    code = RECIPE["typography"].get("code", {})
+    if "code" in families and code.get("punctuation") and not code.get("reuse"):
         notes[2:2] = [
             "- **Code punctuation** includes centered commas and semicolons, taller quotes and lifetime markers, larger punctuation diamonds, and more prominent tildes and carets.",
             "- **Code widths and weights** run from 94% to 108% and Book 350 to Medium 500, with Regular 400 as the default. The Code TTC includes Narrow, standard, and Wide in upright and italic at every named weight.",

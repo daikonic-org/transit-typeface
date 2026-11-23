@@ -82,7 +82,9 @@ def stage(key, settings, scratch):
 if __name__ == "__main__":
     with TemporaryDirectory() as tmp:
         selections = {
-            key: stage(key, settings, Path(tmp))
-            for key, settings in RECIPE["typography"].items()
+            key: stage(key, RECIPE["typography"][key], Path(tmp))
+            for key in RECIPE["families"]
         }
-    (ROOT / "specimens/font-selections.json").write_text(json.dumps(selections, indent=2) + "\n")
+    selection_path = ROOT / "specimens/font-selections.json"
+    existing = json.loads(selection_path.read_text()) if selection_path.exists() else {}
+    selection_path.write_text(json.dumps(existing | selections, indent=2) + "\n")

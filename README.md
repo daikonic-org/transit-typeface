@@ -6,7 +6,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 [Download the fonts](https://github.com/daikonic-org/transit-typeface/releases) · [Browse specimens](specimens/)
 
-The current [coordinated release](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.22) includes **Sans 0.112, System 0.120 and Code 1.042**, with upright and italic styles for all three typefaces.
+[Sans 0.112](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.22) is available in upright and italic. [System 0.120 and Code 1.042](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20) are available in the earlier coordinated release.
 
 The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.22/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.22/specimens/Paired-Stems.svg).
 
@@ -166,7 +166,7 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-All three typefaces ship together in each [release](https://github.com/daikonic-org/transit-typeface/releases), with their own version numbers. Choose the package for the format you need.
+Each typeface has its own version number. Choose the package for the format you need from the [release page](https://github.com/daikonic-org/transit-typeface/releases).
 
 | Package | Contents | Use |
 | --- | --- | --- |
@@ -179,7 +179,7 @@ All three typefaces ship together in each [release](https://github.com/daikonic-
 | **SPECIMEN** | Matching PNG, PDF and SVG specimens | Previewing and comparing the designs. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-Each archive contains separate Sans, System and Code folders. For example, `TTC-daikonic-transit-2026.11.22.zip` includes one collection per family with upright and italic styles. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+The Sans 0.112 TTC contains all ten upright and italic styles. Archives that ship several typefaces use a separate folder for each family. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 

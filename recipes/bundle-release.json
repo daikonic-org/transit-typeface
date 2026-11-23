@@ -2,11 +2,9 @@
   "version": "2026.11.22",
   "tag": "Transit-2026.11.22",
   "families": [
-    "sans",
-    "system",
-    "code"
+    "sans"
   ],
-  "policy": "Publish all three families together as a normal release; no preview releases.",
+  "policy": "Publish the selected family as a stable release.",
   "typography": {
     "sans": {
       "version": "0.112",

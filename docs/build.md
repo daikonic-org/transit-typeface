@@ -137,7 +137,7 @@ The selected 1.032 preview freezes the opening-quote lifetime and contextual pip
 
 ## Coordinated releases
 
-Publish Sans, System and Code together in a normal release. `recipes/bundle-release.json` records the source cuts, release versions and tag. `python tools/stage_typography.py` builds the selected variable fonts and updates the specimen selection.
+`recipes/bundle-release.json` selects the families, source cuts, versions and tag for a stable release. `python tools/stage_typography.py` builds the selected variable fonts and updates the specimen selection.
 
 Regenerate the panels and README examples from that selection. Run `python tools/italic_texture_proofs.py releases/<version>/specimens --release` for the release-specific PNG, PDF and SVG proofs. Run `python tools/code_hairline_toggle.py releases/<version>/specimens --proof` to render the current Code Hairlining comparison. Then run `python tools/bundle_release.py build` to generate and validate the static TTF and OTF styles, TTC collections, WOFF2 and editable TTX. `python tools/bundle_release.py package` assembles and checks the format archives in `.dist/bundle/<version>/`.
 
