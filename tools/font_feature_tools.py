@@ -226,6 +226,26 @@ def remap_lookup_records(value, offset, start=0):
             record.LookupListIndex += offset
 
 
+def append_layout_variations(font, appended):
+    """Append GDEF variation rows while preserving the existing device indices."""
+    if not appended.VarData:
+        return
+    gdef = font["GDEF"].table
+    original = getattr(gdef, "VarStore", None)
+    if not original:
+        gdef.Version = max(gdef.Version, 0x00010003)
+        gdef.VarStore = appended
+        return
+    regions = original.VarRegionList.Region
+    offset = len(regions)
+    regions.extend(appended.VarRegionList.Region)
+    original.VarRegionList.RegionCount = len(regions)
+    for data in appended.VarData:
+        data.VarRegionIndex = [value + offset for value in data.VarRegionIndex]
+    original.VarData.extend(appended.VarData)
+    original.VarDataCount = len(original.VarData)
+
+
 def add_features(font, fea, prepend=False):
     scratch = TTFont()
     scratch.setGlyphOrder(font.getGlyphOrder())

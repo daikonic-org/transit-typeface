@@ -47,3 +47,7 @@ The System build writes the original Sans proof layout to `Proof/`. Open `Proof/
 ## 7. Tabular figures
 
 System’s ten digits and three tabular separators reference the rebuilt proportional glyphs. The digits share one advance and the separators share a half-cell advance. The tabular colon is centered on the cap-height midpoint. The figure advances agree in the variable font and static instances. [Tabular figures proof](System-Tabular-Figures.svg)
+
+## 8. Ascenders and marks
+
+The upright ascenders retain the System heights. The shared diamond tittle sits at the original System height in each weight and optical master. Combining marks on `b` use the reflected attachment coordinates of its companion `d`. [Ascenders and tittles proof](System-Ascenders-and-Tittles.svg)

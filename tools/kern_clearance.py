@@ -19,6 +19,7 @@ from fontTools.varLib.models import VariationModel
 from fontTools.varLib.varStore import OnlineVarStoreBuilder, VarStoreInstancer
 
 from audit import Samples, shape_from_glyphs
+from font_feature_tools import append_layout_variations
 from italic_returns import raw_outline
 from sans_complete_rebuild import intersects
 
@@ -283,21 +284,7 @@ def install(font, features, fixes, locations):
             feature.LookupCount = len(feature.LookupListIndex)
 
     if builder:
-        appended = builder.finish()
-        if not appended.VarData:
-            return
-        if original:
-            regions = original.VarRegionList.Region
-            offset = len(regions)
-            regions.extend(appended.VarRegionList.Region)
-            original.VarRegionList.RegionCount = len(regions)
-            for data in appended.VarData:
-                data.VarRegionIndex = [value + offset for value in data.VarRegionIndex]
-            original.VarData.extend(appended.VarData)
-            original.VarDataCount = len(original.VarData)
-        else:
-            gdef.Version = max(gdef.Version, 0x00010003)
-            gdef.VarStore = appended
+        append_layout_variations(font, builder.finish())
 
 
 def repair_kerning(font, *, locations=None, padding=None):

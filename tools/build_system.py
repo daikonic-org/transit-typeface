@@ -31,6 +31,7 @@ from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
 from system_accents import install_masters, rebuild_accents
 from system_figures import rebuild_figures
+from system_marks import reflected_mark_attachment
 from system_proportions import enlarge_lowercase, set_ascender
 
 
@@ -259,6 +260,7 @@ def build(source, donor, output):
             for part in alphabet[name].components:
                 if part.glyphName == "uni0307":
                     part.glyphName = DOT
+                    part.y = otRound(bbox(target, name)[3] - max(y for _, y in dot.coordinates))
         masters.append({name: alphabet[name] for name in names | {DOT}})
 
     dot = deepcopy(masters[default][DOT])
@@ -282,12 +284,13 @@ def build(source, donor, output):
     accents = rebuild_accents(result, source, donor_masters, locations, model,
                               locations[default], names, DOT)
     figures = rebuild_figures(result, source, donor_masters, locations, model, default)
+    reflected_mark_attachment(result, locations, model)
     name_trial(result, FAMILY, variable=True)
     result.recalcTimestamp = False
     result.save(output)
     with TTFont(output) as built:
         sanitize(built)
-        for tag in ("cmap", "GPOS", "GSUB", "fvar", "STAT"):
+        for tag in ("cmap", "GSUB", "fvar", "STAT"):
             assert built.getTableData(tag) == source.getTableData(tag), tag
         for loc in locations:
             a, b = (f.getGlyphSet(location=loc) for f in (source, built))
