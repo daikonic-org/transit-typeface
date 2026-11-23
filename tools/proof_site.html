@@ -1,7 +1,54 @@
-  <div class="face-picker" role="group" aria-label="Typeface and style">
-    <div class="control">
-      <label for="proof-family">Typeface</label>
-      <select id="proof-family">$choices</select>
-    </div>
-    <label class="control" for="proof-italic"><input id="proof-italic" type="checkbox"> Italic</label>
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Try Daikonic Transit</title>
+<style>
+$base_style</style>
+<link rel="stylesheet" href="assets/proof-site.css">
+<body class="public-proof">
+<header>
+  <div class="masthead">
+    <span>Daikonic Transit</span>
+    <a href="https://github.com/daikonic-org/transit-typeface/releases/tag/$tag">Download $version <span aria-hidden="true">↗</span></a>
   </div>
+  <h1>Try Daikonic Transit</h1>
+  <nav aria-label="Glyph proof">
+    <div class="face-picker" role="group" aria-label="Typeface and style">
+      <div class="control">
+        <label for="proof-family">Typeface</label>
+        <select id="proof-family">$choices</select>
+      </div>
+      <label class="control" for="proof-italic"><input id="proof-italic" type="checkbox"> Italic</label>
+    </div>
+    <div class="control" id="mode-control">
+      <label for="proof-mode">View</label>
+      <select id="proof-mode">
+        <option value="text">Type sample</option>
+        <option value="glyphs">Glyphs</option>
+      </select>
+    </div>
+    <div class="control glyph-filters" id="glyph-filters" hidden>
+      <label for="proof-group">Group</label>
+      <select id="proof-group"></select>
+      <label for="proof-glyph">Glyph</label>
+      <select id="proof-glyph"></select>
+    </div>
+  </nav>
+  <p id="face-status" role="status"></p>
+  <div id="axis-controls" class="control axis-controls" aria-label="Variation axes" hidden></div>
+  <div id="axis-status" role="status"></div>
+</header>
+<main>
+  <h1 id="print-face"></h1>
+  <div id="glyph-proof" hidden></div>
+$sample_controls
+</main>
+<footer>
+  <a href="OFL.txt">Font license</a>
+  <a href="https://github.com/daikonic-org/transit-typeface">Source ↗</a>
+</footer>
+<script src="assets/glyph-proof-compare.js"></script>
+<script src="assets/proof-site.js"></script>
+</body>
+</html>

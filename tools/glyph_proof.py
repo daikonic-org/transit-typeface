@@ -19,6 +19,7 @@ from fontTools.ttLib.tables._c_m_a_p import CmapSubtable
 from font_feature_tools import feature_subtables
 from render_svg import render, render_pdf
 
+TEMPLATES = Path(__file__).resolve().parent
 WIDTH = 1240
 HEIGHT = 795
 MARGIN = 28
@@ -329,29 +330,36 @@ def json_for_script(value):
     return json.dumps(value).replace("<", "\\u003c")
 
 
-def write_viewer(output, title, pages, pdfs, *, rows, comparison, site=None):
+def viewer_sections():
+    return {
+        "base_style": Template((TEMPLATES / "glyph_proof_base.css").read_text()).substitute(width=WIDTH),
+        "sample_controls": (TEMPLATES / "glyph_proof_sample.html").read_text().rstrip(),
+    }
+
+
+def collect_inline_proof(source):
+    with TTFont(source) as font:
+        family = font["name"].getBestFamilyName()
+        location, weights = proof_instances(font, {})
+        groups = {title: [{"name": name, "label": label} for name, label in entries]
+                  for title, entries in inventory(font)}
+        comparison = axis_comparison(font, family, location, weights, groups)
+    return groups, comparison
+
+
+def write_viewer(output, title, pages, pdfs, *, rows, comparison):
     first, first_label = pages[0]
-    site = site or {}
-    prefix = site.get("prefix", "")
-    template = Template(Path(__file__).with_name("glyph_proof_viewer.html").read_text())
+    template = Template((TEMPLATES / "glyph_proof_viewer.html").read_text())
     options = "".join(f'<option value="{escape(page.name)}" data-title="{escape(label)}">{i}. {escape(label)}</option>'
                       for i, (page, label) in enumerate(pages, 1))
     downloads = " ".join(f'<a href="{escape(path.name)}">{escape(label)}</a>' for path, label in pdfs)
     (output / "index.html").write_text(template.substitute(
         title=escape(title), options=options, downloads=downloads,
-        initial_page=escape(prefix + first.name), initial_label=escape(first_label), width=WIDTH, height=HEIGHT,
+        initial_page=escape(first.name), initial_label=escape(first_label), width=WIDTH, height=HEIGHT,
         rows=json_for_script(rows), header_y=ROW_TOP - DETAIL_HEADER_HEIGHT, detail_header=DETAIL_HEADER_HEIGHT,
         comparison=json_for_script(comparison),
-        compare_script=(Path(__file__).with_name("glyph_proof_compare.js").read_text()
-                        if comparison or site else ""),
-        site_style='<link rel="stylesheet" href="assets/proof-site.css">' if site else "",
-        site_class=' class="public-proof"' if site else "",
-        site_controls=site.get("controls", ""),
-        site_navigation=site.get("navigation", ""),
-        site_status=site.get("status", ""),
-        site_footer=site.get("footer", ""),
-        site_script=site.get("script", ""),
-        prefix=json_for_script(prefix),
+        compare_script=(TEMPLATES / "glyph_proof_compare.js").read_text() if comparison else "",
+        **viewer_sections(),
     ))
 
 

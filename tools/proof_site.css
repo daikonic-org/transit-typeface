@@ -71,4 +71,49 @@ input[type="checkbox"] { accent-color: var(--brand); }
 .text-sample { border-color: var(--subtle); }
 .text-sample-label { color: var(--quiet); font-weight: 400; }
 #sample-text { background: var(--raised); }
-#live-proof { font-family: "Transit Interface", system-ui, sans-serif; }
+.glyph-filters select { min-width: 0; max-width: min(100%, 14rem); }
+#glyph-proof { max-width: 62rem; margin: 0 auto; }
+#glyph-proof section + section { margin-top: 1.6rem; }
+#glyph-proof h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+#glyph-proof table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid var(--line);
+}
+#glyph-proof th, #glyph-proof td { border-bottom: 1px solid var(--subtle); padding: 0.2rem; }
+#glyph-proof thead { background: var(--raised); }
+#glyph-proof thead th {
+  font-size: clamp(0.69rem, 2vw, 0.88rem);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+#glyph-proof th:first-child { width: 21%; }
+#glyph-proof tbody th { text-align: start; font-weight: 400; }
+#glyph-proof button {
+  width: 100%;
+  border: 0;
+  text-align: start;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  overflow-wrap: anywhere;
+}
+#glyph-proof svg { display: block; max-width: 100%; height: auto; margin: auto; }
+.proof-guides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  padding: 0;
+  margin: 0 0 1rem;
+  list-style: none;
+  color: var(--quiet);
+  font-size: 0.78rem;
+}
+.proof-guides li { display: flex; align-items: center; gap: 0.25rem; }
+#print-face { display: none; }
+@media print {
+  .public-proof header, .public-proof footer { display: none; }
+  #print-face { display: block; }
+  #glyph-proof tr { break-inside: avoid; }
+  #glyph-proof h2 { break-after: avoid; }
+}

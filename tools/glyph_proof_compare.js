@@ -76,6 +76,7 @@ function createAxisComparison(config, svg, refresh) {
 
   const changed = () => axis.value !== defaultAxis || Object.keys(values).some(tag => values[tag] !== defaults[tag]);
   let loaded = false;
+  let failed = false;
   let loading;
   let face;
   function loadFont() {
@@ -91,9 +92,13 @@ function createAxisComparison(config, svg, refresh) {
     }).catch(() => {
       if (signal.aborted) return;
       toolbar.hidden = true;
-      document.querySelector("#mode-control").hidden = true;
-      document.querySelector("#proof-mode").value = "glyphs";
-      status.textContent = "Live comparisons could not load. The vector proof is available below.";
+      failed = true;
+      status.textContent = "The proof font could not load. Reload the page to try again.";
+      if (svg) {
+        document.querySelector("#mode-control").hidden = true;
+        document.querySelector("#proof-mode").value = "glyphs";
+        status.textContent = "Live comparisons could not load. The vector proof is available below.";
+      }
       refresh();
     });
   }
@@ -186,6 +191,43 @@ function createAxisComparison(config, svg, refresh) {
     element(parent, "line", {x1, y1, x2, y2, style, "stroke-width": 0.55});
   }
 
+  function glyphSample(parent, row, value) {
+    const text = element(parent, "text", {x: 0, y: 0, class: "axis-sample", fill: "#151b1b",
+                                       "font-family": "TransitProof", "font-size": fontSize},
+                         String.fromCodePoint(codepoints[row.name]));
+    text.style.fontOpticalSizing = "none";
+    setLocation(text, {...values, [axis.value]: value});
+    return text;
+  }
+
+  function fitSamples(texts, cell) {
+    const samples = texts.map(text => {
+      const box = text.getBBox();
+      const advance = text.getComputedTextLength();
+      const origin = advance ? advance / 2 : box.x + box.width / 2;
+      return {box, origin, extent: Math.max(advance / 2, origin - box.x, box.x + box.width - origin)};
+    });
+    const extent = Math.max(1, ...samples.map(sample => sample.extent));
+    return {
+      scale: Math.min(1, (cell / 2 - 4) / extent),
+      origins: samples.map(sample => sample.origin),
+      top: Math.min(0, ...samples.map(({box}) => box.y)),
+      bottom: Math.max(0, ...samples.map(({box}) => box.y + box.height)),
+    };
+  }
+
+  function drawGuides(parent, left, right, baseline, scale) {
+    for (const [, units, style] of guides) {
+      const y = baseline - units * fontSize * scale / upm;
+      line(parent, left, y, right, y, style);
+    }
+  }
+
+  function placeGlyph(text, origin, scale, center, baseline) {
+    text.setAttribute("transform", "translate(" + center + " " + baseline + ") scale(" + scale +
+                      ") translate(" + (-origin) + " 0)");
+  }
+
   function render(page, entries, selected) {
     const width = selected ? selected.box[2] : pageWidth;
     const height = selected ? selected.box[3] + detailHeader : pageHeight;
@@ -231,29 +273,84 @@ function createAxisComparison(config, svg, refresh) {
       const labelSize = Math.min(12, (labelWidth - 12) / row.label.length / 0.57);
       element(svg, "text", {x: x + 8, y: y + 29, "font-size": labelSize, fill: "#454b47"}, row.label);
       const rules = element(svg, "g", {"aria-hidden": true});
-      const samples = stops.map(([value]) => {
-        const location = {...values, [axis.value]: value};
-        const text = element(svg, "text", {x: 0, y: 0, class: "axis-sample", fill: "#151b1b",
-                                           "font-family": "TransitProof", "font-size": fontSize},
-                             String.fromCodePoint(codepoints[row.name]));
-        text.style.fontOpticalSizing = "none";
-        setLocation(text, location);
-        const advance = text.getComputedTextLength();
-        const origin = advance ? advance / 2 : row.inkCenter * fontSize / upm;
-        return {text, origin, advance};
-      });
-      const extent = Math.max(row.extent * fontSize / upm, ...samples.map(sample => sample.advance / 2));
-      const scale = Math.min(1, (cell / 2 - 4) / extent);
-      for (const [, units, style] of guides) {
-        const guideY = baseline - units * fontSize * scale / upm;
-        line(rules, x + labelWidth, guideY, x + block, guideY, style);
-      }
-      samples.forEach(({text, origin}, i) => {
+      const texts = stops.map(([value]) => glyphSample(svg, row, value));
+      const {scale, origins} = fitSamples(texts, cell);
+      drawGuides(rules, x + labelWidth, x + block, baseline, scale);
+      texts.forEach((text, i) => {
         line(rules, center(i), y + 3, center(i), y + rowHeight - 3, centerStyle);
-        text.setAttribute("transform", "translate(" + center(i) + " " + baseline + ") scale(" + scale +
-                          ") translate(" + (-origin) + " 0)");
+        placeGlyph(text, origins[i], scale, center(i), baseline);
       });
     }
+  }
+
+  function renderRows(container, groups) {
+    if (!loaded) {
+      if (!failed) loadFont();
+      return;
+    }
+    const stops = axes[axis.value].stops;
+    const cell = 72;
+    const height = 51;
+    const pending = [];
+    const legend = document.createElement("ul");
+    legend.className = "proof-guides";
+    legend.setAttribute("aria-label", "Glyph guides");
+    for (const [label, , style] of [...guides, ["Advance / ink center", null, centerStyle]]) {
+      const item = document.createElement("li");
+      const swatch = element(item, "svg", {width: 20, height: 8, "aria-hidden": true});
+      line(swatch, 1, 4, 19, 4, style);
+      item.append(label);
+      legend.append(item);
+    }
+    const sections = groups.map(([title, rows]) => {
+      const section = document.createElement("section");
+      const heading = document.createElement("h2");
+      heading.textContent = title;
+      const table = document.createElement("table");
+      table.setAttribute("aria-label", title);
+      const header = table.createTHead().insertRow();
+      for (const label of ["Glyph", ...stops.map(([, label]) => label)]) {
+        const column = document.createElement("th");
+        column.scope = "col";
+        column.textContent = label;
+        header.append(column);
+      }
+      const body = table.createTBody();
+      for (const row of rows) {
+        const tableRow = body.insertRow();
+        const label = document.createElement("th");
+        label.scope = "row";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.glyph = row.name;
+        button.textContent = row.label;
+        label.append(button);
+        tableRow.append(label);
+        const samples = stops.map(([value]) => {
+          const picture = element(tableRow.insertCell(), "svg", {
+            viewBox: "0 0 " + cell + " " + height, width: cell, height, "aria-hidden": true,
+          });
+          return {picture, rules: element(picture, "g", {}), text: glyphSample(picture, row, value)};
+        });
+        pending.push(samples);
+      }
+      section.append(heading, table);
+      return section;
+    });
+    container.replaceChildren(legend, ...sections);
+    const layouts = pending.map(samples => fitSamples(samples.map(({text}) => text), cell));
+    pending.forEach((samples, index) => {
+      const {scale, origins, top, bottom} = layouts[index];
+      const rowTop = Math.min(0, Math.floor(baselineOffset + top * scale) - 2);
+      const rowBottom = Math.max(height, Math.ceil(baselineOffset + bottom * scale) + 2);
+      samples.forEach(({picture, rules, text}, i) => {
+        picture.setAttribute("viewBox", "0 " + rowTop + " " + cell + " " + (rowBottom - rowTop));
+        picture.setAttribute("height", rowBottom - rowTop);
+        drawGuides(rules, 0, cell, baselineOffset, scale);
+        line(rules, cell / 2, rowTop + 3, cell / 2, rowBottom - 3, centerStyle);
+        placeGlyph(text, origins[i], scale, cell / 2, baselineOffset);
+      });
+    });
   }
 
   function dispose() {
@@ -264,5 +361,5 @@ function createAxisComparison(config, svg, refresh) {
     textSamples.replaceChildren();
   }
 
-  return {active: () => loaded && changed(), render, setTextMode, dispose};
+  return {active: () => loaded && changed(), render, renderRows, setTextMode, dispose};
 }
