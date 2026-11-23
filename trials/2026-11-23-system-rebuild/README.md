@@ -51,3 +51,7 @@ System’s ten digits and three tabular separators reference the rebuilt proport
 ## 8. Ascenders and marks
 
 The upright ascenders retain the System heights. The shared diamond tittle sits at the original System height in each weight and optical master. Combining marks on `b` use the reflected attachment coordinates of its companion `d`. [Ascenders and tittles proof](System-Ascenders-and-Tittles.svg)
+
+## 9. Optical spacing and point size
+
+Caption and optical sizes through 12 receive the reviewed 0.01 em spacing increase. It tapers to zero at Text. The half-cell tabular separators receive half of the increase and tabular outlines stay centered. The build recognizes the 1091-unit System calibration, which carries the earlier 11-point cut at a nominal 12 points. Its Caption, Text, and Display presets retain the calibrated optical coordinates. [Caption proof](System-Caption-Lowercase.svg)

@@ -6,6 +6,7 @@ import subprocess
 from tempfile import TemporaryDirectory
 
 from fontTools.misc.fixedTools import floatToFixedToFloat
+from fontTools.misc.roundTools import otRound
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables.TupleVariation import TupleVariation
 from fontTools.varLib.builder import buildVarData, buildVarRegion
@@ -36,10 +37,14 @@ def spacing_glyphs(font):
     ]
 
 
-def append_advance_delta(font, name, support, delta):
+def append_advance_delta(font, name, support, delta, *, center=False):
     points, _ = font["glyf"]._getCoordinatesAndControls(name, font["hmtx"].metrics)
     phantom_deltas = [(0, 0)] * len(points)
     phantom_deltas[-3] = (delta, 0)
+    if center:
+        glyph = font["glyf"][name]
+        assert glyph.isComposite() and len(glyph.components) == 1, name
+        phantom_deltas[0] = (otRound(delta / 2), 0)
     font["gvar"].variations.setdefault(name, []).append(TupleVariation(support, phantom_deltas))
 
 
@@ -55,8 +60,12 @@ def sync_tabular_one(font):
             append_advance_delta(font, "one.tnum", variation.axes, delta)
 
 
-def add_spacing(font):
-    sync_tabular_one(font)
+def add_spacing(font, *, tabular=None):
+    if tabular is None:
+        sync_tabular_one(font)
+    tabular = tabular or {}
+    half = {tabular[name] for char in ".,:" if (name := font.getBestCmap()[ord(char)]) in tabular}
+    tabular_forms = set(tabular.values())
     _, deltas = spacing_deltas(font)
     axes = [axis.axisTag for axis in font["fvar"].axes]
     hvar = font["HVAR"].table
@@ -72,21 +81,33 @@ def add_spacing(font):
         region_indices.append(index)
     store.VarRegionList.RegionCount = len(regions)
     remapped = {}
+    tracking = {}
+    # Use even deltas for the grid so both column widths interpolate in sync.
+    (caption_support, caption), (text_support, _) = deltas
+    grid_caption = 2 * otRound(caption / 2)
+    grid_text = 2 * otRound((caption + grid_caption * text_support[1]) / 2)
+    grid = [(caption_support, grid_caption), (text_support, grid_text)]
     for name in spacing_glyphs(font):
         original = mapping[name]
-        if original not in remapped:
+        factor = .5 if name in half else 1
+        base = grid if name in tabular_forms else deltas
+        amounts = [(support, otRound(delta * factor)) for support, delta in base]
+        key = original, tuple(amounts)
+        tracking[name] = amounts
+        if key not in remapped:
             row = store.VarData[original >> 16]
             values = dict(zip(row.VarRegionIndex, row.Item[original & 65535]))
-            for index, (_, delta) in zip(region_indices, deltas):
+            for index, (_, delta) in zip(region_indices, amounts):
                 values[index] = values.get(index, 0) + delta
-            remapped[original] = len(store.VarData) << 16
+            remapped[key] = len(store.VarData) << 16
             store.VarData.append(buildVarData(list(values), [list(values.values())]))
-        mapping[name] = remapped[original]
+        mapping[name] = remapped[key]
 
         # Static instancing and glyf-based renderers read the same advance from gvar.
-        for support, delta in deltas:
-            append_advance_delta(font, name, {"opsz": support}, delta)
+        for support, delta in amounts:
+            append_advance_delta(font, name, {"opsz": support}, delta, center=name in tabular_forms)
     store.VarDataCount = len(store.VarData)
+    return tracking
 
 
 def verify(source, trial):

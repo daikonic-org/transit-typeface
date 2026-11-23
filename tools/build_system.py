@@ -16,12 +16,13 @@ from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 from fontTools.varLib.instancer import instantiateVariableFont
-from fontTools.varLib.models import VariationModel
+from fontTools.varLib.models import VariationModel, supportScalar
 
 from audit import Samples, shape_from_glyphs, spans
 from bundle_release import sanitize
 from code_weight_width_trial import name_trial
 from font_feature_tools import append_glyph, expanded_variations, master_locations
+from font_size_calibration import ensure_system_calibration
 from glyph_proof import build_proof
 from italic_returns import raw_outline, segments as outline_segments
 from kern_clearance import repair_kerning
@@ -30,6 +31,7 @@ from sans_direct_weight import direct_points
 from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
 from system_accents import install_masters, rebuild_accents
+from system_caption_spacing import add_spacing
 from system_figures import rebuild_figures
 from system_marks import reflected_mark_attachment
 from system_proportions import enlarge_lowercase, set_ascender
@@ -285,6 +287,7 @@ def build(source, donor, output):
                               locations[default], names, DOT)
     figures = rebuild_figures(result, source, donor_masters, locations, model, default)
     reflected_mark_attachment(result, locations, model)
+    tracking = add_spacing(result, tabular=figures)
     name_trial(result, FAMILY, variable=True)
     result.recalcTimestamp = False
     result.save(output)
@@ -294,8 +297,11 @@ def build(source, donor, output):
             assert built.getTableData(tag) == source.getTableData(tag), tag
         for loc in locations:
             a, b = (f.getGlyphSet(location=loc) for f in (source, built))
-            for name in names | {cmap[codepoint] for codepoint in accents} | figures.keys():
-                assert a[name].width == b[name].width, (loc, name)
+            at = built.normalizeLocation(loc)
+            for name in source.getGlyphOrder():
+                expected = sum(delta * supportScalar(at, {"opsz": support})
+                               for support, delta in tracking.get(name, ()))
+                assert abs(b[name].width - a[name].width - expected) < .01, (loc, name)
     return order, accents
 
 
@@ -316,6 +322,7 @@ if __name__ == "__main__":
     args.output.mkdir(parents=True, exist_ok=True)
     font = args.output / "DaikonicTransitSystemCurveReview-VF.ttf"
     with TTFont(args.system, recalcTimestamp=False) as source, TTFont(args.sans) as donor:
+        ensure_system_calibration(source)
         with TTFont(args.metropolitan) as upstream:
             add_primary_y(source, upstream)
         changed, accents = build(source, donor, font)

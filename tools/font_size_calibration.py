@@ -6,6 +6,20 @@ from fontTools.misc.roundTools import otRound
 NEW_POINT_SIZE = 12
 
 
+def ensure_system_calibration(font):
+    """Carry forward System's accepted 11-point cut at a nominal 12 points."""
+    units = 1000
+    factor = NEW_POINT_SIZE / 11
+    if font["head"].unitsPerEm == units:
+        recalibrate(font, 11)
+    if font["head"].unitsPerEm != otRound(units * factor):
+        raise ValueError("Expected a pre-calibration or calibrated System source")
+    optical = next(axis for axis in font["fvar"].axes if axis.axisTag == "opsz")
+    values = optical.minValue, optical.defaultValue, optical.maxValue
+    if any(abs(value - size * factor) > 1 / 65536 for value, size in zip(values, (10, 14, 36))):
+        raise ValueError("System optical coordinates must match the 12-point calibration")
+
+
 def recalibrate(font, previous_point_size):
     factor = NEW_POINT_SIZE / previous_point_size
     font["head"].unitsPerEm = otRound(font["head"].unitsPerEm * factor)
