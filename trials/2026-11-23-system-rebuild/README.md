@@ -11,3 +11,16 @@ mkdir -p .build/system-rebuild
 python tools/system_proportions.py releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-rebuild/Lowercase-Proportions.svg
 inkscape .build/system-rebuild/Lowercase-Proportions.svg --export-filename=.build/system-rebuild/Lowercase-Proportions.pdf
 ```
+
+## 2. Primary y
+
+System’s lowercase alphabet and dotless bases use the curves from the proportions proof. The primary `y` places the fork near the baseline, keeps both upper tips at x-height, and continues into the original hook. The existing accented `y` forms use that same body. The local review build keeps System’s current advances, optical-size axis, and layout tables.
+
+[Lowercase and primary y proof](System-Lowercase-Curves.pdf)
+
+```sh
+python tools/build_system.py releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-rebuild
+inkscape .build/system-rebuild/System-Lowercase-Curves.svg --export-filename=.build/system-rebuild/System-Lowercase-Curves.pdf
+```
+
+The review build covers upright basic lowercase and the `y` family. The wider inventory, remaining accent compositions, and italic rebuild are tracked separately.
