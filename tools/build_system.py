@@ -1,11 +1,13 @@
 """Build and proof System’s upright lowercase on the rebuilt Sans curves."""
 
 from argparse import ArgumentParser
+from collections import defaultdict
 from copy import deepcopy
 import json
 from math import cos, radians
 from pathlib import Path
 from string import ascii_lowercase
+from unicodedata import normalize
 
 from fontTools.misc.bezierTools import splitQuadratic
 from fontTools.misc.roundTools import otRound
@@ -16,7 +18,6 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
-from fontTools.ttLib.tables.TupleVariation import TupleVariation
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.varLib.models import VariationModel
 import uharfbuzz as hb
@@ -27,10 +28,11 @@ from code_weight_width_trial import name_trial
 from font_feature_tools import append_glyph, expanded_variations, master_locations
 from italic_returns import raw_outline, segments as outline_segments
 from kern_clearance import repair_kerning
-from sans_baseline_trial import build_variations, clear_hints, components, install, subset_contours
+from sans_baseline_trial import build_variations, clear_hints
 from sans_direct_weight import direct_points
 from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
+from system_accents import install_masters, rebuild_accents
 from system_proportions import enlarge_lowercase
 
 
@@ -40,8 +42,6 @@ LETTERS = ascii_lowercase + "ıȷ"
 WEIGHTS = (300, 350, 400, 500, 600)
 
 
-ACCENTS = ("yacute", "ydieresis", "ycircumflex", "ygrave")
-Y_FORMS = ("y", *ACCENTS)
 CUT = -80
 
 
@@ -162,28 +162,6 @@ def add_primary_y(font, upstream):
                  build_variations(model, coordinates, expanded_variations(system, "y")),
                  original_width, metric_source="y")
 
-    for name in ACCENTS:
-        old = system["glyf"][name]
-        assert old.endPtsOfContours[0] == system["glyf"]["y"].endPtsOfContours[0], name
-        mark, indices = subset_contours(old, {old.endPtsOfContours[0]})
-        mark_name = name + ".mark"
-        expanded = expanded_variations(system, name)
-        mark_variations = [
-            TupleVariation(dict(axes), [*(delta[i] for i in indices), *((0, 0),) * 4])
-            for axes, delta in expanded.items()
-        ]
-        append_glyph(font, mark_name, mark, mark_variations, 0)
-        font["GDEF"].table.GlyphClassDef.classDefs[mark_name] = 3
-
-        body_and_mark = components([("y", (0, 0)), (mark_name, (0, 0))])
-        metric_variations = [
-            TupleVariation(dict(axes), [(0, 0), (0, 0), *delta[-4:]])
-            for axes, delta in expanded.items() if any(point != (0, 0) for point in delta[-4:])
-        ]
-        append_glyph(font, name, body_and_mark, metric_variations, system["hmtx"][name][0],
-                     metric_source=name)
-
-
 
 def draw_text(font, engine, loc, text, origin, baseline, size):
     glyphs = font.getGlyphSet(location=loc)
@@ -250,10 +228,9 @@ def build(source, donor, output):
                   for loc in locations]
     model = VariationModel(normalized, axisOrder=["wght", "opsz"])
     default = normalized.index({})
-    weight_donors = {
-        w: enlarge_lowercase(instantiateVariableFont(donor, {"wght": w}))[0]
-        for w in sorted({loc["wght"] for loc in locations})
-    }
+    donor_masters = {weight: instantiateVariableFont(donor, {"wght": weight})
+                     for weight in sorted({loc["wght"] for loc in locations})}
+    weight_donors = {weight: enlarge_lowercase(master)[0] for weight, master in donor_masters.items()}
     source_y = source.getGlyphSet(location={"wght": 400})["y"]._getGlyphInstance()
     masters = []
 
@@ -322,15 +299,16 @@ def build(source, donor, output):
     order = sorted(names, key=lambda name: (masters[default][name].isComposite(), name))
     for name in order:
         drawing = deepcopy(masters[default][name])
-        clear_hints(drawing)
         if drawing.isComposite():
             points = [GlyphCoordinates((part.x, part.y) for part in owned[name].components)
                       for owned in masters]
         else:
             points = [owned[name].coordinates for owned in masters]
         assert all(len(p) == len(points[0]) for p in points), name
-        install(result, name, drawing, build_variations(model, points, expanded_variations(source, name)))
+        install_masters(result, source, name, drawing, points, model, default)
 
+    accents = rebuild_accents(result, source, donor_masters, locations, model,
+                              locations[default], names, DOT)
     name_trial(result, FAMILY, variable=True)
     result.recalcTimestamp = False
     result.save(output)
@@ -340,9 +318,9 @@ def build(source, donor, output):
             assert built.getTableData(tag) == source.getTableData(tag), tag
         for loc in locations:
             a, b = (f.getGlyphSet(location=loc) for f in (source, built))
-            for name in names:
+            for name in names | {cmap[codepoint] for codepoint in accents}:
                 assert a[name].width == b[name].width, (loc, name)
-    return order
+    return order, accents
 
 
 def proof(font_path, output):
@@ -367,6 +345,34 @@ def proof(font_path, output):
         + "".join(rows) + "</svg>")
 
 
+def accent_proof(font_path, output, codepoints):
+    font = TTFont(font_path)
+    engine = hb.Font(hb.Face(font_path.read_bytes()))
+    optical = next(axis.defaultValue for axis in font["fvar"].axes if axis.axisTag == "opsz")
+    families = defaultdict(str)
+    for codepoint in codepoints:
+        char = chr(codepoint)
+        families[normalize("NFD", char)[0]] += char
+    height = 155 + 45 * len(families)
+    width = 1520
+    rows = [f'<rect width="{width}" height="{height}" fill="#f5f1e8"/>',
+            '<text x="36" y="54" font-size="32" font-weight="700">Daikonic Transit System</text>',
+            '<text x="37" y="83" font-size="18" fill="#5a4739">Lowercase accents · Text optical size</text>']
+    for col, weight in enumerate(WEIGHTS):
+        x = 27 + 300 * col
+        loc = {"wght": weight, "opsz": optical}
+        engine.set_variations(loc)
+        rows += [f'<rect x="{x}" y="106" width="266" height="{height - 126}" rx="6" fill="white"/>',
+                 f'<text x="{x + 24}" y="133" font-size="16">{weight}</text>']
+        for row, base in enumerate(sorted(families)):
+            baseline = 172 + 45 * row
+            rows.append(draw_text(font, engine, loc, " ".join(families[base]), x + 24, baseline, 27))
+    output.write_text(
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
+        f'viewBox="0 0 {width} {height}" font-family="Arial,sans-serif" fill="#16252a">'
+        + "".join(rows) + "</svg>")
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("system", type=Path)
@@ -383,7 +389,7 @@ if __name__ == "__main__":
     with TTFont(args.system, recalcTimestamp=False) as source, TTFont(args.sans) as donor:
         with TTFont(args.metropolitan) as upstream:
             add_primary_y(source, upstream)
-        changed = build(source, donor, font)
+        changed, accents = build(source, donor, font)
     if not args.outline_only:
         with TTFont(font, recalcTimestamp=False) as finished:
             locations = master_locations(finished)[1] if args.named_instances else None
@@ -392,4 +398,5 @@ if __name__ == "__main__":
             sanitize(finished)
         font.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
     proof(font, args.output / "System-Lowercase-Curves.svg")
-    print("Rebuilt", len(changed), "lowercase bases and verified all advances")
+    accent_proof(font, args.output / "System-Lowercase-Accents.svg", accents)
+    print("Rebuilt", len(changed), "lowercase bases and", len(accents), "accented forms")

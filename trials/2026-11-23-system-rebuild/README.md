@@ -28,3 +28,11 @@ The review build covers upright basic lowercase and the `y` family. The wider in
 ## 3. Kerning clearance
 
 The System build runs the same outline-based pair check as Sans after rebuilding the outlines. Run the build command above without `--outline-only` to generate a spaced review font and proof. Use `--named-instances` for a faster review at the 15 named weight and optical-size combinations. The default also checks intermediate sizes and weights. The JSON report records the locations and pair adjustments. See [build notes](../../docs/build.md#checking-pair-clearance-after-outline-construction).
+
+## 4. Lowercase accents
+
+The build reuses the Sans component recipes for 85 lowercase accented letters. They use System’s rebuilt letterforms and shared marks. The single dot and both diaeresis dots come from the same diamond. The weight masters preserve the clearance of separate marks and the joins of attached marks. The review keeps the existing advances and mark positioning. The custom, shortened crossbar of `ť` is part of a separate drawing.
+
+[Lowercase accent proof across five weights](System-Lowercase-Accents.pdf)
+
+Run the same System build with `--named-instances` and export `System-Lowercase-Accents.svg` to reproduce the proof.
