@@ -30,6 +30,7 @@ from sans_direct_weight import direct_points
 from sans_sparse_outline_trial import UPSTREAM, segments as stored_segments
 from scaling_study import vertical_stem
 from system_accents import install_masters, rebuild_accents
+from system_figures import rebuild_figures
 from system_proportions import enlarge_lowercase, set_ascender
 
 
@@ -280,6 +281,7 @@ def build(source, donor, output):
 
     accents = rebuild_accents(result, source, donor_masters, locations, model,
                               locations[default], names, DOT)
+    figures = rebuild_figures(result, source, donor_masters, locations, model, default)
     name_trial(result, FAMILY, variable=True)
     result.recalcTimestamp = False
     result.save(output)
@@ -289,7 +291,7 @@ def build(source, donor, output):
             assert built.getTableData(tag) == source.getTableData(tag), tag
         for loc in locations:
             a, b = (f.getGlyphSet(location=loc) for f in (source, built))
-            for name in names | {cmap[codepoint] for codepoint in accents}:
+            for name in names | {cmap[codepoint] for codepoint in accents} | figures.keys():
                 assert a[name].width == b[name].width, (loc, name)
     return order, accents
 

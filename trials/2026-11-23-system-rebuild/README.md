@@ -43,3 +43,7 @@ The accent build also inherits the two-contour side caron in Sans’s `ť`, whic
 The System build writes the original Sans proof layout to `Proof/`. Open `Proof/index.html` to browse it, or pass `--export-proof` to get PNG and PDF as well. The PDFs above are records of the earlier reviews. Use `--review-glyph tcaron` to see the side caron on its own page in the shared template. [Proof commands](../../docs/build.md#glyph-proofs)
 
 [System glyph proof](System-Glyph-Proof.pdf) · [Side caron detail](System-Side-Caron-Proof.pdf)
+
+## 7. Tabular figures
+
+System’s ten digits and three tabular separators reference the rebuilt proportional glyphs. The digits share one advance and the separators share a half-cell advance. The tabular colon is centered on the cap-height midpoint. The figure advances agree in the variable font and static instances. [Tabular figures proof](System-Tabular-Figures.svg)

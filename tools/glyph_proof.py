@@ -51,7 +51,7 @@ def inventory(font):
         if (tag.startswith("ss") or tag == "calt") and original in letters:
             letter_alts.setdefault(replacement, f"{letters[original]} · {tag}")
     sections.append(("Letter alternates", list(letter_alts.items())))
-    numerals = {cmap[ord(char)]: char for char in digits}
+    numerals = {cmap[ord(char)]: char for char in digits + ".,:" if ord(char) in cmap}
     numeral_alts = {replacement: f"{numerals[original]} · {tag}"
                     for tag, original, replacement in substitutions
                     if tag in {"tnum", "onum"} and original in numerals}
