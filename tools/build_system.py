@@ -1,31 +1,28 @@
 """Build and proof System’s upright lowercase on the rebuilt Sans curves."""
 
 from argparse import ArgumentParser
-from collections import defaultdict
 from copy import deepcopy
 import json
 from math import cos, radians
 from pathlib import Path
 from string import ascii_lowercase
-from unicodedata import normalize
 
 from fontTools.misc.bezierTools import splitQuadratic
 from fontTools.misc.roundTools import otRound
 from fontTools.misc.transform import Transform
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.cu2quPen import Cu2QuPen
-from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.varLib.models import VariationModel
-import uharfbuzz as hb
 
 from audit import Samples, shape_from_glyphs, spans
 from bundle_release import sanitize
 from code_weight_width_trial import name_trial
 from font_feature_tools import append_glyph, expanded_variations, master_locations
+from glyph_proof import build_proof
 from italic_returns import raw_outline, segments as outline_segments
 from kern_clearance import repair_kerning
 from sans_baseline_trial import build_variations, clear_hints
@@ -39,7 +36,6 @@ from system_proportions import enlarge_lowercase, set_ascender
 FAMILY = "Daikonic Transit System Curve Review"
 DOT = "diamond.dot.system"
 LETTERS = ascii_lowercase + "ıȷ"
-WEIGHTS = (300, 350, 400, 500, 600)
 
 
 CUT = -80
@@ -161,26 +157,6 @@ def add_primary_y(font, upstream):
     append_glyph(font, "y", drawing,
                  build_variations(model, coordinates, expanded_variations(system, "y")),
                  original_width, metric_source="y")
-
-
-def draw_text(font, engine, loc, text, origin, baseline, size):
-    glyphs = font.getGlyphSet(location=loc)
-    scale = size / font["head"].unitsPerEm
-    buffer = hb.Buffer()
-    buffer.add_str(text)
-    buffer.guess_segment_properties()
-    hb.shape(engine, buffer)
-    pieces = []
-    cursor = origin
-    for item, position in zip(buffer.glyph_infos, buffer.glyph_positions):
-        glyph = font.getGlyphName(item.codepoint)
-        pen = SVGPathPen(glyphs)
-        glyphs[glyph].draw(pen)
-        x = cursor + position.x_offset * scale
-        y = baseline - position.y_offset * scale
-        pieces.append(f'<path d="{pen.getCommands()}" transform="translate({x:.5f} {y:.5f}) scale({scale} {-scale})"/>')
-        cursor += position.x_advance * scale
-    return "".join(pieces)
 
 
 def bbox(glyphs, name):
@@ -318,56 +294,6 @@ def build(source, donor, output):
     return order, accents
 
 
-def proof(font_path, output):
-    font = TTFont(font_path)
-    engine = hb.Font(hb.Face(font_path.read_bytes()))
-    optical = next(a.defaultValue for a in font["fvar"].axes if a.axisTag == "opsz")
-    rows = ['<rect width="1260" height="1135" fill="#f5f1e8"/>',
-            '<text x="36" y="54" font-size="32" font-weight="700">Daikonic Transit System</text>',
-            '<text x="37" y="83" font-size="18" fill="#5a4739">Lowercase curve review · Text optical size</text>']
-    for row, weight in enumerate(WEIGHTS):
-        loc = {"wght": weight, "opsz": optical}
-        engine.set_variations(loc)
-        top = 108 + 198 * row
-        rows += [f'<rect x="22" y="{top}" width="1216" height="182" rx="6" fill="white"/>',
-                 f'<text x="42" y="{top+44}" font-size="16">{weight}</text>',
-                 f'<path d="M135 {top+96}H1217 M135 {top+61}H1217" stroke="#e9dfd4"/>',
-                 draw_text(font, engine, loc, "wayfinding · play · typography", 135, top+96, 70),
-                 draw_text(font, engine, loc, ascii_lowercase, 135, top+157, 36) ]
-    output.write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="1135" '
-        'viewBox="0 0 1260 1135" font-family="Arial,sans-serif" fill="#16252a">'
-        + "".join(rows) + "</svg>")
-
-
-def accent_proof(font_path, output, codepoints):
-    font = TTFont(font_path)
-    engine = hb.Font(hb.Face(font_path.read_bytes()))
-    optical = next(axis.defaultValue for axis in font["fvar"].axes if axis.axisTag == "opsz")
-    families = defaultdict(str)
-    for codepoint in codepoints:
-        char = chr(codepoint)
-        families[normalize("NFD", char)[0]] += char
-    height = 155 + 45 * len(families)
-    width = 1520
-    rows = [f'<rect width="{width}" height="{height}" fill="#f5f1e8"/>',
-            '<text x="36" y="54" font-size="32" font-weight="700">Daikonic Transit System</text>',
-            '<text x="37" y="83" font-size="18" fill="#5a4739">Lowercase accents · Text optical size</text>']
-    for col, weight in enumerate(WEIGHTS):
-        x = 27 + 300 * col
-        loc = {"wght": weight, "opsz": optical}
-        engine.set_variations(loc)
-        rows += [f'<rect x="{x}" y="106" width="266" height="{height - 126}" rx="6" fill="white"/>',
-                 f'<text x="{x + 24}" y="133" font-size="16">{weight}</text>']
-        for row, base in enumerate(sorted(families)):
-            baseline = 172 + 45 * row
-            rows.append(draw_text(font, engine, loc, " ".join(families[base]), x + 24, baseline, 27))
-    output.write_text(
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
-        f'viewBox="0 0 {width} {height}" font-family="Arial,sans-serif" fill="#16252a">'
-        + "".join(rows) + "</svg>")
-
-
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("system", type=Path)
@@ -378,6 +304,9 @@ if __name__ == "__main__":
     sampling.add_argument("--outline-only", action="store_true", help="reproduce the outline proof")
     sampling.add_argument("--named-instances", action="store_true",
                           help="check pair clearance at the named weight and optical-size locations")
+    parser.add_argument("--review-glyph", action="append", default=[], metavar="NAME",
+                        help="also show this glyph in a focused proof")
+    parser.add_argument("--export-proof", action="store_true", help="also export the proof as PNG and PDF")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     font = args.output / "DaikonicTransitSystemCurveReview-VF.ttf"
@@ -392,6 +321,5 @@ if __name__ == "__main__":
             finished.save(font)
             sanitize(finished)
         font.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
-    proof(font, args.output / "System-Lowercase-Curves.svg")
-    accent_proof(font, args.output / "System-Lowercase-Accents.svg", accents)
+    build_proof(font, args.output / "Proof", flagged=args.review_glyph, svg_only=not args.export_proof)
     print("Rebuilt", len(changed), "lowercase bases and", len(accents), "accented forms")

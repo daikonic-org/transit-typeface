@@ -47,13 +47,19 @@ Composites follow the weighted shapes they assemble. Facing edges guide componen
 
 The output includes the upright VF, static TTFs and OTFs, a TTC, WOFF2, rebuildable TTX source, a specimen and the glyph proof under `Proof/`. The italic and coordinated release have separate build steps.
 
-To regenerate the glyph proof on its own, run:
+## Glyph proofs
+
+Sans, System, and Code use the same glyph-proof template. To generate a proof from any family’s TTF, run the shared proof builder.
 
 ```sh
-python tools/sans_glyph_proof.py .build/sans-upright/VF/DaikonicTransitSans-VF.ttf .build/sans-glyph-proof
+python tools/glyph_proof.py path/to/Family-VF.ttf .build/glyph-proof
 ```
 
-The proof compares all five named weights side by side on each page. It covers A–Z, a–z and 0–9, then stylistic-set letter alternates, remaining components and their alternates, and punctuation, symbols and marks composed entirely from those remaining components. Cap height, x-height, operator axis, baseline, descender and vertical center guides are shown for every glyph. Each page has a PNG and SVG, and the combined PDF is suitable for distribution with the font. Additional pages show encoded punctuation, symbols, numeral variants and script forms that do not appear in the component sections.
+Pages compare the font’s named weights side by side, with guidelines for cap height, x-height, operator axis, baseline, descender, and advance or ink center. Categories cover uppercase, lowercase, numerals, applicable alternates, components, and composites of those components. Additional pages show ligatures and other punctuation, symbols, and numeral forms. The builder exports SVG and PNG pages and one vector PDF. Use `--review-glyph tcaron` to get a separate focused proof for a glyph under review.
+
+Open `index.html` in the output folder to choose a page and zoom in the browser. For the browser version and its SVG pages alone, use `--svg-only`. PNG and PDF exports use Chrome or the headless Chromium executable selected by `TRANSIT_CHROME`.
+
+The proof uses the default optical size and width. Use `--axis opsz=12` for a different System optical size or `--axis wdth=94` for Code Narrow. Keep separate output folders for different styles or axis coordinates.
 
 ## Reviewing the upright Sans outlines
 

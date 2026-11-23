@@ -20,7 +20,6 @@ System’s lowercase alphabet and dotless bases use the curves from the proporti
 
 ```sh
 python tools/build_system.py releases/2026.11.20/system/VF/DaikonicTransitSystem-VF.ttf releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf .build/system-rebuild --outline-only
-inkscape .build/system-rebuild/System-Lowercase-Curves.svg --export-filename=.build/system-rebuild/System-Lowercase-Curves.pdf
 ```
 
 The review build covers upright basic lowercase and the `y` family. The wider inventory, remaining accent compositions, and italic rebuild are tracked separately.
@@ -35,8 +34,12 @@ The build reuses the Sans component recipes for 85 lowercase accented letters. T
 
 [Lowercase accent proof across five weights](System-Lowercase-Accents.pdf)
 
-Run the same System build with `--named-instances` and export `System-Lowercase-Accents.svg` to reproduce the proof.
-
 ## 5. Dedicated side caron
 
 The accent build also inherits the two-contour side caron in Sans’s `ť`, which comes from Metropolitan Line. The shortened letter body uses the shared lowercase enlargement, stroke compensation, and ascender rules. The mark keeps its source drawing and uses System’s existing placement. The same proof now covers all 86 upright lowercase accents.
+
+## 6. Shared glyph proof
+
+The System build writes the original Sans proof layout to `Proof/`. Open `Proof/index.html` to browse it, or pass `--export-proof` to get PNG and PDF as well. The PDFs above are records of the earlier reviews. Use `--review-glyph tcaron` to see the side caron on its own page in the shared template. [Proof commands](../../docs/build.md#glyph-proofs)
+
+[System glyph proof](System-Glyph-Proof.pdf) · [Side caron detail](System-Side-Caron-Proof.pdf)

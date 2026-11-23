@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import itertools
+from collections import deque
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables import otTables
 from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
@@ -12,12 +13,34 @@ from fontTools.misc.roundTools import otRound
 from fontTools.varLib.iup import iup_delta
 
 
-def feature_subtables(font):
+def layout_lookup_records(value):
+    if isinstance(value, (otTables.SubstLookupRecord, otTables.PosLookupRecord)):
+        yield value
+    elif isinstance(value, list):
+        for item in value:
+            yield from layout_lookup_records(item)
+    elif hasattr(value, "__dict__"):
+        for item in vars(value).values():
+            yield from layout_lookup_records(item)
+
+
+def feature_subtables(font, *, contextual=False):
+    if "GSUB" not in font:
+        return
     table = font["GSUB"].table
     for record in table.FeatureList.FeatureRecord:
-        for index in record.Feature.LookupListIndex:
+        pending = deque(record.Feature.LookupListIndex)
+        visited = set()
+        while pending:
+            index = pending.popleft()
+            if contextual and index in visited:
+                continue
+            visited.add(index)
             for subtable in table.LookupList.Lookup[index].SubTable:
-                yield record.FeatureTag, getattr(subtable, "ExtSubTable", subtable)
+                subtable = getattr(subtable, "ExtSubTable", subtable)
+                yield record.FeatureTag, subtable
+                if contextual:
+                    pending.extend(item.LookupListIndex for item in layout_lookup_records(subtable))
 
 
 def expanded_variations(font, name):
@@ -198,15 +221,9 @@ def from_paths(font, name, locations, paths, advance):
 
 def remap_lookup_records(value, offset, start=0):
     """Shift nested lookup references when a layout lookup is moved or inserted."""
-    if isinstance(value, (otTables.SubstLookupRecord, otTables.PosLookupRecord)):
-        if value.LookupListIndex >= start:
-            value.LookupListIndex += offset
-    elif isinstance(value, list):
-        for item in value:
-            remap_lookup_records(item, offset, start)
-    elif hasattr(value, "__dict__"):
-        for item in vars(value).values():
-            remap_lookup_records(item, offset, start)
+    for record in layout_lookup_records(value):
+        if record.LookupListIndex >= start:
+            record.LookupListIndex += offset
 
 
 def add_features(font, fea, prepend=False):

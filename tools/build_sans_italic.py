@@ -30,7 +30,7 @@ from italic_letterforms import redraw_italic_letters, related_glyphs
 from italic_texture_proofs import italic_letterform_proof
 from kern_clearance import overlaps, repair_kerning
 from sans_baseline_trial import build_variations, components, install, load_baseline
-from sans_glyph_proof import build_proof
+from glyph_proof import build_proof
 from sans_weight_refinement import fitting_context
 from specimens import DATA
 

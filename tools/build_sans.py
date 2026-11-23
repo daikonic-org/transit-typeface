@@ -18,7 +18,7 @@ from sans_baseline_trial import load_baseline, specimen
 from sans_component_relationships import apply_relationships
 from sans_complete_rebuild import direct_outline_findings, rebuild_drawn_outlines, repair_components
 from sans_diamond_punctuation import EDGES, INSET_TRIANGLE, edit_crowns, reuse_comma_in_semicolon
-from sans_glyph_proof import build_proof
+from glyph_proof import build_proof
 from sans_ligature_construction import rebuild_ligatures
 from sans_weight_refinement import check_composites
 from specimens import DATA, ROOT

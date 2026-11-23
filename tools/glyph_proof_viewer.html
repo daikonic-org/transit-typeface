@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<style>
+:root { color-scheme: light; font: 15px/1.45 system-ui, sans-serif; color: #252d29; background: #f0efe9; }
+body { margin: 0; }
+header { padding: 0.9rem clamp(1rem, 4vw, 3rem); background: white; border-bottom: 1px solid #d6d8cf; }
+h1 { margin: 0 0 0.7rem; font-size: 1.35rem; }
+nav, .control { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45rem; }
+nav { gap: 0.65rem 1rem; }
+button, select { font: inherit; border: 1px solid #a4aba3; border-radius: 0.25rem; padding: 0.35rem 0.55rem; background: white; color: inherit; }
+button:disabled { opacity: 0.5; }
+a { color: #235749; }
+main { padding: 1rem; overflow-x: auto; }
+img { display: block; width: min(100%, ${width}px); max-width: none; height: auto; margin: 0 auto; box-shadow: 0 1px 6px #0002; }
+</style>
+<header>
+  <h1>$title</h1>
+  <nav aria-label="Glyph proof">
+    <div class="control">
+      <button type="button" id="previous" aria-label="Previous page">←</button>
+      <label for="page">Page</label>
+      <select id="page">$options</select>
+      <button type="button" id="next" aria-label="Next page">→</button>
+    </div>
+    <div class="control">
+      <label for="zoom">Zoom</label>
+      <select id="zoom">
+        <option value="">Fit</option>
+        <option value="1">100%</option>
+        <option value="1.5">150%</option>
+        <option value="2">200%</option>
+      </select>
+    </div>
+    $downloads
+  </nav>
+</header>
+<main><img id="proof" src="$initial_page" width="$width" height="$height" alt="$initial_label"></main>
+<script>
+const pages = document.querySelector("#page");
+const zoom = document.querySelector("#zoom");
+const preview = document.querySelector("#proof");
+const previous = document.querySelector("#previous");
+const next = document.querySelector("#next");
+
+function showPage() {
+  const page = pages.selectedOptions[0];
+  preview.src = page.value;
+  preview.alt = page.text;
+  previous.disabled = pages.selectedIndex === 0;
+  next.disabled = pages.selectedIndex === pages.length - 1;
+}
+
+pages.addEventListener("change", showPage);
+zoom.addEventListener("change", () => {
+  preview.style.width = zoom.value ? preview.getAttribute("width") * Number(zoom.value) + "px" : "";
+});
+previous.addEventListener("click", () => {
+  pages.selectedIndex -= 1;
+  showPage();
+});
+next.addEventListener("click", () => {
+  pages.selectedIndex += 1;
+  showPage();
+});
+showPage();
+</script>
+</html>
