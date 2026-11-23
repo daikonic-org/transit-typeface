@@ -1,8 +1,11 @@
 """Render the shared Transit glyph proof across named weights."""
 
 import argparse
+from base64 import b64encode
 from collections import defaultdict
 from html import escape
+from io import BytesIO
+import json
 from math import ceil
 from pathlib import Path
 from string import Template, ascii_lowercase, ascii_uppercase, digits
@@ -11,6 +14,7 @@ from unicodedata import category, decomposition
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.ttLib import TTFont
+from fontTools.ttLib.tables._c_m_a_p import CmapSubtable
 
 from font_feature_tools import feature_subtables
 from render_svg import render, render_pdf
@@ -21,6 +25,11 @@ MARGIN = 28
 ROWS = 13
 ROW_HEIGHT = 51
 GLYPH_SIZE = 36
+LABEL_WIDTH = 154
+BASELINE_OFFSET = 37
+ROW_TOP = 115
+HEADER_Y = 106
+DETAIL_HEADER_HEIGHT = 21
 CENTER_STYLE = "stroke:#7a759a;stroke-dasharray:1.5 2.5"
 
 
@@ -186,21 +195,22 @@ def sheet(font, title, entries, weights, target, *, family, location):
         pieces.append(f'<text x="{legend_x + 22}" y="77" font-size="10" fill="#454b47">{text}</text>')
         legend_x += 28 + len(text) * 5.5
     block_width = (WIDTH - 3 * MARGIN) / 2
-    name_width = 154
+    name_width = LABEL_WIDTH
     cell_width = (block_width - name_width) / len(weights)
     half = ceil(len(entries) / 2)
     wide_rows = False
+    rows = []
     for column, start in enumerate((0, half)):
         origin = MARGIN + column * (block_width + MARGIN)
-        for i, (label, _) in enumerate(weights):
+        for i, (label, _, _) in enumerate(weights):
             center = origin + name_width + (i + 0.5) * cell_width
             label_size = min(11, (cell_width - 8) / max(1, len(label)) / 0.57)
             pieces.append(
-                f'<text x="{center:.3f}" y="106" text-anchor="middle" '
+                f'<text x="{center:.3f}" y="{HEADER_Y}" text-anchor="middle" '
                 f'font-size="{label_size:g}" fill="#435451">{escape(label)}</text>'
             )
         for row, (name, label) in enumerate(entries[start:start + half]):
-            y = 115 + row * ROW_HEIGHT
+            y = ROW_TOP + row * ROW_HEIGHT
             shade = "#f0efe9" if row % 2 == 0 else "#f7f6f2"
             pieces.append(
                 f'<rect x="{origin:.3f}" y="{y}" width="{block_width:.3f}" '
@@ -211,16 +221,20 @@ def sheet(font, title, entries, weights, target, *, family, location):
                 f'<text x="{origin + 8:.3f}" y="{y + 29}" fill="#454b47" '
                 f'font-size="{label_size:.2f}">{escape(label)}</text>'
             )
-            baseline = y + 37
-            positions = [outline_position(glyph_set, name) for _, glyph_set in weights]
+            baseline = y + BASELINE_OFFSET
+            positions = [outline_position(glyph_set, name) for _, glyph_set, _ in weights]
             max_extent = max(extent for _, extent in positions)
+            rows.append({
+                "name": name, "label": label, "shade": shade, "box": [origin, y, block_width, ROW_HEIGHT],
+                "extent": max_extent, "inkCenter": positions[0][0],
+            })
             nominal = GLYPH_SIZE / upm
             scale = min(nominal, (cell_width / 2 - 4) / max(1, max_extent))
             wide_rows |= scale < nominal
             for _, units, color in guides:
                 guide_y = baseline - units * scale
                 pieces.append(line(origin + name_width, guide_y, origin + block_width, guide_y, color))
-            for i, (_, glyph_set) in enumerate(weights):
+            for i, (_, glyph_set, _) in enumerate(weights):
                 center = origin + name_width + (i + 0.5) * cell_width
                 pieces.append(line(center, y + 3, center, y + ROW_HEIGHT - 3, CENTER_STYLE))
                 pieces.append(outline(glyph_set, name, center, baseline, positions[i][0], scale))
@@ -233,14 +247,17 @@ def sheet(font, title, entries, weights, target, *, family, location):
         + "".join(pieces) + "</svg>"
     )
 
+    return rows
+
 
 def proof_instances(font, coordinates):
     names = font["name"]
+    regular = font["OS/2"].usWeightClass
     if "fvar" not in font:
         if coordinates:
             raise ValueError("Axis selection requires a variable font")
-        return {}, [(f'{names.getBestSubFamilyName()} {font["OS/2"].usWeightClass}',
-                     font.getGlyphSet())]
+        return {}, [(f"{names.getBestSubFamilyName()} {regular}",
+                     font.getGlyphSet(), regular)]
     axes = {axis.axisTag: axis for axis in font["fvar"].axes if axis.axisTag != "wght"}
     for tag, value in coordinates.items():
         if tag not in axes or not axes[tag].minValue <= value <= axes[tag].maxValue:
@@ -248,10 +265,10 @@ def proof_instances(font, coordinates):
     location = {tag: coordinates.get(tag, axis.defaultValue) for tag, axis in axes.items()}
     instances = defaultdict(list)
     for instance in font["fvar"].instances:
-        instances[instance.coordinates.get("wght", font["OS/2"].usWeightClass)].append(instance)
+        instances[instance.coordinates.get("wght", regular)].append(instance)
     if not instances:
-        return location, [(f'{names.getBestSubFamilyName()} {font["OS/2"].usWeightClass}',
-                           font.getGlyphSet(location=location))]
+        return location, [(f"{names.getBestSubFamilyName()} {regular}",
+                           font.getGlyphSet(location=location), regular)]
     selected = [(weight, min(items, key=lambda item: sum(
         abs(value - item.coordinates[tag]) for tag, value in location.items())))
                 for weight, items in sorted(instances.items())]
@@ -260,26 +277,77 @@ def proof_instances(font, coordinates):
     if location and len(split) > 1 and all(len(parts) == 2 for parts in split):
         if len({parts[-1] for parts in split}) == 1:
             labels = [parts[0] for parts in split]
-    weights = [(f"{label} {weight:g}", font.getGlyphSet(location=item.coordinates | location))
+    weights = [(f"{label} {weight:g}", font.getGlyphSet(location=item.coordinates | location), weight)
                for label, (weight, item) in zip(labels, selected)]
     return location, weights
 
 
-def write_viewer(output, title, pages, pdfs):
+def axis_comparison(font, display, location, weights, rows):
+    if "fvar" not in font or not font["fvar"].axes:
+        return None
+    glyphs = {row["name"] for page in rows.values() for row in page}
+    # A private character for each proof glyph also exposes unencoded components and ligatures.
+    codepoints = {name: 0xF0000 + i for i, name in enumerate(sorted(glyphs))}
+    private_cmap = CmapSubtable.newSubtable(12)
+    private_cmap.platformID, private_cmap.platEncID, private_cmap.language = 3, 10, 0
+    private_cmap.cmap = font.getBestCmap() | {value: name for name, value in codepoints.items()}
+    guides = guide_metrics(font, location)
+    font["cmap"].tables = [table for table in font["cmap"].tables
+                           if (table.platformID, table.platEncID) != (3, 10)] + [private_cmap]
+    font.flavor = "woff2"
+    data = BytesIO()
+    font.save(data)
+    axes = {}
+    for axis in font["fvar"].axes:
+        tag = axis.axisTag
+        low, default, high = axis.minValue, axis.defaultValue, axis.maxValue
+        labels, unit = {
+            "wdth": (("Narrow", "Normal", "Wide"), "%"),
+            "opsz": (("Caption", "Text", "Display"), " pt"),
+        }.get(tag, (("", "", ""), ""))
+        stops = {value: f"{label} {value:.4g}{unit}".strip()
+                 for label, value in zip(labels, (low, default, high))}
+        if tag == "wght":
+            stops = {weight: label for label, _, weight in weights}
+            stops.setdefault(low, f"{low:g}")
+            stops.setdefault(high, f"{high:g}")
+        axes[tag] = {
+            "label": font["name"].getDebugName(axis.axisNameID) or tag,
+            "min": low, "max": high, "value": location.get(tag, default),
+            "stops": sorted(stops.items()),
+        }
+    return {
+        "family": display, "axes": axes, "codepoints": codepoints, "font": b64encode(data.getvalue()).decode("ascii"),
+        "guides": guides, "centerStyle": CENTER_STYLE, "upm": font["head"].unitsPerEm,
+        "labelWidth": LABEL_WIDTH, "fontSize": GLYPH_SIZE, "margin": MARGIN,
+        "pageWidth": WIDTH, "pageHeight": HEIGHT,
+        "baselineOffset": BASELINE_OFFSET, "headerY": HEADER_Y, "detailHeader": DETAIL_HEADER_HEIGHT,
+    }
+
+
+def json_for_script(value):
+    return json.dumps(value).replace("<", "\\u003c")
+
+
+def write_viewer(output, title, pages, pdfs, *, rows, comparison):
     first, first_label = pages[0]
     template = Template(Path(__file__).with_name("glyph_proof_viewer.html").read_text())
-    options = "".join(f'<option value="{escape(page.name)}">{i}. {escape(label)}</option>'
+    options = "".join(f'<option value="{escape(page.name)}" data-title="{escape(label)}">{i}. {escape(label)}</option>'
                       for i, (page, label) in enumerate(pages, 1))
     downloads = " ".join(f'<a href="{escape(path.name)}">{escape(label)}</a>' for path, label in pdfs)
     (output / "index.html").write_text(template.substitute(
         title=escape(title), options=options, downloads=downloads,
         initial_page=escape(first.name), initial_label=escape(first_label), width=WIDTH, height=HEIGHT,
+        rows=json_for_script(rows), header_y=ROW_TOP - DETAIL_HEADER_HEIGHT, detail_header=DETAIL_HEADER_HEIGHT,
+        comparison=json_for_script(comparison),
+        compare_script=(Path(__file__).with_name("glyph_proof_compare.js").read_text() if comparison else ""),
     ))
 
 
-def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False):
+def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False, interactive_axes=False):
     output.mkdir(parents=True, exist_ok=True)
     pages = []
+    rows = {}
     with TTFont(source) as font:
         family = font["name"].getBestFamilyName()
         stem = "".join(family.split())
@@ -293,8 +361,8 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False)
                 suffix = f" ({i + 1}/{count})" if count > 1 else ""
                 page_name = f"{len(pages) + 1:02d}-{title.lower().replace(' ', '-')}"
                 page = output / (page_name + ".svg")
-                sheet(font, title + suffix, entries[i * capacity:(i + 1) * capacity],
-                      weights, page, family=display, location=location)
+                rows[page.name] = sheet(font, title + suffix, entries[i * capacity:(i + 1) * capacity],
+                                        weights, page, family=display, location=location)
                 pages.append((page, title + suffix))
         labels = {name: label for _, entries in sections for name, label in entries}
         cmap = font.getBestCmap()
@@ -308,13 +376,14 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False)
         for start in range(0, len(review), capacity):
             number = start // capacity + 1
             page = output / f"review-{number:02d}-flagged-outlines.svg"
-            sheet(font, "Flagged outlines", review[start:start + capacity], weights, page,
-                  family=display, location=location)
+            rows[page.name] = sheet(font, "Flagged outlines", review[start:start + capacity], weights, page,
+                                    family=display, location=location)
             review_pages.append((page, f"Flagged outlines ({number})"))
+        comparison = axis_comparison(font, display, location, weights, rows) if interactive_axes else None
     all_pages = [*pages, *review_pages]
     title = f"{display} Glyph Proof"
-    write_viewer(output, title, all_pages, [])
     if svg_only:
+        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison)
         return
     for page, _ in all_pages:
         render(page, scale=2, pdf=False)
@@ -325,7 +394,7 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False)
         review_pdf = output / f"{stem}-Flagged-Outlines.pdf"
         render_pdf([page for page, _ in review_pages], review_pdf, title=f"{display} Flagged Outlines")
         pdfs.append((review_pdf, "Review PDF"))
-    write_viewer(output, title, all_pages, pdfs)
+    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison)
 
 
 def main():
@@ -337,10 +406,12 @@ def main():
     parser.add_argument("--review-glyph", action="append", default=[], metavar="NAME",
                         help="also show this glyph in a focused proof")
     parser.add_argument("--svg-only", action="store_true", help="make the browser proof without PNG or PDF exports")
+    parser.add_argument("--interactive-axes", action="store_true", help="allow live axis comparisons in the browser")
     args = parser.parse_args()
     try:
         axes = {tag: float(value) for tag, value in (pair.split("=", 1) for pair in args.axis)}
-        build_proof(args.font, args.output, flagged=args.review_glyph, coordinates=axes, svg_only=args.svg_only)
+        build_proof(args.font, args.output, flagged=args.review_glyph, coordinates=axes,
+                    svg_only=args.svg_only, interactive_axes=args.interactive_axes)
     except ValueError as error:
         parser.error(str(error))
 

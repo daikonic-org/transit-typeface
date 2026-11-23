@@ -182,7 +182,8 @@ def main():
             path.with_suffix(".kerning.json").write_text(json.dumps(spacing, indent=2) + "\n")
         font.save(path)
         sanitize(font)
-        build_proof(path, args.output / folder, flagged=args.review_glyph, svg_only=not args.export_proof)
+        build_proof(path, args.output / folder, flagged=args.review_glyph, svg_only=not args.export_proof,
+                    interactive_axes=True)
     with args.sans.open("rb") as source:
         digest = file_digest(source, "sha256").hexdigest()
     report = {
