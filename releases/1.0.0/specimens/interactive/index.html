@@ -2,29 +2,521 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Interactive variable font proofs for Daikonic Transit Sans and System.">
-<title>Daikonic Transit type proofs</title>
+<title>Try Daikonic Transit</title>
+<style>
+:root { color-scheme: light; font: 15px/1.45 system-ui, sans-serif; color: #252d29; background: #f0efe9; }
+body { margin: 0; }
+header { padding: 0.9rem clamp(1rem, 4vw, 3rem); background: white; border-bottom: 1px solid #d6d8cf; }
+h1 { margin: 0 0 0.7rem; font-size: 1.35rem; }
+nav, .control { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45rem; }
+nav, #glyph-navigation { gap: 0.65rem 1rem; }
+.page-control { flex-wrap: nowrap; max-width: 100%; }
+#page { min-width: 0; }
+button, select, textarea, input[type="number"] { font: inherit; border: 1px solid #a4aba3; border-radius: 0.25rem; padding: 0.35rem 0.55rem; background: white; color: inherit; }
+input[type="number"] { width: 5.2rem; }
+.axis-controls { margin-top: 0.7rem; gap: 0.65rem 1rem; }
+.axis-controls > .control { gap: 0.45rem; }
+button:disabled { opacity: 0.5; }
+a { color: #235749; }
+main { padding: 1rem; overflow-x: auto; }
+.sheet { display: block; width: min(100%, 1240px); max-width: none; height: auto; margin: 0 auto; box-shadow: 0 1px 6px #0002; }
+#type-proof { max-width: 1240px; margin: 0 auto; }
+.text-controls, .sample-group { padding: 1rem; background: white; border: 1px solid #d6d8cf; border-radius: 0.35rem; }
+.text-controls { display: grid; gap: 0.65rem; }
+#sample-text { box-sizing: border-box; width: 100%; resize: vertical; }
+#text-samples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+.sample-group { min-width: 0; }
+.sample-group h2 { font-size: 1rem; margin: 0 0 0.6rem; }
+.text-sample { border-top: 1px solid #e1e3db; padding: 0.5rem 0; }
+.text-sample-label { display: block; color: #435451; font-size: 0.85rem; }
+.text-sample-value { margin: 0.1em 0; font-family: TransitProof, sans-serif; font-size: var(--sample-size, 42px); line-height: 1.3; font-optical-sizing: none; font-kerning: normal; font-synthesis: none; white-space: pre-wrap; overflow-wrap: anywhere; }
+[hidden] { display: none !important; }
+</style>
 <link rel="stylesheet" href="assets/proof-site.css">
-<body class="proof-home">
-  <header class="masthead">
-    <div class="frame">
-      <span>Daikonic Transit</span>
-      <a href="https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0">Download 1.0.0 <span aria-hidden="true">↗</span></a>
+<body class="public-proof">
+<header>
+<div class="masthead"><span>Daikonic Transit</span> <a href="https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0">Download 1.0.0 <span aria-hidden="true">↗</span></a></div>
+  <h1>Try Daikonic Transit</h1>
+  <nav aria-label="Glyph proof">
+  <div class="face-picker" role="group" aria-label="Typeface and style">
+    <div class="control">
+      <label for="proof-family">Typeface</label>
+      <select id="proof-family"><option value="sans">Sans</option><option value="system" selected>System</option></select>
     </div>
-  </header>
-  <main class="frame">
-    <div class="opening">
-      <h1>Try Daikonic Transit</h1>
-      <p>Type your own text, compare variable font settings, or inspect individual glyphs.</p>
+    <label class="control" for="proof-italic"><input id="proof-italic" type="checkbox"> Italic</label>
+  </div>
+    <div class="control" id="mode-control" hidden>
+      <label for="proof-mode">View</label>
+      <select id="proof-mode">
+        <option value="glyphs">Glyphs</option>
+        <option value="text">Type sample</option>
+      </select>
     </div>
-    <div class="typefaces">
-      <section class="family-card sans"><h2>Sans</h2><p class="role">Text and signage</p><p class="family-sample">Wayfinding</p><div class="proof-links"><a href="sans/upright/?view=text">Upright <span aria-hidden="true">→</span></a><a href="sans/italic/?view=text">Italic <span aria-hidden="true">→</span></a></div></section>
-<section class="family-card system"><h2>System</h2><p class="role">Controls, labels and dashboards</p><p class="family-sample">Legend</p><div class="proof-links"><a href="system/upright/?view=text">Upright <span aria-hidden="true">→</span></a><a href="system/italic/?view=text">Italic <span aria-hidden="true">→</span></a></div></section>
+    <div class="control" id="glyph-navigation">
+      <div class="control page-control">
+        <button type="button" id="previous" aria-label="Previous page">←</button>
+        <label for="page">Page</label>
+        <select id="page"><option value="01-uppercase.svg" data-title="Uppercase">1. Uppercase</option><option value="02-lowercase.svg" data-title="Lowercase">2. Lowercase</option><option value="03-numerals.svg" data-title="Numerals">3. Numerals</option><option value="04-letter-alternates.svg" data-title="Letter alternates">4. Letter alternates</option><option value="05-numeral-alternates.svg" data-title="Numeral alternates">5. Numeral alternates</option><option value="06-components-and-alternates.svg" data-title="Components and alternates (1/3)">6. Components and alternates (1/3)</option><option value="07-components-and-alternates.svg" data-title="Components and alternates (2/3)">7. Components and alternates (2/3)</option><option value="08-components-and-alternates.svg" data-title="Components and alternates (3/3)">8. Components and alternates (3/3)</option><option value="09-composite-punctuation.svg" data-title="Composite punctuation">9. Composite punctuation</option><option value="10-composite-symbols-and-marks.svg" data-title="Composite symbols and marks">10. Composite symbols and marks</option><option value="11-ligatures.svg" data-title="Ligatures">11. Ligatures</option><option value="12-other-punctuation.svg" data-title="Other punctuation">12. Other punctuation</option><option value="13-other-symbols.svg" data-title="Other symbols (1/2)">13. Other symbols (1/2)</option><option value="14-other-symbols.svg" data-title="Other symbols (2/2)">14. Other symbols (2/2)</option><option value="15-other-numerals-and-script-forms.svg" data-title="Other numerals and script forms (1/2)">15. Other numerals and script forms (1/2)</option><option value="16-other-numerals-and-script-forms.svg" data-title="Other numerals and script forms (2/2)">16. Other numerals and script forms (2/2)</option></select>
+        <button type="button" id="next" aria-label="Next page">→</button>
+      </div>
+      <div class="control" id="glyph-controls" hidden>
+        <label for="glyph">Glyph</label>
+        <select id="glyph"></select>
+        <button type="button" id="back-to-page" hidden>Back to page</button>
+      </div>
+      <div class="control">
+        <label for="zoom">Zoom</label>
+        <select id="zoom">
+          <option value="">Fit</option>
+          <option value="1">100%</option>
+          <option value="1.5">150%</option>
+          <option value="2">200%</option>
+        </select>
+      </div>
     </div>
-  </main>
-  <footer class="frame">
-    <a href="OFL.txt">Font license</a>
-    <a href="https://github.com/daikonic-org/transit-typeface">Source <span aria-hidden="true">↗</span></a>
-  </footer>
+
+  </nav>
+<p id="face-status" role="status"></p>
+  <div id="axis-controls" class="control axis-controls" aria-label="Variation axes" hidden></div>
+  <div id="axis-status" role="status"></div>
+</header>
+<main>
+  <img class="sheet" id="proof" src="system/upright/01-uppercase.svg" width="1240" height="795"
+       alt="Uppercase" title="Double-click a glyph row to inspect it">
+  <svg class="sheet" id="glyph-detail" role="img" hidden>
+    <svg class="detail-window" height="21" overflow="hidden"><image width="1240" height="795"/></svg>
+    <svg class="detail-window" y="21" overflow="hidden"><image width="1240" height="795"/></svg>
+  </svg>
+  <svg class="sheet" id="live-proof" role="img" font-family="Arial,sans-serif" hidden></svg>
+  <section id="type-proof" aria-label="Type sample" hidden>
+    <div class="text-controls">
+      <label for="sample-text">Sample text</label>
+      <textarea id="sample-text" rows="2" spellcheck="false" dir="auto">Legend</textarea>
+      <div class="control">
+        <label for="sample-size">Size (px)</label>
+        <input id="sample-size" type="number" min="8" max="144" value="42">
+        <label><input id="all-presets" type="checkbox"> Show all presets</label>
+      </div>
+    </div>
+    <div id="text-samples"></div>
+  </section>
+</main>
+<footer><a href="OFL.txt">Font license</a> <a href="https://github.com/daikonic-org/transit-typeface">Source ↗</a></footer>
+<script type="application/json" id="glyph-rows">{}</script>
+<script type="application/json" id="axis-comparison">null</script>
+<script>
+function createAxisComparison(config, svg, refresh) {
+  const {family, axes, codepoints, guides, centerStyle, upm, labelWidth, fontSize, margin,
+         baselineOffset, headerY, detailHeader, pageWidth, pageHeight} = config;
+  const toolbar = document.querySelector("#axis-controls");
+  const status = document.querySelector("#axis-status");
+  const sampleText = document.querySelector("#sample-text");
+  const sampleSize = document.querySelector("#sample-size");
+  const allPresets = document.querySelector("#all-presets");
+  const textSamples = document.querySelector("#text-samples");
+  const listeners = new AbortController();
+  const {signal} = listeners;
+  const fixedFields = document.createElement("div");
+  fixedFields.className = "control";
+  const axis = document.createElement("select");
+  axis.id = "compare-axis";
+  for (const [tag, spec] of Object.entries(axes)) axis.add(new Option(spec.label, tag));
+  const defaultAxis = axes.wght ? "wght" : axis.value;
+  axis.value = defaultAxis;
+
+  function labeled(label, field) {
+    const group = document.createElement("div");
+    group.className = "control";
+    const caption = document.createElement("label");
+    caption.htmlFor = field.id;
+    caption.textContent = label;
+    group.append(caption, field);
+    return group;
+  }
+
+  const defaults = Object.fromEntries(Object.entries(axes).map(([tag, spec]) => [tag, spec.value]));
+  const values = {...defaults};
+  const reset = document.createElement("button");
+  reset.type = "button";
+  reset.textContent = "Reset axes";
+  toolbar.append(labeled("Compare", axis), fixedFields, reset);
+  toolbar.hidden = false;
+
+  function showFields() {
+    fixedFields.replaceChildren();
+    for (const [tag, spec] of Object.entries(axes)) {
+      if (tag === axis.value) continue;
+      const input = document.createElement("input");
+      input.type = "number";
+      input.id = "axis-" + tag;
+      input.min = spec.min;
+      input.max = spec.max;
+      input.step = "any";
+      input.value = values[tag];
+      input.title = spec.label + " range: " + spec.min.toPrecision(6) + "–" + spec.max.toPrecision(6);
+      const presets = document.createElement("select");
+      presets.id = input.id + "-preset";
+      for (const [value, label] of spec.stops) presets.add(new Option(label, value));
+      presets.add(new Option("Custom…", "custom"));
+      presets.value = spec.stops.some(([value]) => value === values[tag]) ? values[tag] : "custom";
+      const custom = labeled("Custom " + spec.label.toLowerCase(), input);
+      custom.hidden = presets.value !== "custom";
+      fixedFields.append(labeled(spec.label, presets), custom);
+      presets.addEventListener("change", () => {
+        custom.hidden = presets.value !== "custom";
+        if (custom.hidden) {
+          values[tag] = Number(presets.value);
+          input.value = values[tag];
+          apply();
+        } else {
+          input.focus();
+          input.select();
+        }
+      });
+      input.addEventListener("change", () => {
+        if (input.validity.valid && Number.isFinite(input.valueAsNumber)) values[tag] = input.valueAsNumber;
+        input.value = values[tag];
+        apply();
+      });
+    }
+  }
+
+  const changed = () => axis.value !== defaultAxis || Object.keys(values).some(tag => values[tag] !== defaults[tag]);
+  let loaded = false;
+  let loading;
+  let face;
+  function loadFont() {
+    if (loading) return;
+    status.textContent = "Loading comparison…";
+    face = new FontFace("TransitProof", "url(data:font/woff2;base64," + config.font + ")");
+    loading = face.load().then(() => {
+      if (signal.aborted) return;
+      document.fonts.add(face);
+      loaded = true;
+      status.textContent = "";
+      refresh();
+    }).catch(() => {
+      if (signal.aborted) return;
+      toolbar.hidden = true;
+      document.querySelector("#mode-control").hidden = true;
+      document.querySelector("#proof-mode").value = "glyphs";
+      status.textContent = "Live comparisons could not load. The vector proof is available below.";
+      refresh();
+    });
+  }
+
+  function apply() {
+    reset.disabled = !changed();
+    if (changed()) loadFont();
+    refresh();
+  }
+
+  axis.addEventListener("change", () => {
+    showFields();
+    apply();
+  });
+  reset.addEventListener("click", () => {
+    Object.assign(values, defaults);
+    axis.value = defaultAxis;
+    showFields();
+    apply();
+    axis.focus();
+  });
+  showFields();
+  reset.disabled = true;
+
+  function setLocation(node, location) {
+    node.style.fontVariationSettings = Object.entries(location).map(([tag, value]) => '"' + tag + '" ' + value).join(", ");
+  }
+
+  function setTextMode(typing) {
+    fixedFields.hidden = typing && allPresets.checked;
+    if (!typing) return;
+    if (!loaded) {
+      loadFont();
+      return;
+    }
+    const current = axes[axis.value];
+    let groups = [{location: values, labels: []}];
+    if (allPresets.checked) {
+      for (const [tag, spec] of Object.entries(axes)) {
+        if (tag === axis.value) continue;
+        groups = groups.flatMap(group => spec.stops.map(([value, label]) => ({
+          location: {...group.location, [tag]: value}, labels: [...group.labels, label],
+        })));
+      }
+    }
+    const sections = groups.map(({location, labels}) => {
+      const section = document.createElement("section");
+      section.className = "sample-group";
+      const heading = document.createElement("h2");
+      heading.textContent = labels.join(" · ") || "Compare by " + current.label.toLowerCase();
+      section.append(heading);
+      for (const [value, label] of current.stops) {
+        const row = document.createElement("div");
+        row.className = "text-sample";
+        const caption = document.createElement("span");
+        caption.className = "text-sample-label";
+        caption.textContent = label;
+        const text = document.createElement("p");
+        text.className = "text-sample-value";
+        text.dir = "auto";
+        text.textContent = sampleText.value;
+        setLocation(text, {...location, [axis.value]: value});
+        row.append(caption, text);
+        section.append(row);
+      }
+      return section;
+    });
+    textSamples.replaceChildren(...sections);
+  }
+
+  allPresets.addEventListener("change", refresh, {signal});
+  sampleText.addEventListener("input", () => {
+    for (const sample of textSamples.querySelectorAll(".text-sample-value")) sample.textContent = sampleText.value;
+  }, {signal});
+  sampleSize.addEventListener("input", () => {
+    if (sampleSize.validity.valid && Number.isFinite(sampleSize.valueAsNumber)) {
+      textSamples.style.setProperty("--sample-size", sampleSize.valueAsNumber + "px");
+    }
+  }, {signal});
+
+  function element(parent, name, attributes, content) {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
+    if (content !== undefined) node.textContent = content;
+    parent.append(node);
+    return node;
+  }
+
+  function line(parent, x1, y1, x2, y2, style) {
+    element(parent, "line", {x1, y1, x2, y2, style, "stroke-width": 0.55});
+  }
+
+  function render(page, entries, selected) {
+    const width = selected ? selected.box[2] : pageWidth;
+    const height = selected ? selected.box[3] + detailHeader : pageHeight;
+    const activeAxis = axes[axis.value];
+    const stops = activeAxis.stops;
+    svg.setAttribute("viewBox", [0, 0, width, height].join(" "));
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+    svg.setAttribute("aria-label", (selected?.label || page) + " by " + activeAxis.label.toLowerCase());
+    svg.replaceChildren();
+    element(svg, "rect", {width, height, fill: "#fff"});
+    if (!selected) {
+      element(svg, "text", {x: margin, y: 43, "font-size": 27, "font-weight": 700},
+              family);
+      element(svg, "text", {x: margin, y: 76, "font-size": 20, "font-weight": 700}, page);
+      let legendX = 473;
+      const legend = [...guides, ["Advance / ink center", null, centerStyle]];
+      for (const [label, units, style] of legend) {
+        const text = units === null ? label : label + " " + Number(units.toPrecision(6));
+        line(svg, legendX, 73, legendX + 17, 73, style);
+        element(svg, "text", {x: legendX + 22, y: 77, "font-size": 10, fill: "#454b47"}, text);
+        legendX += 28 + text.length * 5.5;
+      }
+    }
+
+    const items = selected ? [selected] : entries;
+    const groupHeaders = new Set();
+    for (const row of items) {
+      const [x, y, block, rowHeight] = selected ? [0, detailHeader, ...row.box.slice(2)] : row.box;
+      const baseline = y + baselineOffset;
+      const cell = (block - labelWidth) / stops.length;
+      const center = i => x + labelWidth + (i + 0.5) * cell;
+      if (!groupHeaders.has(x)) {
+        const labelY = selected ? detailHeader - 8 : headerY;
+        stops.forEach(([, label], i) => {
+          const size = Math.min(11, (cell - 8) / label.length / 0.57);
+          element(svg, "text", {x: center(i), y: labelY, "text-anchor": "middle",
+                                "font-size": size, fill: "#435451"}, label);
+        });
+        groupHeaders.add(x);
+      }
+      element(svg, "rect", {x, y, width: block, height: rowHeight - 1, fill: row.shade});
+      const labelSize = Math.min(12, (labelWidth - 12) / row.label.length / 0.57);
+      element(svg, "text", {x: x + 8, y: y + 29, "font-size": labelSize, fill: "#454b47"}, row.label);
+      const rules = element(svg, "g", {"aria-hidden": true});
+      const samples = stops.map(([value]) => {
+        const location = {...values, [axis.value]: value};
+        const text = element(svg, "text", {x: 0, y: 0, class: "axis-sample", fill: "#151b1b",
+                                           "font-family": "TransitProof", "font-size": fontSize},
+                             String.fromCodePoint(codepoints[row.name]));
+        text.style.fontOpticalSizing = "none";
+        setLocation(text, location);
+        const advance = text.getComputedTextLength();
+        const origin = advance ? advance / 2 : row.inkCenter * fontSize / upm;
+        return {text, origin, advance};
+      });
+      const extent = Math.max(row.extent * fontSize / upm, ...samples.map(sample => sample.advance / 2));
+      const scale = Math.min(1, (cell / 2 - 4) / extent);
+      for (const [, units, style] of guides) {
+        const guideY = baseline - units * fontSize * scale / upm;
+        line(rules, x + labelWidth, guideY, x + block, guideY, style);
+      }
+      samples.forEach(({text, origin}, i) => {
+        line(rules, center(i), y + 3, center(i), y + rowHeight - 3, centerStyle);
+        text.setAttribute("transform", "translate(" + center(i) + " " + baseline + ") scale(" + scale +
+                          ") translate(" + (-origin) + " 0)");
+      });
+    }
+  }
+
+  function dispose() {
+    listeners.abort();
+    if (face) document.fonts.delete(face);
+    toolbar.replaceChildren();
+    status.textContent = "";
+    textSamples.replaceChildren();
+  }
+
+  return {active: () => loaded && changed(), render, setTextMode, dispose};
+}
+
+const pages = document.querySelector("#page");
+const zoom = document.querySelector("#zoom");
+const preview = document.querySelector("#proof");
+const previous = document.querySelector("#previous");
+const next = document.querySelector("#next");
+const glyphControls = document.querySelector("#glyph-controls");
+const glyphPicker = document.querySelector("#glyph");
+const backToPage = document.querySelector("#back-to-page");
+const detail = document.querySelector("#glyph-detail");
+const windows = detail.querySelectorAll(".detail-window");
+let rows = JSON.parse(document.querySelector("#glyph-rows").textContent);
+let prefix = "system/upright/";
+const live = document.querySelector("#live-proof");
+const proofMode = document.querySelector("#proof-mode");
+const typeProof = document.querySelector("#type-proof");
+const glyphNavigation = document.querySelector("#glyph-navigation");
+const comparisonData = JSON.parse(document.querySelector("#axis-comparison").textContent);
+let comparison;
+const params = new URLSearchParams(location.search);
+document.querySelector("#all-presets").checked = params.get("presets") === "all";
+if (params.get("view") === "text") proofMode.value = "text";
+setComparison(comparisonData);
+
+function setComparison(data) {
+  comparison?.dispose();
+  comparison = data && createAxisComparison(data, live, renderSelection);
+  document.querySelector("#mode-control").hidden = !comparison;
+}
+
+function activateProof(data) {
+  const pageName = pages.value;
+  const glyphName = rows[pageName]?.[glyphPicker.value]?.name;
+  rows = data.rows;
+  prefix = data.prefix;
+  pages.replaceChildren(...data.pages.map(([name, title], index) => {
+    const option = new Option((index + 1) + ". " + title, name);
+    option.dataset.title = title;
+    return option;
+  }));
+  if (rows[pageName]) pages.value = pageName;
+  setComparison(data.comparison);
+  showPage();
+  const glyphIndex = rows[pages.value].findIndex(row => row.name === glyphName);
+  if (glyphIndex !== -1) {
+    glyphPicker.value = glyphIndex;
+    renderSelection();
+  }
+}
+
+function resize() {
+  const sheet = [live, detail, preview].find(item => !item.hasAttribute("hidden"));
+  if (sheet) sheet.style.width = zoom.value ? sheet.getAttribute("width") * Number(zoom.value) + "px" : "";
+}
+
+function renderSelection() {
+  const typing = comparison && proofMode.value === "text";
+  typeProof.hidden = !typing;
+  glyphNavigation.hidden = Boolean(typing);
+  comparison?.setTextMode(typing);
+  if (typing) {
+    preview.hidden = detail.hidden = live.hidden = true;
+    return;
+  }
+  const page = pages.selectedOptions[0];
+  const source = prefix + page.value;
+  const row = rows[page.value]?.[glyphPicker.value];
+  const showComparison = comparison?.active() ?? false;
+  live.toggleAttribute("hidden", !showComparison);
+  if (showComparison) {
+    comparison.render(page.dataset.title, rows[page.value] || [], row);
+  } else if (row) {
+    const [x, y, w, h] = row.box;
+    detail.setAttribute("aria-label", row.label + " across weights");
+    detail.setAttribute("viewBox", [0, 0, w, h + 21].join(" "));
+    detail.setAttribute("width", w);
+    detail.setAttribute("height", h + 21);
+    windows[0].setAttribute("viewBox", [x, 94, w, 21].join(" "));
+    windows[1].setAttribute("viewBox", row.box.join(" "));
+    windows[1].setAttribute("height", h);
+    for (const pane of windows) {
+      pane.setAttribute("width", w);
+      pane.querySelector("image").setAttribute("href", source);
+    }
+  } else {
+    preview.src = source;
+    preview.alt = page.text;
+  }
+  preview.hidden = Boolean(row) || showComparison;
+  backToPage.hidden = !row;
+  detail.toggleAttribute("hidden", !row || showComparison);
+  resize();
+}
+
+function showPage() {
+  const page = pages.selectedOptions[0];
+  const items = rows[page.value] || [];
+  glyphPicker.replaceChildren(new Option("All glyphs", ""));
+  items.forEach((item, index) => glyphPicker.add(new Option(item.label, index)));
+  glyphControls.hidden = items.length === 0;
+  previous.disabled = pages.selectedIndex === 0;
+  next.disabled = pages.selectedIndex === pages.length - 1;
+  renderSelection();
+}
+
+pages.addEventListener("change", showPage);
+proofMode.addEventListener("change", renderSelection);
+zoom.addEventListener("change", resize);
+glyphPicker.addEventListener("change", renderSelection);
+function inspectGlyph(event) {
+  if (glyphPicker.value !== "") return;
+  const sheet = event.currentTarget;
+  const image = sheet.getBoundingClientRect();
+  const x = (event.clientX - image.left) * Number(sheet.getAttribute("width")) / image.width;
+  const y = (event.clientY - image.top) * Number(sheet.getAttribute("height")) / image.height;
+  const index = (rows[pages.value] || []).findIndex(({box: [left, top, w, h]}) =>
+    left <= x && x < left + w && top <= y && y < top + h
+  );
+  if (index >= 0) {
+    glyphPicker.value = index;
+    renderSelection();
+  }
+}
+preview.addEventListener("dblclick", inspectGlyph);
+live.addEventListener("dblclick", inspectGlyph);
+function returnToPage() {
+  glyphPicker.value = "";
+  renderSelection();
+  glyphPicker.focus();
+}
+backToPage.addEventListener("click", returnToPage);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && proofMode.value === "glyphs" && glyphPicker.value !== "") returnToPage();
+});
+previous.addEventListener("click", () => {
+  pages.selectedIndex -= 1;
+  showPage();
+});
+next.addEventListener("click", () => {
+  pages.selectedIndex += 1;
+  showPage();
+});
+showPage();
+</script>
+<script src="assets/proof-site.js"></script>
 </body>
 </html>

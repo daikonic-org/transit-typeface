@@ -5,12 +5,6 @@
   font-weight: 300 600;
   font-display: swap;
 }
-@font-face {
-  font-family: "Transit Sans";
-  src: url("DaikonicTransitSans-VF.woff2") format("woff2");
-  font-weight: 300 600;
-  font-display: swap;
-}
 :root {
   --surface: #eaf1f0;
   --raised: #f8faf9;
@@ -20,8 +14,6 @@
   --quiet: #415d62;
   --brand: #123f46;
   --hover: #20565d;
-  --tint: #dce8e6;
-  --lime: #d7f5a9;
   --focus: #7160b5;
   --spacing: clamp(1.1rem, 4vw, 3rem);
   color: var(--ink);
@@ -37,60 +29,38 @@ a:hover { color: var(--hover); }
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
-.frame { width: min(100% - 2 * var(--spacing), 74rem); margin-inline: auto; }
+.public-proof header { background: var(--raised); border-color: var(--line); padding-inline: var(--spacing); }
+.public-proof main { padding-inline: var(--spacing); }
 .masthead {
-  padding: 1rem 0;
-  background: var(--raised);
-  border-bottom: 1px solid var(--line);
-}
-.masthead .frame, .proof-links { display: flex; align-items: center; flex-wrap: wrap; gap: 0.65rem; }
-.masthead .frame { justify-content: space-between; }
-.masthead span, .masthead a { font-weight: 400; }
-.opening { padding-block: clamp(2rem, 7vw, 6.25rem) clamp(1.5rem, 5vw, 3.5rem); }
-.opening h1 { margin: 0; font-size: clamp(2.65rem, 7.6vw, 6rem); line-height: 1.04; letter-spacing: -0.04em; }
-.opening p { margin: 0.9rem 0 0; max-width: 36rem; font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: var(--quiet); }
-.proof-home main { padding: 0 0 2rem; }
-.proof-home footer { display: flex; flex-wrap: wrap; gap: 1.2rem; padding: 1rem 0 2rem; border-top: 1px solid var(--line); }
-.typefaces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-.family-card {
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  padding: clamp(1.15rem, 3.7vw, 2.5rem);
-  min-width: 0;
-  background: var(--raised);
-  border: 1px solid var(--line);
-  border-radius: 0.6rem;
-}
-.family-card.system { background: var(--tint); }
-.family-card h2 { margin: 0; font-size: 1.45rem; }
-.role { margin: 0.2rem 0 0; color: var(--quiet); }
-.family-sample {
-  margin: 0;
-  padding-block: clamp(1.2rem, 4vw, 2.6rem);
-  align-self: center;
-  font-size: clamp(2.5rem, 6.15vw, 5rem);
-  font-weight: 350;
-  line-height: 1;
-  letter-spacing: -0.034em;
-}
-.sans .family-sample { font-family: "Transit Sans", "Transit Interface", sans-serif; }
-.proof-links a {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.56rem 0.85rem;
-  border: 1px solid var(--brand);
-  border-radius: 0.3rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-bottom: clamp(1rem, 3vw, 1.8rem);
   font-weight: 400;
-  text-decoration: none;
 }
-.proof-links a:first-child { background: var(--brand); color: white; }
-.proof-links a:first-child:hover { background: var(--hover); }
-.proof-links a:nth-child(2):hover { background: var(--lime); }
-
-.proof-back { display: inline-block; margin-bottom: 0.55rem; color: var(--quiet); }
-header:has(.proof-back) { background: var(--raised); border-color: var(--line); }
-header:has(.proof-back) h1 { margin-bottom: 0.9rem; font-size: clamp(1.5rem, 4vw, 2.2rem); }
+.public-proof h1 {
+  margin-bottom: 0.85rem;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+.face-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.25rem;
+}
+#face-status { margin: 0.65rem 0 0; color: var(--quiet); }
+#face-status:empty { display: none; }
+.public-proof footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  padding: 1rem var(--spacing) 2rem;
+  border-top: 1px solid var(--line);
+}
 .control { font-weight: 400; }
 button, select, textarea, input[type="number"] { border-color: #8da7aa; min-height: 2.55rem; }
 button:not(:disabled):hover, select:hover { background: var(--raised); }
@@ -102,6 +72,3 @@ input[type="checkbox"] { accent-color: var(--brand); }
 .text-sample-label { color: var(--quiet); font-weight: 400; }
 #sample-text { background: var(--raised); }
 #live-proof { font-family: "Transit Interface", system-ui, sans-serif; }
-@media (max-width: 620px) {
-  .typefaces { grid-template-columns: 1fr; }
-}

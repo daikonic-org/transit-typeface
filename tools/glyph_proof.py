@@ -329,27 +329,33 @@ def json_for_script(value):
     return json.dumps(value).replace("<", "\\u003c")
 
 
-def write_viewer(output, title, pages, pdfs, *, rows, comparison, site_prefix=None):
+def write_viewer(output, title, pages, pdfs, *, rows, comparison, site=None):
     first, first_label = pages[0]
+    site = site or {}
+    prefix = site.get("prefix", "")
     template = Template(Path(__file__).with_name("glyph_proof_viewer.html").read_text())
     options = "".join(f'<option value="{escape(page.name)}" data-title="{escape(label)}">{i}. {escape(label)}</option>'
                       for i, (page, label) in enumerate(pages, 1))
     downloads = " ".join(f'<a href="{escape(path.name)}">{escape(label)}</a>' for path, label in pdfs)
     (output / "index.html").write_text(template.substitute(
         title=escape(title), options=options, downloads=downloads,
-        initial_page=escape(first.name), initial_label=escape(first_label), width=WIDTH, height=HEIGHT,
+        initial_page=escape(prefix + first.name), initial_label=escape(first_label), width=WIDTH, height=HEIGHT,
         rows=json_for_script(rows), header_y=ROW_TOP - DETAIL_HEADER_HEIGHT, detail_header=DETAIL_HEADER_HEIGHT,
         comparison=json_for_script(comparison),
-        compare_script=(Path(__file__).with_name("glyph_proof_compare.js").read_text() if comparison else ""),
-        site_style=(f'<link rel="stylesheet" href="{escape(site_prefix)}assets/proof-site.css">'
-                    if site_prefix else ""),
-        site_navigation=(f'<a class="proof-back" href="{escape(site_prefix)}">← All proofs</a>'
-                         if site_prefix else ""),
+        compare_script=(Path(__file__).with_name("glyph_proof_compare.js").read_text()
+                        if comparison or site else ""),
+        site_style='<link rel="stylesheet" href="assets/proof-site.css">' if site else "",
+        site_class=' class="public-proof"' if site else "",
+        site_controls=site.get("controls", ""),
+        site_navigation=site.get("navigation", ""),
+        site_status=site.get("status", ""),
+        site_footer=site.get("footer", ""),
+        site_script=site.get("script", ""),
+        prefix=json_for_script(prefix),
     ))
 
 
-def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
-                interactive_axes=False, site_prefix=None):
+def collect_proof(source, output, *, flagged=(), coordinates=None, interactive_axes=False):
     output.mkdir(parents=True, exist_ok=True)
     pages = []
     rows = {}
@@ -385,11 +391,16 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
                                     family=display, location=location)
             review_pages.append((page, f"Flagged outlines ({number})"))
         comparison = axis_comparison(font, display, location, weights, rows) if interactive_axes else None
+    return f"{display} Glyph Proof", stem, pages, review_pages, rows, comparison
+
+
+def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False, interactive_axes=False):
+    title, stem, pages, review_pages, rows, comparison = collect_proof(
+        source, output, flagged=flagged, coordinates=coordinates, interactive_axes=interactive_axes,
+    )
     all_pages = [*pages, *review_pages]
-    title = f"{display} Glyph Proof"
     if svg_only:
-        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison,
-                     site_prefix=site_prefix)
+        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison)
         return
     for page, _ in all_pages:
         render(page, scale=2, pdf=False)
@@ -398,10 +409,9 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
     pdfs = [(pdf, "PDF")]
     if review_pages:
         review_pdf = output / f"{stem}-Flagged-Outlines.pdf"
-        render_pdf([page for page, _ in review_pages], review_pdf, title=f"{display} Flagged Outlines")
+        render_pdf([page for page, _ in review_pages], review_pdf, title=title.replace("Glyph Proof", "Flagged Outlines"))
         pdfs.append((review_pdf, "Review PDF"))
-    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison,
-                 site_prefix=site_prefix)
+    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison)
 
 
 def main():

@@ -356,10 +356,10 @@
     "System-Upright-Glyph-Proof.pdf": "6e032ee3e8496111b606d83254d7a4e843a02264e2a22e7ffb747f3759bd9960",
     "interactive/NOTICE.txt": "4af49680951bfec3519f4f48f94b6c44f00e15d4edb24b0a8eec0cee42dc9e27",
     "interactive/OFL.txt": "79c55cf7f8a8b3b4da731e72128a3cb6fdd894f69a25f8b78c305c854f527191",
-    "interactive/assets/DaikonicTransitSans-VF.woff2": "15ac1efb4fb05561d5d905084cab73e0ba2e93450d20d32de8c6bda9ba220b2b",
     "interactive/assets/DaikonicTransitSystem-VF.woff2": "0196d2cc2ca0f8a4aa414f86fc72588fd228e8206c5c8eeaabd9cbcc083111ad",
-    "interactive/assets/proof-site.css": "6aa7d3df0bd145237958949e078a520ef97a4d21db37de4271ad91d5d20ca4a4",
-    "interactive/index.html": "f56eecbe7e397feac8d8629a18d33cd639e58340f3fac6b71ae18374f98e78ab",
+    "interactive/assets/proof-site.css": "cf9b411490e8fb73967d1309c68f17768196778d436f1f2fa18a5de7554bf706",
+    "interactive/assets/proof-site.js": "d5f6b0599890663af05f8fe4297dc9087b4d88f447c417c94ab7a18938aac270",
+    "interactive/index.html": "933c57ff2cb691713d003703a749e7a5c0d8ae2699baf101d9a6c3c9d12dd2e6",
     "interactive/sans/italic/01-uppercase.svg": "d1b99bc9f6a1fb2c04491eb6da8815bacf73a172ebbbdb8bfb3c398ca7234058",
     "interactive/sans/italic/02-lowercase.svg": "67bdbf0ae874307a85d098411a13bcc7913bb8044d6c2328f7ae88f942749d1e",
     "interactive/sans/italic/03-numerals.svg": "6c98c4b815659923394dd59c091353f1c4ba8fe3d646814e3200b821cf193f61",
@@ -375,7 +375,7 @@
     "interactive/sans/italic/13-other-symbols.svg": "442f7e2c0501a3a4fd2649175ccc27babad9fcec2c69709181ab4bc18fd3e14a",
     "interactive/sans/italic/14-other-numerals-and-script-forms.svg": "1fe250dbe883a7f46de7f6145d4c90b152d8de169772f7dfee3948e7acc89c36",
     "interactive/sans/italic/15-other-numerals-and-script-forms.svg": "ea98b1de78fe4403686b35ec26c4f99ad09c2c578c2e9720c911596968424a89",
-    "interactive/sans/italic/index.html": "6889bb6727b055a8eb11fbec610bb6e21f62c3f4a75428ae2838b11ead43c133",
+    "interactive/sans/italic/proof.json": "421b621e89ab2442b18dd11ec1a6cde0c41ec97c3c9d67cca53b649e7a65f409",
     "interactive/sans/upright/01-uppercase.svg": "c45d773814156d6c7ae91c18a18104ba4ffd3cee4e37902bf17d66428c43f097",
     "interactive/sans/upright/02-lowercase.svg": "3c1adbe0b0b1b1565c8eca299b5cf5ece72c232bfa1f6cf99244c30737bec2ce",
     "interactive/sans/upright/03-numerals.svg": "0d37d8748772dcf68ac7fedeb5a8f80830fef2872feac30a52453481f27d3b1f",
@@ -391,7 +391,7 @@
     "interactive/sans/upright/13-other-symbols.svg": "f3e2bccd837ef9d411bb295192a6ae2696655c52ce050610edfdee6cae068c6d",
     "interactive/sans/upright/14-other-numerals-and-script-forms.svg": "6cfd5dbd922091d44d88f258d669ec67f35e925318028b938a109a50f353722c",
     "interactive/sans/upright/15-other-numerals-and-script-forms.svg": "4b6b8e7686149e9ad1383df3e56607d222eb9a088e3236861e9efabddedcca18",
-    "interactive/sans/upright/index.html": "e6719d26ccc01aa024c85659f418e212729cb3f5fd200d8072896e4a476e43f4",
+    "interactive/sans/upright/proof.json": "f4f2bd3d58ed7f96cad3a1b0c388ed703a6cdd2632a927334fbc2986280a9819",
     "interactive/system/italic/01-uppercase.svg": "9ba09dff96e6384fe31d4ac297b4b1ed5f03fb65fef93828cee662bf6d531e8b",
     "interactive/system/italic/02-lowercase.svg": "f429225e6b38c718c266e0d79bc0d7abd65651af7db95ac65c65cd941713f1a5",
     "interactive/system/italic/03-numerals.svg": "358c0f066d9268e3f0e8ad86797c3a0debd837405d637151e3cb4a204b3e53c9",
@@ -408,7 +408,7 @@
     "interactive/system/italic/14-other-symbols.svg": "565a15654c6de88bd3d21e72f239c5b03647114d9e7cf8e6425ac1ab8a402a0f",
     "interactive/system/italic/15-other-numerals-and-script-forms.svg": "0a7a7823dd11fd3d3e4c43aa0f8eae9a2d25cc22b931dd4069f9836b3021ca14",
     "interactive/system/italic/16-other-numerals-and-script-forms.svg": "3fafe8cf7d25b1f1ee9daf3a248f369d6e83b646f7d7b8756d29a610d1b0d24a",
-    "interactive/system/italic/index.html": "3dd344d04c9afabd307fc9f0bc9f517f12d5107f0af5fd687104042f32e97737",
+    "interactive/system/italic/proof.json": "61e19650f3f4dcfbf2380baf0a039b484619155b9daea687da72cc88382bf3f1",
     "interactive/system/upright/01-uppercase.svg": "599df39c597b1780d554f382ce0000f809807b780bf94cdd55e007e6cfc1ec4e",
     "interactive/system/upright/02-lowercase.svg": "ca7ea368b390ef94ea08c289cb865a7f1a9d33dc8cab52cedd60e2200417cc81",
     "interactive/system/upright/03-numerals.svg": "fc88919dfd35182f9778872f15b2f6650252b5a0f2d0582377770c6a604322e6",
@@ -425,6 +425,6 @@
     "interactive/system/upright/14-other-symbols.svg": "96f95aac9c3fefd92a957bef3f3ded6391af9f894f8f87564ed74497ce5de10b",
     "interactive/system/upright/15-other-numerals-and-script-forms.svg": "9fd1bf681cc362e11d5f8a9553aeea3593d5a59e364d86a1b378b2a6d6b0afe2",
     "interactive/system/upright/16-other-numerals-and-script-forms.svg": "99831468bb0c66acd2988f098773b6fc72e30a8465b32df6f6d093c540b7cf4d",
-    "interactive/system/upright/index.html": "8698b41aa5ff678cac8526e787a43c2fb251caac30a1abd5b7fd4c87c93c38c1"
+    "interactive/system/upright/proof.json": "c06967b1fed27b53b5c94b8840e46b7f9c396554cd56d0987dbced4d43ec7f89"
   }
 }

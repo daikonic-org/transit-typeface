@@ -33,10 +33,12 @@ main { padding: 1rem; overflow-x: auto; }
 [hidden] { display: none !important; }
 </style>
 $site_style
+<body$site_class>
 <header>
-  $site_navigation
+$site_navigation
   <h1>$title</h1>
   <nav aria-label="Glyph proof">
+$site_controls
     <div class="control" id="mode-control" hidden>
       <label for="proof-mode">View</label>
       <select id="proof-mode">
@@ -68,6 +70,7 @@ $site_style
     </div>
 $downloads
   </nav>
+$site_status
   <div id="axis-controls" class="control axis-controls" aria-label="Variation axes" hidden></div>
   <div id="axis-status" role="status"></div>
 </header>
@@ -92,6 +95,7 @@ $downloads
     <div id="text-samples"></div>
   </section>
 </main>
+$site_footer
 <script type="application/json" id="glyph-rows">$rows</script>
 <script type="application/json" id="axis-comparison">$comparison</script>
 <script>
@@ -106,18 +110,43 @@ const glyphPicker = document.querySelector("#glyph");
 const backToPage = document.querySelector("#back-to-page");
 const detail = document.querySelector("#glyph-detail");
 const windows = detail.querySelectorAll(".detail-window");
-const rows = JSON.parse(document.querySelector("#glyph-rows").textContent);
+let rows = JSON.parse(document.querySelector("#glyph-rows").textContent);
+let prefix = $prefix;
 const live = document.querySelector("#live-proof");
 const proofMode = document.querySelector("#proof-mode");
 const typeProof = document.querySelector("#type-proof");
 const glyphNavigation = document.querySelector("#glyph-navigation");
 const comparisonData = JSON.parse(document.querySelector("#axis-comparison").textContent);
-const comparison = comparisonData && createAxisComparison(comparisonData, live, renderSelection);
-if (comparison) {
-  const params = new URLSearchParams(location.search);
-  if (params.get("view") === "text") proofMode.value = "text";
-  document.querySelector("#all-presets").checked = params.get("presets") === "all";
-  document.querySelector("#mode-control").hidden = false;
+let comparison;
+const params = new URLSearchParams(location.search);
+document.querySelector("#all-presets").checked = params.get("presets") === "all";
+if (params.get("view") === "text") proofMode.value = "text";
+setComparison(comparisonData);
+
+function setComparison(data) {
+  comparison?.dispose();
+  comparison = data && createAxisComparison(data, live, renderSelection);
+  document.querySelector("#mode-control").hidden = !comparison;
+}
+
+function activateProof(data) {
+  const pageName = pages.value;
+  const glyphName = rows[pageName]?.[glyphPicker.value]?.name;
+  rows = data.rows;
+  prefix = data.prefix;
+  pages.replaceChildren(...data.pages.map(([name, title], index) => {
+    const option = new Option((index + 1) + ". " + title, name);
+    option.dataset.title = title;
+    return option;
+  }));
+  if (rows[pageName]) pages.value = pageName;
+  setComparison(data.comparison);
+  showPage();
+  const glyphIndex = rows[pages.value].findIndex(row => row.name === glyphName);
+  if (glyphIndex !== -1) {
+    glyphPicker.value = glyphIndex;
+    renderSelection();
+  }
 }
 
 function resize() {
@@ -135,7 +164,7 @@ function renderSelection() {
     return;
   }
   const page = pages.selectedOptions[0];
-  const source = page.value;
+  const source = prefix + page.value;
   const row = rows[page.value]?.[glyphPicker.value];
   const showComparison = comparison?.active() ?? false;
   live.toggleAttribute("hidden", !showComparison);
@@ -214,4 +243,6 @@ next.addEventListener("click", () => {
 });
 showPage();
 </script>
+$site_script
+</body>
 </html>

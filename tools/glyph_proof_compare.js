@@ -7,6 +7,8 @@ function createAxisComparison(config, svg, refresh) {
   const sampleSize = document.querySelector("#sample-size");
   const allPresets = document.querySelector("#all-presets");
   const textSamples = document.querySelector("#text-samples");
+  const listeners = new AbortController();
+  const {signal} = listeners;
   const fixedFields = document.createElement("div");
   fixedFields.className = "control";
   const axis = document.createElement("select");
@@ -75,16 +77,19 @@ function createAxisComparison(config, svg, refresh) {
   const changed = () => axis.value !== defaultAxis || Object.keys(values).some(tag => values[tag] !== defaults[tag]);
   let loaded = false;
   let loading;
+  let face;
   function loadFont() {
     if (loading) return;
     status.textContent = "Loading comparison…";
-    const face = new FontFace("TransitProof", "url(data:font/woff2;base64," + config.font + ")");
+    face = new FontFace("TransitProof", "url(data:font/woff2;base64," + config.font + ")");
     loading = face.load().then(() => {
+      if (signal.aborted) return;
       document.fonts.add(face);
       loaded = true;
       status.textContent = "";
       refresh();
     }).catch(() => {
+      if (signal.aborted) return;
       toolbar.hidden = true;
       document.querySelector("#mode-control").hidden = true;
       document.querySelector("#proof-mode").value = "glyphs";
@@ -159,15 +164,15 @@ function createAxisComparison(config, svg, refresh) {
     textSamples.replaceChildren(...sections);
   }
 
-  allPresets.addEventListener("change", refresh);
+  allPresets.addEventListener("change", refresh, {signal});
   sampleText.addEventListener("input", () => {
     for (const sample of textSamples.querySelectorAll(".text-sample-value")) sample.textContent = sampleText.value;
-  });
+  }, {signal});
   sampleSize.addEventListener("input", () => {
     if (sampleSize.validity.valid && Number.isFinite(sampleSize.valueAsNumber)) {
       textSamples.style.setProperty("--sample-size", sampleSize.valueAsNumber + "px");
     }
-  });
+  }, {signal});
 
   function element(parent, name, attributes, content) {
     const node = document.createElementNS("http://www.w3.org/2000/svg", name);
@@ -251,5 +256,13 @@ function createAxisComparison(config, svg, refresh) {
     }
   }
 
-  return {active: () => loaded && changed(), render, setTextMode};
+  function dispose() {
+    listeners.abort();
+    if (face) document.fonts.delete(face);
+    toolbar.replaceChildren();
+    status.textContent = "";
+    textSamples.replaceChildren();
+  }
+
+  return {active: () => loaded && changed(), render, setTextMode, dispose};
 }
