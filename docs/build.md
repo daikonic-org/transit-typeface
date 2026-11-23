@@ -59,7 +59,7 @@ Pages compare the font’s named weights side by side, with guidelines for cap h
 
 Open `index.html` in the output folder to choose a page and zoom in the browser. Double-click a glyph row or choose a glyph from the **Glyph** menu to inspect it on its own. For the browser version and its SVG pages alone, use `--svg-only`. PNG and PDF exports use Chrome or the headless Chromium executable selected by `TRANSIT_CHROME`.
 
-Add `--interactive-axes` to compare a variable font along any of its axes in the browser while choosing preset values or entering custom coordinates for the others. System builds enable this for both upright and italic. The PDF keeps its original coordinates.
+Add `--interactive-axes` to compare a variable font along any of its axes in the browser while choosing preset values or entering custom coordinates for the others. Choose **Type sample** to compare your own words with live OpenType shaping. **Show all presets** displays every combination of the proof’s axis stops. System builds enable this for both upright and italic. The PDF keeps its original coordinates.
 
 The proof starts at the default optical size and width. Use `--axis opsz=12` for a different System optical size or `--axis wdth=94` for Code Narrow. Keep separate output folders for different styles or axis coordinates.
 

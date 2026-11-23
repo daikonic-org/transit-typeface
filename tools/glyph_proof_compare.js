@@ -3,6 +3,10 @@ function createAxisComparison(config, svg, refresh) {
          baselineOffset, headerY, detailHeader, pageWidth, pageHeight} = config;
   const toolbar = document.querySelector("#axis-controls");
   const status = document.querySelector("#axis-status");
+  const sampleText = document.querySelector("#sample-text");
+  const sampleSize = document.querySelector("#sample-size");
+  const allPresets = document.querySelector("#all-presets");
+  const textSamples = document.querySelector("#text-samples");
   const fixedFields = document.createElement("div");
   fixedFields.className = "control";
   const axis = document.createElement("select");
@@ -71,21 +75,27 @@ function createAxisComparison(config, svg, refresh) {
   const changed = () => axis.value !== defaultAxis || Object.keys(values).some(tag => values[tag] !== defaults[tag]);
   let loaded = false;
   let loading;
+  function loadFont() {
+    if (loading) return;
+    status.textContent = "Loading comparison…";
+    const face = new FontFace("TransitProof", "url(data:font/woff2;base64," + config.font + ")");
+    loading = face.load().then(() => {
+      document.fonts.add(face);
+      loaded = true;
+      status.textContent = "";
+      refresh();
+    }).catch(() => {
+      toolbar.hidden = true;
+      document.querySelector("#mode-control").hidden = true;
+      document.querySelector("#proof-mode").value = "glyphs";
+      status.textContent = "Live comparisons could not load. The vector proof is available below.";
+      refresh();
+    });
+  }
+
   function apply() {
     reset.disabled = !changed();
-    if (changed() && !loading) {
-      status.textContent = "Loading comparison…";
-      const face = new FontFace("TransitProof", "url(data:font/woff2;base64," + config.font + ")");
-      loading = face.load().then(() => {
-        document.fonts.add(face);
-        loaded = true;
-        status.textContent = "";
-        refresh();
-      }).catch(() => {
-        toolbar.hidden = true;
-        status.textContent = "Live axis comparisons could not load. The vector proof is available below.";
-      });
-    }
+    if (changed()) loadFont();
     refresh();
   }
 
@@ -102,6 +112,62 @@ function createAxisComparison(config, svg, refresh) {
   });
   showFields();
   reset.disabled = true;
+
+  function setLocation(node, location) {
+    node.style.fontVariationSettings = Object.entries(location).map(([tag, value]) => '"' + tag + '" ' + value).join(", ");
+  }
+
+  function setTextMode(typing) {
+    fixedFields.hidden = typing && allPresets.checked;
+    if (!typing) return;
+    if (!loaded) {
+      loadFont();
+      return;
+    }
+    const current = axes[axis.value];
+    let groups = [{location: values, labels: []}];
+    if (allPresets.checked) {
+      for (const [tag, spec] of Object.entries(axes)) {
+        if (tag === axis.value) continue;
+        groups = groups.flatMap(group => spec.stops.map(([value, label]) => ({
+          location: {...group.location, [tag]: value}, labels: [...group.labels, label],
+        })));
+      }
+    }
+    const sections = groups.map(({location, labels}) => {
+      const section = document.createElement("section");
+      section.className = "sample-group";
+      const heading = document.createElement("h2");
+      heading.textContent = labels.join(" · ") || "Compare by " + current.label.toLowerCase();
+      section.append(heading);
+      for (const [value, label] of current.stops) {
+        const row = document.createElement("div");
+        row.className = "text-sample";
+        const caption = document.createElement("span");
+        caption.className = "text-sample-label";
+        caption.textContent = label;
+        const text = document.createElement("p");
+        text.className = "text-sample-value";
+        text.dir = "auto";
+        text.textContent = sampleText.value;
+        setLocation(text, {...location, [axis.value]: value});
+        row.append(caption, text);
+        section.append(row);
+      }
+      return section;
+    });
+    textSamples.replaceChildren(...sections);
+  }
+
+  allPresets.addEventListener("change", refresh);
+  sampleText.addEventListener("input", () => {
+    for (const sample of textSamples.querySelectorAll(".text-sample-value")) sample.textContent = sampleText.value;
+  });
+  sampleSize.addEventListener("input", () => {
+    if (sampleSize.validity.valid && Number.isFinite(sampleSize.valueAsNumber)) {
+      textSamples.style.setProperty("--sample-size", sampleSize.valueAsNumber + "px");
+    }
+  });
 
   function element(parent, name, attributes, content) {
     const node = document.createElementNS("http://www.w3.org/2000/svg", name);
@@ -166,7 +232,7 @@ function createAxisComparison(config, svg, refresh) {
                                            "font-family": "TransitProof", "font-size": fontSize},
                              String.fromCodePoint(codepoints[row.name]));
         text.style.fontOpticalSizing = "none";
-        text.style.fontVariationSettings = Object.entries(location).map(([tag, v]) => '"' + tag + '" ' + v).join(", ");
+        setLocation(text, location);
         const advance = text.getComputedTextLength();
         const origin = advance ? advance / 2 : row.inkCenter * fontSize / upm;
         return {text, origin, advance};
@@ -185,5 +251,5 @@ function createAxisComparison(config, svg, refresh) {
     }
   }
 
-  return {active: () => loaded && changed(), render};
+  return {active: () => loaded && changed(), render, setTextMode};
 }
