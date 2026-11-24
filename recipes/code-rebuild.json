@@ -35,13 +35,13 @@
     "wdth": [94, 97, 100, 104, 108]
   },
   "constructed_forms": {
-    "r": {"parts": ["n"], "operation": "Reuse the stem and shoulder, then construct the Code r terminal.", "source": "Approved rebuild direction"},
-    "universal": {"parts": ["A"], "operation": "Rotate A by 180 degrees in the Code cell.", "source": "tools/code_logic_symbols.py"},
-    "existential": {"parts": ["E"], "operation": "Reflect E horizontally in the Code cell.", "source": "tools/code_logic_symbols.py"},
-    "logicalnot": {"parts": ["equal"], "operation": "Use the equals bar extents and thickness for the hooked rule.", "source": "tools/code_logic_symbols.py"},
-    "notequal": {"parts": ["equal", "exclam_equal.liga"], "operation": "Derive the slash and bars from the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"},
-    "lessequal": {"parts": ["less_equal.liga"], "operation": "Center the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"},
-    "greaterequal": {"parts": ["greater_equal.liga"], "operation": "Center the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"}
+    "r": {"parts": ["n"], "cut_at_x_height": 0.61, "operation": "Trim the right leg below the shoulder of n.", "source": "tools/code_outlines.py"},
+    "universal": {"parts": ["A"], "operation": "Rotate A by 180 degrees in the Code cell.", "source": "tools/code_outlines.py"},
+    "existential": {"parts": ["E"], "operation": "Reflect E horizontally in the Code cell.", "source": "tools/code_outlines.py"},
+    "logicalnot": {"parts": ["equal"], "operation": "Use the equals bar extents and thickness for the hooked rule.", "source": "tools/code_outlines.py"},
+    "notequal": {"parts": ["equal", "slash"], "operation": "Center a shortened slash on the equals bars.", "source": "tools/code_outlines.py"},
+    "lessequal": {"parts": ["less", "equal"], "operation": "Use the angle's rise and the equals' bar weight and spacing for a chevron with a parallel lower stroke.", "source": "tools/code_outlines.py"},
+    "greaterequal": {"parts": ["lessequal"], "operation": "Reflect the less-than-or-equal sign in the Code cell.", "source": "tools/code_outlines.py"}
   },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {

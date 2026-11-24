@@ -105,6 +105,8 @@ Add `tools/code_outlines.py` as the Code drawing stage. Reuse compatible constru
 - [ ] Set up an angle proof for Code Italic before producing its full masters. Measure long stems against 1.042 and show a Code-specific slant comparison with `H I n r`, upright/italic code text, punctuation and overhangs. Use the approved Code angle across its drawings and metadata. Adapt the released Sans Italic curves and reuse the Code alphabet constructions, cell and accent rules. Preserve the Code italic forms and grid-aligned `ff`, `tt`, and `ll` pairs.
 - [ ] Review base drawings, figures, punctuation, symbols and accents in the shared proof. Check outlines for clipping, detached parts, unwanted intersections, and unexpected weight jumps. Apply corrections to the shared primitive or class when it has the same defect across dependents.
 
+The composed review builds `r`, `∀ ∃ ¬ ≠ ≤ ≥` before compiling the variable font. Run `.venv/bin/python tools/build_code.py --composed --output .build/code-from-sans/composed --render` for the alphabet and composed-glyph proofs. The comparison symbols use the foundation operators for this review and will pick up their revised proportions when those operators are rebuilt.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

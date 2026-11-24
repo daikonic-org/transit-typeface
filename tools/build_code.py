@@ -17,6 +17,7 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
+from code_outlines import SYMBOLS, build_composed
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -25,34 +26,39 @@ from scaling_study import vertical_stem
 from specimens import Panel
 from system_metrics import set_vertical_metrics
 
-FAMILY = "Daikonic Transit Code Alphabet Review"
 WEIGHTS = {350: "Book", 400: "Regular", 500: "Medium"}
 FEATURES = {"calt": False, "kern": False, "liga": False}
 
 
-def alphabet_font(source, recipe):
+def alphabet_font(source, recipe, *, composed=False):
     config = recipe["alphabet_review"]
     anchor = recipe["anchor"]
     weights = {int(weight): value for weight, value in config["weights"].items()}
     assert weights[anchor["code_weight"]] == anchor["sans_weight"]
     assert list(weights) == list(WEIGHTS)
+    stage = "Composed" if composed else "Alphabet"
+    family = f"Daikonic Transit Code {stage} Review"
 
     masters = {weight: build_master(source, weights[weight], weight, config) for weight in WEIGHTS}
     scales, stems, width_report = width_class_scales(masters, recipe)
+    if composed:
+        width_report["deferred"] = width_report["deferred"].replace("r", "")
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
     for weight, style in WEIGHTS.items():
         master = masters[weight]
         scale_ink_width(master, scales, stems[weight])
-        master["name"].setName("Version 0.100; Code alphabet review", 5, 3, 1, 0x409)
-        name_trial(master, FAMILY, weight_style=style)
+        if composed:
+            build_composed(master, recipe)
+        master["name"].setName(f"Version 0.100; Code {stage.lower()} review", 5, 3, 1, 0x409)
+        name_trial(master, family, weight_style=style)
         location = {"Weight": weight}
         designspace.addSource(SourceDescriptor(
-            name=style, familyName=FAMILY, styleName=style, location=location, font=master,
+            name=style, familyName=family, styleName=style, location=location, font=master,
         ))
         designspace.addInstance(InstanceDescriptor(
-            name=style, familyName=FAMILY, styleName=style, location=location,
+            name=style, familyName=family, styleName=style, location=location,
         ))
 
     font, _, _ = build_variable(designspace)
@@ -61,7 +67,7 @@ def alphabet_font(source, recipe):
         "values": [{"name": style, "value": weight, "flags": 2 if weight == 400 else 0}
                    for weight, style in WEIGHTS.items()],
     }])
-    name_trial(font, FAMILY, variable=True)
+    name_trial(font, family, variable=True)
     font.recalcTimestamp = False
     return font, width_report
 
@@ -129,6 +135,32 @@ def verify_mirrors(source, candidate, cell, weights):
                 weight, name, donor, actual, expected
             )
     return pairs
+
+
+def verify_composed(font, path, cell, weights):
+    cmap = font.getBestCmap()
+    assert all(cmap.get(code) == name for code, name in SYMBOLS.items())
+    engine = hb.Font(hb.Face(path.read_bytes()))
+    names = {name: [part.glyphName for part in font["glyf"][name].components]
+             for name in ("universal", "existential", "notequal", "greaterequal")}
+    assert names == {"universal": ["A"], "existential": ["E"],
+                     "notequal": ["equal", "slash"], "greaterequal": ["lessequal"]}
+    for name in (cmap[ord("ŕ")], cmap[ord("ř")]):
+        assert font["glyf"][name].components[0].glyphName == "r"
+
+    text = "".join(map(chr, SYMBOLS))
+    for weight in weights:
+        engine.set_variations({"wght": weight})
+        rows = shape(engine, text, FEATURES)
+        assert [(row[0], row[2]) for row in rows] == [(name, cell) for name in SYMBOLS.values()], (weight, rows)
+        glyphs = font.getGlyphSet(location={"wght": weight})
+        paths = {name: shape_from_glyphs(glyphs, name) for name in ("n", "r", *SYMBOLS.values())}
+        assert topology(paths["n"]) == topology(paths["r"]), weight
+        assert abs(paths["n"].bounds[3] - paths["r"].bounds[3]) <= 1, weight
+        assert paths["notequal"].bounds[2] - paths["notequal"].bounds[0] < cell, weight
+        for name in ("logicalnot", "notequal", "lessequal", "greaterequal"):
+            assert topology(paths[name]) == ((2 if name in ("lessequal", "greaterequal") else 1), 0), (name, weight)
+    return names
 
 
 def signed_units(delta):
@@ -220,6 +252,10 @@ def comparison(candidate, reference, output, width_report, cell, measurements):
         ))
     deferred = " ".join(width_report["deferred"])
     rows.append(f'<text x="37" y="1025" font-size="13" fill="#415d62">Custom drawings pending · {deferred}</text>')
+    write_comparison(output, width, height, rows, sheets)
+
+
+def write_comparison(output, width, height, rows, sheets):
     output.write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
         f'viewBox="0 0 {width} {height}" font-family="Arial,sans-serif" fill="#153b40">'
@@ -228,10 +264,37 @@ def comparison(candidate, reference, output, width_report, cell, measurements):
     )
 
 
+def composed_comparison(candidate, reference, output):
+    width, height = 1050, 744
+    sheets = [Panel("released", {"font": str(reference.resolve())}),
+              Panel("candidate", {"font": str(candidate.resolve())})]
+    rows = [
+        f'<rect width="{width}" height="{height}" fill="#eaf1f0"/>',
+        '<text x="36" y="46" font-size="31" font-weight="700">Transit Code · Composed glyphs</text>',
+        '<text x="37" y="74" font-size="15" fill="#415d62">Published Code 1.042 above the candidate</text>',
+    ]
+    samples = ((166, "Stem and shoulder", "n r   ŕ ř"), (447, "Quantifiers", "A ∀   E ∃"),
+               (720, "Operators", "= ¬ ≠ ≤ ≥"))
+    for index, (weight, style) in enumerate(WEIGHTS.items()):
+        y = 101 + index * 207
+        rows.extend((
+            f'<rect x="36" y="{y}" width="978" height="187" rx="6" fill="#f8faf9" stroke="#c7d6d7"/>',
+            f'<text x="54" y="{y + 32}" font-size="16" font-weight="700">{style} {weight}</text>',
+        ))
+        for x, label, _ in samples:
+            rows.append(f'<text x="{x}" y="{y + 32}" font-size="13" fill="#415d62">{label}</text>')
+        for panel, label, offset in zip(sheets, ("1.042", "Candidate"), (92, 157), strict=True):
+            rows.append(f'<text x="54" y="{y + offset}" font-size="13" fill="#415d62">{label}</text>')
+            for x, _, sample in samples:
+                panel.text(sample, x, y + offset, 49, weight, "#153b40", features=FEATURES)
+    write_comparison(output, width, height, rows, sheets)
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--composed", action="store_true", help="also build the donor-derived review glyphs")
     parser.add_argument("--render", action="store_true", help="also write the comparison as PNG and PDF")
     args = parser.parse_args()
     recipe = json.loads(args.recipe.read_text())
@@ -240,9 +303,10 @@ def main():
     reference = ROOT / (recipe["fonts"]["code"] + "-VF.ttf")
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
-    candidate = output / "DaikonicTransitCodeAlphabetReview-VF.ttf"
+    stage = "Composed" if args.composed else "Alphabet"
+    candidate = output / f"DaikonicTransitCode{stage}Review-VF.ttf"
     with TTFont(source, recalcTimestamp=False) as sans:
-        font, width_report = alphabet_font(sans, recipe)
+        font, width_report = alphabet_font(sans, recipe, composed=args.composed)
         verify_latin_topology(sans, font, config)
         vertical = set_vertical_metrics(
             font, minimum_ascent=config["line_metrics"]["ascent"],
@@ -255,6 +319,8 @@ def main():
     with TTFont(candidate) as built, TTFont(reference) as released, TTFont(source) as sans:
         check = verify(built, candidate, config)
         check["horizontal_mirrors"] = verify_mirrors(sans, built, config["cell"], check["weights"])
+        if args.composed:
+            check["composed_components"] = verify_composed(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -270,9 +336,15 @@ def main():
     build_proof(candidate, output / "glyphs", svg_only=True, interactive_axes=True)
     panel = output / "Code-Alphabet-Comparison.svg"
     comparison(candidate, reference, panel, width_report, config["cell"], report["measurements"])
+    panels = [panel]
+    if args.composed:
+        composed_panel = output / "Code-Composed-Comparison.svg"
+        composed_comparison(candidate, reference, composed_panel)
+        panels.append(composed_panel)
     if args.render:
-        render(panel, scale=2)
-    print(f"Verified Code upright alphabet and wrote the proof to {output}")
+        for proof in panels:
+            render(proof, scale=2)
+    print(f"Verified Code {stage.lower()} review and wrote the proof to {output}")
 
 
 if __name__ == "__main__":
