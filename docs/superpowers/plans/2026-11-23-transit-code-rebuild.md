@@ -113,7 +113,7 @@ The crossbar proof widens `t` to the ink width of `n` and builds `f` from the ve
 
 The hook proof groups `i`, `j`, and `l`. Each upper hook copies the finished lower return of `l` with a 180-degree rotation and a vertical cut at 72% of its reach past the shaft. The `j` descender still mirrors the return to the left. Run `--letters --output .build/code-from-sans/custom-lowercase-ijl-trimmed-more` for this review.
 
-The upright `g` enlarges the Sans-derived upper bowl in both directions toward the ink width of the approved Code `a`. Its top height, connector and lower loop stay pinned. Run `--letters --output .build/code-from-sans/custom-lowercase-g` for the focused proof.
+The upright `g` splits the Sans-derived outline at the connector. It scales the upper bowl and its counter together toward the ink width of the approved Code `a`, anchored at the top and optical center. The upper bowl and the original lower loop with its connector are kept as overlapping components. Run `--letters --output .build/code-from-sans/custom-lowercase-g-spliced` for the focused proof.
 
 **Review point**
 

@@ -7,7 +7,7 @@ from fontTools.misc.bezierTools import calcQuadraticBounds, splitLine, splitQuad
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
-from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates, OVERLAP_COMPOUND
+from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates, OVERLAP_COMPOUND, flagOnCurve
 import pathops
 
 from audit import shape_from_glyphs, spans
@@ -341,33 +341,45 @@ def build_custom_letters(fonts, recipe):
 
 
 def build_g(font, recipe):
-    """Enlarge the upper bowl around its optical center, pinning the connector."""
+    """Scale the upper bowl as one piece and overlap it with the original connector."""
     settings = recipe["custom_lowercase_review"]["g"]
     glyphs = font.getGlyphSet()
-    shape = shape_from_glyphs(glyphs, "g")
-    top = shape.bounds[3]
-    upper_counter = max(shape.contours, key=lambda contour: contour.bounds[1])
-    _, counter_bottom, _, counter_top = upper_counter.bounds
-    middle = (counter_bottom + counter_top) / 2
-    bowl = spans(shape, middle, 1)
+    donor = font["glyf"]["g"]
+    coordinates = donor.coordinates
+    outer_end, first_end, second_end = donor.endPtsOfContours
+    counters = (range(outer_end + 1, first_end + 1), range(first_end + 1, second_end + 1))
+    lower_counter, upper_counter = sorted(counters, key=lambda indices: min(coordinates[i][1] for i in indices))
+    start, end = settings["connector_points"]
+    assert donor.flags[start] & donor.flags[end] & flagOnCurve
+
+    def piece(outer, inner, move):
+        indices = (*outer, *inner)
+        glyph = deepcopy(donor)
+        glyph.numberOfContours = 2
+        glyph.endPtsOfContours = [len(outer) - 1, len(indices) - 1]
+        glyph.coordinates = GlyphCoordinates(move(*coordinates[i]) for i in indices)
+        glyph.flags = bytearray(donor.flags[i] & flagOnCurve for i in indices)
+        return glyph
+
+    outline = raw_outline(glyphs, "g")
+    counter_y = [coordinates[i][1] for i in upper_counter]
+    bowl = spans(outline, (min(counter_y) + max(counter_y)) / 2, 1)
     left, right = bowl[0][0], bowl[-1][1]
-    width = right - left
     a_left, _, a_right, _ = shape_from_glyphs(glyphs, "a").bounds
     target = (a_right - a_left) * settings["a_width_ratio"]
-    growth = min(settings["maximum_bowl_scale"], target / width) - 1
-    connector = font["OS/2"].sxHeight * settings["connector_lock"]
+    scale = min(settings["maximum_bowl_scale"], target / (right - left))
+    center = (left + right) / 2
+    top = outline.bounds[3]
 
-    def enlarge(x, y):
-        progress = min(1, max(0, (y - connector) / (middle - connector)))
-        blend = progress**2 * (3 - 2 * progress)
-        # The ear follows the near edge of the scaled bowl without growing in length.
-        bowl_x = min(right, max(left, x))
-        return (otRound(x + growth * blend * (bowl_x - (left + right) / 2)),
-                otRound(y + growth * blend * (y - top)))
-
-    glyph = deepcopy(font["glyf"]["g"])
-    glyph.coordinates = GlyphCoordinates(enlarge(x, y) for x, y in glyph.coordinates)
-    install(font, "g", glyph, font["hmtx"]["g"][0])
+    # Store both pieces with the overlap flag so the original curves interpolate intact.
+    advance = font["hmtx"]["g"][0]
+    lower = piece(range(start, end + 1), lower_counter, lambda x, y: (x, y))
+    upper = piece((*range(end, outer_end + 1), *range(start + 1)), upper_counter,
+                  lambda x, y: (otRound(center + scale * (x - center)), otRound(top + scale * (y - top))))
+    install(font, "g.lower", lower, advance)
+    install(font, "g.upper", upper, advance)
+    identity = (1, 0, 0, 1, 0, 0)
+    install_components(font, "g", [("g.lower", identity), ("g.upper", identity)], advance)
     for name in component_users(font, {"g"}):
         refresh_bounds(font, name)
 
