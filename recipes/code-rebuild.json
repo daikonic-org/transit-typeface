@@ -47,7 +47,8 @@
     "width_followers": {"a": "s"},
     "accepted_foundation": "mw",
     "i": {"shaft_offset": 24, "left_foot": 180, "right_foot": 178, "left_flag": 156, "bar_ratio": 0.94,
-          "hook_donor": "l", "inner_hook_ratio": 0.60}
+          "hook_donor": "l", "inner_hook_ratio": 0.60},
+    "ft": {"t_above_x_height": 106, "f_above_cap_height": 90, "return_cut_ratio": 0.44}
   },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {

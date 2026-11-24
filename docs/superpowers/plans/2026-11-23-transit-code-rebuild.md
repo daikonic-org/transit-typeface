@@ -109,6 +109,8 @@ The composed review builds `r`, `∀ ∃ ¬ ≠ ≤ ≥` before compiling the va
 
 The lowercase review adds the Code `i` with its shared dotless body and both upper hook curves taken from the lower return of `l`. The approved `a` uses the calibrated width scale of `s`. The normal `m` and `w` keep their foundation drawings. Run `.venv/bin/python tools/build_code.py --letters --output .build/code-from-sans/custom-lowercase-rounded-hook --render` for the alphabet and detail proofs.
 
+The crossbar proof widens `t` to the ink width of `n` and builds `f` from the vertically flipped `t` return. Joined letters retain their own donors until the shaping review. Run the same `--letters` build with `--output .build/code-from-sans/custom-lowercase-ft` for the full review set.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

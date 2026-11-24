@@ -17,7 +17,7 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
-from code_outlines import SYMBOLS, build_composed, build_custom_letters, inherit_width_scales
+from code_outlines import SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, inherit_width_scales
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -47,7 +47,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         followers = letters["width_followers"]
         inherit_width_scales(masters[400], scales, followers)
         width_report["followers"] = followers
-        finished = set(letters["accepted_foundation"]) | set(followers) | {"i"}
+        finished = set(letters["accepted_foundation"]) | set(followers) | set("ift")
         width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
     designspace = DesignSpaceDocument()
@@ -59,6 +59,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             build_composed(master, recipe)
         if stage == "Letters":
             build_custom_letters(master, recipe)
+            build_crossbar_letters(master, recipe)
         master["name"].setName(f"Version 0.100; Code {stage.lower()} review", 5, 3, 1, 0x409)
         name_trial(master, family, weight_style=style)
         location = {"Weight": weight}
@@ -358,6 +359,11 @@ def main():
                            (720, "Hook donor and accented forms", "l i í ï in")),
                           "Published Code 1.042 above the candidate · a uses the width scale from s")
         panels.append(letters_panel)
+        crossbar_panel = output / "Code-Crossbar-Letters.svg"
+        detail_comparison(candidate, reference, crossbar_panel, "Crossbars and hooks",
+                          ((166, "Lower return", "t ț ţ"), (447, "Flipped upper return", "f ft ff"),
+                           (720, "In text", "after fit")))
+        panels.append(crossbar_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

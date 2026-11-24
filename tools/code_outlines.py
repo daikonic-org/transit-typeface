@@ -1,14 +1,17 @@
 """Build composed Code drawings from the completed foundation masters."""
 
 from collections import defaultdict
+from copy import deepcopy
 
 from fontTools.misc.roundTools import otRound
+from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND
 import pathops
 
 from audit import shape_from_glyphs, spans
 from code_foundation import map_attachment_anchors, outline_bounds
+from code_receiver_shapes import HorizontalMapPen, remap
 from italic_returns import lower_arc, raw_outline
 
 
@@ -75,12 +78,11 @@ def less_equal(angle, equal):
     return path
 
 
-def install(font, name, pen, advance):
+def install(font, name, glyph, advance):
     glyf = font["glyf"]
     if name not in glyf:
         font.setGlyphOrder(font.getGlyphOrder() + [name])
         font["GDEF"].table.GlyphClassDef.classDefs[name] = 1
-    glyph = pen.glyph()
     glyf[name] = glyph
     glyph.recalcBounds(glyf)
     font["hmtx"][name] = advance, glyph.xMin
@@ -90,14 +92,14 @@ def install(font, name, pen, advance):
 def install_outline(font, name, shape, advance):
     pen = TTGlyphPen(None)
     shape.draw(pen)
-    install(font, name, pen, advance)
+    install(font, name, pen.glyph(), advance)
 
 
 def install_components(font, name, parts, advance):
     pen = TTGlyphPen(font.getGlyphSet())
     for donor, transform in parts:
         pen.addComponent(donor, transform)
-    glyph = install(font, name, pen, advance)
+    glyph = install(font, name, pen.glyph(), advance)
     if len(parts) > 1:
         glyph.components[0].flags |= OVERLAP_COMPOUND
 
@@ -108,6 +110,32 @@ def refresh_bounds(font, name):
     glyph.recalcBounds(glyf)
     advance, _ = font["hmtx"][name]
     font["hmtx"][name] = advance, glyph.xMin
+
+
+def component_users(font, donors):
+    glyf = font["glyf"]
+    return [name for name in font.getGlyphOrder()
+            if glyf[name].isComposite()
+            and any(part.glyphName in donors for part in glyf[name].components)]
+
+
+def retain_joined_donors(font, donors):
+    """Keep the fitted spacing of compound letters while their individual donors change."""
+    glyf = font["glyf"]
+    metrics = font["hmtx"]
+    for name in component_users(font, donors):
+        glyph = glyf[name]
+        if sum(bool(metrics[part.glyphName][0]) for part in glyph.components) <= 1:
+            continue
+        for part in glyph.components:
+            if part.glyphName not in donors:
+                continue
+            donor = part.glyphName
+            joined = donor + ".joined"
+            if joined not in glyf:
+                install(font, joined, deepcopy(glyf[donor]), metrics[donor][0])
+            part.glyphName = joined
+        refresh_bounds(font, name)
 
 
 def inherit_width_scales(font, scales, followers):
@@ -181,36 +209,78 @@ def build_custom_letters(font, recipe):
     settings = recipe["custom_lowercase_review"]["i"]
     cell, baseline = config["cell"], config["baseline"]
     glyf = font["glyf"]
-    narrow = "dotlessi.joined"
-    install_outline(font, narrow, shape_from_glyphs(font.getGlyphSet(), "dotlessi"), cell)
-    install(font, "dotlessi", i_outline(font, settings, cell, baseline), cell)
+    retain_joined_donors(font, {"dotlessi"})
+    install(font, "dotlessi", i_outline(font, settings, cell, baseline).glyph(), cell)
     changed = {"dotlessi"}
     upper_zone = baseline + (font["OS/2"].sxHeight - baseline) / 2
     shift = settings["shaft_offset"]
-    for name in font.getGlyphOrder():
+    for name in component_users(font, {"dotlessi"}):
         glyph = glyf[name]
-        if not glyph.isComposite() or not any(part.glyphName == "dotlessi" for part in glyph.components):
-            continue
-        # The joined forms have their own spacing. Keep their narrow stem
-        # donor until the corresponding ligatures are rebuilt.
-        spacing_count = sum(bool(font["hmtx"][part.glyphName][0]) for part in glyph.components)
-        if spacing_count > 1:
-            for part in glyph.components:
-                if part.glyphName == "dotlessi":
-                    part.glyphName = narrow
-        else:
-            for part in glyph.components:
-                if not font["hmtx"][part.glyphName][0]:
-                    _, bottom, _, _ = outline_bounds(glyf[part.glyphName], glyf)
-                    if bottom + part.y >= upper_zone:
-                        part.x += shift
-            changed.add(name)
+        for part in glyph.components:
+            if not font["hmtx"][part.glyphName][0]:
+                _, bottom, _, _ = outline_bounds(glyf[part.glyphName], glyf)
+                if bottom + part.y >= upper_zone:
+                    part.x += shift
+        changed.add(name)
         refresh_bounds(font, name)
 
     def mark_shift(x, y):
         return x + (shift if y >= upper_zone else 0), y
 
     anchors = defaultdict(lambda: lambda x, y: (x, y), dict.fromkeys(changed, mark_shift))
+    map_attachment_anchors(font, anchors)
+
+
+def build_crossbar_letters(font, recipe):
+    config = recipe["alphabet_review"]
+    settings = recipe["custom_lowercase_review"]["ft"]
+    cell, baseline = config["cell"], config["baseline"]
+    x_height = font["OS/2"].sxHeight
+    glyphs = font.getGlyphSet()
+    t, n, f = (shape_from_glyphs(glyphs, name) for name in ("t", "n", "f"))
+    left, floor, right, t_top = t.bounds
+    n_left, _, n_right, _ = n.bounds
+    target_width = n_right - n_left
+    cut = otRound(baseline + (x_height - baseline) * settings["return_cut_ratio"])
+    stem_left, stem_right = spans(t, cut, 1)[0]
+    crossbar, = spans(t, left + (stem_left - left) / 2, 0)
+    bar_bottom, bar_top = crossbar
+    t_height = x_height + settings["t_above_x_height"]
+    f_height = font["OS/2"].sCapHeight + settings["f_above_cap_height"]
+    x_from = (left, stem_left, stem_right, right)
+    x_to = ((cell - target_width) / 2, stem_left, stem_right, (cell + target_width) / 2)
+
+    def t_y(y):
+        if y <= bar_top:
+            return y
+        return remap(y, (bar_top, t_top), (bar_top, t_height))
+
+    retain_joined_donors(font, {"f", "t"})
+    pen = TTGlyphPen(None)
+    raw_outline(font.getGlyphSet(), "t").draw(HorizontalMapPen(
+        pen, lambda x: remap(x, x_from, x_to), t_y
+    ))
+    install(font, "t", pen.glyph(), cell)
+
+    # Reflect the entire hook rigidly, then move the straight stem and
+    # crossbar to the required heights. The bends keep their original curves.
+    f_fold = floor + f_height
+    y_from = (floor, cut, bar_bottom, bar_top, t_height)
+    y_to = (f_height, f_fold - cut, bar_top, bar_bottom, baseline)
+    pen = TTGlyphPen(None)
+    raw_outline(font.getGlyphSet(), "t").draw(HorizontalMapPen(
+        ReverseContourPen(pen), lambda x: x, lambda y: remap(y, y_from, y_to)
+    ))
+    install(font, "f", pen.glyph(), cell)
+
+    dependents = component_users(font, {"f", "t"})
+    for name in dependents:
+        refresh_bounds(font, name)
+
+    def f_anchor(x, y):
+        return x, y + (f_height - f.bounds[3] if y >= x_height else 0)
+
+    anchors = defaultdict(lambda: lambda x, y: (x, y), {"t": lambda x, y: (x, t_y(y)), "f": f_anchor})
     map_attachment_anchors(font, anchors)
 
 
