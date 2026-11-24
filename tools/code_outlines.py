@@ -181,7 +181,8 @@ def upper_hook(pen, curves, settings, sides, top, flag_overhang):
     bar = thickness * settings["bar_ratio"]
     radius = thickness * settings["inner_hook_ratio"]
     inner_start, inner_end = (left, top - bar - radius), (left - radius, top - bar)
-    outer_start, outer_end = (left - thickness / 4, top), (right, top - 1.2 * bar)
+    outer_start = (right - thickness * settings["outer_hook_width_ratio"], top)
+    outer_end = (right, top - bar * settings["outer_hook_depth_ratio"])
     flag_left = left - flag_overhang
     pen.lineTo(inner_start)
     draw_hook_curve(pen, inner, inner_start, inner_end)
