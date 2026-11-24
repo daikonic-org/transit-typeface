@@ -78,6 +78,8 @@
   "diamond_punctuation_review": {
     "diamond_scale": 1.42,
     "period_overshoot": 0.25,
+    "comma_tail_scale_y": 0.74,
+    "comma_tail_shear_x": -0.24,
     "colon_center": 300,
     "ellipsis_dot_x_scale": 0.93,
     "sentence_dot_clearance": 20,
