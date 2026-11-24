@@ -115,6 +115,8 @@ The hook proof groups `i`, `j`, and `l`. Each upper hook copies the finished low
 
 The upright `g` splits the Sans-derived outline at the connector. It scales the upper bowl and its counter together toward the ink width of the approved Code `a`, anchored at the top and optical center. The upper bowl and the original lower loop with its connector are kept as overlapping components. Run `--letters --output .build/code-from-sans/custom-lowercase-g-spliced` for the focused proof.
 
+The letter and figure proof reconstructs the barred `I` from its current stem and gives `1` the same pedestal. The flag uses the archived 30° design with a rounded inner corner. The zero combines its Sans-derived bowl with the shared diamond. Run `--letters --output .build/code-from-sans/letter-figure-distinctions` for the proof with `l i O` alongside those forms.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

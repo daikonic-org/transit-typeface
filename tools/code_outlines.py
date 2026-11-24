@@ -2,6 +2,7 @@
 
 from collections import defaultdict
 from copy import deepcopy
+from math import pi, radians, sqrt, tan
 
 from fontTools.misc.bezierTools import calcQuadraticBounds, splitLine, splitQuadratic, splitQuadraticAtT
 from fontTools.misc.roundTools import otRound
@@ -11,7 +12,7 @@ from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates, OVERLAP_COMPOUND, 
 import pathops
 
 from audit import shape_from_glyphs, spans
-from code_foundation import map_attachment_anchors, outline_bounds
+from code_foundation import center, map_attachment_anchors, outline_bounds
 from code_receiver_shapes import HorizontalMapPen, remap
 from italic_returns import Segment, lower_arc, raw_outline
 
@@ -435,6 +436,59 @@ def build_crossbar_letters(font, recipe):
 
     anchors = defaultdict(lambda: lambda x, y: (x, y), {"t": lambda x, y: (x, t_y(y)), "f": f_anchor})
     map_attachment_anchors(font, anchors)
+
+
+def build_distinct_figures(font, recipe):
+    """Use the current I stem for the shared bars and the family diamond for zero."""
+    settings = recipe["distinct_figures_review"]
+    glyphs = font.getGlyphSet()
+    stem = shape_from_glyphs(glyphs, "I")
+    left, base, right, cap = stem.bounds
+    thickness = right - left
+    bar = otRound(thickness * settings["bar_stem_ratio"])
+    bar_left = left - settings["bar_overhang"]
+    bar_right = right + settings["bar_overhang"]
+    base_top = base + bar
+    cap_bottom = cap - bar
+    cell = recipe["alphabet_review"]["cell"]
+
+    install_outline(font, "I", polygon((
+        (bar_left, base), (bar_left, base_top), (left, base_top), (left, cap_bottom),
+        (bar_left, cap_bottom), (bar_left, cap), (bar_right, cap), (bar_right, cap_bottom),
+        (right, cap_bottom), (right, base_top), (bar_right, base_top), (bar_right, base),
+    )), cell)
+    for name in component_users(font, {"I"}):
+        refresh_bounds(font, name)
+
+    apex = right - otRound(thickness * settings["flag_top_stem_ratio"])
+    tip = otRound(cap - tan(radians(settings["flag_angle"])) * (apex - bar_left))
+    radius = thickness * settings["flag_radius_ratio"]
+    tangent = radius * tan(pi / 8)
+    middle = radius * (1 - sqrt(0.5))
+    pen = TTGlyphPen(None)
+    pen.moveTo((bar_left, base))
+    pen.lineTo((bar_left, base_top))
+    pen.lineTo((left, base_top))
+    pen.lineTo((left, tip - radius))
+    pen.qCurveTo((left, tip - radius + tangent), (left - middle, tip - middle))
+    pen.qCurveTo((left - radius + tangent, tip), (left - radius, tip))
+    for point in ((bar_left, tip), (apex, cap), (right, cap), (right, base_top),
+                  (bar_right, base_top), (bar_right, base)):
+        pen.lineTo(point)
+    pen.closePath()
+    install(font, "one", pen.glyph(), cell)
+
+    glyf = font["glyf"]
+    diamond = "diamond.dot"
+    counter, = [part for part in shape_from_glyphs(glyphs, "zero").contours if not part.clockwise]
+    counter_x, counter_y = center(counter.bounds)
+    dot_x, dot_y = center(outline_bounds(glyf[diamond], glyf))
+    scale = settings["zero_diamond_scale"]
+    install(font, "zero.bowl", deepcopy(glyf["zero"]), cell)
+    install_components(font, "zero", [
+        ("zero.bowl", (1, 0, 0, 1, 0, 0)),
+        (diamond, (scale, 0, 0, scale, otRound(counter_x - scale * dot_x), otRound(counter_y - scale * dot_y))),
+    ], cell)
 
 
 def build_composed(font, recipe):

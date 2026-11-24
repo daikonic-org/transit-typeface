@@ -17,7 +17,10 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
-from code_outlines import SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_g, inherit_width_scales
+from code_outlines import (
+    SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
+    inherit_width_scales,
+)
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -59,6 +62,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         for master in masters.values():
             build_crossbar_letters(master, recipe)
             build_g(master, recipe)
+            build_distinct_figures(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -378,6 +382,11 @@ def main():
                           ((166, "Upper bowl", "a g o"), (447, "Accents", "g ğ ġ"),
                            (720, "g and y in text", "gray day")))
         panels.append(bowl_panel)
+        figures_panel = output / "Code-Letter-Figure-Distinctions.svg"
+        detail_comparison(candidate, reference, figures_panel, "Letter and figure distinctions",
+                          ((166, "Narrow letters and one", "I l 1 i"), (447, "Zero and capital O", "0 O 00"),
+                           (720, "In an identifier", "IO10l")))
+        panels.append(figures_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)
