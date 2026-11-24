@@ -66,12 +66,19 @@
     "minus_center": 300,
     "underscore_weight_ratio": 1.2
   },
+  "at_review": {
+    "a_scale": 0.8,
+    "shell_width_ratio": 1.24,
+    "above_o": 57,
+    "below_o": 33,
+    "terminal_rise": 40
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",
     "w": "tools/code_receiver_shapes.py:fit_w",
     "i": "tools/code_i_baseline.py:align_i_baseline",
-    "at": "tools/code_at_c_shell_study.py:construction",
+    "at": "tools/code_at.py:build_at",
     "k": "tools/code_hyphen_k_study.py",
     "hyphen": "tools/code_hyphen_k_study.py",
     "underscore": "tools/code_underscore_weight_study.py",

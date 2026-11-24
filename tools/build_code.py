@@ -16,6 +16,7 @@ import uharfbuzz as hb
 from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
+from code_at import build_at
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
@@ -54,6 +55,8 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
     for weight, master in masters.items():
+        if stage == "Letters":
+            build_at(master, recipe)
         scale_ink_width(master, scales, stems[weight])
         if stage != "Alphabet":
             build_composed(master, recipe)
@@ -393,6 +396,11 @@ def main():
                           ((166, "Inline underscore", "snake_x"), (447, "Adjacent underscores", "__init__"),
                            (720, "Hyphen and minus", "x-y x−y")))
         panels.append(punctuation_panel)
+        at_panel = output / "Code-At-Sign.svg"
+        detail_comparison(candidate, reference, at_panel, "At sign",
+                          ((166, "Body and shell", "a c @"), (447, "Height against o", "o@o"),
+                           (720, "In an address", "a@host")))
+        panels.append(at_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

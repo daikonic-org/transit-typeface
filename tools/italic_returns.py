@@ -16,6 +16,12 @@ class Segment(NamedTuple):
     end: tuple[float, float]
 
 
+def draw_segments(pen, edges, *, reverse=False):
+    for edge in reversed(edges) if reverse else edges:
+        points = (*reversed(edge.controls), edge.start) if reverse else (*edge.controls, edge.end)
+        getattr(pen, edge.operation)(*points)
+
+
 def segments(contour):
     recorder = RecordingPen()
     contour.draw(recorder)

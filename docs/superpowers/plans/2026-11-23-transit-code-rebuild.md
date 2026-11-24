@@ -119,6 +119,10 @@ The letter and figure proof reconstructs the barred `I` from its current stem an
 
 The horizontal punctuation proof shows the baseline-resting, gapless underscore and the wider hyphen. The underline is 20% heavier than the hyphen before rounding. The hyphen keeps its Sans-derived text height, and the minus returns to the Code math axis at 300 units. The numero, equals and division signs retain their bar drawings. Run `--letters --output .build/code-from-sans/horizontal-punctuation-lower-dashes` for the focused proof.
 
+The at-sign builder takes the two-storey `a` and `c` before the Code width classes. It joins their curves into a tapered wrap with a gently rising lower terminal and a vertical cut aligned to the right stem. Run `--letters --output .build/code-from-sans/at-sign` for the focused proof.
+
+Finish the non-math glyphs before the shared math and operator pass. Review the base signs, comparisons, arrow glyphs and operator ligatures together for vertical alignment, stroke weight, line spacing and advances.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

@@ -14,7 +14,7 @@ import pathops
 from audit import shape_from_glyphs, spans
 from code_foundation import center, map_attachment_anchors, outline_bounds
 from code_receiver_shapes import HorizontalMapPen, remap
-from italic_returns import Segment, lower_arc, raw_outline
+from italic_returns import Segment, draw_segments, lower_arc, raw_outline
 
 
 SYMBOLS = {
@@ -153,9 +153,7 @@ def inherit_width_scales(font, scales, followers):
 
 def draw_return(pen, edges, *, reverse=False):
     pen.lineTo(edges[-1].end if reverse else edges[0].start)
-    for edge in reversed(edges) if reverse else edges:
-        points = (*reversed(edge.controls), edge.start) if reverse else (*edge.controls, edge.end)
-        getattr(pen, edge.operation)(*points)
+    draw_segments(pen, edges, reverse=reverse)
 
 
 def move_return(edges, move):
