@@ -1,16 +1,15 @@
 """Build the primary Code punctuation from the shared Sans diamond."""
 
-from copy import deepcopy
+from math import ceil
 
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
-from audit import shape_from_glyphs
-from code_foundation import center, narrow_for_cell, outline_bounds
+from code_foundation import center, outline_bounds
 from code_outlines import install, install_components, install_outline, move_return, polygon, refresh_bounds
 from italic_returns import draw_segments, raw_outline, segments
+from kern_clearance import ink_extents
 from repeated_stems import horizontal_extent
-from scaling_study import vertical_stem
 
 
 DOT = "diamond.punctuation"
@@ -46,34 +45,45 @@ def sentence_mark(font, name, radius, clearance, cell):
                                     dot_at(old_dot.x + shift_x, old_dot.y)], cell)
 
 
-def build_compound_punctuation(font, cell, margin):
+def build_compound_punctuation(font, cell, settings):
     glyf = font["glyf"]
     body, diamond = glyf["question"].components
-    source = glyf[body.glyphName]
-    source_center, _ = center(outline_bounds(source, glyf))
-    dot_offset = diamond.x - body.x - source_center
-    compact = deepcopy(source)
-    stem = vertical_stem(shape_from_glyphs(font.getGlyphSet(), "n"), 0.4)
-    ratio = narrow_for_cell(compact, cell / 2 - 2 * margin, stem)
-    compact_body = "question.compactBody"
+    x_min, y_min, x_max, _ = outline_bounds(glyf[body.glyphName], glyf)
+    body_center = (x_min + x_max) / 2
+    scale = settings["double_question_body_scale"]
+    # Keep the gap under the body and reuse the full-size diamond.
     compact_question = "question.compact"
-    install(font, compact_body, compact, 0)
-    compact_center, _ = center(raw_outline(font.getGlyphSet(), compact_body).bounds)
+    dot_offset = diamond.x - body.x - body_center
     install_components(font, compact_question, [
-        (compact_body, (1, 0, 0, 1, otRound(cell / 2 - compact_center), body.y)),
-        dot_at(cell / 2 + dot_offset * ratio, diamond.y),
+        (body.glyphName, (scale, 0, 0, scale, otRound(cell / 2 - scale * body_center),
+                          otRound(body.y + (1 - scale) * y_min))),
+        dot_at(cell / 2 + dot_offset * scale, diamond.y),
     ], cell)
 
     glyphs = font.getGlyphSet()
-    bounds = {name: raw_outline(glyphs, name).bounds for name in ("exclam", compact_question)}
+    outlines = {name: raw_outline(glyphs, name) for name in ("exclam", "question", compact_question)}
+    edges = {name: ink_extents(outlines[name], step=1) for name in ("exclam", "question")}
+    gap = settings["compound_pair_gap"]
+    dot_left, _, dot_right, _ = outline_bounds(glyf[DOT], glyf)
     for name, left, right in (("exclamdbl", "exclam", "exclam"),
                               ("uni2047", compact_question, compact_question),
-                              ("uni2048", compact_question, "exclam"),
-                              ("uni2049", "exclam", compact_question)):
-        shift = (cell - bounds[left][0] - bounds[right][2]) / 2
+                              ("uni2048", "question", "exclam"),
+                              ("uni2049", "exclam", "question")):
+        if name == "exclamdbl":
+            separation = cell / 2
+        elif name == "uni2047":
+            # Join the two arches while keeping their diamonds distinct.
+            separation = max(settings["double_question_min_separation"], dot_right - dot_left + gap)
+        else:
+            left_edges, right_edges = edges[left], edges[right]
+            # A mark can tuck under the other's wider sections without touching.
+            facing = max(left_edges[row][1] - right_edges[row][0]
+                         for row in left_edges.keys() & right_edges.keys())
+            separation = ceil(facing) + gap
+        start = otRound((cell - outlines[left].bounds[0] - outlines[right].bounds[2] - separation) / 2)
         install_components(font, name, [
-            (left, (1, 0, 0, 1, otRound(shift - cell / 4), 0)),
-            (right, (1, 0, 0, 1, otRound(shift + cell / 4), 0)),
+            (left, (1, 0, 0, 1, start, 0)),
+            (right, (1, 0, 0, 1, start + separation, 0)),
         ], cell)
 
 
@@ -190,4 +200,4 @@ def build_diamond_punctuation(font, recipe):
     install_components(font, "periodcentered", [dot_at(cell / 2, mid_y)], cell)
     for name in ("exclam", "question", "exclamdown", "questiondown"):
         sentence_mark(font, name, radius, settings["sentence_dot_clearance"], cell)
-    build_compound_punctuation(font, cell, settings["compound_half_cell_margin"])
+    build_compound_punctuation(font, cell, settings)
