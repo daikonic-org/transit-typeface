@@ -422,7 +422,7 @@ def main():
         detail_comparison(candidate, None, comma_panel, "Comma and closing quote",
                           ((166, "Closing and low quotes", "’ ‚"), (447, "Comma and semicolon", "a,a;a"),
                            (720, "With the period and colon", "a.,;:a")),
-                          "Shared closing-quote curve with a shorter comma tail and a period-height crown")
+                          "The comma uses the period diamond and a narrower closing-quote tail")
         panels.append(comma_panel)
     if args.render:
         for proof in panels:

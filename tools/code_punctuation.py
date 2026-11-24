@@ -47,9 +47,12 @@ def sentence_mark(font, name, radius, clearance, cell):
 
 def build_comma_forms(font, settings, cell, period_y, upper_y):
     axis = otRound(cell / 2)
+    glyf = font["glyf"]
+    tail_center, _ = center(outline_bounds(glyf[QUOTE_TAIL], glyf))
+    scale = settings["comma_tail_scale_x"]
     install_components(font, "comma", [
-        (QUOTE_TAIL, (1, 0, settings["comma_tail_shear_x"], settings["comma_tail_scale_y"], axis, period_y)),
-        (CROWN, (1, 0, 0, 1, axis, period_y)),
+        (QUOTE_TAIL, (scale, 0, 0, 1, otRound(axis - scale * tail_center), period_y)),
+        dot_at(axis, period_y),
     ], cell)
     install_components(font, "semicolon", [("comma", (1, 0, 0, 1, 0, 0)), dot_at(axis, upper_y)], cell)
 
