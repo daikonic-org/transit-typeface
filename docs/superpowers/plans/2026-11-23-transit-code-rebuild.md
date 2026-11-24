@@ -117,7 +117,7 @@ The upright `g` splits the Sans-derived outline at the connector. It scales the 
 
 The letter and figure proof reconstructs the barred `I` from its current stem and gives `1` the same pedestal. The flag uses the archived 30° design with a rounded inner corner. The zero combines its Sans-derived bowl with the shared diamond. Run `--letters --output .build/code-from-sans/letter-figure-distinctions` for the proof with `l i O` alongside those forms.
 
-The horizontal punctuation proof shows the baseline-resting, gapless underscore and the wider hyphen. The underline is 20% heavier than the hyphen before rounding. The hyphen aligns with the current minus, and the numero sign retains its own bar drawing. Run `--letters --output .build/code-from-sans/horizontal-punctuation` for the focused proof.
+The horizontal punctuation proof shows the baseline-resting, gapless underscore and the wider hyphen. The underline is 20% heavier than the hyphen before rounding. The hyphen keeps its Sans-derived text height, and the minus returns to the Code math axis at 300 units. The numero, equals and division signs retain their bar drawings. Run `--letters --output .build/code-from-sans/horizontal-punctuation-lower-dashes` for the focused proof.
 
 **Review point**
 

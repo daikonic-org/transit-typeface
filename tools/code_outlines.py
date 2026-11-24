@@ -121,13 +121,13 @@ def component_users(font, donors):
             and any(part.glyphName in donors for part in glyf[name].components)]
 
 
-def retain_joined_donors(font, donors):
+def retain_joined_donors(font, donors, *, include_single_base=False):
     """Keep the fitted spacing of compound letters while their individual donors change."""
     glyf = font["glyf"]
     metrics = font["hmtx"]
     for name in component_users(font, donors):
         glyph = glyf[name]
-        if sum(bool(metrics[part.glyphName][0]) for part in glyph.components) <= 1:
+        if not include_single_base and sum(bool(metrics[part.glyphName][0]) for part in glyph.components) <= 1:
             continue
         for part in glyph.components:
             if part.glyphName not in donors:
@@ -492,7 +492,7 @@ def build_distinct_figures(font, recipe):
 
 
 def build_horizontal_punctuation(font, recipe):
-    """Draw a baseline underline and a wider hyphen on the math axis."""
+    """Place the underscore, text hyphen, and minus on their Code heights."""
     settings = recipe["horizontal_punctuation_review"]
     config = recipe["alphabet_review"]
     cell = config["cell"]
@@ -502,13 +502,12 @@ def build_horizontal_punctuation(font, recipe):
     underline_weight = settings["underscore_weight_ratio"]
     hyphen_height = otRound((stem_right - stem_left) / underline_weight)
     underscore_height = otRound(hyphen_height * underline_weight)
-    left, _, right, _ = shape_from_glyphs(glyphs, "hyphen").bounds
+    left, bottom, right, top = shape_from_glyphs(glyphs, "hyphen").bounds
     hyphen_width = otRound((right - left) * settings["hyphen_width_ratio"])
     hyphen_left = (cell - hyphen_width) // 2
-    _, axis = center(shape_from_glyphs(glyphs, "minus").bounds)
-    hyphen_bottom = otRound(axis - hyphen_height / 2)
+    hyphen_bottom = otRound((bottom + top - hyphen_height) / 2)
 
-    retain_joined_donors(font, {"hyphen"})
+    retain_joined_donors(font, {"hyphen", "minus"}, include_single_base=True)
     for name, left, bottom, width, height in (
         ("underscore", 0, baseline, cell, underscore_height),
         ("hyphen", hyphen_left, hyphen_bottom, hyphen_width, hyphen_height),
@@ -517,6 +516,12 @@ def build_horizontal_punctuation(font, recipe):
             (left, bottom), (left, bottom + height),
             (left + width, bottom + height), (left + width, bottom),
         )), cell)
+
+    glyf = font["glyf"]
+    minus = glyf["minus"]
+    _, height = center(outline_bounds(minus, glyf))
+    minus.coordinates.translate((0, otRound(settings["minus_center"] - height)))
+    refresh_bounds(font, "minus")
 
 
 def build_composed(font, recipe):
