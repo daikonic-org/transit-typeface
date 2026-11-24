@@ -7,7 +7,7 @@ from fontTools.misc.bezierTools import calcQuadraticBounds, splitLine, splitQuad
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
-from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND
+from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates, OVERLAP_COMPOUND
 import pathops
 
 from audit import shape_from_glyphs, spans
@@ -338,6 +338,38 @@ def build_custom_letters(fonts, recipe):
                                        recipe["custom_lowercase_review"]["upper_hook_trim"])
     for font, donor, upper in zip(fonts, donors, clipped, strict=True):
         build_hook_letters(font, recipe, donor, upper)
+
+
+def build_g(font, recipe):
+    """Enlarge the upper bowl around its optical center, pinning the connector."""
+    settings = recipe["custom_lowercase_review"]["g"]
+    glyphs = font.getGlyphSet()
+    shape = shape_from_glyphs(glyphs, "g")
+    top = shape.bounds[3]
+    upper_counter = max(shape.contours, key=lambda contour: contour.bounds[1])
+    _, counter_bottom, _, counter_top = upper_counter.bounds
+    middle = (counter_bottom + counter_top) / 2
+    bowl = spans(shape, middle, 1)
+    left, right = bowl[0][0], bowl[-1][1]
+    width = right - left
+    a_left, _, a_right, _ = shape_from_glyphs(glyphs, "a").bounds
+    target = (a_right - a_left) * settings["a_width_ratio"]
+    growth = min(settings["maximum_bowl_scale"], target / width) - 1
+    connector = font["OS/2"].sxHeight * settings["connector_lock"]
+
+    def enlarge(x, y):
+        progress = min(1, max(0, (y - connector) / (middle - connector)))
+        blend = progress**2 * (3 - 2 * progress)
+        # The ear follows the near edge of the scaled bowl without growing in length.
+        bowl_x = min(right, max(left, x))
+        return (otRound(x + growth * blend * (bowl_x - (left + right) / 2)),
+                otRound(y + growth * blend * (y - top)))
+
+    glyph = deepcopy(font["glyf"]["g"])
+    glyph.coordinates = GlyphCoordinates(enlarge(x, y) for x, y in glyph.coordinates)
+    install(font, "g", glyph, font["hmtx"]["g"][0])
+    for name in component_users(font, {"g"}):
+        refresh_bounds(font, name)
 
 
 def build_crossbar_letters(font, recipe):
