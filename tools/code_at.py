@@ -4,6 +4,7 @@ from fontTools.misc.transform import Transform
 from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
+from code_foundation import center
 from code_outlines import install, move_return
 from italic_returns import draw_segments, raw_outline, segments
 
@@ -34,6 +35,16 @@ def build_at(font, recipe):
     c_outline = move_return(c_edges[:6], shell.transformPoint)
     c_inside = move_return(c_edges[14:17], shell.transformPoint)
 
+    # Open the cavity toward the outer wall while keeping both tangency axes.
+    inner_left, inner_mid = c_inside[0].start
+    inner_floor_x, inner_floor = c_inside[-1].end
+    relief = 1 - settings["shell_stroke_scale"]
+    inner_sx = 1 + relief * (inner_left - shell_left) / (inner_floor_x - inner_left)
+    inner_sy = 1 + relief * (inner_floor - floor) / (inner_mid - inner_floor)
+    inner_wall = Transform(inner_sx, 0, 0, inner_sy,
+                           (1 - inner_sx) * inner_floor_x, (1 - inner_sy) * inner_mid)
+    c_inside = move_return(c_inside, inner_wall.transformPoint)
+
     pen = TTGlyphPen(None)
     pen.moveTo(a_edges[0].start)
     draw_segments(pen, a_edges[:9])
@@ -59,5 +70,9 @@ def build_at(font, recipe):
     pen.lineTo(a_edges[14].start)
     draw_segments(pen, a_edges[14:])
     pen.closePath()
-    a_counter.draw(TransformPen(pen, body))
+    counter_x, counter_y = center(a_counter.bounds)
+    counter_scale = settings["a_counter_scale"]
+    counter = body.transform(Transform(counter_scale, 0, 0, counter_scale,
+                                       (1 - counter_scale) * counter_x, (1 - counter_scale) * counter_y))
+    a_counter.draw(TransformPen(pen, counter))
     install(font, "at", pen.glyph(), cell)
