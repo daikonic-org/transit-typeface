@@ -9,6 +9,7 @@ import pathops
 
 from audit import shape_from_glyphs, spans
 from code_foundation import map_attachment_anchors, outline_bounds
+from italic_returns import lower_arc, raw_outline
 
 
 SYMBOLS = {
@@ -120,9 +121,36 @@ def inherit_width_scales(font, scales, followers):
             scales[name] = scales[followers[base]]
 
 
+def hook_curves(donor):
+    """Extract the inside and outside of an upright lower return."""
+    _, floor, _, top = donor.bounds
+    edges, (left, right) = lower_arc(donor, (floor + top) / 2)
+    inner_start = next(i for i, edge in enumerate(edges) if edge.end[0] > right)
+    inner_end = next(i for i in range(inner_start, len(edges))
+                     if edges[i].controls and edges[i].controls[-1][1] == edges[i].end[1])
+    outer_start = next(i for i in range(inner_end + 1, len(edges))
+                       if edges[i].start[1] == floor and edges[i].end[1] > floor)
+    outer_end = next(i for i in range(outer_start, len(edges)) if edges[i].end[0] == left)
+    return edges[inner_start:inner_end + 1], edges[outer_start:outer_end + 1]
+
+
+def draw_hook_curve(pen, edges, start, end):
+    """Rotate and fit a donor curve between the supplied horizontal and vertical joins."""
+    x, y = edges[0].start
+    far_x, far_y = edges[-1].end
+    sx, sy = (end[0] - start[0]) / (far_x - x), (end[1] - start[1]) / (far_y - y)
+
+    def fit(point):
+        return start[0] + (point[0] - x) * sx, start[1] + (point[1] - y) * sy
+
+    for edge in edges:
+        pen.qCurveTo(*map(fit, (*edge.controls, edge.end)))
+
+
 def i_outline(font, settings, cell, baseline):
     top = font["OS/2"].sxHeight
-    rebuilt_n = shape_from_glyphs(font.getGlyphSet(), "n")
+    glyphs = font.getGlyphSet()
+    rebuilt_n = shape_from_glyphs(glyphs, "n")
     left, right = spans(rebuilt_n, baseline + (top - baseline) / 3, 1)[0]
     thickness = right - left
     center = cell / 2 + settings["shaft_offset"]
@@ -130,12 +158,18 @@ def i_outline(font, settings, cell, baseline):
     bar = thickness * settings["bar_ratio"]
     flag_left = left - settings["left_flag"]
     foot_left, foot_right = left - settings["left_foot"], right + settings["right_foot"]
+    inner, outer = hook_curves(raw_outline(glyphs, settings["hook_donor"]))
+    radius = thickness * settings["inner_hook_ratio"]
+    inner_start, inner_end = (left, top - bar - radius), (left - radius, top - bar)
+    outer_start, outer_end = (left - thickness / 4, top), (right, top - 1.2 * bar)
     pen = TTGlyphPen(None)
     pen.moveTo((foot_left, baseline))
-    for point in ((foot_left, baseline + bar), (left, baseline + bar), (left, top - bar),
-                  (flag_left, top - bar), (flag_left, top), (left - thickness / 4, top)):
+    for point in ((foot_left, baseline + bar), (left, baseline + bar), inner_start):
         pen.lineTo(point)
-    pen.qCurveTo((right, top), (right, top - 1.2 * bar))
+    draw_hook_curve(pen, inner, inner_start, inner_end)
+    for point in ((flag_left, top - bar), (flag_left, top), outer_start):
+        pen.lineTo(point)
+    draw_hook_curve(pen, outer, outer_start, outer_end)
     for point in ((right, baseline + bar), (foot_right, baseline + bar), (foot_right, baseline)):
         pen.lineTo(point)
     pen.closePath()

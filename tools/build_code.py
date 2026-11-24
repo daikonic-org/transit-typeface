@@ -355,7 +355,7 @@ def main():
         letters_panel = output / "Code-Custom-Lowercase.svg"
         detail_comparison(candidate, reference, letters_panel, "Custom lowercase",
                           ((166, "Bowl width", "a s   a n"), (447, "Letter spacing", "banana"),
-                           (720, "Shaft, foot and marks", "i í ï in")),
+                           (720, "Hook donor and accented forms", "l i í ï in")),
                           "Published Code 1.042 above the candidate · a uses the width scale from s")
         panels.append(letters_panel)
     if args.render:

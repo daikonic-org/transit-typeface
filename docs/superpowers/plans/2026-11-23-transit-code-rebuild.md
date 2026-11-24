@@ -107,7 +107,7 @@ Add `tools/code_outlines.py` as the Code drawing stage. Reuse compatible constru
 
 The composed review builds `r`, `∀ ∃ ¬ ≠ ≤ ≥` before compiling the variable font. Run `.venv/bin/python tools/build_code.py --composed --output .build/code-from-sans/composed --render` for the alphabet and composed-glyph proofs. The comparison symbols use the foundation operators for this review and will pick up their revised proportions when those operators are rebuilt.
 
-The lowercase review adds the Code `i` with its shared dotless body and previews `a` using the calibrated width scale of `s`. The normal `m` and `w` keep their foundation drawings. Run `.venv/bin/python tools/build_code.py --letters --output .build/code-from-sans/custom-lowercase --render` for the alphabet and detail proofs.
+The lowercase review adds the Code `i` with its shared dotless body and both upper hook curves taken from the lower return of `l`. The approved `a` uses the calibrated width scale of `s`. The normal `m` and `w` keep their foundation drawings. Run `.venv/bin/python tools/build_code.py --letters --output .build/code-from-sans/custom-lowercase-rounded-hook --render` for the alphabet and detail proofs.
 
 **Review point**
 
