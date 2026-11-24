@@ -416,13 +416,13 @@ def main():
         detail_comparison(candidate, None, quote_panel, "Quotation marks",
                           ((166, "Straight quotes", "'a' \"b\""), (447, "Opening and closing", "‘a’ “b”"),
                            (720, "Low quotes", "‚a‘ „b“")),
-                          "Curly quotes reuse the comma outline at quote height")
+                          "Smaller straight quotes and a continuous outside curve on the shared comma outline")
         panels.append(quote_panel)
         comma_panel = output / "Code-Comma-and-Closing-Quote.svg"
         detail_comparison(candidate, None, comma_panel, "Comma and closing quote",
                           ((166, "Closing and low quotes", "’ ‚"), (447, "Comma and semicolon", "a,a;a"),
                            (720, "With the period and colon", "a.,;:a")),
-                          "The comma's tail curves directly into both vertices of the diamond crown")
+                          "One outside curve runs from the diamond's right vertex to the lower tail tip")
         panels.append(comma_panel)
     if args.render:
         for proof in panels:

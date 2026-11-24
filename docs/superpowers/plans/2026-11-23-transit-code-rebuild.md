@@ -125,7 +125,7 @@ Finish the non-math glyphs before the shared math and operator pass. Review the 
 
 The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks.
 
-The comma joins the shared diamond crown to a narrower curl from the Sans closing quote. One curve connects each side of the tail to its crown vertex. The closing and low quotes reuse the comma outline with their respective placements, and the opening quote takes a 180° rotation. The semicolon uses the same comma beneath its dot. Run `--letters --output .build/code-from-sans/shared-curly-quotes` for the punctuation proofs.
+The comma joins the shared diamond crown to a narrower curl from the Sans closing quote. One outside curve runs from the diamond’s right vertex to the lower tail tip, and the inner curve runs into the left vertex. The closing and low quotes reuse the comma outline with their respective placements, and the opening quote takes a 180° rotation. The semicolon uses the same comma beneath its dot. The straight quote is four units smaller in width and height. Run `--letters --output .build/code-from-sans/quote-tip-curves` for the punctuation proofs.
 
 **Review point**
 

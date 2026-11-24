@@ -58,14 +58,16 @@ def build_comma_forms(font, settings, cell, radius, period_y, upper_y):
     # Keep the donor curl below the straight sides of its diamond crown.
     curl = move_return(edges[apex + 2:] + edges[:apex - 2],
                        lambda point: (otRound(scale * (point[0] - tip_x) + dx), point[1] - shoulder_y))
-    right_x, right_y = curl[0].start
+    tip_edge = next(i for i, edge in enumerate(curl) if edge.operation == "lineTo")
+    tail_x, tail_y = curl[tip_edge].start
+    outer_x = curl[0].start[0]
     left_x, left_y = curl[-1].end
 
     pen = TTGlyphPen(None)
     pen.moveTo((-radius, 0))
     pen.lineTo((radius, 0))
-    pen.qCurveTo((right_x, right_x - radius), (right_x, right_y))
-    draw_segments(pen, curl)
+    pen.qCurveTo(((radius + outer_x) / 2, tail_y), (tail_x, tail_y))
+    draw_segments(pen, curl[tip_edge:])
     pen.qCurveTo((left_x, left_y / 2), (-radius, 0))
     pen.closePath()
     install(font, "comma.tail", pen.glyph(), 0)
@@ -109,7 +111,8 @@ def build_quotes(font, recipe, radius):
     glyf = font["glyf"]
     _, bottom, _, top = outline_bounds(glyf["comma"], glyf)
     low_shift = settings["low_quote_top"] - cap
-    resize_quote(font, "quotesingle", cell, radius, cap, settings["quote_height"])
+    reduction = settings["straight_quote_size_reduction"]
+    resize_quote(font, "quotesingle", cell, radius - reduction / 2, cap, settings["quote_height"] - reduction)
     install_components(font, "quoteright", [("comma", (1, 0, 0, 1, 0, cap - top))], cell)
     install_components(font, "quoteleft", [("comma", (-1, 0, 0, -1, cell, cap + bottom))], cell)
     for single, double in (("quotesingle", "quotedbl"), ("quoteleft", "quotedblleft"),
