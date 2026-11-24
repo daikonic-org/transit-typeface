@@ -17,6 +17,7 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_at import build_at
+from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
@@ -69,6 +70,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             build_distinct_figures(master, recipe)
             build_horizontal_punctuation(master, recipe)
             build_diamond_punctuation(master, recipe)
+            build_delimiters(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -425,11 +427,17 @@ def main():
                           "One outside curve runs from the diamond's right vertex to the lower tail tip")
         panels.append(comma_panel)
         compound_panel = output / "Code-Compound-Punctuation.svg"
-        detail_comparison(candidate, None, compound_panel, "Compound punctuation",
-                          ((166, "Double marks", "a‼a a⁇a"), (447, "Mixed marks", "a⁈a a⁉a"),
-                           (720, "In a sentence", "What⁈")),
-                          "Two marks in one cell, with the shared punctuation diamond")
+        detail_comparison(candidate, reference, compound_panel, "Sentence punctuation",
+                          ((166, "Single marks", "a!a a?a"), (447, "Repeated marks", "!! ‼ ?? ⁇"),
+                           (720, "Mixed marks", "?! ⁈ !? ⁉")),
+                          "Published Code 1.042 above the candidate · typed pairs followed by one-cell forms")
         panels.append(compound_panel)
+        delimiters_panel = output / "Code-Delimiters.svg"
+        detail_comparison(candidate, reference, delimiters_panel, "Delimiters",
+                          ((166, "Parentheses", "(map(x))"), (447, "Brackets", "[a[b]]"),
+                           (720, "Braces", "{a{b}}")),
+                          "Published Code 1.042 above the candidate · base outlines")
+        panels.append(delimiters_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

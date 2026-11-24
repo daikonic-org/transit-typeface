@@ -88,6 +88,12 @@
     "low_quote_top": 76,
     "quote_pair_gap": 24
   },
+  "delimiters_review": {
+    "insets": {"paren": 18, "bracket": 28, "brace": 30},
+    "bracket_arm": 28,
+    "brace_nose_reach": 72,
+    "brace_nose_weight": 0.72
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",

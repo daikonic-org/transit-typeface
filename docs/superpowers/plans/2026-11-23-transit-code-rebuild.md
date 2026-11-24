@@ -129,6 +129,8 @@ The comma joins the shared diamond crown to a narrower curl from the Sans closin
 
 The compound sentence marks combine the single exclamation mark and a stroke-compensated compact question mark. Each pair uses the full punctuation diamond and fits one cell. Run `--letters --output .build/code-from-sans/compound-punctuation` for the proof.
 
+Parentheses, brackets, and braces use the current Sans stem weights, the Code vertical center, and inward placement. The brackets have extended arms. The brace pinch follows the donor tangents into a flat-ended nose. Each closing mark reflects its opener exactly. Run `--letters --output .build/code-from-sans/delimiters` for the comparisons with 1.042. The sentence punctuation proof includes the typed pairs and their one-cell forms.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.
