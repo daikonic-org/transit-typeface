@@ -405,7 +405,7 @@ def main():
         panels.append(at_panel)
         diamonds_panel = output / "Code-Diamond-Punctuation.svg"
         detail_comparison(candidate, reference, diamonds_panel, "Diamond punctuation",
-                          ((166, "Period, colon, semicolon", "a.a:a;a"), (447, "Ellipsis and middle dot", "a…a·a"),
+                          ((166, "Comma, semicolon, period, colon", "a,a;a.a:a"), (447, "Ellipsis and middle dot", "a…a·a"),
                            (720, "Sentence marks", "¿Qué?!")))
         panels.append(diamonds_panel)
     if args.render:

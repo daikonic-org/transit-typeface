@@ -38,6 +38,32 @@ def sentence_mark(font, name, radius, clearance, cell):
                                     dot_at(old_dot.x + shift_x, old_dot.y)], cell)
 
 
+def build_comma_forms(font, settings, cell, baseline, period_top, upper_y, radius):
+    glyf = font["glyf"]
+    comma, old_dot = glyf["semicolon"].components
+    name = comma.glyphName
+    ink = glyf[name]
+    left, _, right, top = outline_bounds(ink, glyf)
+    old_center = (left + right) / 2
+    scale = settings["comma_scale"]
+    top_shift = min(0, period_top - (baseline + (top - baseline) * scale))
+
+    def move_x(x):
+        return otRound(cell / 2 + (x - old_center) * scale)
+
+    for index, (x, y) in enumerate(ink.coordinates):
+        ink.coordinates[index] = (move_x(x), otRound(baseline + (y - baseline) * scale + top_shift))
+    refresh_bounds(font, name)
+
+    comma_left, _, comma_right, _ = outline_bounds(ink, glyf)
+    dot_x = move_x(old_dot.x - comma.x) + comma.x
+    left = min(comma_left + comma.x, dot_x - radius)
+    right = max(comma_right + comma.x, dot_x + radius)
+    shift = otRound((cell - left - right) / 2)
+    install_components(font, "semicolon", [(name, (1, 0, 0, 1, comma.x + shift, comma.y)),
+                                          dot_at(dot_x + shift, upper_y)], cell)
+
+
 def build_diamond_punctuation(font, recipe):
     settings = recipe["diamond_punctuation_review"]
     config = recipe["alphabet_review"]
@@ -55,13 +81,7 @@ def build_diamond_punctuation(font, recipe):
     upper_y = settings["colon_center"] + half_gap
     install_components(font, "colon", [dot_at(cell / 2, lower_y), dot_at(cell / 2, upper_y)], cell)
 
-    comma, old_dot = glyf["semicolon"].components
-    comma_left, _, comma_right, _ = outline_bounds(glyf[comma.glyphName], glyf)
-    left = min(comma_left + comma.x, old_dot.x - radius)
-    right = max(comma_right + comma.x, old_dot.x + radius)
-    shift = otRound((cell - left - right) / 2)
-    install_components(font, "semicolon", [(comma.glyphName, (1, 0, 0, 1, comma.x + shift, comma.y)),
-                                          dot_at(old_dot.x + shift, upper_y)], cell)
+    build_comma_forms(font, settings, cell, config["baseline"], period_y + radius, upper_y, radius)
 
     dots = [dot_at(cell * (i + 0.5) / 3, period_y, settings["ellipsis_dot_x_scale"]) for i in range(3)]
     install_components(font, "ellipsis", dots, cell)
