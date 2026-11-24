@@ -1,0 +1,118 @@
+{
+  "fonts": {
+    "sans": "releases/1.0.0/sans/VF/DaikonicTransitSans",
+    "system": "releases/1.0.0/system/VF/DaikonicTransitSystem",
+    "code": "releases/2026.11.20/code/VF/DaikonicTransitCode"
+  },
+  "anchor": {
+    "sans_weight": 400,
+    "code_weight": 500
+  },
+  "alphabet_review": {
+    "weights": {"350": 278, "400": 343, "500": 400},
+    "units_per_em": 1043,
+    "cell": 600,
+    "side_margin": 28,
+    "baseline": 0,
+    "cap_height": 676,
+    "x_height": 506,
+    "lowercase_x_scale": 1.04,
+    "ink_side_margin": 14,
+    "stem_width_scale": 1.055,
+    "width_class_preview": "s",
+    "width_classes": [
+      {"name": "Stem", "below": 200, "gap_share": 0},
+      {"name": "Narrow", "below": 390, "gap_share": 0.27},
+      {"name": "Compact", "below": 430, "gap_share": 0.235},
+      {"name": "Round", "at_least": 470, "below": 510, "curved": true, "gap_share": 1, "ink_target": 536},
+      {"name": "Standard", "below": 510, "gap_share": 0.82},
+      {"name": "Wide", "below": null, "gap_share": 1, "ink_target": 538}
+    ],
+    "line_metrics": {"ascent": 950, "descent": -253}
+  },
+  "sample_coordinates": {
+    "wght": [350, 375, 400, 450, 500],
+    "wdth": [94, 97, 100, 104, 108]
+  },
+  "constructed_forms": {
+    "r": {"parts": ["n"], "operation": "Reuse the stem and shoulder, then construct the Code r terminal.", "source": "Approved rebuild direction"},
+    "universal": {"parts": ["A"], "operation": "Rotate A by 180 degrees in the Code cell.", "source": "tools/code_logic_symbols.py"},
+    "existential": {"parts": ["E"], "operation": "Reflect E horizontally in the Code cell.", "source": "tools/code_logic_symbols.py"},
+    "logicalnot": {"parts": ["equal"], "operation": "Use the equals bar extents and thickness for the hooked rule.", "source": "tools/code_logic_symbols.py"},
+    "notequal": {"parts": ["equal", "exclam_equal.liga"], "operation": "Derive the slash and bars from the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"},
+    "lessequal": {"parts": ["less_equal.liga"], "operation": "Center the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"},
+    "greaterequal": {"parts": ["greater_equal.liga"], "operation": "Center the comparison drawing in a single cell.", "source": "tools/code_glyph_names.py"}
+  },
+  "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
+  "construction_sources": {
+    "m": "tools/code_receiver_shapes.py:fit_m",
+    "w": "tools/code_receiver_shapes.py:fit_w",
+    "i": "tools/code_i_baseline.py:align_i_baseline",
+    "at": "tools/code_at_c_shell_study.py:construction",
+    "k": "tools/code_hyphen_k_study.py",
+    "hyphen": "tools/code_hyphen_k_study.py",
+    "underscore": "tools/code_underscore_weight_study.py",
+    "ampersand": "tools/code_hairline_toggle.py:position_lifetime_ampersand",
+    "comma": "tools/code_punctuation_size.py:refine",
+    "semicolon": "tools/code_punctuation_size.py:refine",
+    "parenleft": "tools/code_delimiter_study.py",
+    "parenright": "tools/code_delimiter_study.py",
+    "bracketleft": "tools/code_delimiter_study.py",
+    "bracketright": "tools/code_delimiter_study.py",
+    "braceleft": "tools/code_delimiter_study.py",
+    "braceright": "tools/code_delimiter_study.py"
+  },
+  "generator_sources": {
+    "Core grid and weight": ["docs/scaling-lineage.md", "Historical build_600_family.py:make_masters", "Historical build_cell_trials.py:raw_masters"],
+    "Custom letters and variants": ["tools/code_receiver_shapes.py:build_receivers", "tools/code_i_baseline.py:align_i_baseline", "tools/italic_companions.py"],
+    "Accents and marks": ["tools/font_feature_tools.py:compose", "tools/check_layout_optical.py"],
+    "Operators and repeated stems": ["tools/code_compact_operators.py:build", "tools/code_logic_symbols.py", "tools/code_glyph_names.py:add_unicode_symbols", "tools/repeated_stems.py"],
+    "Contextual families": ["tools/code_angle_pairs.py", "tools/code_structural_fit.py", "tools/code_lifetime_hook.py", "tools/code_logic_shortcuts.py", "tools/code_texture_healing.py", "tools/code_hairline_toggle.py"],
+    "Width": ["tools/transit_width_trial.py:add_width", "tools/code_weight_width_trial.py"]
+  },
+  "arrow_sequences": {
+    "hyphen_greater.liga": "→",
+    "hyphen_greater_greater.liga": "→",
+    "less_hyphen.liga": "←",
+    "less_less_hyphen.liga": "←",
+    "equal_greater.liga": "⇒"
+  },
+  "generic_state_parts": {
+    "shortLeft": "less",
+    "shortRight": "greater",
+    "tallLeft": "less.generic",
+    "tallRight": "greater.generic",
+    "compactLeft": "code.lifetimeOpen"
+  },
+  "features": {
+    "ccmp": {"activation": "shaper default", "texts": ["á á", "í ĵ", "ạ́ ñ"]},
+    "calt": {
+      "activation": "shaper default",
+      "texts": ["ke Ke KE vi il", "a < b > c", "Vec<vec<a>>", "Vec<T", "T>", "a<>b Vec<>", "<[T]> [<T>]", "::<T> ::<_> ::<[_]> ::<", "<'_> <_> <[_]>", "&'a 'static 'a' '_'", "a & b &'a'", "|_| |w| |K| [K] {K} a | b", "@@ @@@", "\\forall \\exists \\not \\box \\diamond", "\\forall_more \\\\forall"]
+    },
+    "liga": {
+      "activation": "shaper default",
+      "texts": ["ff tt ll", "x -> y ->> z <- w <<- u => v", "x::item?.val!.x // ok", "x == y === z != w !== u <= v >= t", "|| &&", "... .. .= ..=", "${1} $[2] $(x)", ":= |= |-", "# ## ### #### ##### ######"]
+    },
+    "kern": {"activation": "shaper default", "texts": ["_m _D _M _p _x _A _H _K _N _X _Z", "@f @j", "_b x m f"]},
+    "mark": {"activation": "shaper default", "texts": ["á î ñ Á", "ạ́ ĵ", "q́"]},
+    "mkmk": {"activation": "shaper default", "texts": ["ạ́ ạ́ î́"]},
+    "ss02": {"activation": "opt-in Logic", "texts": ["<> [] [<>] <[]>", "!p !!p", "a!=b a!==b a!.b panic!() '!' \"!\"", "∀x ∃y ¬p"]},
+    "ss03": {"activation": "explicit Texture Healing enable", "texts": ["film im mi mwi .w."]},
+    "ss04": {"activation": "Texture Healing opt-out", "texts": ["film im mi mwi .w."]},
+    "ss05": {"activation": "explicit Hairlining enable", "texts": ["(i) [K] {K} |w| Vec<T>", "&'a 'static 'a'", "path::item::<T>"]},
+    "ss06": {"activation": "opt-in Loose Equality", "texts": ["x == y != z === w !== u", "a>=b"]},
+    "ss07": {"activation": "Hairlining opt-out", "texts": ["(i) [K] {K} |w| Vec<T>", "&'a 'static 'a'", "path::item::<T>"]}
+  },
+  "interactions": [
+    {"text": "film .w. (i) [K]", "flags": [{"calt": false}, {"calt": false, "ss03": true}, {"calt": false, "ss05": true}]},
+    {"text": "film .w. (i) [K]", "flags": [{}, {"ss03": true, "ss04": true}, {"ss05": true, "ss07": true}]},
+    {"text": "film (i) &'a Vec<T>", "flags": [{}, {"ss04": true}, {"ss07": true}, {"ss04": true, "ss07": true}]},
+    {"text": "[<>] x==y x!=y a!.b", "flags": [{}, {"ss02": true}, {"ss06": true}, {"ss02": true, "ss06": true}]},
+    {"text": "ke Vec<vec<a>> :: & 'a", "flags": [{}, {"calt": false}, {"liga": false}, {"calt": false, "liga": false}]}
+  ],
+  "spacing_witnesses": {
+    "upright": {"feature": "calt", "texts": ["ke", "Ke", "KE", "vi", "il"]},
+    "italic": {"feature": "kern", "texts": ["_m", "_p", "_Z", "@f", "_b"]}
+  }
+}

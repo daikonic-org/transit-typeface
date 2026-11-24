@@ -10,7 +10,7 @@ from fontTools.varLib.varStore import OnlineVarStoreBuilder
 from font_feature_tools import append_variation_rows, master_locations
 
 
-def set_vertical_metrics(*fonts):
+def set_vertical_metrics(*fonts, minimum_ascent=0, maximum_descent=0):
     """Give upright and italic the same bounds using the System ink margin."""
     bottom, top = 0, 0
     sampled_locations = 0
@@ -26,7 +26,8 @@ def set_vertical_metrics(*fonts):
                     bottom = min(bottom, pen.bounds[1])
                     top = max(top, pen.bounds[3])
     margin = 12
-    ascent, descent = ceil(top) + margin, floor(bottom) - margin
+    ascent = max(minimum_ascent, ceil(top) + margin)
+    descent = min(maximum_descent, floor(bottom) - margin)
     for font in fonts:
         # The typographic metrics retain System's established line rhythm.
         font["hhea"].ascent = font["OS/2"].usWinAscent = ascent
