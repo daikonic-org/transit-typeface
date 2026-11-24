@@ -491,6 +491,34 @@ def build_distinct_figures(font, recipe):
     ], cell)
 
 
+def build_horizontal_punctuation(font, recipe):
+    """Draw a baseline underline and a wider hyphen on the math axis."""
+    settings = recipe["horizontal_punctuation_review"]
+    config = recipe["alphabet_review"]
+    cell = config["cell"]
+    baseline = config["baseline"]
+    glyphs = font.getGlyphSet()
+    stem_left, stem_right = spans(shape_from_glyphs(glyphs, "H"), config["cap_height"] / 4, 1)[0]
+    underline_weight = settings["underscore_weight_ratio"]
+    hyphen_height = otRound((stem_right - stem_left) / underline_weight)
+    underscore_height = otRound(hyphen_height * underline_weight)
+    left, _, right, _ = shape_from_glyphs(glyphs, "hyphen").bounds
+    hyphen_width = otRound((right - left) * settings["hyphen_width_ratio"])
+    hyphen_left = (cell - hyphen_width) // 2
+    _, axis = center(shape_from_glyphs(glyphs, "minus").bounds)
+    hyphen_bottom = otRound(axis - hyphen_height / 2)
+
+    retain_joined_donors(font, {"hyphen"})
+    for name, left, bottom, width, height in (
+        ("underscore", 0, baseline, cell, underscore_height),
+        ("hyphen", hyphen_left, hyphen_bottom, hyphen_width, hyphen_height),
+    ):
+        install_outline(font, name, polygon((
+            (left, bottom), (left, bottom + height),
+            (left + width, bottom + height), (left + width, bottom),
+        )), cell)
+
+
 def build_composed(font, recipe):
     """Construct each review glyph before variable compilation."""
     metrics = font["OS/2"]

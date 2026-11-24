@@ -61,6 +61,10 @@
     "flag_top_stem_ratio": 0.22,
     "zero_diamond_scale": 1.28
   },
+  "horizontal_punctuation_review": {
+    "hyphen_width_ratio": 1.131578947368421,
+    "underscore_weight_ratio": 1.2
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",

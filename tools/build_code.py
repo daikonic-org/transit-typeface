@@ -19,7 +19,7 @@ from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
-    inherit_width_scales,
+    build_horizontal_punctuation, inherit_width_scales,
 )
 from code_weight_width_trial import name_trial
 from derive_weights import topology
@@ -63,6 +63,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             build_crossbar_letters(master, recipe)
             build_g(master, recipe)
             build_distinct_figures(master, recipe)
+            build_horizontal_punctuation(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -387,6 +388,11 @@ def main():
                           ((166, "Narrow letters and one", "I l 1 i"), (447, "Zero and capital O", "0 O 00"),
                            (720, "In an identifier", "IO10l")))
         panels.append(figures_panel)
+        punctuation_panel = output / "Code-Underscore-and-Hyphen.svg"
+        detail_comparison(candidate, reference, punctuation_panel, "Underscore and hyphen",
+                          ((166, "Inline underscore", "snake_x"), (447, "Adjacent underscores", "__init__"),
+                           (720, "Hyphen and minus", "x-y x−y")))
+        panels.append(punctuation_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)
