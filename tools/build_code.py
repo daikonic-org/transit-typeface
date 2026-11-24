@@ -376,7 +376,7 @@ def main():
         bowl_panel = output / "Code-G-Bowl.svg"
         detail_comparison(candidate, reference, bowl_panel, "Lowercase g",
                           ((166, "Upper bowl", "a g o"), (447, "Accents", "g ğ ġ"),
-                           (720, "In text", "grading")))
+                           (720, "g and y in text", "gray day")))
         panels.append(bowl_panel)
     if args.render:
         for proof in panels:
