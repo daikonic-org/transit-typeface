@@ -127,7 +127,7 @@ The diamond punctuation builder derives one larger dot from the Sans diamond. It
 
 The quotation mark builder sizes each Sans-derived crown to the shared Code diamond and fits the tail to the quote height. The double and low quotes reuse those outlines. Run `--letters --output .build/code-from-sans/quotation-marks` for the standalone proof.
 
-The comma joins the shared period diamond to the Sans-derived closing-quote tail. The tail keeps its height and fits horizontally within the diamond. The semicolon reuses the comma with its dot on the same axis. Run `--letters --output .build/code-from-sans/comma-diamond-width` for the standalone proof.
+The comma joins the shared quote crown to a narrower copy of the Sans-derived tail. One curve connects each side of the tail to its crown vertex. The semicolon reuses the comma with its dot on the same axis. Run `--letters --output .build/code-from-sans/comma-tail-joins` for the standalone proof.
 
 **Review point**
 

@@ -3,11 +3,12 @@
 from copy import deepcopy
 
 from fontTools.misc.roundTools import otRound
+from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 
 from code_foundation import center, outline_bounds
-from code_outlines import install, install_components, install_outline, polygon, refresh_bounds
-from italic_returns import raw_outline
+from code_outlines import install, install_components, install_outline, move_return, polygon, refresh_bounds
+from italic_returns import draw_segments, raw_outline, segments
 from repeated_stems import horizontal_extent
 
 
@@ -45,14 +46,29 @@ def sentence_mark(font, name, radius, clearance, cell):
                                     dot_at(old_dot.x + shift_x, old_dot.y)], cell)
 
 
-def build_comma_forms(font, settings, cell, period_y, upper_y):
+def build_comma_forms(font, settings, cell, radius, period_y, upper_y):
     axis = otRound(cell / 2)
     glyf = font["glyf"]
     tail_center, _ = center(outline_bounds(glyf[QUOTE_TAIL], glyf))
     scale = settings["comma_tail_scale_x"]
+    dx = otRound(-scale * tail_center)
+    donor, = raw_outline(font.getGlyphSet(), QUOTE_TAIL).contours
+    edges = segments(donor)
+    seam = next(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == 0)
+    curl = move_return(edges[seam + 2:] + edges[:seam - 1], lambda point: (otRound(scale * point[0] + dx), point[1]))
+    right_x, right_y = curl[0].start
+    left_x, left_y = curl[-1].end
+
+    pen = TTGlyphPen(None)
+    pen.moveTo((-radius, 0))
+    pen.lineTo((radius, 0))
+    pen.qCurveTo((right_x, right_x - radius), (right_x, right_y))
+    draw_segments(pen, curl)
+    pen.qCurveTo((left_x, left_y / 2), (-radius, 0))
+    pen.closePath()
+    install(font, "comma.tail", pen.glyph(), 0)
     install_components(font, "comma", [
-        (QUOTE_TAIL, (scale, 0, 0, 1, otRound(axis - scale * tail_center), period_y)),
-        dot_at(axis, period_y),
+        (name, (1, 0, 0, 1, axis, period_y)) for name in ("comma.tail", CROWN)
     ], cell)
     install_components(font, "semicolon", [("comma", (1, 0, 0, 1, 0, 0)), dot_at(axis, upper_y)], cell)
 
@@ -143,7 +159,7 @@ def build_diamond_punctuation(font, recipe):
     install_components(font, "colon", [dot_at(cell / 2, lower_y), dot_at(cell / 2, upper_y)], cell)
 
     build_quotes(font, recipe, radius)
-    build_comma_forms(font, settings, cell, period_y, upper_y)
+    build_comma_forms(font, settings, cell, radius, period_y, upper_y)
 
     dots = [dot_at(cell * (i + 0.5) / 3, period_y, settings["ellipsis_dot_x_scale"]) for i in range(3)]
     install_components(font, "ellipsis", dots, cell)
