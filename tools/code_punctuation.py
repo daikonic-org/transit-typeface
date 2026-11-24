@@ -1,10 +1,7 @@
 """Build the primary Code punctuation from the shared Sans diamond."""
 
-from copy import deepcopy
-
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
-from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 
 from code_foundation import center, outline_bounds
 from code_outlines import install, install_components, install_outline, move_return, polygon, refresh_bounds
@@ -14,7 +11,6 @@ from repeated_stems import horizontal_extent
 
 DOT = "diamond.punctuation"
 CROWN = "diamond.punctuation.crown"
-QUOTE_TAIL = "quoteright.tail"
 
 
 def dot_at(x, y, sx=1):
@@ -49,13 +45,19 @@ def sentence_mark(font, name, radius, clearance, cell):
 def build_comma_forms(font, settings, cell, radius, period_y, upper_y):
     axis = otRound(cell / 2)
     glyf = font["glyf"]
-    tail_center, _ = center(outline_bounds(glyf[QUOTE_TAIL], glyf))
-    scale = settings["comma_tail_scale_x"]
-    dx = otRound(-scale * tail_center)
-    donor, = raw_outline(font.getGlyphSet(), QUOTE_TAIL).contours
+    cap = font["OS/2"].sCapHeight
+    resize_quote(font, "quoteright", cell, radius, cap, settings["quote_height"])
+    donor, = raw_outline(font.getGlyphSet(), "quoteright").contours
     edges = segments(donor)
-    seam = next(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == 0)
-    curl = move_return(edges[seam + 2:] + edges[:seam - 1], lambda point: (otRound(scale * point[0] + dx), point[1]))
+    apex = next(i for i, edge in enumerate(edges) if edge.start[1] == cap)
+    tip_x, _ = edges[apex].start
+    shoulder_y = cap - radius
+    quote_center, _ = center(outline_bounds(glyf["quoteright"], glyf))
+    scale = settings["comma_tail_scale_x"]
+    dx = otRound(scale * (tip_x - quote_center))
+    # Keep the donor curl below the straight sides of its diamond crown.
+    curl = move_return(edges[apex + 2:] + edges[:apex - 2],
+                       lambda point: (otRound(scale * (point[0] - tip_x) + dx), point[1] - shoulder_y))
     right_x, right_y = curl[0].start
     left_x, left_y = curl[-1].end
 
@@ -67,6 +69,7 @@ def build_comma_forms(font, settings, cell, radius, period_y, upper_y):
     pen.qCurveTo((left_x, left_y / 2), (-radius, 0))
     pen.closePath()
     install(font, "comma.tail", pen.glyph(), 0)
+    install_outline(font, CROWN, polygon(((-radius, 0), (0, radius), (radius, 0))), 0)
     install_components(font, "comma", [
         (name, (1, 0, 0, 1, axis, period_y)) for name in ("comma.tail", CROWN)
     ], cell)
@@ -78,64 +81,45 @@ def resize_quote(font, name, cell, radius, cap, height):
     glyf = font["glyf"]
     ink = glyf[name]
     left, bottom, right, top = outline_bounds(ink, glyf)
-    direction = 1 if name == "quoteleft" else -1
-    tip_y = bottom if direction == 1 else top
-    tip = next(i for i, (_, y) in enumerate(ink.coordinates) if y == tip_y)
+    tip = next(i for i, (_, y) in enumerate(ink.coordinates) if y == top)
     before, after = ink.coordinates[tip - 1], ink.coordinates[(tip + 1) % len(ink.coordinates)]
-    crown_depth = abs((before[1] + after[1]) / 2 - tip_y)
+    crown_depth = top - (before[1] + after[1]) / 2
     scale = 2 * radius / abs(after[0] - before[0])
     tail_scale = (height - radius) / (top - bottom - crown_depth)
-    target_y = cap - height if direction == 1 else cap
     source_center = (left + right) / 2
     for i, (x, y) in enumerate(ink.coordinates):
-        depth = direction * (y - tip_y)
+        depth = top - y
         scaled = min(crown_depth, depth) * radius / crown_depth
         scaled += max(0, depth - crown_depth) * tail_scale
         ink.coordinates[i] = (otRound(cell / 2 + (x - source_center) * scale),
-                              otRound(target_y + direction * scaled))
+                              otRound(cap - scaled))
 
     apex_x = ink.coordinates[tip][0]
-    shoulder_y = target_y + direction * radius
+    shoulder_y = cap - radius
     for i, point in ((tip - 1, before), ((tip + 1) % len(ink.coordinates), after)):
         x = apex_x - radius if point[0] < (before[0] + after[0]) / 2 else apex_x + radius
         ink.coordinates[i] = (x, shoulder_y)
     refresh_bounds(font, name)
 
 
-def share_closing_quote_parts(font, cell, radius):
-    """Keep the closing quote's silhouette and expose its tail for the comma."""
-    tail = deepcopy(font["glyf"]["quoteright"])
-    apex = max(range(len(tail.coordinates)), key=lambda i: tail.coordinates[i][1])
-    axis, top = tail.coordinates[apex]
-    shoulder = top - radius
-    points = list(tail.coordinates)
-    points.pop(apex)
-    tail.coordinates = GlyphCoordinates((x - axis, y - shoulder) for x, y in points)
-    del tail.flags[apex]
-    tail.endPtsOfContours[0] -= 1
-    install(font, QUOTE_TAIL, tail, 0)
-    install_outline(font, CROWN, polygon(((-radius, 0), (0, radius), (radius, 0))), 0)
-    install_components(font, "quoteright", [
-        (name, (1, 0, 0, 1, axis, shoulder)) for name in (QUOTE_TAIL, CROWN)
-    ], cell)
-
-
 def build_quotes(font, recipe, radius):
     settings = recipe["diamond_punctuation_review"]
     cell = recipe["alphabet_review"]["cell"]
     cap = font["OS/2"].sCapHeight
+    glyf = font["glyf"]
+    _, bottom, _, top = outline_bounds(glyf["comma"], glyf)
     low_shift = settings["low_quote_top"] - cap
+    resize_quote(font, "quotesingle", cell, radius, cap, settings["quote_height"])
+    install_components(font, "quoteright", [("comma", (1, 0, 0, 1, 0, cap - top))], cell)
+    install_components(font, "quoteleft", [("comma", (-1, 0, 0, -1, cell, cap + bottom))], cell)
     for single, double in (("quotesingle", "quotedbl"), ("quoteleft", "quotedblleft"),
                            ("quoteright", "quotedblright")):
-        resize_quote(font, single, cell, radius, cap, settings["quote_height"])
         outline = raw_outline(font.getGlyphSet(), single)
         separation = horizontal_extent(outline) + settings["quote_pair_gap"]
         mid, _ = center(outline.bounds)
         positions = [otRound((cell + direction * separation) / 2 - mid) for direction in (-1, 1)]
         parts = [(single, (1, 0, 0, 1, x, 0)) for x in positions]
         install_components(font, double, parts, cell)
-    share_closing_quote_parts(font, cell, radius)
-    refresh_bounds(font, "quotedblright")
     install_components(font, "quotesinglbase", [("quoteright", (1, 0, 0, 1, 0, low_shift))], cell)
     install_components(font, "quotedblbase", [("quotedblright", (1, 0, 0, 1, 0, low_shift))], cell)
 
@@ -158,8 +142,8 @@ def build_diamond_punctuation(font, recipe):
     upper_y = settings["colon_center"] + half_gap
     install_components(font, "colon", [dot_at(cell / 2, lower_y), dot_at(cell / 2, upper_y)], cell)
 
-    build_quotes(font, recipe, radius)
     build_comma_forms(font, settings, cell, radius, period_y, upper_y)
+    build_quotes(font, recipe, radius)
 
     dots = [dot_at(cell * (i + 0.5) / 3, period_y, settings["ellipsis_dot_x_scale"]) for i in range(3)]
     install_components(font, "ellipsis", dots, cell)

@@ -416,7 +416,7 @@ def main():
         detail_comparison(candidate, None, quote_panel, "Quotation marks",
                           ((166, "Straight quotes", "'a' \"b\""), (447, "Opening and closing", "‘a’ “b”"),
                            (720, "Low quotes", "‚a‘ „b“")),
-                          "Sans-derived forms with tips sized to the shared punctuation diamond")
+                          "Curly quotes reuse the comma outline at quote height")
         panels.append(quote_panel)
         comma_panel = output / "Code-Comma-and-Closing-Quote.svg"
         detail_comparison(candidate, None, comma_panel, "Comma and closing quote",
