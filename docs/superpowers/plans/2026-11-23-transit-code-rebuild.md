@@ -107,6 +107,8 @@ Add `tools/code_outlines.py` as the Code drawing stage. Reuse compatible constru
 
 The composed review builds `r`, `∀ ∃ ¬ ≠ ≤ ≥` before compiling the variable font. Run `.venv/bin/python tools/build_code.py --composed --output .build/code-from-sans/composed --render` for the alphabet and composed-glyph proofs. The comparison symbols use the foundation operators for this review and will pick up their revised proportions when those operators are rebuilt.
 
+The lowercase review adds the Code `i` with its shared dotless body and previews `a` using the calibrated width scale of `s`. The normal `m` and `w` keep their foundation drawings. Run `.venv/bin/python tools/build_code.py --letters --output .build/code-from-sans/custom-lowercase --render` for the alphabet and detail proofs.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

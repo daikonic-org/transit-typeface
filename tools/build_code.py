@@ -17,7 +17,7 @@ from audit import shape_from_glyphs
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
-from code_outlines import SYMBOLS, build_composed
+from code_outlines import SYMBOLS, build_composed, build_custom_letters, inherit_width_scales
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -30,27 +30,35 @@ WEIGHTS = {350: "Book", 400: "Regular", 500: "Medium"}
 FEATURES = {"calt": False, "kern": False, "liga": False}
 
 
-def alphabet_font(source, recipe, *, composed=False):
+def alphabet_font(source, recipe, *, stage="Alphabet"):
     config = recipe["alphabet_review"]
     anchor = recipe["anchor"]
     weights = {int(weight): value for weight, value in config["weights"].items()}
     assert weights[anchor["code_weight"]] == anchor["sans_weight"]
     assert list(weights) == list(WEIGHTS)
-    stage = "Composed" if composed else "Alphabet"
     family = f"Daikonic Transit Code {stage} Review"
 
     masters = {weight: build_master(source, weights[weight], weight, config) for weight in WEIGHTS}
     scales, stems, width_report = width_class_scales(masters, recipe)
-    if composed:
+    if stage != "Alphabet":
         width_report["deferred"] = width_report["deferred"].replace("r", "")
+    if stage == "Letters":
+        letters = recipe["custom_lowercase_review"]
+        followers = letters["width_followers"]
+        inherit_width_scales(masters[400], scales, followers)
+        width_report["followers"] = followers
+        finished = set(letters["accepted_foundation"]) | set(followers) | {"i"}
+        width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
     for weight, style in WEIGHTS.items():
         master = masters[weight]
         scale_ink_width(master, scales, stems[weight])
-        if composed:
+        if stage != "Alphabet":
             build_composed(master, recipe)
+        if stage == "Letters":
+            build_custom_letters(master, recipe)
         master["name"].setName(f"Version 0.100; Code {stage.lower()} review", 5, 3, 1, 0x409)
         name_trial(master, family, weight_style=style)
         location = {"Weight": weight}
@@ -264,17 +272,15 @@ def write_comparison(output, width, height, rows, sheets):
     )
 
 
-def composed_comparison(candidate, reference, output):
+def detail_comparison(candidate, reference, output, title, samples, subtitle="Published Code 1.042 above the candidate"):
     width, height = 1050, 744
     sheets = [Panel("released", {"font": str(reference.resolve())}),
               Panel("candidate", {"font": str(candidate.resolve())})]
     rows = [
         f'<rect width="{width}" height="{height}" fill="#eaf1f0"/>',
-        '<text x="36" y="46" font-size="31" font-weight="700">Transit Code · Composed glyphs</text>',
-        '<text x="37" y="74" font-size="15" fill="#415d62">Published Code 1.042 above the candidate</text>',
+        f'<text x="36" y="46" font-size="31" font-weight="700">Transit Code · {title}</text>',
+        f'<text x="37" y="74" font-size="15" fill="#415d62">{subtitle}</text>',
     ]
-    samples = ((166, "Stem and shoulder", "n r   ŕ ř"), (447, "Quantifiers", "A ∀   E ∃"),
-               (720, "Operators", "= ¬ ≠ ≤ ≥"))
     for index, (weight, style) in enumerate(WEIGHTS.items()):
         y = 101 + index * 207
         rows.extend((
@@ -294,7 +300,9 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--composed", action="store_true", help="also build the donor-derived review glyphs")
+    stages = parser.add_mutually_exclusive_group()
+    stages.add_argument("--composed", action="store_true", help="also build the donor-derived review glyphs")
+    stages.add_argument("--letters", action="store_true", help="add the custom lowercase review")
     parser.add_argument("--render", action="store_true", help="also write the comparison as PNG and PDF")
     args = parser.parse_args()
     recipe = json.loads(args.recipe.read_text())
@@ -303,10 +311,10 @@ def main():
     reference = ROOT / (recipe["fonts"]["code"] + "-VF.ttf")
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
-    stage = "Composed" if args.composed else "Alphabet"
+    stage = "Letters" if args.letters else "Composed" if args.composed else "Alphabet"
     candidate = output / f"DaikonicTransitCode{stage}Review-VF.ttf"
     with TTFont(source, recalcTimestamp=False) as sans:
-        font, width_report = alphabet_font(sans, recipe, composed=args.composed)
+        font, width_report = alphabet_font(sans, recipe, stage=stage)
         verify_latin_topology(sans, font, config)
         vertical = set_vertical_metrics(
             font, minimum_ascent=config["line_metrics"]["ascent"],
@@ -319,7 +327,7 @@ def main():
     with TTFont(candidate) as built, TTFont(reference) as released, TTFont(source) as sans:
         check = verify(built, candidate, config)
         check["horizontal_mirrors"] = verify_mirrors(sans, built, config["cell"], check["weights"])
-        if args.composed:
+        if stage != "Alphabet":
             check["composed_components"] = verify_composed(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {
@@ -337,10 +345,19 @@ def main():
     panel = output / "Code-Alphabet-Comparison.svg"
     comparison(candidate, reference, panel, width_report, config["cell"], report["measurements"])
     panels = [panel]
-    if args.composed:
+    if stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
-        composed_comparison(candidate, reference, composed_panel)
+        detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
+                          ((166, "Stem and shoulder", "n r   ŕ ř"), (447, "Quantifiers", "A ∀   E ∃"),
+                           (720, "Operators", "= ¬ ≠ ≤ ≥")))
         panels.append(composed_panel)
+    elif stage == "Letters":
+        letters_panel = output / "Code-Custom-Lowercase.svg"
+        detail_comparison(candidate, reference, letters_panel, "Custom lowercase",
+                          ((166, "Bowl width", "a s   a n"), (447, "Letter spacing", "banana"),
+                           (720, "Shaft, foot and marks", "i í ï in")),
+                          "Published Code 1.042 above the candidate · a uses the width scale from s")
+        panels.append(letters_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

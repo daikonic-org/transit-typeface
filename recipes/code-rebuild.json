@@ -43,6 +43,11 @@
     "lessequal": {"parts": ["less", "equal"], "operation": "Use the angle's rise and the equals' bar weight and spacing for a chevron with a parallel lower stroke.", "source": "tools/code_outlines.py"},
     "greaterequal": {"parts": ["lessequal"], "operation": "Reflect the less-than-or-equal sign in the Code cell.", "source": "tools/code_outlines.py"}
   },
+  "custom_lowercase_review": {
+    "width_followers": {"a": "s"},
+    "accepted_foundation": "mw",
+    "i": {"shaft_offset": 24, "left_foot": 180, "right_foot": 178, "left_flag": 156, "bar_ratio": 0.94}
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",

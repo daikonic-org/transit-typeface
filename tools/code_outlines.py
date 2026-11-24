@@ -1,11 +1,14 @@
 """Build composed Code drawings from the completed foundation masters."""
 
+from collections import defaultdict
+
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables._g_l_y_f import OVERLAP_COMPOUND
 import pathops
 
-from audit import shape_from_glyphs
+from audit import shape_from_glyphs, spans
+from code_foundation import map_attachment_anchors, outline_bounds
 
 
 SYMBOLS = {
@@ -98,6 +101,85 @@ def install_components(font, name, parts, advance):
         glyph.components[0].flags |= OVERLAP_COMPOUND
 
 
+def refresh_bounds(font, name):
+    glyf = font["glyf"]
+    glyph = glyf[name]
+    glyph.recalcBounds(glyf)
+    advance, _ = font["hmtx"][name]
+    font["hmtx"][name] = advance, glyph.xMin
+
+
+def inherit_width_scales(font, scales, followers):
+    """Apply trial scales after calibration, including dependent accented forms."""
+    glyf = font["glyf"]
+    for name in font.getGlyphOrder():
+        glyph = glyf[name]
+        base = glyph.components[0].glyphName if glyph.isComposite() else name
+        if base in followers and (base == name or all(
+                font["hmtx"][part.glyphName][0] == 0 for part in glyph.components[1:])):
+            scales[name] = scales[followers[base]]
+
+
+def i_outline(font, settings, cell, baseline):
+    top = font["OS/2"].sxHeight
+    rebuilt_n = shape_from_glyphs(font.getGlyphSet(), "n")
+    left, right = spans(rebuilt_n, baseline + (top - baseline) / 3, 1)[0]
+    thickness = right - left
+    center = cell / 2 + settings["shaft_offset"]
+    left, right = center - thickness / 2, center + thickness / 2
+    bar = thickness * settings["bar_ratio"]
+    flag_left = left - settings["left_flag"]
+    foot_left, foot_right = left - settings["left_foot"], right + settings["right_foot"]
+    pen = TTGlyphPen(None)
+    pen.moveTo((foot_left, baseline))
+    for point in ((foot_left, baseline + bar), (left, baseline + bar), (left, top - bar),
+                  (flag_left, top - bar), (flag_left, top), (left - thickness / 4, top)):
+        pen.lineTo(point)
+    pen.qCurveTo((right, top), (right, top - 1.2 * bar))
+    for point in ((right, baseline + bar), (foot_right, baseline + bar), (foot_right, baseline)):
+        pen.lineTo(point)
+    pen.closePath()
+    return pen
+
+
+def build_custom_letters(font, recipe):
+    config = recipe["alphabet_review"]
+    settings = recipe["custom_lowercase_review"]["i"]
+    cell, baseline = config["cell"], config["baseline"]
+    glyf = font["glyf"]
+    narrow = "dotlessi.joined"
+    install_outline(font, narrow, shape_from_glyphs(font.getGlyphSet(), "dotlessi"), cell)
+    install(font, "dotlessi", i_outline(font, settings, cell, baseline), cell)
+    changed = {"dotlessi"}
+    upper_zone = baseline + (font["OS/2"].sxHeight - baseline) / 2
+    shift = settings["shaft_offset"]
+    for name in font.getGlyphOrder():
+        glyph = glyf[name]
+        if not glyph.isComposite() or not any(part.glyphName == "dotlessi" for part in glyph.components):
+            continue
+        # The joined forms have their own spacing. Keep their narrow stem
+        # donor until the corresponding ligatures are rebuilt.
+        spacing_count = sum(bool(font["hmtx"][part.glyphName][0]) for part in glyph.components)
+        if spacing_count > 1:
+            for part in glyph.components:
+                if part.glyphName == "dotlessi":
+                    part.glyphName = narrow
+        else:
+            for part in glyph.components:
+                if not font["hmtx"][part.glyphName][0]:
+                    _, bottom, _, _ = outline_bounds(glyf[part.glyphName], glyf)
+                    if bottom + part.y >= upper_zone:
+                        part.x += shift
+            changed.add(name)
+        refresh_bounds(font, name)
+
+    def mark_shift(x, y):
+        return x + (shift if y >= upper_zone else 0), y
+
+    anchors = defaultdict(lambda: lambda x, y: (x, y), dict.fromkeys(changed, mark_shift))
+    map_attachment_anchors(font, anchors)
+
+
 def build_composed(font, recipe):
     """Construct each review glyph before variable compilation."""
     metrics = font["OS/2"]
@@ -112,9 +194,7 @@ def build_composed(font, recipe):
     for name in font.getGlyphOrder():
         glyph = font["glyf"][name]
         if glyph.isComposite() and any(part.glyphName == "r" for part in glyph.components):
-            glyph.recalcBounds(font["glyf"])
-            advance, _ = font["hmtx"][name]
-            font["hmtx"][name] = advance, glyph.xMin
+            refresh_bounds(font, name)
 
     reflected = (-1, 0, 0, 1, cell, 0)
     install_components(font, "universal", [("A", (-1, 0, 0, -1, cell, metrics.sCapHeight + baseline))], cell)
