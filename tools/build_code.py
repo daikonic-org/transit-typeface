@@ -424,6 +424,12 @@ def main():
                            (720, "With the period and colon", "a.,;:a")),
                           "One outside curve runs from the diamond's right vertex to the lower tail tip")
         panels.append(comma_panel)
+        compound_panel = output / "Code-Compound-Punctuation.svg"
+        detail_comparison(candidate, None, compound_panel, "Compound punctuation",
+                          ((166, "Double marks", "a‼a a⁇a"), (447, "Mixed marks", "a⁈a a⁉a"),
+                           (720, "In a sentence", "What⁈")),
+                          "Two marks in one cell, with the shared punctuation diamond")
+        panels.append(compound_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

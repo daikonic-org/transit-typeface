@@ -1,12 +1,16 @@
 """Build the primary Code punctuation from the shared Sans diamond."""
 
+from copy import deepcopy
+
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
-from code_foundation import center, outline_bounds
+from audit import shape_from_glyphs
+from code_foundation import center, narrow_for_cell, outline_bounds
 from code_outlines import install, install_components, install_outline, move_return, polygon, refresh_bounds
 from italic_returns import draw_segments, raw_outline, segments
 from repeated_stems import horizontal_extent
+from scaling_study import vertical_stem
 
 
 DOT = "diamond.punctuation"
@@ -40,6 +44,37 @@ def sentence_mark(font, name, radius, clearance, cell):
     refresh_bounds(font, donor)
     install_components(font, name, [(donor, (1, 0, 0, 1, otRound(body.x + shift_x), body.y)),
                                     dot_at(old_dot.x + shift_x, old_dot.y)], cell)
+
+
+def build_compound_punctuation(font, cell, margin):
+    glyf = font["glyf"]
+    body, diamond = glyf["question"].components
+    source = glyf[body.glyphName]
+    source_center, _ = center(outline_bounds(source, glyf))
+    dot_offset = diamond.x - body.x - source_center
+    compact = deepcopy(source)
+    stem = vertical_stem(shape_from_glyphs(font.getGlyphSet(), "n"), 0.4)
+    ratio = narrow_for_cell(compact, cell / 2 - 2 * margin, stem)
+    compact_body = "question.compactBody"
+    compact_question = "question.compact"
+    install(font, compact_body, compact, 0)
+    compact_center, _ = center(raw_outline(font.getGlyphSet(), compact_body).bounds)
+    install_components(font, compact_question, [
+        (compact_body, (1, 0, 0, 1, otRound(cell / 2 - compact_center), body.y)),
+        dot_at(cell / 2 + dot_offset * ratio, diamond.y),
+    ], cell)
+
+    glyphs = font.getGlyphSet()
+    bounds = {name: raw_outline(glyphs, name).bounds for name in ("exclam", compact_question)}
+    for name, left, right in (("exclamdbl", "exclam", "exclam"),
+                              ("uni2047", compact_question, compact_question),
+                              ("uni2048", compact_question, "exclam"),
+                              ("uni2049", "exclam", compact_question)):
+        shift = (cell - bounds[left][0] - bounds[right][2]) / 2
+        install_components(font, name, [
+            (left, (1, 0, 0, 1, otRound(shift - cell / 4), 0)),
+            (right, (1, 0, 0, 1, otRound(shift + cell / 4), 0)),
+        ], cell)
 
 
 def build_comma_forms(font, settings, cell, radius, period_y, upper_y):
@@ -155,3 +190,4 @@ def build_diamond_punctuation(font, recipe):
     install_components(font, "periodcentered", [dot_at(cell / 2, mid_y)], cell)
     for name in ("exclam", "question", "exclamdown", "questiondown"):
         sentence_mark(font, name, radius, settings["sentence_dot_clearance"], cell)
+    build_compound_punctuation(font, cell, settings["compound_half_cell_margin"])

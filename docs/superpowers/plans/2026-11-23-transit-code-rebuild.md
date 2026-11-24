@@ -127,6 +127,8 @@ The diamond punctuation builder derives one larger dot from the Sans diamond. It
 
 The comma joins the shared diamond crown to a narrower curl from the Sans closing quote. One outside curve runs from the diamond’s right vertex to the lower tail tip, and the inner curve runs into the left vertex. The closing and low quotes reuse the comma outline with their respective placements, and the opening quote takes a 180° rotation. The semicolon uses the same comma beneath its dot. The straight quote is four units smaller in width and height. Run `--letters --output .build/code-from-sans/quote-tip-curves` for the punctuation proofs.
 
+The compound sentence marks combine the single exclamation mark and a stroke-compensated compact question mark. Each pair uses the full punctuation diamond and fits one cell. Run `--letters --output .build/code-from-sans/compound-punctuation` for the proof.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.
