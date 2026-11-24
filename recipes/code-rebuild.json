@@ -80,7 +80,10 @@
     "period_overshoot": 0.25,
     "colon_center": 300,
     "ellipsis_dot_x_scale": 0.93,
-    "sentence_dot_clearance": 20
+    "sentence_dot_clearance": 20,
+    "quote_height": 320,
+    "low_quote_top": 76,
+    "quote_pair_gap": 24
   },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {

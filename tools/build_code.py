@@ -288,27 +288,31 @@ def write_comparison(output, width, height, rows, sheets):
 
 
 def detail_comparison(candidate, reference, output, title, samples, subtitle="Published Code 1.042 above the candidate"):
-    width, height = 1050, 744
-    sheets = [Panel("released", {"font": str(reference.resolve())}),
-              Panel("candidate", {"font": str(candidate.resolve())})]
+    width = 1050
+    row_height = 207 if reference else 134
+    height = 123 + 3 * row_height
+    samples_to_draw = [(Panel("candidate", {"font": str(candidate.resolve())}), "Candidate",
+                        157 if reference else 92)]
+    if reference:
+        samples_to_draw.insert(0, (Panel("released", {"font": str(reference.resolve())}), "1.042", 92))
     rows = [
         f'<rect width="{width}" height="{height}" fill="#eaf1f0"/>',
         f'<text x="36" y="46" font-size="31" font-weight="700">Transit Code · {title}</text>',
         f'<text x="37" y="74" font-size="15" fill="#415d62">{subtitle}</text>',
     ]
     for index, (weight, style) in enumerate(WEIGHTS.items()):
-        y = 101 + index * 207
+        y = 101 + index * row_height
         rows.extend((
-            f'<rect x="36" y="{y}" width="978" height="187" rx="6" fill="#f8faf9" stroke="#c7d6d7"/>',
+            f'<rect x="36" y="{y}" width="978" height="{row_height - 20}" rx="6" fill="#f8faf9" stroke="#c7d6d7"/>',
             f'<text x="54" y="{y + 32}" font-size="16" font-weight="700">{style} {weight}</text>',
         ))
         for x, label, _ in samples:
             rows.append(f'<text x="{x}" y="{y + 32}" font-size="13" fill="#415d62">{label}</text>')
-        for panel, label, offset in zip(sheets, ("1.042", "Candidate"), (92, 157), strict=True):
+        for panel, label, offset in samples_to_draw:
             rows.append(f'<text x="54" y="{y + offset}" font-size="13" fill="#415d62">{label}</text>')
             for x, _, sample in samples:
                 panel.text(sample, x, y + offset, 49, weight, "#153b40", features=FEATURES)
-    write_comparison(output, width, height, rows, sheets)
+    write_comparison(output, width, height, rows, [panel for panel, _, _ in samples_to_draw])
 
 
 def main():
@@ -408,6 +412,12 @@ def main():
                           ((166, "Comma, semicolon, period, colon", "a,a;a.a:a"), (447, "Ellipsis and middle dot", "a…a·a"),
                            (720, "Sentence marks", "¿Qué?!")))
         panels.append(diamonds_panel)
+        quote_panel = output / "Code-Quotation-Marks.svg"
+        detail_comparison(candidate, None, quote_panel, "Quotation marks",
+                          ((166, "Straight quotes", "'a' \"b\""), (447, "Opening and closing", "‘a’ “b”"),
+                           (720, "Low quotes", "‚a‘ „b“")),
+                          "Sans-derived forms with tips sized to the shared punctuation diamond")
+        panels.append(quote_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)
