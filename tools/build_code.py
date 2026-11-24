@@ -22,6 +22,7 @@ from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
     build_horizontal_punctuation, inherit_width_scales,
 )
+from code_punctuation import build_diamond_punctuation
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -67,6 +68,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             build_g(master, recipe)
             build_distinct_figures(master, recipe)
             build_horizontal_punctuation(master, recipe)
+            build_diamond_punctuation(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -401,6 +403,11 @@ def main():
                           ((166, "Body and shell", "a c @"), (447, "Height against o", "o@o"),
                            (720, "In an address", "a@host")))
         panels.append(at_panel)
+        diamonds_panel = output / "Code-Diamond-Punctuation.svg"
+        detail_comparison(candidate, reference, diamonds_panel, "Diamond punctuation",
+                          ((166, "Period, colon, semicolon", "a.a:a;a"), (447, "Ellipsis and middle dot", "a…a·a"),
+                           (720, "Sentence marks", "¿Qué?!")))
+        panels.append(diamonds_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

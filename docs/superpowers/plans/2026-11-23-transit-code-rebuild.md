@@ -123,6 +123,8 @@ The at-sign builder takes the two-storey `a` and `c` before the Code width class
 
 Finish the non-math glyphs before the shared math and operator pass. Review the base signs, comparisons, arrow glyphs and operator ligatures together for vertical alignment, stroke weight, line spacing and advances.
 
+The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, reuses the comma in semicolon, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks. Run `--letters --output .build/code-from-sans/diamond-punctuation` for this proof.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

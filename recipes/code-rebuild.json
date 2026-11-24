@@ -75,6 +75,13 @@
     "below_o": 33,
     "terminal_rise": 40
   },
+  "diamond_punctuation_review": {
+    "diamond_scale": 1.42,
+    "period_overshoot": 0.25,
+    "colon_center": 300,
+    "ellipsis_dot_x_scale": 0.93,
+    "sentence_dot_clearance": 20
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",
