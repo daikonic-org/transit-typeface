@@ -50,16 +50,19 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         finished = set(letters["accepted_foundation"]) | set(followers) | set("ifjlt")
         width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
+    for weight, master in masters.items():
+        scale_ink_width(master, scales, stems[weight])
+        if stage != "Alphabet":
+            build_composed(master, recipe)
+    if stage == "Letters":
+        build_custom_letters(masters.values(), recipe)
+        for master in masters.values():
+            build_crossbar_letters(master, recipe)
+
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
     for weight, style in WEIGHTS.items():
         master = masters[weight]
-        scale_ink_width(master, scales, stems[weight])
-        if stage != "Alphabet":
-            build_composed(master, recipe)
-        if stage == "Letters":
-            build_custom_letters(master, recipe)
-            build_crossbar_letters(master, recipe)
         master["name"].setName(f"Version 0.100; Code {stage.lower()} review", 5, 3, 1, 0x409)
         name_trial(master, family, weight_style=style)
         location = {"Weight": weight}
@@ -361,7 +364,7 @@ def main():
         panels.append(letters_panel)
         hook_panel = output / "Code-Hook-Letters.svg"
         detail_comparison(candidate, reference, hook_panel, "Hook letters",
-                          ((166, "Rotated l return", "i j l"), (447, "Accents", "í ĵ ľ ĺ"),
+                          ((166, "Trimmed upper hooks", "i j l"), (447, "Accents", "í ĵ ľ ĺ"),
                            (720, "In text", "jill nil")))
         panels.append(hook_panel)
         crossbar_panel = output / "Code-Crossbar-Letters.svg"

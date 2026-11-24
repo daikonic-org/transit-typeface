@@ -3,6 +3,7 @@
 from collections import defaultdict
 from copy import deepcopy
 
+from fontTools.misc.bezierTools import calcQuadraticBounds, splitLine, splitQuadratic, splitQuadraticAtT
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
@@ -12,7 +13,7 @@ import pathops
 from audit import shape_from_glyphs, spans
 from code_foundation import map_attachment_anchors, outline_bounds
 from code_receiver_shapes import HorizontalMapPen, remap
-from italic_returns import lower_arc, raw_outline
+from italic_returns import Segment, lower_arc, raw_outline
 
 
 SYMBOLS = {
@@ -161,8 +162,63 @@ def move_return(edges, move):
             for edge in edges]
 
 
+def trim_return_tip(edges, fraction):
+    """Keep the curves on each side of a cut measured from the outer shaft."""
+    right = max(calcQuadraticBounds(edge.start, *edge.controls, edge.end)[2]
+                if edge.controls else max(edge.start[0], edge.end[0]) for edge in edges)
+    shaft = edges[0].start[0]
+    cut = otRound(right - (right - shaft) * fraction)
+    entry_index = next(i for i, edge in enumerate(edges) if edge.end[0] > cut)
+    exit_index = next(i for i in range(entry_index + 1, len(edges)) if edges[i].end[0] <= cut)
+
+    def split_at_cut(edge):
+        split = splitQuadratic if edge.controls else splitLine
+        return [Segment(first, edge.operation, tuple(middle), last)
+                for first, *middle, last in split(edge.start, *edge.controls, edge.end, cut, False)]
+
+    approach = edges[:entry_index]
+    departure = edges[exit_index + 1:]
+    if edges[entry_index].start[0] < cut:
+        approach = approach + split_at_cut(edges[entry_index])[:1]
+    if edges[exit_index].end[0] < cut:
+        departure = split_at_cut(edges[exit_index])[-1:] + departure
+    return approach, departure
+
+
+def subdivide_return(edges, length, *, at_end):
+    """Match the number of points without refitting the retained curves."""
+    missing = length - len(edges)
+    if not missing:
+        return edges
+    edge = edges[-1 if at_end else 0]
+    parameters = [i / (missing + 1) for i in range(1, missing + 1)]
+    if edge.controls:
+        parts = splitQuadraticAtT(edge.start, *edge.controls, edge.end, *parameters)
+    else:
+        dx = edge.end[0] - edge.start[0]
+        dy = edge.end[1] - edge.start[1]
+        points = [edge.start, *((edge.start[0] + t * dx, edge.start[1] + t * dy) for t in parameters),
+                  edge.end]
+        parts = zip(points, points[1:])
+    pieces = [Segment(first, edge.operation, tuple(middle), last) for first, *middle, last in parts]
+    return edges[:-1] + pieces if at_end else pieces + edges[1:]
+
+
+def compatible_upper_returns(lower_returns, fraction):
+    clipped = [trim_return_tip(edges, fraction) for edges in lower_returns]
+    approach_count = max(len(approach) for approach, _ in clipped)
+    departure_count = max(len(departure) for _, departure in clipped)
+    result = []
+    for approach, departure in clipped:
+        approach = subdivide_return(approach, approach_count, at_end=True)
+        departure = subdivide_return(departure, departure_count, at_end=False)
+        cap = Segment(approach[-1].end, "lineTo", (), departure[0].start)
+        result.append(approach + [cap] + departure)
+    return result
+
+
 def upper_return(lower_l, left, top, floor):
-    """Copy the finished lower return with a 180-degree rotation."""
+    """Rotate the clipped copy of the lower return into the upper hook."""
     dx = otRound(left) + lower_l[0].start[0]
     dy = top + floor
     return move_return(lower_l, lambda point: (dx - point[0], dy - point[1]))
@@ -235,7 +291,7 @@ def adjust_marks(font, donor, dx, dy, upper_zone, *, shift_lower=False):
     map_attachment_anchors(font, anchors)
 
 
-def build_custom_letters(font, recipe):
+def prepare_hook_donor(font, recipe):
     config = recipe["alphabet_review"]
     settings = recipe["custom_lowercase_review"]
     cell, baseline = config["cell"], config["baseline"]
@@ -248,6 +304,16 @@ def build_custom_letters(font, recipe):
     _, floor, _, top = donor.bounds
     lower = lower_arc(donor, (floor + top) / 2)
     lower_l = lower_return(lower, settings["l"], cell, thickness)
+    return thickness, lower, lower_l, floor, top
+
+
+def build_hook_letters(font, recipe, donor, clipped):
+    config = recipe["alphabet_review"]
+    settings = recipe["custom_lowercase_review"]
+    cell, baseline = config["cell"], config["baseline"]
+    x_height = font["OS/2"].sxHeight
+    thickness, lower, lower_l, floor, top = donor
+    glyphs = font.getGlyphSet()
     dotless_j = shape_from_glyphs(glyphs, "uni0237")
     old_j_left, old_j_right = spans(dotless_j, (x_height + baseline) / 2, 1)[0]
     j_dx = otRound(cell / 2 + settings["j"]["shaft_offset"] - (old_j_left + old_j_right) / 2)
@@ -257,12 +323,21 @@ def build_custom_letters(font, recipe):
 
     retain_joined_donors(font, {"dotlessi", "uni0237", "l"})
     lower_j = lower_return(lower, settings["j"], cell, thickness, dotless_j.bounds[1] - floor, reflected=True)
-    install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, lower_l, floor).glyph(), cell)
-    install(font, "uni0237", return_letter(lower_l, lower_j, x_height, floor, reflected=True), cell)
-    install(font, "l", return_letter(lower_l, lower_l, l_top, floor), cell)
+    install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, clipped, floor).glyph(), cell)
+    install(font, "uni0237", return_letter(clipped, lower_j, x_height, floor, reflected=True), cell)
+    install(font, "l", return_letter(clipped, lower_l, l_top, floor), cell)
     adjust_marks(font, "dotlessi", settings["i"]["shaft_offset"], 0, zone)
     adjust_marks(font, "uni0237", j_dx, 0, zone)
     adjust_marks(font, "l", l_dx, otRound(l_top - top), zone, shift_lower=True)
+
+
+def build_custom_letters(fonts, recipe):
+    fonts = list(fonts)
+    donors = [prepare_hook_donor(font, recipe) for font in fonts]
+    clipped = compatible_upper_returns([donor[2] for donor in donors],
+                                       recipe["custom_lowercase_review"]["upper_hook_trim"])
+    for font, donor, upper in zip(fonts, donors, clipped, strict=True):
+        build_hook_letters(font, recipe, donor, upper)
 
 
 def build_crossbar_letters(font, recipe):
