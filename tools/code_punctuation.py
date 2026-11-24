@@ -1,5 +1,6 @@
 """Build the primary Code punctuation from the shared Sans diamond."""
 
+from copy import deepcopy
 from math import ceil
 
 from fontTools.misc.roundTools import otRound
@@ -48,35 +49,39 @@ def sentence_mark(font, name, radius, clearance, cell):
 def build_compound_punctuation(font, cell, settings):
     glyf = font["glyf"]
     body, diamond = glyf["question"].components
-    x_min, y_min, x_max, _ = outline_bounds(glyf[body.glyphName], glyf)
+    x_min, _, x_max, _ = raw_outline(font.getGlyphSet(), body.glyphName).bounds
     body_center = (x_min + x_max) / 2
-    scale = settings["double_question_body_scale"]
-    # Keep the gap under the body and reuse the full-size diamond.
-    compact_question = "question.compact"
+    weight = font["OS/2"].usWeightClass
+    width = settings["compound_question_widths"][str(weight)]
+    scale = width / (x_max - x_min)
+    compound_body = "question.compoundBody"
+    compound_question = "question.compound"
+    fitted = deepcopy(glyf[body.glyphName])
+    # Each master draws the same points so its horizontal scale can vary with weight.
+    for index, (x, y) in enumerate(fitted.coordinates):
+        fitted.coordinates[index] = (otRound(cell / 2 + (x - body_center) * scale), y)
+    install(font, compound_body, fitted, 0)
     dot_offset = diamond.x - body.x - body_center
-    install_components(font, compact_question, [
-        (body.glyphName, (scale, 0, 0, scale, otRound(cell / 2 - scale * body_center),
-                          otRound(body.y + (1 - scale) * y_min))),
+    install_components(font, compound_question, [
+        (compound_body, (1, 0, 0, 1, 0, body.y)),
         dot_at(cell / 2 + dot_offset * scale, diamond.y),
     ], cell)
 
     glyphs = font.getGlyphSet()
-    outlines = {name: raw_outline(glyphs, name) for name in ("exclam", "question", compact_question)}
-    edges = {name: ink_extents(outlines[name], step=1) for name in ("exclam", "question")}
+    outlines = {name: raw_outline(glyphs, name) for name in ("exclam", compound_question)}
+    edges = {name: ink_extents(outline, step=1) for name, outline in outlines.items()}
     gap = settings["compound_pair_gap"]
     dot_left, _, dot_right, _ = outline_bounds(glyf[DOT], glyf)
     for name, left, right in (("exclamdbl", "exclam", "exclam"),
-                              ("uni2047", compact_question, compact_question),
-                              ("uni2048", "question", "exclam"),
-                              ("uni2049", "exclam", "question")):
+                              ("uni2047", compound_question, compound_question),
+                              ("uni2048", compound_question, "exclam"),
+                              ("uni2049", "exclam", compound_question)):
         if name == "exclamdbl":
             separation = cell / 2
         elif name == "uni2047":
-            # Join the two arches while keeping their diamonds distinct.
             separation = max(settings["double_question_min_separation"], dot_right - dot_left + gap)
         else:
             left_edges, right_edges = edges[left], edges[right]
-            # A mark can tuck under the other's wider sections without touching.
             facing = max(left_edges[row][1] - right_edges[row][0]
                          for row in left_edges.keys() & right_edges.keys())
             separation = ceil(facing) + gap
