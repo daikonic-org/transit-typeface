@@ -1,7 +1,7 @@
 """Build the primary Code punctuation from the shared Sans diamond."""
 
 from copy import deepcopy
-from math import ceil
+from math import ceil, floor
 
 from fontTools.misc.roundTools import otRound
 from fontTools.pens.ttGlyphPen import TTGlyphPen
@@ -71,7 +71,6 @@ def build_compound_punctuation(font, cell, settings):
     outlines = {name: raw_outline(glyphs, name) for name in ("exclam", compound_question)}
     edges = {name: ink_extents(outline, step=1) for name, outline in outlines.items()}
     gap = settings["compound_pair_gap"]
-    dot_left, _, dot_right, _ = outline_bounds(glyf[DOT], glyf)
     for name, left, right in (("exclamdbl", "exclam", "exclam"),
                               ("uni2047", compound_question, compound_question),
                               ("uni2048", compound_question, "exclam"),
@@ -79,7 +78,9 @@ def build_compound_punctuation(font, cell, settings):
         if name == "exclamdbl":
             separation = cell / 2
         elif name == "uni2047":
-            separation = max(settings["double_question_min_separation"], dot_right - dot_left + gap)
+            x_min, _, x_max, _ = outlines[left].bounds
+            sidebearing = settings["double_question_sidebearing"]
+            separation = floor(cell - 2 * sidebearing - (x_max - x_min))
         else:
             left_edges, right_edges = edges[left], edges[right]
             facing = max(left_edges[row][1] - right_edges[row][0]
