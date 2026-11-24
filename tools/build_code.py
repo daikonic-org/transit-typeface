@@ -418,6 +418,12 @@ def main():
                            (720, "Low quotes", "‚a‘ „b“")),
                           "Sans-derived forms with tips sized to the shared punctuation diamond")
         panels.append(quote_panel)
+        comma_panel = output / "Code-Comma-and-Closing-Quote.svg"
+        detail_comparison(candidate, None, comma_panel, "Comma and closing quote",
+                          ((166, "Closing and low quotes", "’ ‚"), (447, "Comma and semicolon", "a,a;a"),
+                           (720, "With the period and colon", "a.,;:a")),
+                          "The closing quote supplies the curve for the comma and semicolon")
+        panels.append(comma_panel)
     if args.render:
         for proof in panels:
             render(proof, scale=2)

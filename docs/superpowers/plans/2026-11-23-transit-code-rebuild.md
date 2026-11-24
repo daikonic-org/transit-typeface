@@ -123,9 +123,11 @@ The at-sign builder takes the two-storey `a` and `c` before the Code width class
 
 Finish the non-math glyphs before the shared math and operator pass. Review the base signs, comparisons, arrow glyphs and operator ligatures together for vertical alignment, stroke weight, line spacing and advances.
 
-The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, fits the comma tail uniformly to that width, and uses the upper half of the same diamond for its crown. The semicolon reuses the comma. The builder also narrows the ellipsis dots and opens space between the dots and bodies of the upright and inverted sentence marks. Run `--letters --output .build/code-from-sans/diamond-punctuation-matched-comma` for this proof.
+The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks.
 
 The quotation mark builder sizes each Sans-derived crown to the shared Code diamond and fits the tail to the quote height. The double and low quotes reuse those outlines. Run `--letters --output .build/code-from-sans/quotation-marks` for the standalone proof.
+
+The comma translates the closing quote so its crown is centered in the cell and sits below the period tip. The semicolon reuses the comma with its dot on the same axis. Run `--letters --output .build/code-from-sans/comma-from-quote` for the standalone proof.
 
 **Review point**
 
