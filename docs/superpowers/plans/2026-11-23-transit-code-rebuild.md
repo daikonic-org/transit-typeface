@@ -111,6 +111,8 @@ The lowercase review adds the Code `i` with its shared dotless body and both upp
 
 The crossbar proof widens `t` to the ink width of `n` and builds `f` from the vertically flipped `t` return. Joined letters retain their own donors until the shaping review. Run the same `--letters` build with `--output .build/code-from-sans/custom-lowercase-ft` for the full review set.
 
+The hook proof groups `i`, `j`, and `l`. Their upper curves come from the lower return of the Sans-derived `l`, and `j` mirrors that return below the baseline. For this review, run `--letters --output .build/code-from-sans/custom-lowercase-ijl`.
+
 **Review point**
 
 Approve the recognizable Code drawings and italic at Normal width. Compare preview VFs side by side with 1.042 before tuning optional features.

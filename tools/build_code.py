@@ -47,7 +47,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         followers = letters["width_followers"]
         inherit_width_scales(masters[400], scales, followers)
         width_report["followers"] = followers
-        finished = set(letters["accepted_foundation"]) | set(followers) | set("ift")
+        finished = set(letters["accepted_foundation"]) | set(followers) | set("ifjlt")
         width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
     designspace = DesignSpaceDocument()
@@ -359,6 +359,11 @@ def main():
                            (720, "Hook donor and accented forms", "l i í ï in")),
                           "Published Code 1.042 above the candidate · a uses the width scale from s")
         panels.append(letters_panel)
+        hook_panel = output / "Code-Hook-Letters.svg"
+        detail_comparison(candidate, reference, hook_panel, "Hook letters",
+                          ((166, "Shared upper hook", "i j l"), (447, "Accents", "í ĵ ľ ĺ"),
+                           (720, "In text", "jill nil")))
+        panels.append(hook_panel)
         crossbar_panel = output / "Code-Crossbar-Letters.svg"
         detail_comparison(candidate, reference, crossbar_panel, "Crossbars and hooks",
                           ((166, "Lower return", "t ț ţ"), (447, "Flipped upper return", "f ft ff"),

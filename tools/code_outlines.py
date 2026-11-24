@@ -149,10 +149,9 @@ def inherit_width_scales(font, scales, followers):
             scales[name] = scales[followers[base]]
 
 
-def hook_curves(donor):
+def hook_curves(edges, sides, floor):
     """Extract the inside and outside of an upright lower return."""
-    _, floor, _, top = donor.bounds
-    edges, (left, right) = lower_arc(donor, (floor + top) / 2)
+    left, right = sides
     inner_start = next(i for i, edge in enumerate(edges) if edge.end[0] > right)
     inner_end = next(i for i in range(inner_start, len(edges))
                      if edges[i].controls and edges[i].controls[-1][1] == edges[i].end[1])
@@ -175,60 +174,119 @@ def draw_hook_curve(pen, edges, start, end):
         pen.qCurveTo(*map(fit, (*edge.controls, edge.end)))
 
 
-def i_outline(font, settings, cell, baseline):
-    top = font["OS/2"].sxHeight
-    glyphs = font.getGlyphSet()
-    rebuilt_n = shape_from_glyphs(glyphs, "n")
-    left, right = spans(rebuilt_n, baseline + (top - baseline) / 3, 1)[0]
+def upper_hook(pen, curves, settings, sides, top, flag_overhang):
+    inner, outer = curves
+    left, right = sides
     thickness = right - left
-    center = cell / 2 + settings["shaft_offset"]
-    left, right = center - thickness / 2, center + thickness / 2
     bar = thickness * settings["bar_ratio"]
-    flag_left = left - settings["left_flag"]
-    foot_left, foot_right = left - settings["left_foot"], right + settings["right_foot"]
-    inner, outer = hook_curves(raw_outline(glyphs, settings["hook_donor"]))
     radius = thickness * settings["inner_hook_ratio"]
     inner_start, inner_end = (left, top - bar - radius), (left - radius, top - bar)
     outer_start, outer_end = (left - thickness / 4, top), (right, top - 1.2 * bar)
-    pen = TTGlyphPen(None)
-    pen.moveTo((foot_left, baseline))
-    for point in ((foot_left, baseline + bar), (left, baseline + bar), inner_start):
-        pen.lineTo(point)
+    flag_left = left - flag_overhang
+    pen.lineTo(inner_start)
     draw_hook_curve(pen, inner, inner_start, inner_end)
     for point in ((flag_left, top - bar), (flag_left, top), outer_start):
         pen.lineTo(point)
     draw_hook_curve(pen, outer, outer_start, outer_end)
+
+
+def i_outline(settings, cell, baseline, top, thickness, curves):
+    center = cell / 2 + settings["shaft_offset"]
+    left, right = center - thickness / 2, center + thickness / 2
+    bar = thickness * settings["bar_ratio"]
+    foot_left, foot_right = left - settings["left_foot"], right + settings["right_foot"]
+    pen = TTGlyphPen(None)
+    pen.moveTo((foot_left, baseline))
+    for point in ((foot_left, baseline + bar), (left, baseline + bar)):
+        pen.lineTo(point)
+    upper_hook(pen, curves, settings, (left, right), top, settings["left_flag"])
     for point in ((right, baseline + bar), (foot_right, baseline + bar), (foot_right, baseline)):
         pen.lineTo(point)
     pen.closePath()
     return pen
 
 
-def build_custom_letters(font, recipe):
-    config = recipe["alphabet_review"]
-    settings = recipe["custom_lowercase_review"]["i"]
-    cell, baseline = config["cell"], config["baseline"]
+def return_letter(curves, lower, hook_settings, settings, cell, top, thickness, y_shift, *, reflected=False):
+    edges, (donor_left, donor_right) = lower
+    center = cell / 2 + settings["shaft_offset"]
+    left, right = center - thickness / 2, center + thickness / 2
+    cut = edges[0].start[1] + y_shift
+    direction = -1 if reflected else 1
+
+    def move(point):
+        x, y = point
+        if x > donor_right:
+            distance = thickness / 2 + (x - donor_right) * settings["return_reach"]
+        else:
+            distance = (x - donor_left) * thickness / (donor_right - donor_left) - thickness / 2
+        return center + direction * distance, y + y_shift
+
+    pen = TTGlyphPen(None)
+    pen.moveTo((left, cut))
+    upper_hook(pen, curves, hook_settings, (left, right), top, settings["left_flag"])
+    pen.lineTo((right, cut))
+    for edge in reversed(edges) if reflected else edges:
+        points = (*reversed(edge.controls), edge.start) if reflected else (*edge.controls, edge.end)
+        getattr(pen, edge.operation)(*map(move, points))
+    pen.closePath()
+    return pen.glyph()
+
+
+def adjust_marks(font, donor, dx, dy, upper_zone, *, shift_lower=False):
     glyf = font["glyf"]
-    retain_joined_donors(font, {"dotlessi"})
-    install(font, "dotlessi", i_outline(font, settings, cell, baseline).glyph(), cell)
-    changed = {"dotlessi"}
-    upper_zone = baseline + (font["OS/2"].sxHeight - baseline) / 2
-    shift = settings["shaft_offset"]
-    for name in component_users(font, {"dotlessi"}):
+    changed = {donor}
+    for name in component_users(font, {donor}):
         glyph = glyf[name]
         for part in glyph.components:
             if not font["hmtx"][part.glyphName][0]:
                 _, bottom, _, _ = outline_bounds(glyf[part.glyphName], glyf)
                 if bottom + part.y >= upper_zone:
-                    part.x += shift
+                    part.x += dx
+                    part.y += dy
+                elif shift_lower:
+                    part.x += dx
         changed.add(name)
         refresh_bounds(font, name)
 
     def mark_shift(x, y):
-        return x + (shift if y >= upper_zone else 0), y
+        if y >= upper_zone:
+            return x + dx, y + dy
+        return x + (dx if shift_lower else 0), y
 
     anchors = defaultdict(lambda: lambda x, y: (x, y), dict.fromkeys(changed, mark_shift))
     map_attachment_anchors(font, anchors)
+
+
+def build_custom_letters(font, recipe):
+    config = recipe["alphabet_review"]
+    settings = recipe["custom_lowercase_review"]
+    cell, baseline = config["cell"], config["baseline"]
+    x_height = font["OS/2"].sxHeight
+    glyphs = font.getGlyphSet()
+    n = shape_from_glyphs(glyphs, "n")
+    left, right = spans(n, baseline + (x_height - baseline) / 3, 1)[0]
+    thickness = right - left
+    donor = raw_outline(glyphs, settings["i"]["hook_donor"])
+    _, floor, _, top = donor.bounds
+    lower = lower_arc(donor, (floor + top) / 2)
+    curves = hook_curves(*lower, floor)
+    dotless_j = shape_from_glyphs(glyphs, "uni0237")
+    old_j_left, old_j_right = spans(dotless_j, (x_height + baseline) / 2, 1)[0]
+    j_dx = otRound(cell / 2 + settings["j"]["shaft_offset"] - (old_j_left + old_j_right) / 2)
+    l_top = font["OS/2"].sCapHeight + settings["l"]["above_cap_height"]
+    l_dx = otRound(cell / 2 + settings["l"]["shaft_offset"] - sum(lower[1]) / 2)
+    zone = (x_height + baseline) / 2
+
+    retain_joined_donors(font, {"dotlessi", "uni0237", "l"})
+    install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, curves).glyph(), cell)
+    install(font, "uni0237", return_letter(
+        curves, lower, settings["i"], settings["j"], cell, x_height, thickness,
+        dotless_j.bounds[1] - floor, reflected=True,
+    ), cell)
+    install(font, "l", return_letter(curves, lower, settings["i"], settings["l"], cell, l_top, thickness, 0), cell)
+    adjust_marks(font, "dotlessi", settings["i"]["shaft_offset"], 0, zone)
+    adjust_marks(font, "uni0237", j_dx, 0, zone)
+    adjust_marks(font, "l", l_dx, otRound(l_top - top), zone, shift_lower=True)
 
 
 def build_crossbar_letters(font, recipe):
