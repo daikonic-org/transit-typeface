@@ -46,10 +46,9 @@
   "custom_lowercase_review": {
     "width_followers": {"a": "s"},
     "accepted_foundation": "mw",
-    "i": {"shaft_offset": 24, "left_foot": 180, "right_foot": 178, "left_flag": 168, "bar_ratio": 0.94,
-          "hook_donor": "l", "inner_hook_ratio": 0.75, "outer_hook_width_ratio": 1.50, "outer_hook_depth_ratio": 1.48},
-    "j": {"shaft_offset": 82, "left_flag": 154, "return_reach": 1.02},
-    "l": {"shaft_offset": -10, "left_flag": 188, "return_reach": 1.10, "above_cap_height": 80},
+    "i": {"shaft_offset": 24, "left_foot": 180, "right_foot": 178, "bar_ratio": 0.94},
+    "j": {"shaft_offset": 82, "return_reach": 1.02},
+    "l": {"shaft_offset": -10, "return_reach": 1.10, "above_cap_height": 80},
     "ft": {"t_above_x_height": 106, "f_above_cap_height": 90, "return_cut_ratio": 0.44}
   },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",

@@ -149,49 +149,26 @@ def inherit_width_scales(font, scales, followers):
             scales[name] = scales[followers[base]]
 
 
-def hook_curves(edges, sides, floor):
-    """Extract the inside and outside of an upright lower return."""
-    left, right = sides
-    inner_start = next(i for i, edge in enumerate(edges) if edge.end[0] > right)
-    inner_end = next(i for i in range(inner_start, len(edges))
-                     if edges[i].controls and edges[i].controls[-1][1] == edges[i].end[1])
-    outer_start = next(i for i in range(inner_end + 1, len(edges))
-                       if edges[i].start[1] == floor and edges[i].end[1] > floor)
-    outer_end = next(i for i in range(outer_start, len(edges)) if edges[i].end[0] == left)
-    return edges[inner_start:inner_end + 1], edges[outer_start:outer_end + 1]
+def draw_return(pen, edges, *, reverse=False):
+    pen.lineTo(edges[-1].end if reverse else edges[0].start)
+    for edge in reversed(edges) if reverse else edges:
+        points = (*reversed(edge.controls), edge.start) if reverse else (*edge.controls, edge.end)
+        getattr(pen, edge.operation)(*points)
 
 
-def draw_hook_curve(pen, edges, start, end):
-    """Rotate and fit a donor curve between the supplied horizontal and vertical joins."""
-    x, y = edges[0].start
-    far_x, far_y = edges[-1].end
-    sx, sy = (end[0] - start[0]) / (far_x - x), (end[1] - start[1]) / (far_y - y)
-
-    def fit(point):
-        return start[0] + (point[0] - x) * sx, start[1] + (point[1] - y) * sy
-
-    for edge in edges:
-        pen.qCurveTo(*map(fit, (*edge.controls, edge.end)))
+def move_return(edges, move):
+    return [edge._replace(start=move(edge.start), end=move(edge.end), controls=tuple(map(move, edge.controls)))
+            for edge in edges]
 
 
-def upper_hook(pen, curves, settings, sides, top, flag_overhang):
-    inner, outer = curves
-    left, right = sides
-    thickness = right - left
-    bar = thickness * settings["bar_ratio"]
-    radius = thickness * settings["inner_hook_ratio"]
-    inner_start, inner_end = (left, top - bar - radius), (left - radius, top - bar)
-    outer_start = (right - thickness * settings["outer_hook_width_ratio"], top)
-    outer_end = (right, top - bar * settings["outer_hook_depth_ratio"])
-    flag_left = left - flag_overhang
-    pen.lineTo(inner_start)
-    draw_hook_curve(pen, inner, inner_start, inner_end)
-    for point in ((flag_left, top - bar), (flag_left, top), outer_start):
-        pen.lineTo(point)
-    draw_hook_curve(pen, outer, outer_start, outer_end)
+def upper_return(lower_l, left, top, floor):
+    """Copy the finished lower return with a 180-degree rotation."""
+    dx = otRound(left) + lower_l[0].start[0]
+    dy = top + floor
+    return move_return(lower_l, lambda point: (dx - point[0], dy - point[1]))
 
 
-def i_outline(settings, cell, baseline, top, thickness, curves):
+def i_outline(settings, cell, baseline, top, thickness, lower_l, floor):
     center = cell / 2 + settings["shaft_offset"]
     left, right = center - thickness / 2, center + thickness / 2
     bar = thickness * settings["bar_ratio"]
@@ -200,18 +177,16 @@ def i_outline(settings, cell, baseline, top, thickness, curves):
     pen.moveTo((foot_left, baseline))
     for point in ((foot_left, baseline + bar), (left, baseline + bar)):
         pen.lineTo(point)
-    upper_hook(pen, curves, settings, (left, right), top, settings["left_flag"])
+    draw_return(pen, upper_return(lower_l, left, top, floor))
     for point in ((right, baseline + bar), (foot_right, baseline + bar), (foot_right, baseline)):
         pen.lineTo(point)
     pen.closePath()
     return pen
 
 
-def return_letter(curves, lower, hook_settings, settings, cell, top, thickness, y_shift, *, reflected=False):
+def lower_return(lower, settings, cell, thickness, y_shift=0, *, reflected=False):
     edges, (donor_left, donor_right) = lower
     center = cell / 2 + settings["shaft_offset"]
-    left, right = center - thickness / 2, center + thickness / 2
-    cut = edges[0].start[1] + y_shift
     direction = -1 if reflected else 1
 
     def move(point):
@@ -220,15 +195,17 @@ def return_letter(curves, lower, hook_settings, settings, cell, top, thickness, 
             distance = thickness / 2 + (x - donor_right) * settings["return_reach"]
         else:
             distance = (x - donor_left) * thickness / (donor_right - donor_left) - thickness / 2
-        return center + direction * distance, y + y_shift
+        return otRound(center + direction * distance), otRound(y + y_shift)
 
+    return move_return(edges, move)
+
+
+def return_letter(lower_l, lower, top, floor, *, reflected=False):
     pen = TTGlyphPen(None)
-    pen.moveTo((left, cut))
-    upper_hook(pen, curves, hook_settings, (left, right), top, settings["left_flag"])
-    pen.lineTo((right, cut))
-    for edge in reversed(edges) if reflected else edges:
-        points = (*reversed(edge.controls), edge.start) if reflected else (*edge.controls, edge.end)
-        getattr(pen, edge.operation)(*map(move, points))
+    left_join = lower[0].start if reflected else lower[-1].end
+    pen.moveTo(left_join)
+    draw_return(pen, upper_return(lower_l, left_join[0], top, floor))
+    draw_return(pen, lower, reverse=reflected)
     pen.closePath()
     return pen.glyph()
 
@@ -267,10 +244,10 @@ def build_custom_letters(font, recipe):
     n = shape_from_glyphs(glyphs, "n")
     left, right = spans(n, baseline + (x_height - baseline) / 3, 1)[0]
     thickness = right - left
-    donor = raw_outline(glyphs, settings["i"]["hook_donor"])
+    donor = raw_outline(glyphs, "l")
     _, floor, _, top = donor.bounds
     lower = lower_arc(donor, (floor + top) / 2)
-    curves = hook_curves(*lower, floor)
+    lower_l = lower_return(lower, settings["l"], cell, thickness)
     dotless_j = shape_from_glyphs(glyphs, "uni0237")
     old_j_left, old_j_right = spans(dotless_j, (x_height + baseline) / 2, 1)[0]
     j_dx = otRound(cell / 2 + settings["j"]["shaft_offset"] - (old_j_left + old_j_right) / 2)
@@ -279,12 +256,10 @@ def build_custom_letters(font, recipe):
     zone = (x_height + baseline) / 2
 
     retain_joined_donors(font, {"dotlessi", "uni0237", "l"})
-    install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, curves).glyph(), cell)
-    install(font, "uni0237", return_letter(
-        curves, lower, settings["i"], settings["j"], cell, x_height, thickness,
-        dotless_j.bounds[1] - floor, reflected=True,
-    ), cell)
-    install(font, "l", return_letter(curves, lower, settings["i"], settings["l"], cell, l_top, thickness, 0), cell)
+    lower_j = lower_return(lower, settings["j"], cell, thickness, dotless_j.bounds[1] - floor, reflected=True)
+    install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, lower_l, floor).glyph(), cell)
+    install(font, "uni0237", return_letter(lower_l, lower_j, x_height, floor, reflected=True), cell)
+    install(font, "l", return_letter(lower_l, lower_l, l_top, floor), cell)
     adjust_marks(font, "dotlessi", settings["i"]["shaft_offset"], 0, zone)
     adjust_marks(font, "uni0237", j_dx, 0, zone)
     adjust_marks(font, "l", l_dx, otRound(l_top - top), zone, shift_lower=True)

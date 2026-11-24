@@ -361,7 +361,7 @@ def main():
         panels.append(letters_panel)
         hook_panel = output / "Code-Hook-Letters.svg"
         detail_comparison(candidate, reference, hook_panel, "Hook letters",
-                          ((166, "Shared upper hook", "i j l"), (447, "Accents", "í ĵ ľ ĺ"),
+                          ((166, "Rotated l return", "i j l"), (447, "Accents", "í ĵ ľ ĺ"),
                            (720, "In text", "jill nil")))
         panels.append(hook_panel)
         crossbar_panel = output / "Code-Crossbar-Letters.svg"
