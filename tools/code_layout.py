@@ -11,6 +11,7 @@ from code_angle_pairs import ANGLE_CASES, build_angle_pairs
 from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
 from code_outlines import refresh_bounds
+from code_spread import build_spread_context
 from code_structural_fit import build_structural_angles
 from code_syntax_build import build_syntax_context
 from font_feature_tools import append_glyph
@@ -45,6 +46,7 @@ def build_layout(font, recipe):
     build_structural_angles(font, cell, depth, shift=settings["mixed_angle_shift"],
                             install_closer=install)
     activate_lifetime_hairlining(font)
+    build_spread_context(font)
 
 
 def angle_styles(rows):

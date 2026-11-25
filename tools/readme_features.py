@@ -304,6 +304,7 @@ def current_name(font, name):
 def expected_code_advance(font, text, names):
     loose_savings = {current_name(font, name): len(token) - 1 for token, name in LOOSE_GLYPHS.items()}
     saved_glyphs = {current_name(font, name) for name in SAVED_CELL_GLYPHS}
+    saved_glyphs.add("period_period_period.liga.spread")
     saved = sum(loose_savings.get(name, int(name in saved_glyphs)) for name in names)
     return CELL * (len(text) - saved)
 

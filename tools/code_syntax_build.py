@@ -18,6 +18,7 @@ from syntax_numeral_study import TOKENS, register_syntax_tokens
 
 REBUILT_TOKENS = {token: f"code.syntax{index:02d}" for index, token in enumerate(TOKENS)
                   if token not in ("?.", "!.", "<'", "&'")}
+SPREAD_SUFFIX = ".spread"
 
 
 def syntax_names(font):
@@ -61,6 +62,12 @@ def build_syntax_glyphs(font, recipe):
 
     install_components(font, names["..."], [place_period(cell * factor, period_y)
                                              for factor in (.7, 1.5, 2.3)], 3 * cell)
+    dot_left, _, dot_right, _ = outline("period").bounds
+    settings = recipe["layout_review"]
+    pitch = dot_right - dot_left + settings["spread_dot_gap"]
+    end = 2 * cell - settings["spread_sidebearing"] - dot_right
+    spread_parts = [translated("period", end - i * pitch) for i in (2, 1, 0)]
+    install_components(font, names["..."] + SPREAD_SUFFIX, spread_parts, 2 * cell)
     for token in ("${", "$[", "$("):
         delimiter = cmap[ord(token[1])]
         dy = otRound(center(delimiter)[1] - center("dollar")[1])

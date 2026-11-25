@@ -29,6 +29,7 @@ from code_outlines import (
     build_horizontal_punctuation, inherit_width_scales,
 )
 from code_punctuation import build_diamond_punctuation
+from code_spread import verify_spread
 from code_syntax_build import build_syntax_glyphs, verify_syntax
 from code_weight_width_trial import name_trial
 from derive_weights import topology
@@ -91,6 +92,16 @@ TYPESCRIPT_SYNTAX_SAMPLE = (
     "        flags |= 1;",
     "    }",
     '    return `${parts.join(", ")} (${flags})`;',
+    "}",
+)
+TYPESCRIPT_SPREAD_SAMPLE = (
+    "function format(name: string, ...args: string[]): string {",
+    "    const values = [name, ...args];",
+    "    const record = { title: name };",
+    "    const copy = { ...record, values };",
+    "    const result = [...(copy.values), ...values];",
+    '    const title = [copy.title, ...result].join(", ");',
+    '    return title || "Wait... later";',
     "}",
 )
 SYNTAX_DETAIL_SAMPLE = (
@@ -593,7 +604,13 @@ def syntax_ligature_proofs(candidate, output, config):
         "Regular 400 · Spread, template interpolation, and bitwise assignment.",
         TYPESCRIPT_SYNTAX_SAMPLE, cuts, extra_keywords=("function", "if"), extra_types=("string",),
     )
-    return detail, typescript
+    spread = output / "Code-TypeScript-Rest-Spread.svg"
+    code_review_proof(
+        spread, config, "TypeScript · Rest and spread",
+        "Regular 400 · Two-cell ellipses sit close to the values they apply to.",
+        TYPESCRIPT_SPREAD_SAMPLE, cuts, extra_keywords=("function",), extra_types=("string",),
+    )
+    return detail, typescript, spread
 
 
 def main():
@@ -642,6 +659,7 @@ def main():
             check["rust_lifetimes"] = verify_lifetimes(built, candidate, config["cell"], check["weights"])
             check["compact_operators"] = verify_compact(built, candidate, recipe, check["weights"])
             check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
+            check["rest_spread"] = verify_spread(built, candidate, recipe, check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
