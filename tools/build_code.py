@@ -202,6 +202,9 @@ def verify_math(font, path, recipe):
     cell, pitch = config["cell"], settings["rule_pitch"]
     tokens = COMPARISONS | ARROWS
     cmap = font.getBestCmap()
+    repeated = ARROWS["->>"]
+    parts = font["glyf"][repeated].components
+    assert [part.glyphName for part in parts] == [repeated + ".shaft", "operator.arrowHead", "operator.arrowHead"]
     engine = hb.Font(hb.Face(path.read_bytes()))
     for weight in range(350, 501, 5):
         engine.set_variations({"wght": weight})
@@ -215,8 +218,11 @@ def verify_math(font, path, recipe):
         for character in "".join(ARROW_FAMILIES) + "+−×÷=≠<>≤≥*~":
             name = cmap[ord(character)]
             assert shape(engine, character, FEATURES)[0][2] == cell
-            left, bottom, right, top = shape_from_glyphs(glyphs, name).bounds
+            outline = shape_from_glyphs(glyphs, name)
+            left, bottom, right, top = outline.bounds
             assert 0 <= left < right <= cell and abs((top + bottom) / 2 - axis) <= 1, (weight, character)
+            if character in "".join(ARROW_FAMILIES):
+                assert topology(outline) == (1, int(character in "⇔⇕")), (weight, character)
         for name, probe, count in (("equal", cell / 2, 2),
                                     (COMPARISONS["==="], cell, 3),
                                     (ARROWS["=>"], cell / 2, 2)):
@@ -226,10 +232,12 @@ def verify_math(font, path, recipe):
                 abs(second - first - pitch) <= 1 for first, second in zip(midpoints, midpoints[1:])
             ), (weight, name, bars)
         lower, upper = spans(shape_from_glyphs(glyphs, "equal"), cell / 2, 0)
-        attached, detached = (ink_extents(raw_outline(glyphs, name), step=1)
-                              for name in ("operator.arrowLeading", "operator.arrowHead"))
+        _, first_head, second_head = raw_outline(glyphs, repeated).contours
+        attached, detached = (ink_extents(head, step=1) for head in (first_head, second_head))
         gap = min(detached[row][0] - attached[row][1] for row in attached.keys() & detached.keys())
         assert abs(gap - (upper[0] - lower[1])) <= 1.5, (weight, gap, lower, upper)
+        for token in ARROWS:
+            assert topology(shape_from_glyphs(glyphs, ARROWS[token])) == (1 + (len(token) == 3), 0), (weight, token)
 
     caret_list = font["GDEF"].table.LigCaretList
     carets = {name: [value.Coordinate for value in glyph.CaretValue]

@@ -123,9 +123,9 @@ The at-sign builder takes the two-storey `a` and `c` before the Code width class
 
 Finish the non-math glyphs before the shared math and operator pass. Review the base signs, comparisons, arrow glyphs and operator ligatures together for vertical alignment, stroke weight, line spacing and advances.
 
-Run `.venv/bin/python tools/build_code.py --operators --output .build/code-from-sans/math-operators --render` for the upright math review. The minus sets the common bar weight on the 300-unit math axis, and the equals sets a 205-unit center-to-center pitch for the stacked comparisons and double-shaft arrows. The arrow builder adapts the Sans points directly, changes shaft length independently of the head, and mirrors left- and down-pointing forms. The eleven default comparison and arrow ligatures preserve the released advance and caret grid. The review also draws the tall angle alternates for the later contextual layout pass.
+Run `.venv/bin/python tools/build_code.py --operators --output .build/code-from-sans/arrowhead-primitives --render` for the upright math review. The minus sets the common bar weight on the 300-unit math axis, and the equals sets a 205-unit center-to-center pitch for the stacked comparisons and double-shaft arrows. The eleven default comparison and arrow ligatures preserve the released advance and caret grid. The review also draws the tall angle alternates for the later contextual layout pass.
 
-For `->>` and `<<-`, the detached head's inner edges continue to a point on the math axis. The minimum horizontal gap between the heads follows the open gap in the equals sign at each weight.
+The arrowhead comes first. Its concentric edges follow the Sans head's tip and terminal slopes, and a radial cut gives both arms square bevels at the donor's stroke weight. A shorter version serves the two-ended horizontal arrows. Each shaft overlaps the inside edge of the appropriate head component. The attached and detached heads in `->>` and `<<-` share the same outline, with a minimum horizontal gap matching the open gap in the equals sign.
 
 The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks.
 

@@ -1,20 +1,19 @@
 """Construct Code math signs and operator ligatures from current drawing parts."""
 
-from copy import deepcopy
-from math import hypot
+from math import asin, atan, ceil, cos, hypot, sin
+from typing import NamedTuple
 
 from fontTools.misc.roundTools import otRound
+from fontTools.misc.transform import Transform
 from fontTools.otlLib.builder import buildLigCaretList
 from fontTools.pens.ttGlyphPen import TTGlyphPen
-from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+import pathops
 
 from audit import spans
-from code_foundation import clear_hints
 from code_outlines import install, install_components, install_outline, logical_not, polygon
 from code_punctuation import DOT
-from code_receiver_shapes import HorizontalMapPen, remap
 from font_feature_tools import add_features
-from italic_returns import draw_segments, raw_outline, segments
+from italic_returns import raw_outline
 from kern_clearance import ink_extents
 
 
@@ -148,103 +147,113 @@ def build_signs(font, cell, axis, settings):
     return thickness
 
 
-def fit_arrow(donor, glyph, left, right, axis, rise, thickness, pitch, head_span, *, paired=False, vertical=False):
-    """Adjust shaft length independently of the concave Sans arrowhead."""
-    x0, y0, x1, y1 = donor.bounds
-    shaft = spans(donor, (x0 + x1) / 2, 0)
-    centers = (-pitch / 2, pitch / 2) if len(shaft) == 2 else (0,)
-    old_y = (y0, *(edge for pair in shaft for edge in pair), y1)
-    new_y = (axis - rise, *(axis + c + s * thickness / 2 for c in centers for s in (-1, 1)), axis + rise)
-    cut = x1 - head_span
-    head_width = min(head_span, (right - left) * 0.41) if paired else head_span
+class ArrowHead(NamedTuple):
+    name: str
+    rows: dict[int, tuple[float, float]]
+
+
+def arrow_slopes(donor):
+    """Estimate the Sans head tangents away from the tiny tip and terminal bevel."""
+    _, bottom, _, top = donor.bounds
+    center, rise = (bottom + top) / 2, (top - bottom) / 2
+
+    def slope(start, end):
+        a, b = center + start * rise, center + end * rise
+        xa, xb = (spans(donor, y, 1)[-1][1] for y in (a, b))
+        return atan((xa - xb) / (b - a))
+
+    return slope(.02, .14), slope(.82, .98)
+
+
+def arrow_head(font, name, slopes, rise, thickness):
+    """Draw concentric edges and cut the terminal on their shared radius."""
+    tip, cap = slopes
+    outer = rise / (sin(tip) - sin(cap))
+    inner = outer + thickness
+    cx, cy = outer * cos(tip), outer * sin(tip)
+    notch = asin(cy / inner)
+
+    def point(radius, angle, direction):
+        return cx - radius * cos(angle), direction * (cy - radius * sin(angle))
+
+    def arc(radius, start, end, direction):
+        step = (end - start) / 4
+        for index in range(4):
+            angle = start + index * step
+            control = point(radius / cos(step / 2), angle + step / 2, direction)
+            pen.qCurveTo(control, point(radius, angle + step, direction))
+
+    pen = TTGlyphPen(None)
+    pen.moveTo((0, 0))
+    arc(outer, tip, cap, -1)
+    pen.lineTo(point(inner, cap, -1))
+    arc(inner, cap, notch, -1)
+    arc(inner, notch, cap, 1)
+    pen.lineTo(point(outer, cap, 1))
+    arc(outer, cap, tip, 1)
+    pen.closePath()
+    install(font, name, pen.glyph(), 0)
+    return ArrowHead(name, ink_extents(raw_outline(font.getGlyphSet(), name), step=1))
+
+
+def install_arrow(font, name, head, bands, advance, axis, length, *, paired=False, vertical=False, gap=None):
+    left, right = (advance - length) / 2, (advance + length) / 2
+    tip = right
+    if gap is not None:
+        width = max(x1 - x0 for x0, x1 in head.rows.values())
+        tip -= otRound(width + gap)
+
+    # Insert each shaft just far enough to cover the head's inside edge.
+    joins = [ceil(max(x0 for row, (x0, _) in head.rows.items() if bottom <= row < top)) + 2
+             for bottom, top in bands]
+    shaft_name = name + ".shaft"
+    shaft = pathops.Path()
+    for (bottom, top), start_join, end_join in zip(bands, reversed(joins), joins, strict=True):
+        start = left - start_join if paired else left
+        end = tip + end_join
+        shaft.addPath(polygon(((start, bottom), (start, top), (end, top), (end, bottom))))
+    install_outline(font, shaft_name, shaft, 0)
+
+    parts = [translated(shaft_name, y=axis), translated(head.name, tip, axis)]
     if paired:
-        old_x = (x0, x0 + head_span, cut, x1)
-        new_x = (left, left + head_width, right - head_width, right)
-    elif glyph is None:
-        old_x, new_x = (cut, x1), (right - head_width, right)
-    else:
-        old_x, new_x = (x0, cut, x1), (left, right - head_width, right)
-
-    def project(x, y):
-        return remap(x, old_x, new_x), remap(y, old_y, new_y)
-
-    if glyph is None:
-        lower, upper = shaft[0]
-        contour, = donor.contours
-        edges = segments(contour)
-        start = next(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == lower)
-        end = max(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == upper)
-        head = edges[end + 1:] + edges[:start]
-        middle_y = (lower + upper) / 2
-
-        def tangent_x(point, control):
-            x, y = point
-            cx, cy = control
-            return x + (middle_y - y) * (x - cx) / (y - cy)
-
-        top_x = tangent_x(head[0].start, head[0].controls[0])
-        bottom_x = tangent_x(head[-1].end, head[-1].controls[-1])
-        target = TTGlyphPen(None)
-        pen = HorizontalMapPen(target, lambda x: remap(x, old_x, new_x), lambda y: remap(y, old_y, new_y))
-        # Continue the inside arms through the area formerly occupied by the shaft.
-        pen.moveTo(((top_x + bottom_x) / 2, middle_y))
-        pen.lineTo(head[0].start)
-        draw_segments(pen, head)
-        pen.closePath()
-        return target.glyph()
-
-    fitted = deepcopy(glyph)
-    middle = (left + right) / 2
-    points = [project(x, y) for x, y in glyph.coordinates]
+        # A half-turn keeps the mirrored head's winding consistent with the shaft.
+        parts.append((head.name, (-1, 0, 0, -1, otRound(left), axis)))
+    if gap is not None:
+        parts.append(translated(head.name, right, axis))
     if vertical:
-        points = [(middle + axis - y, axis - middle + x) for x, y in points]
-    fitted.coordinates = GlyphCoordinates((otRound(x), otRound(y)) for x, y in points)
-    clear_hints(fitted)
-    return fitted
+        middle = advance / 2
+        rotate = Transform(0, 1, -1, 0, middle + axis, axis - middle)
+        parts = [(part, rotate.transform(transform)) for part, transform in parts]
+    install_components(font, name, parts, advance)
 
 
 def build_arrows(font, sans, cell, axis, thickness, settings):
-    source = sans.getGlyphSet()
-    source_cmap = sans.getBestCmap()
+    source_name = sans.getBestCmap()[ord("→")]
+    slopes = arrow_slopes(raw_outline(sans.getGlyphSet(), source_name))
+    standard = arrow_head(font, "operator.arrowHead", slopes, settings["arrow_height"] / 2, thickness)
+    short = arrow_head(font, "operator.arrowHead.short", slopes, settings["paired_arrow_height"] / 2, thickness)
+    pitch = settings["rule_pitch"]
+    single_bands = [(otRound(-thickness / 2), otRound(thickness / 2))]
+    double_bands = [(otRound(center - thickness / 2), otRound(center + thickness / 2))
+                    for center in (-pitch / 2, pitch / 2)]
     cmap = font.getBestCmap()
-    pitch, span = settings["rule_pitch"], settings["arrow_head_span"]
-    rise = settings["arrow_height"] / 2
-    middle = cell / 2
-    for east, both, north, vertical, west, south in ARROW_FAMILIES:
-        for horizontal, rotated in ((east, north), (both, vertical)):
-            two_tips = horizontal == both
-            name = source_cmap[ord(horizontal)]
-            donor, original = raw_outline(source, name), sans["glyf"][name]
-            width = settings["paired_arrow_width"] if two_tips else settings["arrow_width"]
-            spread = settings["paired_arrow_height"] / 2 if two_tips else rise
-            for ch, is_vertical in ((horizontal, False), (rotated, True)):
-                half_width = settings["vertical_arrow_height"] / 2 if is_vertical else width / 2
-                outer_rise = rise if is_vertical else spread
-                glyph = fit_arrow(donor, original, middle - half_width, middle + half_width, axis,
-                                  outer_rise, thickness, pitch, span, paired=two_tips, vertical=is_vertical)
-                install(font, cmap[ord(ch)], glyph, cell)
-        install_components(font, cmap[ord(west)], [(cmap[ord(east)], reflect(cell))], cell)
-        install_components(font, cmap[ord(south)], [(cmap[ord(north)], (1, 0, 0, -1, 0, 2 * axis))], cell)
+    for family, bands in zip(ARROW_FAMILIES, (single_bands, double_bands), strict=True):
+        east, both, north, vertical, west, south = (cmap[ord(ch)] for ch in family)
+        for name, head, length, paired, rotated in (
+            (east, standard, settings["arrow_width"], False, False),
+            (both, short, settings["paired_arrow_width"], True, False),
+            (north, standard, settings["vertical_arrow_height"], False, True),
+            (vertical, standard, settings["vertical_arrow_height"], True, True),
+        ):
+            install_arrow(font, name, head, bands, cell, axis, length, paired=paired, vertical=rotated)
+        install_components(font, west, [(east, reflect(cell))], cell)
+        install_components(font, south, [(north, (1, 0, 0, -1, 0, 2 * axis))], cell)
 
     advance = 2 * cell
-    left, right = settings["wide_sidebearing"], advance - settings["wide_sidebearing"]
-    for token, ch in (("->", "→"), ("=>", "⇒")):
-        name = source_cmap[ord(ch)]
-        glyph = fit_arrow(raw_outline(source, name), sans["glyf"][name], left, right, axis, rise, thickness, pitch, span)
-        install(font, ARROWS[token], glyph, advance)
-    name = source_cmap[ord("→")]
-    single = raw_outline(source, name)
-    head_name, leading_name = "operator.arrowHead", "operator.arrowLeading"
-    install(font, head_name, fit_arrow(single, None, left, right, axis, rise, thickness, pitch, span), 0)
-    glyphs = font.getGlyphSet()
-    attached, detached = (ink_extents(raw_outline(glyphs, name), step=1)
-                          for name in (ARROWS["->"], head_name))
-    # The boundaries of the two heads occur at different heights.
-    facing = max(attached[row][1] - detached[row][0] for row in attached.keys() & detached.keys())
-    end = right - otRound(facing + pitch - thickness)
-    leading = fit_arrow(single, sans["glyf"][name], left, end, axis, rise, thickness, pitch, span)
-    install(font, leading_name, leading, 0)
-    install_components(font, ARROWS["->>"], [translated(leading_name), translated(head_name)], advance)
+    length = advance - 2 * settings["wide_sidebearing"]
+    install_arrow(font, ARROWS["->"], standard, single_bands, advance, axis, length)
+    install_arrow(font, ARROWS["=>"], standard, double_bands, advance, axis, length)
+    install_arrow(font, ARROWS["->>"], standard, single_bands, advance, axis, length, gap=pitch - thickness)
     for token, source_token in (("<-", "->"), ("<<-", "->>")):
         install_components(font, ARROWS[token], [(ARROWS[source_token], reflect(advance))], advance)
 
