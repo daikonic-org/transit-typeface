@@ -439,14 +439,24 @@ def build_crossbar_letters(font, recipe):
     ))
     install(font, "f", pen.glyph(), cell)
 
-    dependents = component_users(font, {"f", "t"})
-    for name in dependents:
+    t_offset = settings.get("t_x_offset", 0)
+    t_dependents = component_users(font, {"t"})
+    if t_offset:
+        font["glyf"]["t"].coordinates.translate((t_offset, 0))
+        refresh_bounds(font, "t")
+        for name in t_dependents:
+            for part in font["glyf"][name].components:
+                if part.glyphName != "t":
+                    part.x += t_offset
+    for name in component_users(font, {"f", "t"}):
         refresh_bounds(font, name)
 
     def f_anchor(x, y):
         return x, y + (f_height - f.bounds[3] if y >= x_height else 0)
 
-    anchors = defaultdict(lambda: lambda x, y: (x, y), {"t": lambda x, y: (x, t_y(y)), "f": f_anchor})
+    anchors = defaultdict(lambda: lambda x, y: (x, y))
+    anchors.update(dict.fromkeys(t_dependents, lambda x, y: (x + t_offset, y)))
+    anchors.update({"t": lambda x, y: (x + t_offset, t_y(y)), "f": f_anchor})
     map_attachment_anchors(font, anchors)
 
 
