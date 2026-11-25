@@ -340,7 +340,7 @@ def build_custom_letters(fonts, recipe):
 
 
 def build_g(font, recipe):
-    """Scale the upper bowl as one piece and overlap it with the original connector."""
+    """Enlarge the upper bowl while holding its stroke weight and keeping the original connector."""
     settings = recipe["custom_lowercase_review"]["g"]
     glyphs = font.getGlyphSet()
     donor = font["glyf"]["g"]
@@ -351,30 +351,44 @@ def build_g(font, recipe):
     start, end = settings["connector_points"]
     assert donor.flags[start] & donor.flags[end] & flagOnCurve
 
-    def piece(outer, inner, move):
+    def piece(outer, inner, move, move_counter):
         indices = (*outer, *inner)
         glyph = deepcopy(donor)
         glyph.numberOfContours = 2
         glyph.endPtsOfContours = [len(outer) - 1, len(indices) - 1]
-        glyph.coordinates = GlyphCoordinates(move(*coordinates[i]) for i in indices)
+        glyph.coordinates = GlyphCoordinates(move(*coordinates[i]) for i in outer)
+        glyph.coordinates.extend(move_counter(*coordinates[i]) for i in inner)
         glyph.flags = bytearray(donor.flags[i] & flagOnCurve for i in indices)
         return glyph
 
     outline = raw_outline(glyphs, "g")
     counter_y = [coordinates[i][1] for i in upper_counter]
-    bowl = spans(outline, (min(counter_y) + max(counter_y)) / 2, 1)
-    left, right = bowl[0][0], bowl[-1][1]
+    (left, inner_left), (inner_right, right) = spans(outline, (min(counter_y) + max(counter_y)) / 2, 1)
     a_left, _, a_right, _ = shape_from_glyphs(glyphs, "a").bounds
-    target = (a_right - a_left) * settings["a_width_ratio"]
-    scale = min(settings["maximum_bowl_scale"], target / (right - left))
-    center = (left + right) / 2
-    top = outline.bounds[3]
+    relative_a_width = (a_right - a_left) / (right - left)
+    scale = min(settings["maximum_bowl_scale"], relative_a_width * settings["a_width_ratio"])
+    stroke_scale = min(settings["maximum_stroke_scale"], relative_a_width * settings["stroke_a_width_ratio"])
+    growth = scale - stroke_scale
+    middle, top = (left + right) / 2, outline.bounds[3]
+
+    # Expand the counter by the same amount as the bowl's outer walls.
+    counter_left = middle + scale * (inner_left - middle) - growth * (inner_left - left)
+    counter_right = middle + scale * (inner_right - middle) + growth * (right - inner_right)
+    counter_scale = (counter_right - counter_left) / (inner_right - inner_left)
+
+    def height(y):
+        # Keep the earlier vertical fit so the larger bowl clears the lower loop.
+        return otRound(top + stroke_scale * (y - top))
+
+    def retain(x, y):
+        return x, y
 
     # Store both pieces with the overlap flag so the original curves interpolate intact.
     advance = font["hmtx"]["g"][0]
-    lower = piece(range(start, end + 1), lower_counter, lambda x, y: (x, y))
+    lower = piece(range(start, end + 1), lower_counter, retain, retain)
     upper = piece((*range(end, outer_end + 1), *range(start + 1)), upper_counter,
-                  lambda x, y: (otRound(center + scale * (x - center)), otRound(top + scale * (y - top))))
+                  lambda x, y: (otRound(middle + scale * (x - middle)), height(y)),
+                  lambda x, y: (otRound(counter_left + counter_scale * (x - inner_left)), height(y)))
     install(font, "g.lower", lower, advance)
     install(font, "g.upper", upper, advance)
     identity = (1, 0, 0, 1, 0, 0)
