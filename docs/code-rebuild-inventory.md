@@ -145,3 +145,24 @@ GPOS offsets preserve the drawing positions.
 
 The trial checks component positions, operator outlines, advances, offsets and
 carets across five weights and five widths.
+
+### Crossbar alignment review
+
+The contextual alignment review measures the facing ink edges at the
+crossbar height of `f` or `t`. It reduces unequal gaps while preserving the
+tightest existing clearance across the full outlines of each triplet.
+If adjacent letters can both move, each move may only open their shared
+gap. The generated `triplet_offsets` use GPOS under `calt`, with the same
+glyphs, character advances and carets.
+
+Generate the review recipe from the upright and italic variable fonts
+before alignment, with the approved `f` crossbar already built:
+
+```sh
+.venv/bin/python tools/code_crossbar_alignment.py upright.ttf italic.ttf \
+  --recipe control.json --output-recipe aligned.json \
+  --minimum-shift 8 --maximum-shift 38
+```
+
+Build both the layout reference and the GPOS trial with `aligned.json`.
+Pass it to the trial builder with `--recipe aligned.json`.

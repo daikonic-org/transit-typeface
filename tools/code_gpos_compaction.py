@@ -239,12 +239,13 @@ def build(recipe, reference, output):
 
 def main():
     parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--reference", required=True, type=Path, help="Directory holding the packaged Code VFs")
     parser.add_argument("--render", action="store_true")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    panel = build(json.loads(RECIPE_PATH.read_text()), args.reference, args.output)
+    panel = build(json.loads(args.recipe.read_text()), args.reference, args.output)
     if args.render:
         render(panel, scale=2)
     print(f"Wrote the positioned ligature-spacing trial to {args.output}")
