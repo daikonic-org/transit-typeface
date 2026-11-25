@@ -12,8 +12,16 @@ from specimens import ROOT
 PLACEMENT = ROOT / "trials/2026-11-16-code-hyphen-k/Positioning.fea"
 
 
-def add_code_spacing(font, cell, install):
-    add_features(font, PLACEMENT.read_text())
+def add_code_spacing(font, cell, install, *, triplet_offsets=None):
+    placement = PLACEMENT.read_text()
+    if triplet_offsets:
+        cmap = font.getBestCmap()
+        rules = []
+        for text, offset in sorted(triplet_offsets.items()):
+            left, middle, right = (cmap[ord(char)] for char in text)
+            rules.append(f"pos {left} {middle}' <{offset:d} 0 0 0> {right};")
+        placement += "\nfeature calt {\n" + "\n".join(rules) + "\n} calt;\n"
+    add_features(font, placement)
     ratio = 1 / SCALE
     _, low, _, high = raw_outline(font.getGlyphSet(), "at").bounds
     install("at.compact", [("at", ratio, ratio, (1 - ratio) * cell / 2,
