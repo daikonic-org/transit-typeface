@@ -31,6 +31,7 @@ from code_outlines import (
     build_horizontal_punctuation, inherit_width_scales,
 )
 from code_punctuation import build_diamond_punctuation
+from code_spacing import verify_code_spacing
 from code_spread import verify_spread
 from code_syntax_build import build_syntax_glyphs, verify_syntax
 from code_weight_width_trial import name_trial
@@ -39,6 +40,7 @@ from glyph_proof import build_proof
 from italic_returns import raw_outline
 from kern_clearance import ink_extents
 from readme_features import highlight_code_line
+from repeated_stems import add_monospace_repeats
 from render_svg import render
 from scaling_study import vertical_stem
 from specimens import Panel
@@ -640,6 +642,7 @@ def main():
         font, width_report = alphabet_font(sans, recipe, stage=stage)
         if stage == "Layout":
             build_layout(font, recipe)
+            add_monospace_repeats(font)
         verify_latin_topology(sans, font, config)
         vertical = set_vertical_metrics(
             font, minimum_ascent=config["line_metrics"]["ascent"],
@@ -663,6 +666,7 @@ def main():
             check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
             check["rest_spread"] = verify_spread(built, candidate, recipe, check["weights"])
             check["hairlining"] = verify_hairlining(built, candidate, check["weights"])
+            check["spacing"] = verify_code_spacing(candidate, config["cell"])
             check["logic"] = verify_logic(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {

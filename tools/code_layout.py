@@ -14,6 +14,7 @@ from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import build_lifetimes
 from code_logic_build import build_logic
 from code_outlines import refresh_bounds
+from code_spacing import add_code_spacing
 from code_spread import build_spread_context
 from code_structural_fit import build_structural_angles
 from code_syntax_build import build_syntax_context
@@ -53,6 +54,7 @@ def build_layout(font, recipe, *, hairlines=True):
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
     if not hairlines:
         position_lifetime_ampersand(font)
+    add_code_spacing(font, cell, install)
 
 
 def angle_styles(rows):
