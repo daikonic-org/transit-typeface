@@ -12,14 +12,32 @@ from specimens import ROOT
 PLACEMENT = ROOT / "trials/2026-11-16-code-hyphen-k/Positioning.fea"
 
 
-def add_code_spacing(font, cell, install, *, triplet_offsets=None):
+def add_code_spacing(font, cell, install, *, triplet_offsets=None, edge_spacing=None):
     placement = PLACEMENT.read_text()
-    if triplet_offsets:
+    locked = triplet_offsets or {}
+    if locked or edge_spacing:
         cmap = font.getBestCmap()
+
+        def names(text):
+            return [cmap[ord(char)] for char in text]
+
         rules = []
-        for text, offset in sorted(triplet_offsets.items()):
-            left, middle, right = (cmap[ord(char)] for char in text)
+        for text, offset in sorted(locked.items()):
+            left, middle, right = names(text)
             rules.append(f"pos {left} {middle}' <{offset:d} 0 0 0> {right};")
+        if edge_spacing:
+            for label, members in edge_spacing["classes"].items():
+                placement += f"\n@{label} = [{' '.join(names(members))}];"
+            rules.append("lookup EdgeClassSpacing {")
+            # Preserve the facing edges of the explicitly approved triplets.
+            for text in sorted(locked):
+                glyphs = names(text)
+                for index in range(len(glyphs)):
+                    marked = [name + "'" if i == index else name for i, name in enumerate(glyphs)]
+                    rules.append("ignore pos " + " ".join(marked) + ";")
+            for left, middle, right, offset in edge_spacing["rules"]:
+                rules.append(f"pos @{left} @{middle}' <{offset:d} 0 0 0> @{right};")
+            rules.append("} EdgeClassSpacing;")
         placement += "\nfeature calt {\n" + "\n".join(rules) + "\n} calt;\n"
     add_features(font, placement)
     ratio = 1 / SCALE

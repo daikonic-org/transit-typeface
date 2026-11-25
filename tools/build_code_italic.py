@@ -23,7 +23,7 @@ from system_metrics import set_vertical_metrics
 
 
 def build_italic(font, recipe, family, *, version, spread_glyph=True):
-    build_layout(font, recipe, hairlines=False, spread_glyph=spread_glyph)
+    build_layout(font, recipe, hairlines=False, spread_glyph=spread_glyph, spacing_style="italic")
     locations, model, default = designspace(font)
     masters = [font.getGlyphSet(location=location) for location in locations]
     metric_sources = reuse_single_storey_a(font, designspace=(model, masters, default))

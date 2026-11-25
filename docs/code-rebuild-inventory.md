@@ -166,3 +166,18 @@ before alignment, with the approved `f` crossbar already built:
 
 Build both the layout reference and the GPOS trial with `aligned.json`.
 Pass it to the trial builder with `--recipe aligned.json`.
+
+### Edge class spacing review
+
+The edge class trial assigns individual glyphs to classes by the contour
+they present to a neighbor. The same glyph can have a reaching edge on
+one side and open space on the other. Each rule matches a left class,
+the class of the glyph to move and a right class. The shaping engine
+applies the same GPOS rule wherever those classes appear in the run.
+
+The `layout_review.edge_spacing` recipe maps each face to its classes and
+rules. Class members are Unicode characters and each rule records the
+three class names and a horizontal placement in design units. Existing
+`triplet_offsets` keep their approved positions when class rules overlap
+their context. The review recipe uses one upright rule and retains
+the existing `str` adjustment in both faces.
