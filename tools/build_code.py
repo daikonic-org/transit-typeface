@@ -23,6 +23,7 @@ from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
 from code_layout import align_pipe, build_layout, verify_layout
 from code_lifetimes import verify_lifetimes
+from code_logic_build import verify_logic
 from code_math import ARROW_FAMILIES, ARROWS, COMPARISONS, SYMBOL_SAMPLES, build_math
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
@@ -660,6 +661,7 @@ def main():
             check["compact_operators"] = verify_compact(built, candidate, recipe, check["weights"])
             check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
             check["rest_spread"] = verify_spread(built, candidate, recipe, check["weights"])
+            check["logic"] = verify_logic(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),

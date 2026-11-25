@@ -73,6 +73,37 @@ def left_angle(left, right, bottom, top, thickness):
     )
 
 
+def closed_enclosures(gs, cell=600):
+    bracket = shape_from_glyphs(gs, "bracketleft")
+    l, b, r, t = bracket.bounds
+    mid = (b + t) / 2
+    stem = spans(bracket, mid, 1)[0]
+    vertical = stem[1] - stem[0]
+    rails = spans(bracket, (stem[1] + r) / 2, 0)
+    horizontal = rails[-1][1] - rails[-1][0]
+    angle = shape_from_glyphs(gs, "less.generic")
+    a = angle.bounds
+    slope = (a[3] - a[1]) / 2 / (a[2] - a[0])
+    interval = spans(angle, 400, 0)[-1]
+    diagonal = (interval[1] - interval[0]) / math.sqrt(1 + slope * slope)
+    outer = polygon([(cell / 5, mid), (cell, t), (9 * cell / 5, mid), (cell, b)])
+    rx, ry = 4 * cell / 5, (t - b) / 2
+    ix = rx - diagonal * math.sqrt(1 + (rx / ry) ** 2)
+    iy = ry - diagonal * math.sqrt(1 + (ry / rx) ** 2)
+    assert ix > 0 and iy > 0
+    inner = polygon(
+        [(cell - ix, mid), (cell, mid + iy), (cell + ix, mid), (cell, mid - iy)]
+    )
+    diamond = pathops.op(outer, inner, pathops.PathOp.DIFFERENCE)
+    right = 2 * cell - l
+    box = pathops.op(
+        rectangle(l, b, right, t),
+        rectangle(l + vertical, b + horizontal, right - vertical, t - horizontal),
+        pathops.PathOp.DIFFERENCE,
+    )
+    return diamond, box, (bracket, l, b, r, t, horizontal, diagonal)
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     original = TTFont(SOURCE)
@@ -82,33 +113,8 @@ def main():
     for location in locations:
         f = instantiateVariableFont(deepcopy(original), location, inplace=True)
         gs = f.getGlyphSet()
-        bracket = shape_from_glyphs(gs, "bracketleft")
-        l, b, r, t = bracket.bounds
-        mid = (b + t) / 2
-        stem = spans(bracket, mid, 1)[0]
-        vertical = stem[1] - stem[0]
-        rails = spans(bracket, (stem[1] + r) / 2, 0)
-        horizontal = rails[-1][1] - rails[-1][0]
-        angle = shape_from_glyphs(gs, "less.generic")
-        a = angle.bounds
-        slope = (a[3] - a[1]) / 2 / (a[2] - a[0])
-        interval = spans(angle, 400, 0)[-1]
-        diagonal = (interval[1] - interval[0]) / math.sqrt(1 + slope * slope)
-        outer = polygon([(120, mid), (600, t), (1080, mid), (600, b)])
-        rx, ry = 480, (t - b) / 2
-        ix = rx - diagonal * math.sqrt(1 + (rx / ry) ** 2)
-        iy = ry - diagonal * math.sqrt(1 + (ry / rx) ** 2)
-        assert ix > 0 and iy > 0
-        inner = polygon(
-            [(600 - ix, mid), (600, mid + iy), (600 + ix, mid), (600, mid - iy)]
-        )
-        paths[TOKENS["<>"]].append(pathops.op(outer, inner, pathops.PathOp.DIFFERENCE))
-        right = 1200 - l
-        box = pathops.op(
-            rectangle(l, b, right, t),
-            rectangle(l + vertical, b + horizontal, right - vertical, t - horizontal),
-            pathops.PathOp.DIFFERENCE,
-        )
+        diamond, box, (bracket, l, b, r, t, horizontal, diagonal) = closed_enclosures(gs)
+        paths[TOKENS["<>"]].append(diamond)
         paths[TOKENS["[]"]].append(box)
         left_outer = left_angle(120, 600, b, t, diagonal)
         bracket_inner = bracket.transform(1, 0, 0, 1, 600, 0)

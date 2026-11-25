@@ -105,8 +105,7 @@ def check(path):
     )
 
 
-def main():
-    font = TTFont(SOURCE, recalcTimestamp=False)
+def add_commands(font, commands, names, cell=600, *, install=None):
     cmap = font.getBestCmap()
     words = sorted(
         {
@@ -117,40 +116,49 @@ def main():
             or chr(cp) == "_"
         }
     )
-    tokens = {command: [cmap[ord(ch)] for ch in command] for command in COMMANDS}
-    for command, original in COMMANDS.items():
-        advance = len(command) * 600
+    tokens = {command: [cmap[ord(ch)] for ch in command] for command in commands}
+    for command, original in commands.items():
+        advance = len(command) * cell
         shift = advance - font["hmtx"][original][0]
-        compose(font, glyph_name(command), [(original, 1, 1, shift, 0)], advance)
-        font["GDEF"].table.GlyphClassDef.classDefs[glyph_name(command)] = 2
+        parts = [(original, 1, 1, shift, 0)]
+        if install is None:
+            compose(font, names[command], parts, advance)
+        else:
+            install(names[command], parts, advance)
+        font["GDEF"].table.GlyphClassDef.classDefs[names[command]] = 2
     rules = [
         "languagesystem DFLT dflt;",
         "languagesystem latn dflt;",
         "@CommandWord=[" + " ".join(words) + "];",
         "lookup CommandForms {",
     ]
-    for command, names in tokens.items():
-        rules.append("sub " + " ".join(names) + " by " + glyph_name(command) + ";")
+    for command, letters in tokens.items():
+        rules.append("sub " + " ".join(letters) + " by " + names[command] + ";")
     rules += [
         "} CommandForms;",
         "feature calt { lookup CommandContext {",
         "ignore sub [backslash @CommandWord] backslash';",
     ]
-    for command, names in tokens.items():
-        rules.append("ignore sub backslash' " + " ".join(names[1:]) + " @CommandWord;")
-    for command, names in tokens.items():
-        rules.append("sub backslash' lookup CommandForms " + " ".join(names[1:]) + ";")
+    for command, letters in tokens.items():
+        rules.append("ignore sub backslash' " + " ".join(letters[1:]) + " @CommandWord;")
+    for command, letters in tokens.items():
+        rules.append("sub backslash' lookup CommandForms " + " ".join(letters[1:]) + ";")
     rules += ["} CommandContext; } calt;", "table GDEF {"]
-    for command in COMMANDS:
+    for command in commands:
         rules.append(
             "LigatureCaretByPos "
-            + glyph_name(command)
+            + names[command]
             + " "
-            + " ".join(str(n) for n in range(600, len(command) * 600, 600))
+            + " ".join(str(n) for n in range(cell, len(command) * cell, cell))
             + ";"
         )
     rules.append("} GDEF;")
     add_features(font, "\n".join(rules))
+
+
+def main():
+    font = TTFont(SOURCE, recalcTimestamp=False)
+    add_commands(font, COMMANDS, {command: glyph_name(command) for command in COMMANDS})
     for record in font["name"].names:
         if record.nameID in (3, 5, 10):
             text = {

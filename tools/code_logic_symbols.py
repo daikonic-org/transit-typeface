@@ -51,6 +51,34 @@ def check(path):
     )
 
 
+def add_logic_not(font):
+    words = sorted(
+        {
+            name
+            for cp, name in font.getBestCmap().items()
+            if unicodedata.category(chr(cp)).startswith("L")
+            or chr(cp).isdigit()
+            or chr(cp) == "_"
+        }
+    )
+    add_features(
+        font,
+        "\n".join(
+            [
+                "languagesystem DFLT dflt;",
+                "languagesystem latn dflt;",
+                "@LogicWord=[" + " ".join(words) + "];",
+                "feature ss02 { lookup LogicNot { lookupflag IgnoreMarks;",
+                "ignore sub @LogicWord exclam';",
+                "ignore sub [quotesingle quotedbl] exclam';",
+                "ignore sub exclam' [equal period quotesingle quotedbl];",
+                "sub exclam' by logicalnot;",
+                "} LogicNot; } ss02;",
+            ]
+        ),
+    )
+
+
 def main():
     font = TTFont(SOURCE, recalcTimestamp=False)
     cap = font["OS/2"].sCapHeight
@@ -84,31 +112,7 @@ def main():
         if table.isUnicode() and table.format in (4, 12):
             table.cmap.update(SYMBOLS)
     font["OS/2"].recalcUnicodeRanges(font)
-    words = sorted(
-        {
-            name
-            for cp, name in font.getBestCmap().items()
-            if unicodedata.category(chr(cp)).startswith("L")
-            or chr(cp).isdigit()
-            or chr(cp) == "_"
-        }
-    )
-    add_features(
-        font,
-        "\n".join(
-            [
-                "languagesystem DFLT dflt;",
-                "languagesystem latn dflt;",
-                "@LogicWord=[" + " ".join(words) + "];",
-                "feature ss02 { lookup LogicNot { lookupflag IgnoreMarks;",
-                "ignore sub @LogicWord exclam';",
-                "ignore sub [quotesingle quotedbl] exclam';",
-                "ignore sub exclam' [equal period quotesingle quotedbl];",
-                "sub exclam' by logicalnot;",
-                "} LogicNot; } ss02;",
-            ]
-        ),
-    )
+    add_logic_not(font)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     font.save(OUT)
     check(OUT)

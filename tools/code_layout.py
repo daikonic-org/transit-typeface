@@ -10,6 +10,7 @@ from check_code_rebuild import shape
 from code_angle_pairs import ANGLE_CASES, build_angle_pairs
 from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
+from code_logic_build import build_logic
 from code_outlines import refresh_bounds
 from code_spread import build_spread_context
 from code_structural_fit import build_structural_angles
@@ -41,9 +42,10 @@ def build_layout(font, recipe):
     build_lifetimes(font, cell, settings)
     build_compact_context(font, cell)
     build_syntax_context(font, cell)
+    build_logic(font, cell, install)
     build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias,
                       scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
-    build_structural_angles(font, cell, depth, shift=settings["mixed_angle_shift"],
+    build_structural_angles(font, cell, depth, features=("calt", "ss02"), shift=settings["mixed_angle_shift"],
                             install_closer=install)
     activate_lifetime_hairlining(font)
     build_spread_context(font)
