@@ -19,7 +19,10 @@ from bundle_release import sanitize
 from check_code_rebuild import fixtures, shape
 from code_compact_build import CONTEXT_PAIRS, DIRECT, LOOSE_NAMES, SCOPE
 from code_layout import build_layout
-from code_gpos_lateral import add_horizontal_positions, add_lateral_positioning, retire_lateral_drawings
+from code_gpos_lateral import (
+    add_horizontal_positions, add_lateral_positioning, component_positions,
+    retire_lateral_drawings, split_advance,
+)
 from code_math import ARROWS, COMPARISONS
 from code_spread import register_spread_context
 from code_syntax_build import SPREAD_SUFFIX, spread_offsets, syntax_names
@@ -73,10 +76,7 @@ def add_spread_positioning(font, recipe, replacements):
     locations, model, default = designspace(font)
     placements = [spread_offsets(font.getGlyphSet(location=loc), cell, recipe["layout_review"])
                   for loc in locations]
-    advance = 2 * cell
-    values = {dot: ((0 if i else advance) - cell,
-                    tuple(value - (advance if i else 0) for value in column))
-              for i, (dot, column) in enumerate(zip(DOTS, zip(*placements, strict=True), strict=True))}
+    values = dict(zip(DOTS, component_positions(2 * cell, [cell] * len(DOTS), placements), strict=True))
     label_stylistic_set(font, FEATURE, "Positioned Ligature Components")
     add_horizontal_positions(font, model, default, values, FEATURE)
 
@@ -114,14 +114,14 @@ def verify_positions(before, after, glyphs, replacements):
     expected = []
     advances = []
     for (name, cluster, x, y), row in zip(old_positions, before, strict=True):
-        advances.append(row[2])
         aliases = replacements.get(name)
         if aliases:
-            advances.extend([0] * (len(aliases) - 1))
+            advances.extend(split_advance(row[2], len(aliases)))
             glyph, _ = glyphs[name]._getGlyphAndOffset()
             expected.extend((alias, cluster + i, x + part.x, y + part.y)
                             for i, (alias, part) in enumerate(zip(aliases, glyph.components, strict=True)))
         else:
+            advances.append(row[2])
             expected.append((name, cluster, x, y))
     assert len(new_positions) == len(expected) and old_width == new_width, (before, after)
     assert [row[2] for row in after] == advances, (before, after, advances)
@@ -178,7 +178,8 @@ def verify(source, target, recipe, replacements):
             for text in SPREAD_CASES:
                 new_rows = shape(after, text, {FEATURE: True})
                 dots = [row[2] for row in new_rows if row[0] in DOTS]
-                assert dots == [2 * cell, 0, 0] * (len(dots) // 3), (weight, width, text, dots)
+                expected_dots = split_advance(2 * cell, len(DOTS))
+                assert dots == expected_dots * (len(dots) // len(DOTS)), (weight, width, text, dots)
                 assert any(row[0] in DOTS for row in new_rows)
                 assert all(row[0] not in DOTS for row in shape(after, text, {FEATURE: False}))
                 checked += 1

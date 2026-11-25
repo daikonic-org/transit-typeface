@@ -15,6 +15,22 @@ from font_feature_tools import add_features, append_glyph, append_layout_variati
 from system_italic import designspace
 
 
+def split_advance(total, count):
+    """Distribute a run's advance across its inputs, rounding the boundaries."""
+    stops = [otRound(i * total / count) for i in range(count + 1)]
+    return [end - start for start, end in zip(stops[:-1], stops[1:], strict=True)]
+
+
+def component_positions(total, nominal, origins_by_master):
+    """Keep the drawn origins fixed when the advances between them change."""
+    cursor = 0
+    for original, advance, origins in zip(
+        nominal, split_advance(total, len(nominal)), zip(*origins_by_master, strict=True), strict=True
+    ):
+        yield advance - original, tuple(origin - cursor for origin in origins)
+        cursor += advance
+
+
 def lateral_ligatures(font, masters):
     """Select translated components with real advances and a spacing change."""
     glyf, metrics = font["glyf"], font["hmtx"]
@@ -40,10 +56,12 @@ def lateral_ligatures(font, masters):
             shifted |= any(master[i].x != cursor for master in samples)
             cursor += width
         if shifted:
+            origins = [[otRound(part.x) for part in master] for master in samples]
             yield name, [
-                (donor, (0 if i else advance) - nominal[i],
-                 tuple(otRound(master[i].x - (advance if i else 0)) for master in samples))
-                for i, (donor, _) in enumerate(parts)
+                (donor, adjustment, placements)
+                for (donor, _), (adjustment, placements) in zip(
+                    parts, component_positions(advance, nominal, origins), strict=True
+                )
             ]
 
 

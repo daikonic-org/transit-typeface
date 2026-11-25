@@ -132,9 +132,10 @@ as `===` use their existing glyphs and advances.
 
 The spacing rules preserve each input character's index and remove the old
 compound drawings and their intermediate caret records. With `ss08` enabled,
-the first component carries the full advance and the later components carry
-zero advance. Core Text places their cursor positions at the end of the
-sequence, including at the end of a line.
+each character advances by an equal share of the sequence width. A compact
+pair like `::` has half-cell caret steps, the three dots of rest and spread
+have two-thirds-cell steps, and nested generic closers retain full-cell steps.
+GPOS offsets preserve the drawing positions.
 
 ```sh
 .venv/bin/python tools/code_gpos_compaction.py \
