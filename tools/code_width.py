@@ -6,6 +6,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables import otTables
 
+from code_boundary_spacing import add_boundary_spacing
 from font_feature_tools import append_glyph
 from sans_baseline_trial import build_variations
 from system_italic import designspace
@@ -52,7 +53,8 @@ def normalize_component_matrices(font):
     return list(names.values())
 
 
-def add_code_width(font, cell):
+def add_code_width(font, cell, *, boundaries=()):
+    add_boundary_spacing(font, boundaries)
     components = normalize_component_matrices(font)
     grids = {name: advance // cell for name, (advance, _) in font["hmtx"].metrics.items()
              if advance > 0 and advance % cell == 0}

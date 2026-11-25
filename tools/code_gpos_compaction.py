@@ -221,7 +221,9 @@ def build(recipe, reference, output):
         name_trial(font, FAMILY, variable=True)
         set_vertical_metrics(font, minimum_ascent=config["line_metrics"]["ascent"],
                              maximum_descent=config["line_metrics"]["descent"])
-        add_code_width(font, config["cell"])
+        spacing = recipe["layout_review"].get("edge_spacing", {})
+        style = "italic" if is_italic else "upright"
+        add_code_width(font, config["cell"], boundaries=spacing.get(style, {}).get("boundaries", ()))
         retire_lateral_drawings(font, replacements)
         title = "-Italic" if is_italic else ""
         target = output / f"{FAMILY.replace(' ', '')}{title}-VF.ttf"
