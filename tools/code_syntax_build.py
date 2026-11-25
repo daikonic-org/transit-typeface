@@ -129,7 +129,8 @@ def verify_syntax(font, path, recipe, weights):
         for token, name in names.items():
             rows = shape(engine, token, {})
             literal = shape(engine, token, {"calt": False})
-            assert len(rows) == 1 and rows[0][:3] == [name, 0, len(token) * cell], (weight, token, rows)
+            assert len(rows) == 1 and rows[0][0].removesuffix(".hairline") == name, (weight, token, rows)
+            assert rows[0][1:3] == [0, len(token) * cell], (weight, token, rows)
             assert [row[0] for row in literal] == [cmap[ord(ch)] for ch in token]
             following = shape(engine, token + "x", {})
             assert following[1][:3] == ["x", len(token), cell]

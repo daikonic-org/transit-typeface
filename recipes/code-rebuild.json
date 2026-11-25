@@ -125,6 +125,7 @@
     "angle_depth": 16,
     "angle_span": 60,
     "mixed_angle_shift": 30,
+    "bar_delimiters": {"inward_units": 14, "context_limit": 48},
     "scope_column_distance": 248,
     "turbofish_inset": 18,
     "access_dot_gap": 50,

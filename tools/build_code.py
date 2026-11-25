@@ -21,6 +21,7 @@ from code_at import build_at
 from code_compact_build import build_compact_glyphs, verify_compact
 from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
+from code_hairlining import verify_hairlining
 from code_layout import align_pipe, build_layout, verify_layout
 from code_lifetimes import verify_lifetimes
 from code_logic_build import verify_logic
@@ -661,6 +662,7 @@ def main():
             check["compact_operators"] = verify_compact(built, candidate, recipe, check["weights"])
             check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
             check["rest_spread"] = verify_spread(built, candidate, recipe, check["weights"])
+            check["hairlining"] = verify_hairlining(built, candidate, check["weights"])
             check["logic"] = verify_logic(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {

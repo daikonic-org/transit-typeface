@@ -93,9 +93,10 @@ def verify_compact(font, path, recipe, weights):
             assert all(row[0] not in tokens.values() for row in shape(engine, text, {})), (weight, text)
 
         complete = shape(engine, "::<T>", {})
-        assert [row[0] for row in complete] == [SCOPE, "less.generic", "T", "greater.generic"]
+        assert [row[0].removesuffix(".hairline") for row in complete] == [SCOPE, "less.generic", "T", "greater.generic"]
         assert [row[2:] for row in complete[:2]] == [[cell, 0, inset, 0], [cell, 0, -inset, 0]]
-        assert complete == shape(engine, "::<T>", {"ss07": True})
+        assert [[name.removesuffix(".hairline"), *rest] for name, *rest in complete] == shape(
+            engine, "::<T>", {"ss07": True})
         assert [row[0:5] for row in shape(engine, "::<", {})] == [
             [SCOPE, 0, cell, 0, 0], ["less", 2, cell, 0, 0]]
         scope = shape_from_glyphs(glyphs, SCOPE)

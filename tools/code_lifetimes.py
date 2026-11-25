@@ -80,6 +80,6 @@ def verify_lifetimes(font, path, cell, weights):
                                 )
         assert shape(engine, "a & b", {}) == shape(engine, "a & b", {"calt": False})
         assert shape(engine, "<'a'>", {})[-1][0] == "greater"
-        assert shape(engine, "<'a>", {})[-1][0] == "greater.generic"
+        assert shape(engine, "<'a>", {OFF_FEATURE: True})[-1][0] == "greater.generic"
     return {"contexts": len(cases), "weights": weights, "marker_advance": cell,
             "hairline_thickness": HAIRLINE, "hairline_opt_out": OFF_FEATURE, "borrow_offset": BORROW_INSET}

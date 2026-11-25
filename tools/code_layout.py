@@ -8,8 +8,9 @@ import uharfbuzz as hb
 
 from check_code_rebuild import shape
 from code_angle_pairs import ANGLE_CASES, build_angle_pairs
+from code_hairlining import build_hairlining
 from code_compact_build import SCOPE, build_compact_context
-from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
+from code_lifetimes import build_lifetimes
 from code_logic_build import build_logic
 from code_outlines import refresh_bounds
 from code_spread import build_spread_context
@@ -25,7 +26,7 @@ def align_pipe(font, axis):
     refresh_bounds(font, "bar")
 
 
-def build_layout(font, recipe):
+def build_layout(font, recipe, *, hairlines=True):
     cell = recipe["alphabet_review"]["cell"]
     settings = recipe["layout_review"]
     depth = settings["angle_depth"]
@@ -47,13 +48,14 @@ def build_layout(font, recipe):
                       scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
     build_structural_angles(font, cell, depth, features=("calt", "ss02"), shift=settings["mixed_angle_shift"],
                             install_closer=install)
-    activate_lifetime_hairlining(font)
     build_spread_context(font)
+    build_hairlining(font, cell, settings, delimited_rails=hairlines)
 
 
 def angle_styles(rows):
     styles = []
     for name, *_ in rows:
+        name = name.removesuffix(".hairline")
         if name in ("less", "greater"):
             styles.append(False)
         elif name in ("less.generic", "greater.generic"):
@@ -107,7 +109,7 @@ def verify_layout(font, path, recipe, weights):
         for count in range(2, depth + 1):
             text = "A<" * count + "T" + ">" * count + " tail"
             rows = shape(engine, text, {})
-            assert rows[2 * count + 1][:3] == [f"code.genericClose{count}", 2 * count + 1, count * cell], rows
+            assert rows[2 * count + 1][:3] == [f"code.genericClose{count}.hairline", 2 * count + 1, count * cell], rows
             assert sum(row[2] for row in rows[:2 * count + 2]) == (3 * count + 1) * cell, rows
 
     carets = font["GDEF"].table.LigCaretList
