@@ -23,6 +23,11 @@ INTERPOLATION = {
 }
 
 
+def interpolation_parts(delimiter, cell=600, dollar_y=-50):
+    inset = 35
+    return [("dollar", 1, 1, inset, dollar_y), (delimiter, 1, 1, cell - inset, 0)]
+
+
 def separate_enclosures(font):
     return not any(
         form.LigGlyph in MIXED
@@ -124,7 +129,7 @@ def build():
                 }
     for name, delimiter in INTERPOLATION.items():
         compose(
-            font, name, [("dollar", 1, 1, 35, -50), (delimiter, 1, 1, 565, 0)], 1200
+            font, name, interpolation_parts(delimiter), 1200
         )
     build_structural_angles(font, 600, 16, features=("calt", "ss02"))
     OUT.parent.mkdir(parents=True, exist_ok=True)

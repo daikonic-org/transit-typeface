@@ -12,6 +12,7 @@ from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
 from code_outlines import refresh_bounds
 from code_structural_fit import build_structural_angles
+from code_syntax_build import build_syntax_context
 from font_feature_tools import append_glyph
 from italic_returns import raw_outline
 
@@ -38,6 +39,7 @@ def build_layout(font, recipe):
 
     build_lifetimes(font, cell, settings)
     build_compact_context(font, cell)
+    build_syntax_context(font, cell)
     build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias,
                       scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
     build_structural_angles(font, cell, depth, shift=settings["mixed_angle_shift"],

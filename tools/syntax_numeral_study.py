@@ -54,6 +54,21 @@ TOKENS = RECIPE["code"]["ligatures"]
 
 
 
+def register_syntax_tokens(font, mapping, cell, *, prepend=False):
+    """Apply the released longest-token-first behavior and fixed-grid carets."""
+    cmap = font.getBestCmap()
+    rules = ["languagesystem DFLT dflt;", "languagesystem latn dflt;", "feature calt {"]
+    carets = []
+    for token in sorted(mapping, key=len, reverse=True):
+        name = mapping[token]
+        source = " ".join(cmap[ord(character)] for character in token)
+        rules.append(f"sub {source} by {name};")
+        positions = " ".join(str(cell * index) for index in range(1, len(token)))
+        carets.append(f"LigatureCaretByPos {name} {positions};")
+    rules.extend(["} calt;", "table GDEF {", *carets, "} GDEF;"])
+    add_features(font, "\n".join(rules), prepend=prepend)
+
+
 def rust_lifetime_rules(cmap, quoted_identifier_limit, fused=None):
     """Build the shared recognition rules before choosing the marker's drawing."""
     starts = sorted(
@@ -203,8 +218,6 @@ def code(font):
         turn.append(thickness)
     from_paths(font, "less.generic", locs, less, 600)
     from_paths(font, "greater.generic", locs, greater, 600)
-    rules = ["languagesystem DFLT dflt;", "languagesystem latn dflt;", "feature calt {"]
-    caret = []
     mapping = {}
     cmap = font.getBestCmap()
 
@@ -291,20 +304,7 @@ def code(font):
         else:
             compose(font, name, parts, length * 600)
         mapping[text] = name
-        caret.append(
-            "LigatureCaretByPos "
-            + name
-            + " "
-            + " ".join(str(600 * i) for i in range(1, length))
-            + ";"
-        )
-    # Longest tokens first; preserve shorter sequences inside independent lookups.
-    for text in sorted(TOKENS, key=len, reverse=True):
-        rules.append(
-            "sub " + " ".join(cmap[ord(c)] for c in text) + " by " + mapping[text] + ";"
-        )
-    rules.extend(["} calt;", "table GDEF {", *caret, "} GDEF;"])
-    add_features(font, "\n".join(rules), prepend=True)
+    register_syntax_tokens(font, mapping, 600, prepend=True)
     identifiers = sorted(
         {
             name

@@ -29,6 +29,7 @@ from code_outlines import (
     build_horizontal_punctuation, inherit_width_scales,
 )
 from code_punctuation import build_diamond_punctuation
+from code_syntax_build import build_syntax_glyphs, verify_syntax
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
@@ -82,6 +83,26 @@ TYPESCRIPT_COMPACT_SAMPLE = (
     "    return 0;",
     "}",
 )
+TYPESCRIPT_SYNTAX_SAMPLE = (
+    "function headline(name: string, ...tags: string[]): string {",
+    '    const parts = [`Hello, ${name}`, ...tags];',
+    "    let flags = 0;",
+    "    if (tags.length) {",
+    "        flags |= 1;",
+    "    }",
+    '    return `${parts.join(", ")} (${flags})`;',
+    "}",
+)
+SYNTAX_DETAIL_SAMPLE = (
+    "let span = 1..4;    let bound = 1..=4;",
+    "let [head, ...tail] = values;",
+    "x .= delta;",
+    "echo ${name} $[index] $(pwd)",
+    "count := 0;     P |= q;     P |- q;",
+    "## Overview     ### Inputs",
+    "#### Results    ##### Detail",
+    "###### Limits",
+)
 
 
 def alphabet_font(source, recipe, *, stage="Alphabet"):
@@ -127,6 +148,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             if stage == "Layout":
                 align_pipe(master, recipe["horizontal_punctuation_review"]["minus_center"])
                 build_compact_glyphs(master, recipe)
+                build_syntax_glyphs(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -555,6 +577,25 @@ def compact_operator_proofs(candidate, output, config):
     return rust, typescript
 
 
+def syntax_ligature_proofs(candidate, output, config):
+    features = {"calt": True, "liga": True, "kern": False}
+    cuts = (("Contextual alternates on", candidate, features),
+            ("Contextual alternates off", candidate, {**features, "calt": False}))
+    detail = output / "Code-Syntax-Ligatures.svg"
+    code_review_proof(
+        detail, config, "Code · Syntax ligatures",
+        "Regular 400 · Ranges, interpolation, turnstiles, and joined hashes retain their grid positions.",
+        SYNTAX_DETAIL_SAMPLE, cuts,
+    )
+    typescript = output / "Code-TypeScript-Syntax-Ligatures.svg"
+    code_review_proof(
+        typescript, config, "TypeScript · Syntax ligatures",
+        "Regular 400 · Spread, template interpolation, and bitwise assignment.",
+        TYPESCRIPT_SYNTAX_SAMPLE, cuts, extra_keywords=("function", "if"), extra_types=("string",),
+    )
+    return detail, typescript
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
@@ -600,6 +641,7 @@ def main():
             check["contextual_delimiters"] = verify_layout(built, candidate, recipe, check["weights"])
             check["rust_lifetimes"] = verify_lifetimes(built, candidate, config["cell"], check["weights"])
             check["compact_operators"] = verify_compact(built, candidate, recipe, check["weights"])
+            check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -644,6 +686,7 @@ def main():
             rust_lifetime_proof(candidate, rust_panel, config)
             panels.extend((context_panel, code_panel, rust_panel))
             panels.extend(compact_operator_proofs(candidate, output, config))
+            panels.extend(syntax_ligature_proofs(candidate, output, config))
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
