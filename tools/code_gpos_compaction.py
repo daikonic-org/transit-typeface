@@ -10,23 +10,22 @@ from fontTools.misc.roundTools import otRound
 from fontTools.pens.recordingPen import DecomposingRecordingPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
-from fontTools.varLib.builder import buildVarDevTable
-from fontTools.varLib.varStore import OnlineVarStoreBuilder, VarStoreInstancer
+from fontTools.varLib.varStore import VarStoreInstancer
 import uharfbuzz as hb
 
 from build_code import RECIPE_PATH, alphabet_font, code_review_proof
 from build_code_italic import build_italic
 from bundle_release import sanitize
 from check_code_rebuild import fixtures, shape
-from code_compact_build import CONTEXT_PAIRS, DIRECT, LOOSE_NAMES
+from code_compact_build import CONTEXT_PAIRS, DIRECT, LOOSE_NAMES, SCOPE
 from code_layout import build_layout
-from code_gpos_lateral import add_lateral_positioning, following_glyphs
+from code_gpos_lateral import add_horizontal_positions, add_lateral_positioning, retire_lateral_drawings
 from code_math import ARROWS, COMPARISONS
 from code_spread import register_spread_context
 from code_syntax_build import SPREAD_SUFFIX, spread_offsets, syntax_names
 from code_weight_width_trial import name_trial
 from code_width import add_code_width
-from font_feature_tools import add_features, append_glyph, append_layout_variations, label_stylistic_set
+from font_feature_tools import append_glyph, label_stylistic_set
 from render_svg import render
 from repeated_stems import add_monospace_repeats
 from specimens import ROOT
@@ -34,9 +33,9 @@ from system_italic import designspace
 from system_metrics import set_vertical_metrics
 
 
-FAMILY = "Daikonic Transit Code Spacing Trial"
+FAMILY = "Daikonic Transit Code Component Spacing Trial"
 FEATURE = "ss08"
-DOT = "period.spread"
+DOTS = tuple(f"period.spread{i}" for i in (1, 2, 3))
 OPERATOR_GLYPHS = sorted({name for group in (ARROWS, COMPARISONS, DIRECT, CONTEXT_PAIRS, LOOSE_NAMES)
                           for name in group.values()})
 SAMPLE = (
@@ -55,49 +54,31 @@ CONTROLS = ("wait... later", "1...2", "x...y", "f(... args)", "....items", "a ..
             "::", "x::", "//", "x//", "?.", "x?.", "...", "a...", "Vec<Vec<T>>", "Vec<Vec<T>>;")
 
 
-def add_spread_positioning(font, recipe):
+def add_spread_positioning(font, recipe, replacements):
     cell = recipe["alphabet_review"]["cell"]
     ellipsis = syntax_names(font)["..."]
     assert ellipsis + SPREAD_SUFFIX not in font["glyf"]
-    pen = TTGlyphPen(font.getGlyphSet())
-    pen.addComponent("period", (1, 0, 0, 1, 0, 0))
-    append_glyph(font, DOT, pen.glyph(), [], cell, metric_source="period")
-    register_spread_context(
-        font, ellipsis, f"sub {ellipsis}' lookup SpreadDots @SpreadOperand;", feature=FEATURE,
-        definitions=[f"lookup SpreadDots {{ sub {ellipsis} by {DOT} {DOT} {DOT}; }} SpreadDots;"],
-    )
-    label_stylistic_set(font, FEATURE, "Positioned Ligature Spacing")
+    regular = replacements[ellipsis]
+    definitions = []
+    for i, (name, dot) in enumerate(zip(regular, DOTS, strict=True), 1):
+        pen = TTGlyphPen(font.getGlyphSet())
+        pen.addComponent("period", (1, 0, 0, 1, 0, 0))
+        append_glyph(font, dot, pen.glyph(), [], cell, metric_source="period")
+        definitions.append(f"lookup SpreadDot{i} {{ sub {name} by {dot}; }} SpreadDot{i};")
+    marked = " ".join(f"{name}'" for name in regular)
+    calls = " ".join(f"{name}' lookup SpreadDot{i}" for i, name in enumerate(regular, 1))
+    register_spread_context(font, ellipsis, f"sub {calls} @SpreadOperand;", feature=FEATURE,
+                            definitions=definitions, marked=marked)
 
     locations, model, default = designspace(font)
     placements = [spread_offsets(font.getGlyphSet(location=loc), cell, recipe["layout_review"])
                   for loc in locations]
-    placement_columns = [[value - i * (2 * cell // 3) for value in column]
-                         for i, column in enumerate(zip(*placements, strict=True))]
-    lines = ["languagesystem DFLT dflt;", "languagesystem latn dflt;"]
-    advance = 2 * cell // 3
-    for i, values in enumerate(placement_columns, 1):
-        lines.append(f"lookup SpreadPos{i} {{ pos {DOT} <{values[default]} 0 {advance - cell} 0>; }} SpreadPos{i};")
-    rules = " ".join(f"{DOT}' lookup SpreadPos{i}" for i in range(1, 4))
-    lines.append(f"feature {FEATURE} {{ pos {rules}; }} {FEATURE};")
-
-    lookups = font["GPOS"].table.LookupList.Lookup
-    first = len(lookups)
-    add_features(font, "\n".join(lines))
-    dot_tables = {
-        sub.Value.XPlacement: sub
-        for lookup in lookups[first:] if lookup.LookupType == 1
-        for sub in lookup.SubTable if sub.Coverage.glyphs == [DOT]
-    }
-    store = font["GDEF"].table.VarStore
-    first_data = len(store.VarData) << 16
-    builder = OnlineVarStoreBuilder(["wght"])
-    builder.setModel(model)
-    for values in placement_columns:
-        base, index = builder.storeMasters(values)
-        table = dot_tables[base]
-        table.ValueFormat |= 0x10
-        table.Value.XPlaDevice = buildVarDevTable(first_data + index)
-    append_layout_variations(font, builder.finish())
+    advance = 2 * cell
+    values = {dot: ((0 if i else advance) - cell,
+                    tuple(value - (advance if i else 0) for value in column))
+              for i, (dot, column) in enumerate(zip(DOTS, zip(*placements, strict=True), strict=True))}
+    label_stylistic_set(font, FEATURE, "Positioned Ligature Components")
+    add_horizontal_positions(font, model, default, values, FEATURE)
 
 
 def positioned(rows):
@@ -127,20 +108,23 @@ def carets_at(font, location, names):
             if name in names}
 
 
-def verify_positions(before, after, glyphs, replacements, following):
+def verify_positions(before, after, glyphs, replacements):
     old_positions, old_width = positioned(before)
     new_positions, new_width = positioned(after)
     expected = []
-    last = max((i for i, (name, *_rest) in enumerate(old_positions) if name in following), default=-1)
-    for i, (name, cluster, x, y) in enumerate(old_positions):
-        aliases = replacements.get(name) if i < last else None
+    advances = []
+    for (name, cluster, x, y), row in zip(old_positions, before, strict=True):
+        advances.append(row[2])
+        aliases = replacements.get(name)
         if aliases:
+            advances.extend([0] * (len(aliases) - 1))
             glyph, _ = glyphs[name]._getGlyphAndOffset()
-            expected.extend((alias, cluster, x + part.x, y + part.y)
-                            for alias, part in zip(aliases, glyph.components, strict=True))
+            expected.extend((alias, cluster + i, x + part.x, y + part.y)
+                            for i, (alias, part) in enumerate(zip(aliases, glyph.components, strict=True)))
         else:
             expected.append((name, cluster, x, y))
     assert len(new_positions) == len(expected) and old_width == new_width, (before, after)
+    assert [row[2] for row in after] == advances, (before, after, advances)
     assert all(a[:2] == b[:2] and abs(a[2] - b[2]) <= 2 and a[3] == b[3]
                for a, b in zip(new_positions, expected, strict=True)), (new_positions, expected)
 
@@ -154,9 +138,17 @@ def verify(source, target, recipe, replacements):
         cases.update((text, ()) for text in (*SAMPLE, *CONTROLS, *SPREAD_CASES))
         assert old.getBestCmap() == trial.getBestCmap()
         spread = syntax_names(old)["..."] + SPREAD_SUFFIX
-        assert spread not in trial["glyf"] and DOT in trial["glyf"]
-        replacements = replacements | {spread: [DOT] * 3}
-        following = set(following_glyphs(old))
+        assert spread not in trial["glyf"] and all(dot in trial["glyf"] for dot in DOTS)
+        fixed_operators = set(OPERATOR_GLYPHS) - replacements.keys()
+        caret_glyphs = set(trial["GDEF"].table.LigCaretList.Coverage.glyphs)
+        assert caret_glyphs.isdisjoint(replacements)
+        for name, aliases in replacements.items():
+            if name == SCOPE:
+                assert [part.glyphName for part in trial["glyf"][name].components] == ["colon"]
+            else:
+                assert name not in trial["glyf"], name
+            assert caret_glyphs.isdisjoint(aliases), name
+        replacements = replacements | {spread: DOTS}
         checked = 0
         for weight, width in product(recipe["sample_coordinates"]["wght"], recipe["sample_coordinates"]["wdth"]):
             location = {"wght": weight, "wdth": width}
@@ -167,49 +159,48 @@ def verify(source, target, recipe, replacements):
             for text, values in sorted(cases):
                 flags = dict(values)
                 expected = shape(before, text, flags)
-                enabled = shape(after, text, flags | {FEATURE: True})
+                active = shape(after, text, flags | {FEATURE: True})
                 if any(row[0] in replacements for row in expected):
-                    verify_positions(expected, enabled, old_glyphs, replacements, following)
+                    verify_positions(expected, active, old_glyphs, replacements)
                 else:
-                    assert enabled == expected, (location, text, flags, enabled, expected)
-                disabled = shape(after, text, flags | {FEATURE: False})
-                if not any(row[0] == spread for row in expected):
-                    assert disabled == expected, (location, text, flags, disabled, expected)
+                    assert active == expected, (location, text, flags, active, expected)
+                inactive = shape(after, text, flags | {FEATURE: False})
+                assert all(row[0] not in replacements or row[0] == SCOPE for row in inactive)
                 checked += 1
-            for name in OPERATOR_GLYPHS:
+            for name in sorted(fixed_operators):
                 assert old_glyphs[name].width == new_glyphs[name].width, (name, location)
                 old_shape, new_shape = [DecomposingRecordingPen(gs) for gs in (old_glyphs, new_glyphs)]
                 old_glyphs[name].draw(old_shape)
                 new_glyphs[name].draw(new_shape)
                 assert old_shape.value == new_shape.value, (name, location)
-            old_carets = carets_at(old, location, {*OPERATOR_GLYPHS, spread})
-            expected_carets = old_carets.pop(spread)
-            assert old_carets == carets_at(trial, location, OPERATOR_GLYPHS)
+            old_carets = carets_at(old, location, fixed_operators)
+            assert old_carets == carets_at(trial, location, fixed_operators)
             for text in SPREAD_CASES:
                 new_rows = shape(after, text, {FEATURE: True})
-                assert all(row[2] == 2 * cell // 3 for row in new_rows if row[0] == DOT)
-                assert any(row[0] == DOT for row in new_rows)
-                assert expected_carets == [2 * cell // 3, 4 * cell // 3]
-                assert all(row[0] != DOT for row in shape(after, text, {FEATURE: False}))
+                dots = [row[2] for row in new_rows if row[0] in DOTS]
+                assert dots == [2 * cell, 0, 0] * (len(dots) // 3), (weight, width, text, dots)
+                assert any(row[0] in DOTS for row in new_rows)
+                assert all(row[0] not in DOTS for row in shape(after, text, {FEATURE: False}))
                 checked += 1
     return checked
 
 
-def proof(output, config, target, original):
+def proof(output, config, target, original, replacements):
     engine = hb.Font(hb.Face(original.read_bytes()))
 
     with TTFont(original) as font:
         spread = syntax_names(font)["..."] + SPREAD_SUFFIX
+    counts = {name: len(aliases) for name, aliases in replacements.items()} | {spread: len(DOTS)}
 
     def expected(line, features):
         rows = shape(engine, line, {})
-        saved = 0 if features[FEATURE] else sum(row[0] == spread for row in rows)
-        return sum(row[2] for row in rows) + saved * config["cell"]
+        return sum(row[2] if features[FEATURE] or row[0] not in counts
+                   else counts[row[0]] * config["cell"] for row in rows)
 
-    code_review_proof(output, config, "Code · Positioned ligature spacing",
-                      "Regular 400 · Reused drawings and contextual spacing",
-                      SAMPLE, (("Positioning on · two cells for spread", target, {FEATURE: True}),
-                               ("Positioning off · three cells for spread", target, {FEATURE: False})),
+    code_review_proof(output, config, "Code · Positioned ligature components",
+                      "Regular 400 · Component drawings with two spacing settings",
+                      SAMPLE, (("Positioning on · ss08", target, {FEATURE: True}),
+                               ("Positioning off · full input widths", target, {FEATURE: False})),
                       expected_advance=expected)
 
 
@@ -224,12 +215,13 @@ def build(recipe, reference, output):
     report = {}
     config = recipe["alphabet_review"]
     for is_italic, font in ((False, upright), (True, italic)):
-        add_spread_positioning(font, recipe)
         replacements = add_lateral_positioning(font, recipe, FEATURE)
+        add_spread_positioning(font, recipe, replacements)
         name_trial(font, FAMILY, variable=True)
         set_vertical_metrics(font, minimum_ascent=config["line_metrics"]["ascent"],
                              maximum_descent=config["line_metrics"]["descent"])
         add_code_width(font, config["cell"])
+        retire_lateral_drawings(font, replacements)
         title = "-Italic" if is_italic else ""
         target = output / f"{FAMILY.replace(' ', '')}{title}-VF.ttf"
         font.save(target)
@@ -238,8 +230,8 @@ def build(recipe, reference, output):
         count = verify(original, target, recipe, replacements)
         report[target.name] = {"shaping_cases": count, "positioned_components": replacements}
         if not is_italic:
-            panel = output / "Code-GPOS-Spacing.svg"
-            proof(panel, config, target, original)
+            panel = output / "Code-GPOS-Components.svg"
+            proof(panel, config, target, original, replacements)
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     return panel
 

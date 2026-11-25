@@ -22,7 +22,7 @@ def build_spread_context(font):
     )
 
 
-def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions=(), extra=()):
+def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions=(), extra=(), marked=None):
     cmap = font.getBestCmap()
     operands = {name for cp, name in cmap.items() if unicodedata.category(chr(cp)).startswith("L")}
     operands.update(cmap[ord(ch)] for ch in "_$([{\"'`")
@@ -31,6 +31,7 @@ def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions
     prefixes = set(delimiter_variants((cmap[ord(ch)] for ch in "([{,"), order))
     spaces = {cmap[cp] for cp in (9, 32, 0xA0) if cp in cmap}
     blockers = sorted(order - prefixes - spaces)
+    marked = marked or f"{ellipsis}'"
     add_features(font, "\n".join([
         "languagesystem DFLT dflt;", "languagesystem latn dflt;",
         "@SpreadOperand = [" + " ".join(sorted(operands)) + "];",
@@ -38,7 +39,7 @@ def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions
         "@SpreadSpace = [" + " ".join(sorted(spaces)) + "];",
         *definitions, f"feature {feature} {{ lookup RestSpreadEllipsis {{",
         "lookupflag IgnoreMarks;",
-        *(f"ignore sub @SpreadBlocker{' @SpreadSpace' * count} {ellipsis}' @SpreadOperand;"
+        *(f"ignore sub @SpreadBlocker{' @SpreadSpace' * count} {marked} @SpreadOperand;"
           for count in range(9)),
         rule, f"}} RestSpreadEllipsis; }} {feature};", *extra,
     ]))

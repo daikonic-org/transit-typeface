@@ -124,19 +124,22 @@ compaction.
 
 ## GPOS spacing trial
 
-The separate Spacing Trial fonts use `ss08` to position reusable drawings
+The separate Component Spacing Trial fonts use `ss08` to position reusable drawings
 for `::`, `//`, `||`, `?.`, `!.`, plain `...` and nested generic closers.
 Rest and spread use three copies of the period drawing in two cells. The
 mixed enclosure pairs `<[` and `[<` already use GPOS. Custom drawings such
 as `===` use their existing glyphs and advances.
 
-The trial keeps the original ligature at the end of a shaping run. Core Text
-uses that glyph's stored caret coordinates when there is no following cluster.
+The spacing rules preserve each input character's index and remove the old
+compound drawings and their intermediate caret records. With `ss08` enabled,
+the first component carries the full advance and the later components carry
+zero advance. Core Text places their cursor positions at the end of the
+sequence, including at the end of a line.
 
 ```sh
 .venv/bin/python tools/code_gpos_compaction.py \
   --reference .build/transit-code/package/VF \
-  --output .build/transit-code/gpos-lateral --render
+  --output .build/transit-code/gpos-components --render
 ```
 
 The trial checks component positions, operator outlines, advances, offsets and

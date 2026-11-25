@@ -1,8 +1,12 @@
-"""Position the reusable components of Code's laterally assembled ligatures."""
+"""Position existing Code ligature parts while retaining the input character indices."""
 
 from fontTools.misc.roundTools import otRound
-from fontTools.otlLib.builder import buildLookup, buildSinglePos, buildValue
+from fontTools.otlLib.builder import (
+    buildCoverage, buildLigatureSubstSubtable, buildLookup, buildSinglePos, buildSingleSubstSubtable, buildValue,
+)
 from fontTools.pens.ttGlyphPen import TTGlyphPen
+from fontTools.subset import Options, Subsetter
+from fontTools.ttLib.tables import otTables
 from fontTools.varLib.builder import buildVarDevTable
 from fontTools.varLib.varStore import OnlineVarStoreBuilder
 
@@ -13,8 +17,7 @@ from system_italic import designspace
 
 def lateral_ligatures(font, masters):
     """Select translated components with real advances and a spacing change."""
-    glyf = font["glyf"]
-    metrics = font["hmtx"]
+    glyf, metrics = font["glyf"], font["hmtx"]
     ligatures = {form.LigGlyph for _, table in feature_subtables(font, contextual=True)
                  for forms in getattr(table, "ligatures", {}).values() for form in forms}
     ligatures.update(name + ".hairline" for name in sorted(ligatures) if name + ".hairline" in glyf)
@@ -23,86 +26,40 @@ def lateral_ligatures(font, masters):
         if not glyph.isComposite() or len(glyph.components) < 2:
             continue
         parts = [part.getComponentInfo() for part in glyph.components]
-        advance, remainder = divmod(metrics[name][0], len(parts))
-        if remainder or not advance or any(
+        advance = metrics[name][0]
+        if not advance or any(
             matrix[:4] != (1, 0, 0, 1) or matrix[5] or not metrics[donor][0]
             for donor, matrix in parts
         ):
             continue
         samples = [gs[name]._getGlyphAndOffset()[0].components for gs in masters]
-        settings = [(donor, advance - metrics[donor][0],
-                     tuple(otRound(master[i].x - i * advance) for master in samples))
-                    for i, (donor, _) in enumerate(parts)]
-        if any(adjustment or any(placements) for _, adjustment, placements in settings):
-            yield name, settings
+        nominal = [metrics[donor][0] for donor, _ in parts]
+        cursor = 0
+        shifted = advance != sum(nominal)
+        for i, width in enumerate(nominal):
+            shifted |= any(master[i].x != cursor for master in samples)
+            cursor += width
+        if shifted:
+            yield name, [
+                (donor, (0 if i else advance) - nominal[i],
+                 tuple(otRound(master[i].x - (advance if i else 0)) for master in samples))
+                for i, (donor, _) in enumerate(parts)
+            ]
 
 
-def following_glyphs(font):
-    classes = font["GDEF"].table.GlyphClassDef.classDefs
-    return [name for name in font.getGlyphOrder() if name != ".notdef"
-            and font["hmtx"][name][0] > 0 and classes.get(name) != 3]
-
-
-def add_lateral_positioning(font, recipe, feature):
-    locations, model, default = designspace(font)
-    masters = [font.getGlyphSet(location=location) for location in locations]
-    replacements = {}
-    aliases = {}
-    values = {}
-    context = ["languagesystem DFLT dflt;", "languagesystem latn dflt;"]
+def add_horizontal_positions(font, model, default, positions, feature):
     store = font["GDEF"].table.VarStore
     offset = len(store.VarData) << 16
     builder = OnlineVarStoreBuilder(["wght"])
     builder.setModel(model)
-    outlines = font.getGlyphSet()
-
-    for name, settings in lateral_ligatures(font, masters):
-        sequence = []
-        for donor, advance, positions in settings:
-            key = donor, advance, positions
-            if key not in aliases:
-                alias = f"{donor}.positioned{len(aliases)}"
-                pen = TTGlyphPen(outlines)
-                pen.addComponent(donor, (1, 0, 0, 1, 0, 0))
-                append_glyph(font, alias, pen.glyph(), [], font["hmtx"][donor][0], metric_source=donor)
-                value = {"XPlacement": positions[default], "XAdvance": advance}
-                if len(set(positions)) > 1:
-                    base, index = builder.storeMasters(positions)
-                    assert base == value["XPlacement"]
-                    value["XPlaDevice"] = buildVarDevTable(offset + index)
-                values[alias] = buildValue(value)
-                aliases[key] = alias
-            sequence.append(aliases[key])
-        replacements[name] = sequence
-
-    # Keep GDEF operator carets when the renderer cannot derive them from
-    # a following cluster. Core Text needs that cluster for a split ligature.
-    follow = following_glyphs(font)
-    context.extend((
-        "lookup ExpandLateral {",
-        *(f"sub {source} by {' '.join(parts)};" for source, parts in replacements.items()),
-        "} ExpandLateral;",
-        f"@LateralSource = [{' '.join(replacements)}];",
-        f"@LateralFollowing = [{' '.join(follow)}];",
-        f"feature {feature} {{",
-        "lookupflag IgnoreMarks;",
-        "sub @LateralSource' lookup ExpandLateral @LateralFollowing;",
-        f"}} {feature};",
-    ))
-    left, right = replacements[SCOPE]
-    inset = recipe["layout_review"]["turbofish_inset"]
-    scope = f"{left}' <{inset} 0 0 0> {right}' <{inset} 0 0 0>"
-    angles = ["less.generic"]
-    context.append(f"feature {feature} {{")
-    if "less.generic.hairline" in font["glyf"]:
-        angles.append("less.generic.hairline")
-        shift = recipe["layout_review"]["mixed_angle_shift"]
-        # In the original hairline lookup, the scope rule consumes the angle
-        # before the mixed pair can move it or the bracket. Recreate that result.
-        context.append(f"pos {scope} less.generic.hairline' <-{inset + shift} 0 0 0> "
-                       f"bracketleft.hairline' <{shift} 0 0 0>;")
-    context.extend((f"pos {scope} [{' '.join(angles)}]' <-{inset} 0 0 0>;", f"}} {feature};"))
-    add_features(font, "\n".join(context))
+    values = {}
+    for name, (advance, placements) in positions.items():
+        value = {"XPlacement": placements[default], "XAdvance": advance}
+        if len(set(placements)) > 1:
+            base, index = builder.storeMasters(placements)
+            assert base == value["XPlacement"]
+            value["XPlaDevice"] = buildVarDevTable(offset + index)
+        values[name] = buildValue(value)
     append_layout_variations(font, builder.finish())
     table = font["GPOS"].table
     index = len(table.LookupList.Lookup)
@@ -112,4 +69,114 @@ def add_lateral_positioning(font, recipe, feature):
         if record.FeatureTag == feature:
             record.Feature.LookupListIndex.append(index)
             record.Feature.LookupCount = len(record.Feature.LookupListIndex)
+
+
+def redirect_ligature_inputs(font, replacements):
+    """Reuse the original lookup order and syntax guards, tagging each input in place."""
+    listing = font["GSUB"].table.LookupList
+    lookups = listing.Lookup
+    mapping = font.getReverseGlyphMap()
+    selectors = {}
+
+    def selector(before, after, *, joined=False):
+        key = before, after
+        if key not in selectors:
+            sub = (buildLigatureSubstSubtable({before: after}) if joined
+                   else buildSingleSubstSubtable({before: after}))
+            selectors[key] = len(lookups)
+            lookups.append(buildLookup([sub]))
+        return selectors[key]
+
+    for lookup in tuple(lookups):
+        subtables = [getattr(sub, "ExtSubTable", sub) for sub in lookup.SubTable]
+        if not all(isinstance(sub, otTables.LigatureSubst) for sub in subtables):
+            continue
+        ordered = [(first, form) for sub in subtables for first, forms in sub.ligatures.items() for form in forms]
+        if not any(form.LigGlyph in replacements for _, form in ordered):
+            continue
+        contexts = []
+        for first, form in ordered:
+            inputs = (first, *form.Component)
+            parts = replacements.get(form.LigGlyph)
+            context = otTables.ContextSubst()
+            context.Format = 3
+            context.GlyphCount = len(inputs)
+            context.Coverage = [buildCoverage([name], mapping) for name in inputs]
+            if parts:
+                pairs = [(i, selector(before, after))
+                         for i, (before, after) in enumerate(zip(inputs, parts, strict=True))]
+            else:
+                pairs = [(0, selector(inputs, form.LigGlyph, joined=True))]
+            context.SubstLookupRecord = []
+            for i, index in pairs:
+                record = otTables.SubstLookupRecord()
+                record.SequenceIndex, record.LookupListIndex = i, index
+                context.SubstLookupRecord.append(record)
+            context.SubstCount = len(pairs)
+            contexts.append(context)
+        lookup.LookupType = 5
+        lookup.SubTable = contexts
+        lookup.SubTableCount = len(contexts)
+    listing.LookupCount = len(lookups)
+
+    for feature, sub in feature_subtables(font, contextual=True):
+        if feature != "ss05" or not isinstance(sub, otTables.SingleSubst):
+            continue
+        for parent, variant in tuple(sub.mapping.items()):
+            if parent in replacements and variant in replacements:
+                sub.mapping.update(zip(replacements[parent], replacements[variant], strict=True))
+
+
+def retire_lateral_drawings(font, replacements):
+    """Remove the replaced glyphs and any intermediate caret records."""
+    carets = font["GDEF"].table.LigCaretList
+    retained = [(name, value) for name, value in zip(carets.Coverage.glyphs, carets.LigGlyph, strict=True)
+                if name not in replacements]
+    carets.Coverage.glyphs = [name for name, _ in retained]
+    carets.LigGlyph = [value for _, value in retained]
+    carets.LigGlyphCount = len(retained)
+    removed = replacements.keys() - {SCOPE}
+    options = Options(layout_features=["*"], notdef_outline=True, glyph_names=True,
+                      name_IDs=["*"], name_languages=["*"], name_legacy=True)
+    subsetter = Subsetter(options=options)
+    subsetter.populate(glyphs=set(font.getGlyphOrder()) - removed)
+    subsetter.subset(font)
+    assert removed.isdisjoint(font.getGlyphOrder())
+
+
+def add_lateral_positioning(font, recipe, feature):
+    locations, model, default = designspace(font)
+    masters = [font.getGlyphSet(location=location) for location in locations]
+    replacements, aliases, positions = {}, {}, {}
+    outlines = font.getGlyphSet()
+
+    for name, settings in list(lateral_ligatures(font, masters)):
+        sequence = []
+        for i, (donor, advance, placements) in enumerate(settings):
+            # Keep the scope tail's lookup name so angle and hairline
+            # rules can still recognize it as the turbofish prefix.
+            scope_tail = name == SCOPE and i == len(settings) - 1
+            key = (donor, advance, placements, scope_tail)
+            if key not in aliases:
+                alias = SCOPE if scope_tail else f"{donor}.positioned{len(aliases)}"
+                pen = TTGlyphPen(outlines)
+                pen.addComponent(donor, (1, 0, 0, 1, 0, 0))
+                append_glyph(font, alias, pen.glyph(), [], font["hmtx"][donor][0], metric_source=donor)
+                positions[alias] = advance, placements
+                aliases[key] = alias
+            sequence.append(aliases[key])
+        replacements[name] = sequence
+
+    redirect_ligature_inputs(font, replacements)
+    first, last = replacements[SCOPE]
+    inset = recipe["layout_review"]["turbofish_inset"]
+    angles = " ".join(name for name in ("less.generic", "less.generic.hairline") if name in font["glyf"])
+    add_features(font, f"""
+        languagesystem DFLT dflt;
+        languagesystem latn dflt;
+        feature {feature} {{
+            pos {first}' <{inset} 0 0 0> {last} [{angles}];
+        }} {feature};
+    """)
+    add_horizontal_positions(font, model, default, positions, feature)
     return replacements
