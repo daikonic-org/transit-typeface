@@ -93,3 +93,29 @@ Run from the repository root with the pinned font tools.
 ```
 
 The command records exact input hashes and writes the glyph, axis, feature, kerning, and shaping inventory to `reference.json`. The same directory contains a sortable `glyphs.csv` and the compressed `layout-upright.ttx.gz` and `layout-italic.ttx.gz` exports.
+
+## Build the Code review package
+
+The rebuild uses the current Transit Sans masters. The upright and 9° italic
+share Book 350, Regular 400 and Medium 500. Narrow, Normal and Wide use
+564-, 600- and 648-unit cells. The review package contains the two variable
+fonts, static TTF and OTF snapshots, a collection of all 18 static faces,
+WOFF2, editable TTX and visual proofs.
+
+```sh
+.venv/bin/python tools/build_code.py --layout --output .build/transit-code/upright
+.venv/bin/python tools/build_code_italic.py --output .build/transit-code/italic
+.venv/bin/python tools/package_code_rebuild.py \
+  .build/transit-code/upright/DaikonicTransitCodeLayoutReview-VF.ttf \
+  .build/transit-code/italic/DaikonicTransitCodeLayoutReview-Italic-VF.ttf \
+  --output .build/transit-code/package --version 1.043
+```
+
+`proofs/Code-Specimen.pdf` and its matching PNG show the named weights,
+widths, italics and shaping in code. The two proof viewers support comparing
+either axis and inspecting a single glyph.
+
+Hairlining is on by default in the upright and can be disabled with `ss07`.
+Logic is enabled with `ss02`. Texture Healing is deferred along with the
+investigation of using OpenType positioning for texture and operator
+compaction.

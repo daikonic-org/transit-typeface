@@ -54,7 +54,7 @@ class Panel:
             source = TTFont(ROOT / self.config["font"])
             f = instantiateVariableFont(
                 source,
-                weight_location(source, weight),
+                weight_location(source, weight) | self.config.get("axes", {}),
                 inplace=False,
             )
             out = BytesIO()

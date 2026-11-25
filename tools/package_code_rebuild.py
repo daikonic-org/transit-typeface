@@ -13,6 +13,7 @@ import uharfbuzz as hb
 from build_code import RECIPE_PATH
 from bundle_release import compress_source, digest, generate_formats
 from check_code_rebuild import shape
+from code_rebuild_proof import build_package_proofs
 from code_weight_width_trial import WEIGHTS, WIDTH_PRESETS, name_trial, sanitize
 from code_width import add_code_width, verify_width
 from italic_returns import raw_outline
@@ -65,6 +66,8 @@ def validate_family(path, normal_path, reference_path, cell):
         assert font["post"].italicAngle == prior["post"].italicAngle
         axes = verify_width(font, cell)
         assert font["post"].isFixedPitch
+        features = {record.FeatureTag for record in font["GSUB"].table.FeatureList.FeatureRecord}
+        assert features.isdisjoint({"ss03", "ss04"})
         for weight in (350, 375, 400, 450, 500):
             unscaled.set_variations({"wght": weight})
             gs = font.getGlyphSet(location={"wght": weight, "wdth": 100})
@@ -115,6 +118,7 @@ def package(paths, output, recipe, version):
         assert len({face["name"].getDebugName(6) for face in compiled.fonts}) == len(snapshots)
         assert all(face["name"].getDebugName(16) == FAMILY for face in compiled.fonts)
     compress_source(output / "SOURCE")
+    build_package_proofs(output)
     for notice in ("OFL.txt", "NOTICE.txt"):
         copyfile(ROOT / notice, output / notice)
     report = {
@@ -122,8 +126,8 @@ def package(paths, output, recipe, version):
         "vertical_metrics": vertical, "transformed_donors": components, "validation": validation,
         "static_faces_per_format": len(snapshots),
         "deferred": ["Texture Healing", "GPOS review of operator compaction and Texture Healing"],
-        "files": {str(path.relative_to(output)): digest(path) for fmt in FORMATS
-                  for path in sorted((output / fmt).iterdir()) if path.is_file()},
+        "files": {str(path.relative_to(output)): digest(path) for fmt in (*FORMATS, "proofs")
+                  for path in sorted((output / fmt).rglob("*")) if path.is_file()},
     }
     (output / "manifest.json").write_text(json.dumps(report, indent=2) + "\n")
     archive = output.parent / f"{STEM}-{version}-Review.zip"
