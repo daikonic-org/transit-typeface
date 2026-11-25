@@ -15,6 +15,7 @@ from code_punctuation import DOT
 from code_receiver_shapes import HorizontalMapPen, remap
 from font_feature_tools import add_features
 from italic_returns import draw_segments, raw_outline, segments
+from kern_clearance import ink_extents
 
 
 SYMBOL_SAMPLES = ("+ − × ÷ =", "< > ≤ ≥ ≠", "* ~ ^  ¬∀∃")
@@ -174,9 +175,20 @@ def fit_arrow(donor, glyph, left, right, axis, rise, thickness, pitch, head_span
         start = next(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == lower)
         end = max(i for i, edge in enumerate(edges) if edge.start[1] == edge.end[1] == upper)
         head = edges[end + 1:] + edges[:start]
+        middle_y = (lower + upper) / 2
+
+        def tangent_x(point, control):
+            x, y = point
+            cx, cy = control
+            return x + (middle_y - y) * (x - cx) / (y - cy)
+
+        top_x = tangent_x(head[0].start, head[0].controls[0])
+        bottom_x = tangent_x(head[-1].end, head[-1].controls[-1])
         target = TTGlyphPen(None)
         pen = HorizontalMapPen(target, lambda x: remap(x, old_x, new_x), lambda y: remap(y, old_y, new_y))
-        pen.moveTo(head[0].start)
+        # Continue the inside arms through the area formerly occupied by the shaft.
+        pen.moveTo(((top_x + bottom_x) / 2, middle_y))
+        pen.lineTo(head[0].start)
         draw_segments(pen, head)
         pen.closePath()
         return target.glyph()
@@ -223,8 +235,13 @@ def build_arrows(font, sans, cell, axis, thickness, settings):
     name = source_cmap[ord("→")]
     single = raw_outline(source, name)
     head_name, leading_name = "operator.arrowHead", "operator.arrowLeading"
-    head = install(font, head_name, fit_arrow(single, None, left, right, axis, rise, thickness, pitch, span), 0)
-    end = head.xMin - settings["repeated_head_gap"]
+    install(font, head_name, fit_arrow(single, None, left, right, axis, rise, thickness, pitch, span), 0)
+    glyphs = font.getGlyphSet()
+    attached, detached = (ink_extents(raw_outline(glyphs, name), step=1)
+                          for name in (ARROWS["->"], head_name))
+    # The boundaries of the two heads occur at different heights.
+    facing = max(attached[row][1] - detached[row][0] for row in attached.keys() & detached.keys())
+    end = right - otRound(facing + pitch - thickness)
     leading = fit_arrow(single, sans["glyf"][name], left, end, axis, rise, thickness, pitch, span)
     install(font, leading_name, leading, 0)
     install_components(font, ARROWS["->>"], [translated(leading_name), translated(head_name)], advance)

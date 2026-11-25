@@ -28,6 +28,8 @@ from code_punctuation import build_diamond_punctuation
 from code_weight_width_trial import name_trial
 from derive_weights import topology
 from glyph_proof import build_proof
+from italic_returns import raw_outline
+from kern_clearance import ink_extents
 from render_svg import render
 from scaling_study import vertical_stem
 from specimens import Panel
@@ -223,6 +225,11 @@ def verify_math(font, path, recipe):
             assert len(bars) == count and all(
                 abs(second - first - pitch) <= 1 for first, second in zip(midpoints, midpoints[1:])
             ), (weight, name, bars)
+        lower, upper = spans(shape_from_glyphs(glyphs, "equal"), cell / 2, 0)
+        attached, detached = (ink_extents(raw_outline(glyphs, name), step=1)
+                              for name in ("operator.arrowLeading", "operator.arrowHead"))
+        gap = min(detached[row][0] - attached[row][1] for row in attached.keys() & detached.keys())
+        assert abs(gap - (upper[0] - lower[1])) <= 1.5, (weight, gap, lower, upper)
 
     caret_list = font["GDEF"].table.LigCaretList
     carets = {name: [value.Coordinate for value in glyph.CaretValue]

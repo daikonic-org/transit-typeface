@@ -125,6 +125,8 @@ Finish the non-math glyphs before the shared math and operator pass. Review the 
 
 Run `.venv/bin/python tools/build_code.py --operators --output .build/code-from-sans/math-operators --render` for the upright math review. The minus sets the common bar weight on the 300-unit math axis, and the equals sets a 205-unit center-to-center pitch for the stacked comparisons and double-shaft arrows. The arrow builder adapts the Sans points directly, changes shaft length independently of the head, and mirrors left- and down-pointing forms. The eleven default comparison and arrow ligatures preserve the released advance and caret grid. The review also draws the tall angle alternates for the later contextual layout pass.
 
+For `->>` and `<<-`, the detached head's inner edges continue to a point on the math axis. The minimum horizontal gap between the heads follows the open gap in the equals sign at each weight.
+
 The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks.
 
 The comma joins the shared diamond crown to a narrower curl from the Sans closing quote. One outside curve runs from the diamond’s right vertex to the lower tail tip, and the inner curve runs into the left vertex. The closing and low quotes reuse the comma outline with their respective placements, and the opening quote takes a 180° rotation. The semicolon uses the same comma beneath its dot. The straight quote is four units smaller in width and height. Run `--letters --output .build/code-from-sans/quote-tip-curves` for the punctuation proofs.
