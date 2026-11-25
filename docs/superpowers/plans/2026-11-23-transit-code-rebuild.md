@@ -127,6 +127,8 @@ Run `.venv/bin/python tools/build_code.py --operators --output .build/code-from-
 
 The arrowhead comes first. Its concentric edges follow the Sans head's tip and terminal slopes, and a radial cut gives both arms square bevels at the donor's stroke weight. A shorter version serves the two-ended horizontal arrows. Each shaft overlaps the inside edge of the appropriate head component. The attached and detached heads in `->>` and `<<-` share the same outline, with a minimum horizontal gap matching the open gap in the equals sign.
 
+The plain `<` and `>` supply the straight chevrons for `≤` and `≥`. The upper stroke is the same drawing translated upward, with a separate parallel lower stroke. The operator detail proof shows the four comparisons alongside the double arrows and equals.
+
 The diamond punctuation builder derives one larger dot from the Sans diamond. It centers the period, colon and middle dot, narrows the ellipsis dots, and opens space between the dots and bodies of the upright and inverted sentence marks.
 
 The comma joins the shared diamond crown to a narrower curl from the Sans closing quote. One outside curve runs from the diamond’s right vertex to the lower tail tip, and the inner curve runs into the left vertex. The closing and low quotes reuse the comma outline with their respective placements, and the opening quote takes a 180° rotation. The semicolon uses the same comma beneath its dot. The straight quote is four units smaller in width and height. Run `--letters --output .build/code-from-sans/quote-tip-curves` for the punctuation proofs.

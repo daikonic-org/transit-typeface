@@ -95,22 +95,26 @@ def build_signs(font, cell, axis, settings):
                                for dy in (-dot_offset, dot_offset)),
     ], cell)
 
-    angle_width = right - left
+    minus_width = right - left
     rise = settings["angle_height"] / 2
-    for name, width, height in (("less", angle_width, rise),
-                                ("less.generic", settings["tall_angle_width"], settings["tall_angle_height"] / 2)):
-        outline, _, _ = chevron(middle - width / 2, middle + width / 2, axis, height, thickness)
-        install_outline(font, name, outline, cell)
-        opposite = name.replace("less", "greater")
-        install_components(font, opposite, [(name, reflect(cell))], cell)
-
     left, right = middle - equal_width / 2, middle + equal_width / 2
-    chevron_axis = axis + pitch / 2
-    comparison, bevel, depth = chevron(left, right, chevron_axis, rise, thickness)
+    comparison, bevel, depth = chevron(left, right, axis, rise, thickness)
+    install_outline(font, "less", comparison, cell)
+    install_components(font, "greater", [("less", reflect(cell))], cell)
+
+    tall_width = settings["tall_angle_width"]
+    tall, _, _ = chevron(middle - tall_width / 2, middle + tall_width / 2, axis,
+                         settings["tall_angle_height"] / 2, thickness)
+    install_outline(font, "less.generic", tall, cell)
+    install_components(font, "greater.generic", [("less.generic", reflect(cell))], cell)
+
+    lift = otRound(pitch / 2)
+    chevron_axis = axis + lift
     low_left, low_right = chevron_axis - bevel - pitch, chevron_axis - rise - pitch
-    comparison.addPath(polygon(((left, low_left), (left, low_left + depth),
-                                (right, low_right + depth), (right, low_right))))
-    install_outline(font, "lessequal", comparison, cell)
+    rule_name = "operator.comparisonRule"
+    install_outline(font, rule_name, polygon(((left, low_left), (left, low_left + depth),
+                                               (right, low_right + depth), (right, low_right))), 0)
+    install_components(font, "lessequal", [translated("less", y=lift), translated(rule_name)], cell)
     install_components(font, "greaterequal", [("lessequal", reflect(cell))], cell)
 
     for name, height, extra_width in (("multiply", settings["multiply_height"], 16),
@@ -118,7 +122,7 @@ def build_signs(font, cell, axis, settings):
                                        ("asciitilde", settings["tilde_height"], None)):
         donor = raw_outline(glyphs, name)
         width = (donor.bounds[2] - donor.bounds[0] + extra_width if extra_width is not None
-                 else angle_width + settings["tilde_extra_width"])
+                 else minus_width + settings["tilde_extra_width"])
         install_outline(font, name, fit_box(donor, width, height, middle, axis), cell)
     caret, _, _ = chevron(0, settings["caret_height"], 0, settings["caret_width"] / 2, thickness)
     install_outline(font, "asciicircum", caret.transform(0, -1, 1, 0, middle,

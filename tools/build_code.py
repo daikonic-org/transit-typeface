@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from hashlib import sha256
+from html import escape
 import json
 from math import isclose
 from pathlib import Path
@@ -205,6 +206,8 @@ def verify_math(font, path, recipe):
     repeated = ARROWS["->>"]
     parts = font["glyf"][repeated].components
     assert [part.glyphName for part in parts] == [repeated + ".shaft", "operator.arrowHead", "operator.arrowHead"]
+    comparison = font["glyf"]["lessequal"].components
+    assert [part.glyphName for part in comparison] == ["less", "operator.comparisonRule"]
     engine = hb.Font(hb.Face(path.read_bytes()))
     for weight in range(350, 501, 5):
         engine.set_variations({"wght": weight})
@@ -380,6 +383,35 @@ def detail_comparison(candidate, reference, output, title, samples, subtitle="Pu
     write_comparison(output, width, height, rows, [panel for panel, _, _ in samples_to_draw])
 
 
+def operator_detail(candidate, output, config, axis):
+    width, height = 1050, 744
+    upm, cell = config["units_per_em"], config["cell"]
+    size = 150
+    samples = ((154, "->>"), (347, "<<-"), (548, "<"), (639, "≤"),
+               (730, ">"), (821, "≥"), (912, "="))
+    panel = Panel("operators", {"font": str(candidate.resolve())})
+    rows = [
+        f'<rect width="{width}" height="{height}" fill="#eaf1f0"/>',
+        '<text x="36" y="46" font-size="31" font-weight="700">Transit Code · Operator detail</text>',
+        '<text x="37" y="74" font-size="15" fill="#415d62">&lt; and &gt; share their chevrons with ≤ and ≥.</text>',
+    ]
+    for x, sample in samples:
+        cells = 2 if sample in ARROWS else 1
+        center = x + cells * cell * size / upm / 2
+        rows.append(f'<text x="{center:.2f}" y="110" font-size="16" text-anchor="middle">{escape(sample)}</text>')
+    for index, (weight, style) in enumerate(WEIGHTS.items()):
+        y = 211 + 207 * index
+        rows.extend((
+            f'<rect x="36" y="{y - 86}" width="978" height="172" rx="6" fill="#f8faf9" stroke="#c7d6d7"/>',
+            f'<text x="54" y="{y + 5}" font-size="16" font-weight="700">{style} {weight}</text>',
+            f'<path d="M150 {y}H995" stroke="#bed0d0" stroke-dasharray="3 5" fill="none"/>',
+        ))
+        for x, sample in samples:
+            panel.text(sample, x, y + axis * size / upm, size, weight, "#153b40",
+                       features={**FEATURES, "liga": True})
+    write_comparison(output, width, height, rows, [panel])
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
@@ -447,7 +479,9 @@ def main():
                            (613, "Arrows", "-> ->> => <- <<-")),
                           "Published Code 1.042 above the candidate · default ligatures enabled",
                           features={"calt": True, "liga": True, "kern": False})
-        panels.extend((math_panel, arrow_panel, ligature_panel))
+        detail_panel = output / "Code-Operator-Detail.svg"
+        operator_detail(candidate, detail_panel, config, recipe["horizontal_punctuation_review"]["minus_center"])
+        panels.extend((math_panel, arrow_panel, ligature_panel, detail_panel))
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
