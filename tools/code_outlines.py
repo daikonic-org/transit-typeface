@@ -437,7 +437,19 @@ def build_crossbar_letters(font, recipe):
     raw_outline(font.getGlyphSet(), "t").draw(HorizontalMapPen(
         ReverseContourPen(pen), lambda x: x, lambda y: remap(y, y_from, y_to)
     ))
-    install(font, "f", pen.glyph(), cell)
+    f_glyph = pen.glyph()
+    trim = settings.get("f_right_arm_trim", 0)
+    if trim:
+        levels = (otRound(bar_bottom), otRound(bar_top))
+        ends = [max((i for i, (x, y) in enumerate(f_glyph.coordinates) if y == level),
+                    key=lambda i: f_glyph.coordinates[i][0])
+                for level in levels]
+        if f_glyph.coordinates[ends[0]][0] != f_glyph.coordinates[ends[1]][0]:
+            raise ValueError("Expected the two ends of the square f crossbar terminal")
+        for i in ends:
+            x, y = f_glyph.coordinates[i]
+            f_glyph.coordinates[i] = x - trim, y
+    install(font, "f", f_glyph, cell)
 
     t_offset = settings.get("t_x_offset", 0)
     t_dependents = component_users(font, {"t"})

@@ -57,7 +57,12 @@
       "maximum_stroke_scale": 1.12,
       "connector_points": [2, 27]
     },
-    "ft": {"t_above_x_height": 106, "f_above_cap_height": 90, "return_cut_ratio": 0.44}
+    "ft": {
+      "t_above_x_height": 106,
+      "f_above_cap_height": 90,
+      "return_cut_ratio": 0.44,
+      "f_right_arm_trim": 18
+    }
   },
   "distinct_figures_review": {
     "bar_overhang": 154,
