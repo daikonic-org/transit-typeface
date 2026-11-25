@@ -122,19 +122,22 @@ Logic is enabled with `ss02`. Texture Healing is deferred along with the
 investigation of using OpenType positioning for texture and operator
 compaction.
 
-## GPOS rest and spread trial
+## GPOS spacing trial
 
-In the separate Spread Trial fonts, `ss08` positions three copies of the
-period drawing and gives rest and spread a total advance of two cells.
-Operators such as `===` retain their dedicated drawings and advances in
-the glyph metrics under both settings.
+The separate Spacing Trial fonts use `ss08` to position reusable drawings
+for `::`, `//`, `||`, `?.`, `!.`, plain `...` and nested generic closers.
+Rest and spread use three copies of the period drawing in two cells. The
+mixed enclosure pairs `<[` and `[<` already use GPOS. Custom drawings such
+as `===` use their existing glyphs and advances.
+
+The trial keeps the original ligature at the end of a shaping run. Core Text
+uses that glyph's stored caret coordinates when there is no following cluster.
 
 ```sh
 .venv/bin/python tools/code_gpos_compaction.py \
   --reference .build/transit-code/package/VF \
-  --output .build/transit-code/gpos-spread --render
+  --output .build/transit-code/gpos-lateral --render
 ```
 
-The trial checks operator outlines, advances, offsets and carets against the
-review build at five weights and five widths. The specimen shows the same
-code with positioning on and off.
+The trial checks component positions, operator outlines, advances, offsets and
+carets across five weights and five widths.
