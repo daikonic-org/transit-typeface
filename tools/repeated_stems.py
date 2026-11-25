@@ -124,6 +124,13 @@ def add_monospace_l_pair(font, extension=44):
     )
 
 
+def add_monospace_repeats(font):
+    fit_monospace_pairs(font)
+    register_repeated_stems(font, {letter: f"{letter}_{letter}" for letter in "ft"},
+                            protect_marks=True, inherit_kerning=False)
+    add_monospace_l_pair(font)
+
+
 def double_advance(font, source, target):
     table = font["HVAR"].table
     mapping = table.AdvWidthMap.mapping

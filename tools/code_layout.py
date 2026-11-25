@@ -9,6 +9,7 @@ import uharfbuzz as hb
 from check_code_rebuild import shape
 from code_angle_pairs import ANGLE_CASES, build_angle_pairs
 from code_hairlining import build_hairlining
+from code_hairline_toggle import position_lifetime_ampersand
 from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import build_lifetimes
 from code_logic_build import build_logic
@@ -50,6 +51,8 @@ def build_layout(font, recipe, *, hairlines=True):
                             install_closer=install)
     build_spread_context(font)
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
+    if not hairlines:
+        position_lifetime_ampersand(font)
 
 
 def angle_styles(rows):

@@ -11,7 +11,7 @@ import unicodedata
 import uharfbuzz as hb
 
 from fontTools.misc.roundTools import otRound
-from fontTools.misc.transform import Transform
+from fontTools.misc.transform import Identity, Transform
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables._g_l_y_f import (
     GlyphCoordinates, SCALED_COMPONENT_OFFSET, UNSCALED_COMPONENT_OFFSET,
@@ -75,22 +75,22 @@ def reuse_single_storey_a(font, *, designspace=None):
     return sources
 
 
-def transformed_components(font, name, slant, pivot, *, dotted=("i",)):
+def transformed_components(font, name, transforms, pivot, *, dotted=("i",)):
     """Conjugate each component so its already-slanted source can stay live."""
     original = font["glyf"][name]
     glyph = deepcopy(original)
     deltas = expanded_variations(font, name)
-    inverse = slant.inverse()
+    slant = transforms[name]
     for i, part in enumerate(glyph.components):
         base, matrix = part.getComponentInfo()
         parent = slant
-        if name in dotted:
+        if name in dotted and slant != Identity:
             # The previous italic carries the i tittle along the slant as an upright diamond.
             mark = font["glyf"][base]
             if mark.yMin + part.y > font["OS/2"].sxHeight + 30:
                 dot_center = (original.yMax + font["OS/2"].sxHeight + 30) / 2
                 parent = Transform(1, 0, 0, 1, SHEAR * (dot_center - pivot), 0)
-        xx, xy, yx, yy, x, y = parent.transform(Transform(*matrix)).transform(inverse)
+        xx, xy, yx, yy, x, y = parent.transform(Transform(*matrix)).transform(transforms[base].inverse())
         part.x, part.y = otRound(x), otRound(y)
         if (xx, xy, yx, yy) != (1, 0, 0, 1):
             part.transform = [[xx, xy], [yx, yy]]
@@ -172,21 +172,23 @@ def italicize(font, config):
     return metric_sources, sorted(custom), composites
 
 
-def apply_slant(font, metric_sources, *, dotted=("i",), variable_anchors=False):
+def apply_slant(font, metric_sources, *, dotted=("i",), variable_anchors=False, selected=None):
     glyf = font["glyf"]
     order = font.getGlyphOrder()
     pivot = font["OS/2"].sxHeight / 2
+    selected = set(order) if selected is None else selected
     slant = Transform(1, 0, SHEAR, 1, -SHEAR * pivot, 0)
+    transforms = {name: slant if name in selected else Identity for name in order}
     composites = sorted(
         (name for name in order if glyf[name].isComposite()),
         key=lambda name: glyf[name].getCompositeMaxpValues(glyf).maxComponentDepth,
     )
-    revised_parts = {name: transformed_components(font, name, slant, pivot, dotted=dotted)
+    revised_parts = {name: transformed_components(font, name, transforms, pivot, dotted=dotted)
                      for name in composites}
-    shear_drawn_outlines(font, set(order), pivot, {})
+    shear_drawn_outlines(font, selected, pivot, {})
     for name in composites:
         apply_shape(font, name, *revised_parts[name])
-    italicize_anchors(font, set(order), pivot, {}, metric_sources, variable=variable_anchors)
+    italicize_anchors(font, selected, pivot, {}, metric_sources, variable=variable_anchors)
     return composites
 
 

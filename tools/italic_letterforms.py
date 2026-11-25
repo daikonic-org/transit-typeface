@@ -289,7 +289,7 @@ def redraw_italic_letters(
         # The Sans rebuild supplies a via its live alternate. Keep existing
         # accents live, and draw the descending return on the joined f forms.
         bases = {name: base for name, base in bases.items()
-                 if base != "a" and (name in f_forms or not font["glyf"][name].isComposite())}
+                 if base != "a" and (name in (*f_forms, "g") or not font["glyf"][name].isComposite())}
     by_location = []
     for glyphs in glyphsets:
         single = shape_from_glyphs(glyphs, "a.ss01")

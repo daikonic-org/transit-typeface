@@ -21,7 +21,7 @@ def build_hairlining(font, cell, settings, *, delimited_rails=True):
     add_bar_delimiters(font, settings["bar_delimiters"], tokens, cell, scope=SCOPE)
     if delimited_rails:
         build_delimiter_rails(font, settings, tokens)
-    activate_lifetime_hairlining(font)
+        activate_lifetime_hairlining(font)
 
 
 def build_delimiter_rails(font, settings, tokens):
