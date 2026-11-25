@@ -65,7 +65,7 @@ def bar_stack(font, name, bar, cell, pitch, count, slash=None):
     install_components(font, name, parts, cell)
 
 
-def build_signs(font, cell, axis, settings):
+def build_signs(font, cell, axis, settings, *, asterisk_scale):
     glyphs = font.getGlyphSet()
     left, bottom, right, top = raw_outline(glyphs, "minus").bounds
     thickness = top - bottom
@@ -117,13 +117,13 @@ def build_signs(font, cell, axis, settings):
     install_components(font, "lessequal", [translated("less", y=lift), translated(rule_name)], cell)
     install_components(font, "greaterequal", [("lessequal", reflect(cell))], cell)
 
-    for name, height, extra_width in (("multiply", settings["multiply_height"], 16),
-                                       ("asterisk", settings["asterisk_height"], 8),
-                                       ("asciitilde", settings["tilde_height"], None)):
+    for name, height, extra_width, scale in (("multiply", settings["multiply_height"], 16, 1),
+                                             ("asterisk", settings["asterisk_height"], 8, asterisk_scale),
+                                             ("asciitilde", settings["tilde_height"], None, 1)):
         donor = raw_outline(glyphs, name)
         width = (donor.bounds[2] - donor.bounds[0] + extra_width if extra_width is not None
                  else minus_width + settings["tilde_extra_width"])
-        install_outline(font, name, fit_box(donor, width, height, middle, axis), cell)
+        install_outline(font, name, fit_box(donor, width * scale, height * scale, middle, axis), cell)
     caret, _, _ = chevron(0, settings["caret_height"], 0, settings["caret_width"] / 2, thickness)
     install_outline(font, "asciicircum", caret.transform(0, -1, 1, 0, middle,
                     axis + settings["caret_raise"] + settings["caret_height"] / 2), cell)
@@ -286,6 +286,7 @@ def build_math(font, sans, recipe):
     cell = recipe["alphabet_review"]["cell"]
     axis = recipe["horizontal_punctuation_review"]["minus_center"]
     settings = recipe["math_review"]
-    thickness = build_signs(font, cell, axis, settings)
+    thickness = build_signs(font, cell, axis, settings,
+                            asterisk_scale=recipe["diamond_punctuation_review"]["diamond_scale"])
     build_arrows(font, sans, cell, axis, thickness, settings)
     register_operators(font)

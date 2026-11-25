@@ -217,7 +217,7 @@ def compatible_upper_returns(lower_returns, fraction):
 
 
 def upper_return(lower_l, left, top, floor):
-    """Rotate the clipped copy of the lower return into the upper hook."""
+    """Rotate the supplied lower return into the upper hook."""
     dx = otRound(left) + lower_l[0].start[0]
     dy = top + floor
     return move_return(lower_l, lambda point: (dx - point[0], dy - point[1]))
@@ -324,7 +324,7 @@ def build_hook_letters(font, recipe, donor, clipped):
     lower_j = lower_return(lower, settings["j"], cell, thickness, dotless_j.bounds[1] - floor, reflected=True)
     install(font, "dotlessi", i_outline(settings["i"], cell, baseline, x_height, thickness, clipped, floor).glyph(), cell)
     install(font, "uni0237", return_letter(clipped, lower_j, x_height, floor, reflected=True), cell)
-    install(font, "l", return_letter(clipped, lower_l, l_top, floor), cell)
+    install(font, "l", return_letter(lower_l, lower_l, l_top, floor), cell)
     adjust_marks(font, "dotlessi", settings["i"]["shaft_offset"], 0, zone)
     adjust_marks(font, "uni0237", j_dx, 0, zone)
     adjust_marks(font, "l", l_dx, otRound(l_top - top), zone, shift_lower=True)
