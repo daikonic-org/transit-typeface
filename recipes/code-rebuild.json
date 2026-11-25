@@ -121,6 +121,11 @@
     "paired_arrow_height": 410,
     "vertical_arrow_height": 690
   },
+  "layout_review": {
+    "angle_depth": 16,
+    "angle_span": 60,
+    "mixed_angle_shift": 30
+  },
   "code_specific_characters": "Ialijgwmsftyk10@&_-.,:;!?()[]{}|<>+=#~^\"'",
   "construction_sources": {
     "m": "tools/code_receiver_shapes.py:fit_m",

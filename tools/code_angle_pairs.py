@@ -14,6 +14,44 @@ SOURCE = ROOT / "sources/code-logic-symbols/DaikonicTransitCodeLogicSymbols-VF.t
 OUT = ROOT / "sources/code-rust-generics"
 
 
+ANGLE_CASES = {
+    "<>": [False, False],
+    "a<>b": [False, False],
+    "<>T": [False, False],
+    "Vec<>": [True, True],
+    "HashMap<>": [True, True],
+    "fooBar<>": [True, True],
+    "vec<>": [False, False],
+    "12<>34": [False, False],
+    "<_>": [True, True],
+    "<[_]>": [True, True],
+    "::<_>": [True, True],
+    "::<u8>": [True, True],
+    "::<usize>": [True, True],
+    "::<[_]>": [True, True],
+    "Vec<vec<_>>": [True] * 4,
+    "::<": [False],
+    "Vec<T>": [True, True],
+    "Vec<u8>": [True, True],
+    "get<T>": [True, True],
+    "<T>": [True, True],
+    "a<b": [False],
+    "a > b": [False],
+    "Vec<Vec<T>>": [True] * 4,
+    "Vec<vec<a>>": [True] * 4,
+    "Vec< vec<a>>": [True] * 4,
+    "Tuple<vec<a>, vec<b>>": [True] * 6,
+    "Vec<T> a<>b": [True, True, False, False],
+    "Foo<Bar<Baz<>>>": [True] * 6,
+    "Vec<T": [False],
+    "T>": [False],
+    "<": [False],
+    ">": [False],
+    "Vec<Vec<T>": [False, True, True],
+    "Vec<T>>": [True, True, False],
+}
+
+
 def check(path):
     source = TTFont(SOURCE)
     font = TTFont(path)
@@ -44,42 +82,7 @@ def check(path):
             name
         ), name
         assert source["hmtx"][name] == font["hmtx"][name], name
-    expected = {
-        "<>": [False, False],
-        "a<>b": [False, False],
-        "<>T": [False, False],
-        "Vec<>": [True, True],
-        "HashMap<>": [True, True],
-        "fooBar<>": [True, True],
-        "vec<>": [False, False],
-        "12<>34": [False, False],
-        "<_>": [True, True],
-        "<[_]>": [True, True],
-        "::<_>": [True, True],
-        "::<u8>": [True, True],
-        "::<usize>": [True, True],
-        "::<[_]>": [True, True],
-        "Vec<vec<_>>": [True] * 4,
-        "::<": [False],
-        "Vec<T>": [True, True],
-        "Vec<u8>": [True, True],
-        "get<T>": [True, True],
-        "<T>": [True, True],
-        "a<b": [False],
-        "a > b": [False],
-        "Vec<Vec<T>>": [True] * 4,
-        "Vec<vec<a>>": [True] * 4,
-        "Vec< vec<a>>": [True] * 4,
-        "Tuple<vec<a>, vec<b>>": [True] * 6,
-        "Vec<T> a<>b": [True, True, False, False],
-        "Foo<Bar<Baz<>>>": [True] * 6,
-        "Vec<T": [False],
-        "T>": [False],
-        "<": [False],
-        ">": [False],
-        "Vec<Vec<T>": [False, True, True],
-        "Vec<T>>": [True, True, False],
-    }
+    expected = ANGLE_CASES
     cases = list(expected) + ["-> ->> => <= >=", "&'a <'a>"]
     for weight in range(300, 401, 10):
         for calt in [False, True]:
@@ -147,41 +150,27 @@ def check(path):
     )
 
 
-def main():
-    OUT.mkdir(parents=True, exist_ok=True)
-    font = TTFont(SOURCE, recalcTimestamp=False)
-    depth_limit, span_limit = 16, 60
+def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None):
     original_names = set(font.getGlyphOrder())
-    compose(font, "less.pairIntent", [("less", 1, 1, 0, 0)], 600, metric_source="less")
-    compose(
-        font,
-        "code.lifetimeOpen.short",
-        [("less", 1, 1, 600, 0)],
-        600,
-        metric_source="less",
-    )
+    use_lifetimes = "code.lifetimeOpen" in original_names
+    if alias is None:
+        def alias(name, donor):
+            compose(font, name, [(donor, 1, 1, 0, 0)], cell, metric_source=donor)
+
+    alias("less.pairIntent", "less")
+    sources = {
+        "shortLeft": "less", "shortRight": "greater",
+        "tallLeft": "less.generic", "tallRight": "greater.generic",
+    }
+    if use_lifetimes:
+        compose(font, "code.lifetimeOpen.short", [("less", 1, 1, cell, 0)], cell, metric_source="less")
+        sources["compactLeft"] = "code.lifetimeOpen"
+
     markers = []
     for depth in range(depth_limit):
-        names = {
-            kind: f"anglePair{depth}.{kind}"
-            for kind in (
-                "shortLeft",
-                "shortRight",
-                "tallLeft",
-                "tallRight",
-                "compactLeft",
-            )
-        }
-        for kind, original in [
-            ("shortLeft", "less"),
-            ("shortRight", "greater"),
-            ("tallLeft", "less.generic"),
-            ("tallRight", "greater.generic"),
-            ("compactLeft", "code.lifetimeOpen"),
-        ]:
-            compose(
-                font, names[kind], [(original, 1, 1, 0, 0)], 600, metric_source=original
-            )
+        names = {kind: f"anglePair{depth}.{kind}" for kind in sources}
+        for kind, original in sources.items():
+            alias(names[kind], original)
         markers.append(names)
     cmap = font.getBestCmap()
     words = sorted(
@@ -197,6 +186,7 @@ def main():
     # Unresolved angles block a match. Only completed lower-level pairs may be
     # crossed, so malformed input cannot lend a tall angle to an unmatched one.
     ordinary = original_names - {
+        ".notdef", *(cmap[cp] for cp in (10, 13) if cp in cmap),
         "less",
         "greater",
         "less.generic",
@@ -209,27 +199,44 @@ def main():
         "@PairWord=[" + " ".join(words) + "];",
         "@PairCapital=[" + " ".join(capitals) + "];",
     ]
+    tall_openers = ["less.pairIntent"]
+    if use_lifetimes:
+        tall_openers += ["code.lifetimeOpen", "code.lifetimeOpen.short"]
+    opener_class = "[" + " ".join(tall_openers) + "]"
     for depth, names in enumerate(markers):
         body = sorted(
             ordinary | {name for lower in markers[:depth] for name in lower.values()}
         )
         rules.append(f"@PairBody{depth}=[" + " ".join(body) + "];")
+        tall_left = [names["tallLeft"]]
+        if use_lifetimes:
+            tall_left += [names["compactLeft"]] * 2
         rules += [
-            f"lookup TallLeft{depth} {{ sub [less.pairIntent code.lifetimeOpen code.lifetimeOpen.short] by [{names['tallLeft']} {names['compactLeft']} {names['compactLeft']}]; }} TallLeft{depth};",
+            f"lookup TallLeft{depth} {{ sub {opener_class} by [{' '.join(tall_left)}]; }} TallLeft{depth};",
             f"lookup TallRight{depth} {{ sub greater by {names['tallRight']}; }} TallRight{depth};",
             f"lookup ShortLeft{depth} {{ sub less by {names['shortLeft']}; }} ShortLeft{depth};",
             f"lookup ShortRight{depth} {{ sub greater by {names['shortRight']}; }} ShortRight{depth};",
         ]
+    if use_lifetimes:
+        rules.append("feature ss01 { sub code.lifetimeOpen by code.lifetimeOpen.short; } ss01;")
     rules += [
-        "feature ss01 { sub code.lifetimeOpen by code.lifetimeOpen.short; } ss01;",
         "feature calt {",
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
         "lookup TypePairIntent { lookupflag IgnoreMarks;",
-        "sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;",
         "sub less' underscore greater by less.pairIntent;",
         "sub less' bracketleft underscore bracketright greater by less.pairIntent;",
-        "sub code.scope less' by less.pairIntent;",
     ]
+    if use_lifetimes:
+        rules.append("sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;")
+    else:
+        rules.extend((
+            "ignore sub less' quotesingle @PairWord quotesingle;",
+            "sub less' quotesingle @PairWord by less.pairIntent;",
+        ))
+    if "code.scope" in original_names:
+        rules.append("sub code.scope less' by less.pairIntent;")
+    else:
+        rules.append("sub colon colon less' by less.pairIntent;")
     for count in range(32):
         middle = " ".join(["@PairWord"] * count)
         rules += [
@@ -242,7 +249,7 @@ def main():
         for count in range(span_limit + 1):
             middle = " ".join([f"@PairBody{depth}'"] * count)
             rules += [
-                f"sub [less.pairIntent code.lifetimeOpen code.lifetimeOpen.short]' lookup TallLeft{depth} "
+                f"sub {opener_class}' lookup TallLeft{depth} "
                 + middle
                 + f" greater' lookup TallRight{depth};",
                 f"sub less' lookup ShortLeft{depth} "
@@ -256,11 +263,12 @@ def main():
         left = [m[k] for m in markers[:depth] for k in ("shortLeft", "shortRight")]
         right = [m[k] for m in markers[:depth] for k in ("tallLeft", "tallRight")]
         parent = markers[depth]
+        parent_openers = " ".join(parent[kind] for kind in ("tallLeft", "compactLeft") if kind in parent)
         rules += [f"lookup InheritPairStyle{depth} {{", "lookupflag IgnoreMarks;"]
         for count in range(span_limit + 1):
             middle = " ".join([f"@PairBody{depth}"] * count)
             rules.append(
-                f"sub [{parent['tallLeft']} {parent['compactLeft']}] "
+                f"sub [{parent_openers}] "
                 + middle
                 + " ["
                 + " ".join(left)
@@ -269,26 +277,26 @@ def main():
                 + "];"
             )
         rules.append(f"}} InheritPairStyle{depth};")
-    rules += [
-        "lookup FinishAnglePairs {",
-        "sub less.pairIntent by less; sub code.lifetimeOpen by code.lifetimeOpen.short;",
-    ]
+    rules += ["lookup FinishAnglePairs {", "sub less.pairIntent by less;"]
+    if use_lifetimes:
+        rules.append("sub code.lifetimeOpen by code.lifetimeOpen.short;")
     for names in markers:
-        for kind, final in [
-            ("shortLeft", "less"),
-            ("shortRight", "greater"),
-            ("tallLeft", "less.generic"),
-            ("tallRight", "greater.generic"),
-            ("compactLeft", "code.lifetimeOpen"),
-        ]:
+        for kind, final in sources.items():
             rules.append(f"sub {names[kind]} by {final};")
     rules += ["} FinishAnglePairs;", "} calt;"]
-    rules += [
-        "feature calt {",
-        "pos code.scope' <18 50 0 0> less.generic' <-18 0 0 0>;",
-        "} calt;",
-    ]
+    if "code.scope" in original_names and use_lifetimes:
+        rules += [
+            "feature calt {",
+            "pos code.scope' <18 50 0 0> less.generic' <-18 0 0 0>;",
+            "} calt;",
+        ]
     add_features(font, "\n".join(rules))
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    font = TTFont(SOURCE, recalcTimestamp=False)
+    build_angle_pairs(font, depth_limit=16, span_limit=60)
     for record in font["name"].names:
         text = record.toUnicode()
         if record.nameID == 3:

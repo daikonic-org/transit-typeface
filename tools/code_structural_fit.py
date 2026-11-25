@@ -34,6 +34,82 @@ def separate_enclosures(font):
     )
 
 
+def mixed_angle_rules(features, shift):
+    lines = [
+        "languagesystem DFLT dflt;",
+        "languagesystem latn dflt;",
+        "lookup SeparateMixedAngles {",
+        "sub less' bracketleft by less.generic;",
+        "sub bracketleft less' by less.generic;",
+        "sub bracketright greater' by greater.generic;",
+        "sub greater' bracketright by greater.generic;",
+        "} SeparateMixedAngles;",
+    ]
+    for feature in features:
+        lines.append(f"feature {feature} {{ lookup SeparateMixedAngles; }} {feature};")
+    pairs = [
+        ("less.generic", "bracketleft"),
+        ("bracketleft", "less.generic"),
+        ("bracketright", "greater.generic"),
+        ("greater.generic", "bracketright"),
+    ]
+    lines += ["lookup MixedPairFirst {"]
+    for first, last in pairs:
+        lines.append(f"pos {first}' <{shift} 0 0 0> {last};")
+    lines += ["} MixedPairFirst;", "lookup MixedPairLast {"]
+    for first, last in pairs:
+        lines.append(f"pos {first} {last}' <{-shift} 0 0 0>;")
+    lines += ["} MixedPairLast;"]
+    for feature in features:
+        lines.append(
+            f"feature {feature} {{ lookup MixedPairFirst; lookup MixedPairLast; }} {feature};"
+        )
+    return lines
+
+
+def generic_closer_rules(font, cell, depth, install_closer):
+    for count in range(2, depth + 1):
+        extent = min(30 * (count - 1), 90)
+        parts = [
+            (
+                "greater.generic",
+                1,
+                1,
+                cell * i + extent - 2 * extent * i / (count - 1),
+                0,
+            )
+            for i in range(count)
+        ]
+        name = f"code.genericClose{count}"
+        if install_closer is None:
+            compose(font, name, parts, count * cell, sum_metrics=True)
+        else:
+            install_closer(name, parts, count * cell)
+        font["GDEF"].table.GlyphClassDef.classDefs[name] = 2
+    lines = ["feature calt { lookup GenericCloserRuns {"]
+    for count in range(depth, 1, -1):
+        lines.append(
+            "sub "
+            + " ".join(["greater.generic"] * count)
+            + f" by code.genericClose{count};"
+        )
+    lines += ["} GenericCloserRuns; } calt;", "table GDEF {"]
+    for count in range(2, depth + 1):
+        lines.append(
+            f"LigatureCaretByPos code.genericClose{count} "
+            + " ".join(str(i * cell) for i in range(1, count))
+            + ";"
+        )
+    lines += ["} GDEF;"]
+    return lines
+
+
+def build_structural_angles(font, cell, depth, *, features=("calt",), shift=30, install_closer=None):
+    lines = mixed_angle_rules(features, shift)
+    lines.extend(generic_closer_rules(font, cell, depth, install_closer))
+    add_features(font, "\n".join(lines))
+
+
 def build():
     font = TTFont(SOURCE, recalcTimestamp=False)
     for lookup in font["GSUB"].table.LookupList.Lookup:
@@ -50,66 +126,7 @@ def build():
         compose(
             font, name, [("dollar", 1, 1, 35, -50), (delimiter, 1, 1, 565, 0)], 1200
         )
-    lines = [
-        "languagesystem DFLT dflt;",
-        "languagesystem latn dflt;",
-        "lookup SeparateMixedAngles {",
-        "sub less' bracketleft by less.generic;",
-        "sub bracketleft less' by less.generic;",
-        "sub bracketright greater' by greater.generic;",
-        "sub greater' bracketright by greater.generic;",
-        "} SeparateMixedAngles;",
-        "feature calt { lookup SeparateMixedAngles; } calt;",
-        "feature ss02 { lookup SeparateMixedAngles; } ss02;",
-    ]
-    pairs = [
-        ("less.generic", "bracketleft"),
-        ("bracketleft", "less.generic"),
-        ("bracketright", "greater.generic"),
-        ("greater.generic", "bracketright"),
-    ]
-    lines += ["lookup MixedPairFirst {"]
-    for first, last in pairs:
-        lines.append(f"pos {first}' <30 0 0 0> {last};")
-    lines += ["} MixedPairFirst;", "lookup MixedPairLast {"]
-    for first, last in pairs:
-        lines.append(f"pos {first} {last}' <-30 0 0 0>;")
-    lines += ["} MixedPairLast;"]
-    for feature in ["calt", "ss02"]:
-        lines.append(
-            f"feature {feature} {{ lookup MixedPairFirst; lookup MixedPairLast; }} {feature};"
-        )
-    for count in range(2, 17):
-        extent = min(30 * (count - 1), 90)
-        parts = [
-            (
-                "greater.generic",
-                1,
-                1,
-                600 * i + extent - 2 * extent * i / (count - 1),
-                0,
-            )
-            for i in range(count)
-        ]
-        name = f"code.genericClose{count}"
-        compose(font, name, parts, count * 600, sum_metrics=True)
-        font["GDEF"].table.GlyphClassDef.classDefs[name] = 2
-    lines += ["feature calt { lookup GenericCloserRuns {"]
-    for count in range(16, 1, -1):
-        lines.append(
-            "sub "
-            + " ".join(["greater.generic"] * count)
-            + f" by code.genericClose{count};"
-        )
-    lines += ["} GenericCloserRuns; } calt;", "table GDEF {"]
-    for count in range(2, 17):
-        lines.append(
-            f"LigatureCaretByPos code.genericClose{count} "
-            + " ".join(str(i * 600) for i in range(1, count))
-            + ";"
-        )
-    lines += ["} GDEF;"]
-    add_features(font, "\n".join(lines))
+    build_structural_angles(font, 600, 16, features=("calt", "ss02"))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     font.save(OUT)
     return OUT

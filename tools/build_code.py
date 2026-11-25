@@ -20,6 +20,7 @@ from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_at import build_at
 from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
+from code_layout import align_pipe, build_layout, verify_layout
 from code_math import ARROW_FAMILIES, ARROWS, COMPARISONS, SYMBOL_SAMPLES, build_math
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
@@ -47,7 +48,8 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
     assert weights[anchor["code_weight"]] == anchor["sans_weight"]
     assert list(weights) == list(WEIGHTS)
     family = f"Daikonic Transit Code {stage} Review"
-    custom_letters = stage in ("Letters", "Operators")
+    math = stage in ("Operators", "Layout")
+    custom_letters = stage == "Letters" or math
 
     masters = {weight: build_master(source, weights[weight], weight, config) for weight in WEIGHTS}
     scales, stems, width_report = width_class_scales(masters, recipe)
@@ -76,9 +78,11 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             build_horizontal_punctuation(master, recipe)
             build_diamond_punctuation(master, recipe)
             build_delimiters(master, recipe)
-            if stage == "Operators":
+            if math:
                 with sample_sans_weight(source, weights[weight]) as sans:
                     build_math(master, sans, recipe)
+            if stage == "Layout":
+                align_pipe(master, recipe["horizontal_punctuation_review"]["minus_center"])
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -412,6 +416,35 @@ def operator_detail(candidate, output, config, axis):
     write_comparison(output, width, height, rows, [panel])
 
 
+def angle_context_detail(candidate, output, config, axis):
+    width, height = 1050, 744
+    upm = config["units_per_em"]
+    size = 34
+    samples = ((158, "Comparisons and generics", "a<>b Vec<>"),
+               (377, "Nested and unmatched", "Vec<Vec<T>> T>"),
+               (686, "Delimiter alignment", "() [] {} | <[T]>"))
+    panel = Panel("context", {"font": str(candidate.resolve())})
+    rows = [
+        f'<rect width="{width}" height="{height}" fill="#eaf1f0"/>',
+        '<text x="36" y="46" font-size="31" font-weight="700">Transit Code · Contextual delimiters</text>',
+        '<text x="37" y="74" font-size="15" fill="#415d62">Tall generic pairs and enclosure alignment on the same vertical center.</text>',
+    ]
+    for index, (weight, style) in enumerate(WEIGHTS.items()):
+        y = 101 + 207 * index
+        rows.append(f'<rect x="36" y="{y}" width="978" height="187" rx="6" fill="#f8faf9" stroke="#c7d6d7"/>')
+        rows.append(f'<text x="54" y="{y + 32}" font-size="16" font-weight="700">{style} {weight}</text>')
+        for x, label, _ in samples:
+            rows.append(f'<text x="{x}" y="{y + 32}" font-size="13" fill="#415d62">{label}</text>')
+        for offset, label, enabled in ((90, "On", True), (151, "Off", False)):
+            center = y + offset - axis * size / upm
+            rows.append(f'<path d="M676 {center:.2f}H994" stroke="#bed0d0" stroke-dasharray="3 5" fill="none"/>')
+            rows.append(f'<text x="54" y="{y + offset}" font-size="13" fill="#415d62">{label}</text>')
+            for x, _, sample in samples:
+                panel.text(sample, x, y + offset, size, weight, "#153b40",
+                           features={"calt": enabled, "liga": True, "kern": False})
+    write_comparison(output, width, height, rows, [panel])
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
@@ -420,6 +453,7 @@ def main():
     stages.add_argument("--composed", action="store_true", help="also build the donor-derived review glyphs")
     stages.add_argument("--letters", action="store_true", help="add the custom lowercase review")
     stages.add_argument("--operators", action="store_true", help="add the math signs and operator ligatures")
+    stages.add_argument("--layout", action="store_true", help="add contextual angle pairs and delimiter alignment")
     parser.add_argument("--render", action="store_true", help="also write the comparison as PNG and PDF")
     args = parser.parse_args()
     recipe = json.loads(args.recipe.read_text())
@@ -428,10 +462,14 @@ def main():
     reference = ROOT / (recipe["fonts"]["code"] + "-VF.ttf")
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
-    stage = "Operators" if args.operators else "Letters" if args.letters else "Composed" if args.composed else "Alphabet"
+    stage = "Layout" if args.layout else "Operators" if args.operators else (
+        "Letters" if args.letters else "Composed" if args.composed else "Alphabet"
+    )
     candidate = output / f"DaikonicTransitCode{stage}Review-VF.ttf"
     with TTFont(source, recalcTimestamp=False) as sans:
         font, width_report = alphabet_font(sans, recipe, stage=stage)
+        if stage == "Layout":
+            build_layout(font, recipe)
         verify_latin_topology(sans, font, config)
         vertical = set_vertical_metrics(
             font, minimum_ascent=config["line_metrics"]["ascent"],
@@ -446,8 +484,10 @@ def main():
         check["horizontal_mirrors"] = verify_mirrors(sans, built, config["cell"], check["weights"])
         if stage != "Alphabet":
             check["composed_components"] = verify_composed(built, candidate, config["cell"], check["weights"])
-        if stage == "Operators":
+        if stage in ("Operators", "Layout"):
             check["operators"] = verify_math(built, candidate, recipe)
+        if stage == "Layout":
+            check["contextual_delimiters"] = verify_layout(built, candidate, recipe, check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -464,7 +504,7 @@ def main():
     panel = output / "Code-Alphabet-Comparison.svg"
     comparison(candidate, reference, panel, width_report, config["cell"], report["measurements"])
     panels = [panel]
-    if stage == "Operators":
+    if stage in ("Operators", "Layout"):
         math_panel = output / "Code-Math-Signs.svg"
         detail_comparison(candidate, reference, math_panel, "Math signs",
                           tuple(zip((166, 447, 720), ("Arithmetic", "Comparisons", "Other signs"), SYMBOL_SAMPLES)),
@@ -482,6 +522,10 @@ def main():
         detail_panel = output / "Code-Operator-Detail.svg"
         operator_detail(candidate, detail_panel, config, recipe["horizontal_punctuation_review"]["minus_center"])
         panels.extend((math_panel, arrow_panel, ligature_panel, detail_panel))
+        if stage == "Layout":
+            context_panel = output / "Code-Contextual-Delimiters.svg"
+            angle_context_detail(candidate, context_panel, config, recipe["horizontal_punctuation_review"]["minus_center"])
+            panels.append(context_panel)
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
