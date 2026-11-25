@@ -137,15 +137,15 @@ def update_table(readme, marker, table):
     return pattern.sub(lambda _: replacement, readme)
 
 
-def highlight_code_line(panel, text, features):
+def highlight_code_line(panel, text, features, *, extra_keywords=(), extra_types=()):
     """Color the already-shaped glyphs; lexical runs never split font context."""
     assert text.isascii(), "The specimen uses ASCII source offsets."
     colors = ["#eeeddb"] * len(text)
     tokens = re.compile(
         r'"(?:[^"\\]|\\.)*"|\'[A-Za-z_][A-Za-z_0-9]*|\b[0-9]+\b|\b[A-Za-z_][A-Za-z_0-9]*\b'
     )
-    keywords = {"const", "struct", "fn", "let", "mut", "pub", "impl", "return", "self"}
-    types = {"usize", "str", "u8", "u64", "bool"}
+    keywords = {"const", "struct", "fn", "let", "mut", "pub", "impl", "return", "self", *extra_keywords}
+    types = {"usize", "str", "u8", "u64", "bool", *extra_types}
     for match in tokens.finditer(text):
         token = match.group()
         color = None

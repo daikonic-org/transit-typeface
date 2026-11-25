@@ -32,6 +32,7 @@ from derive_weights import topology
 from glyph_proof import build_proof
 from italic_returns import raw_outline
 from kern_clearance import ink_extents
+from readme_features import highlight_code_line
 from render_svg import render
 from scaling_study import vertical_stem
 from specimens import Panel
@@ -39,6 +40,16 @@ from system_metrics import set_vertical_metrics
 
 WEIGHTS = {350: "Book", 400: "Regular", 500: "Medium"}
 FEATURES = {"calt": False, "kern": False, "liga": False}
+TYPESCRIPT_ALIGNMENT_SAMPLE = (
+    "function clamp<T extends number>(",
+    "  value: T, min: T, max: T,",
+    "): T {",
+    "  const clampLow = (n: T) => n <= min ? min : n;",
+    "  const clampHigh = (n: T) => n >= max ? max : n;",
+    '  if (min > max) throw new RangeError("min > max");',
+    "  return min === max ? min : clampHigh(clampLow(value));",
+    "}",
+)
 
 
 def alphabet_font(source, recipe, *, stage="Alphabet"):
@@ -445,6 +456,38 @@ def angle_context_detail(candidate, output, config, axis):
     write_comparison(output, width, height, rows, [panel])
 
 
+def typescript_operator_proof(candidate, reference, output, config, axis):
+    width, height = 1050, 744
+    weight, size, leading = 400, 26, 28
+    x = 58
+    scale = size / config["units_per_em"]
+    assert x + max(map(len, TYPESCRIPT_ALIGNMENT_SAMPLE)) * config["cell"] * scale < width - 36
+    features = {
+        "calt": True, "liga": True, "kern": False,  # Shared shaping for the two cuts.
+        "ss02": False, "ss04": True, "ss06": False, "ss07": True,
+    }
+    rows = [
+        f'<rect width="{width}" height="{height}" fill="#0d1218"/>',
+        '<text x="36" y="48" font-size="31" font-weight="700" fill="#eeeddb">TypeScript · Operator alignment</text>',
+        '<text x="37" y="76" font-size="15" fill="#aebbc6">Regular 400 · Dotted guide marks the math axis.</text>',
+    ]
+    panels = []
+    for index, (label, font_path) in enumerate((("Published 1.042", reference), ("Rebuilt Code", candidate))):
+        y = 103 + index * 310
+        rows.append(f'<rect x="36" y="{y}" width="978" height="282" rx="6" fill="#141c24" stroke="#2c3945"/>')
+        rows.append(f'<text x="{x}" y="{y + 31}" font-size="16" font-weight="700" fill="#aebbc6">{label}</text>')
+        panel = Panel(f"typescript-{index}", {"font": str(font_path.resolve())})
+        for row, line in enumerate(TYPESCRIPT_ALIGNMENT_SAMPLE):
+            baseline = y + 65 + row * leading
+            center = baseline - axis * scale
+            rows.append(f'<path d="M{x} {center:.2f}H992" stroke="#344654" stroke-dasharray="2 5"/>')
+            panel.text(line, x, baseline, size, weight, "#eeeddb", features=features)
+            highlight_code_line(panel, line, features, extra_keywords=("extends", "function", "if", "new", "throw"),
+                                extra_types=("number",))
+        panels.append(panel)
+    write_comparison(output, width, height, rows, panels)
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
@@ -524,8 +567,11 @@ def main():
         panels.extend((math_panel, arrow_panel, ligature_panel, detail_panel))
         if stage == "Layout":
             context_panel = output / "Code-Contextual-Delimiters.svg"
-            angle_context_detail(candidate, context_panel, config, recipe["horizontal_punctuation_review"]["minus_center"])
-            panels.append(context_panel)
+            axis = recipe["horizontal_punctuation_review"]["minus_center"]
+            angle_context_detail(candidate, context_panel, config, axis)
+            code_panel = output / "Code-TypeScript-Operator-Alignment.svg"
+            typescript_operator_proof(candidate, reference, code_panel, config, axis)
+            panels.extend((context_panel, code_panel))
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
