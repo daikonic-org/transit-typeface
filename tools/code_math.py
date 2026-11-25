@@ -1,23 +1,26 @@
 """Construct Code math signs and operator ligatures from current drawing parts."""
 
-from math import asin, atan, ceil, cos, hypot, sin
+from math import asin, atan, ceil, cos, hypot, radians, sin
 from typing import NamedTuple
 
 from fontTools.misc.roundTools import otRound
 from fontTools.misc.transform import Transform
 from fontTools.otlLib.builder import buildLigCaretList
 from fontTools.pens.ttGlyphPen import TTGlyphPen
+from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 import pathops
 
 from audit import spans
+from code_foundation import center
 from code_outlines import install, install_components, install_outline, logical_not, polygon
 from code_punctuation import DOT
 from font_feature_tools import add_features
 from italic_returns import raw_outline
 from kern_clearance import ink_extents
+from sans_baseline_trial import subset_contours
 
 
-SYMBOL_SAMPLES = ("+ − × ÷ =", "< > ≤ ≥ ≠", "* ~ ^  ¬∀∃")
+SYMBOL_SAMPLES = ("+ − × ÷ =", "< > ≤ ≥ ≠", "* % ~ ^  ¬∀∃")
 ARROW_FAMILIES = ("→↔↑↕←↓", "⇒⇔⇑⇕⇐⇓")
 COMPARISONS = {
     "==": "equal_equal.liga", "===": "equal_equal_equal.liga",
@@ -149,6 +152,43 @@ def build_signs(font, cell, axis, settings, *, asterisk_scale):
         bar_stack(font, COMPARISONS[token], wide_bar, advance, pitch, count,
                   strike(advance, scale) if token.startswith("!") else None)
     return thickness
+
+
+def build_percent(font, sans, cell, axis, thickness, settings):
+    """Set the two Sans rings around a compact, weighted slash."""
+    contours = list(raw_outline(sans.getGlyphSet(), "percent").contours)
+    top_ring = {max((i for i, part in enumerate(contours) if part.clockwise == clockwise),
+                    key=lambda i: contours[i].bounds[1]) for clockwise in (True, False)}
+    donor = sans["glyf"]["percent"]
+    ring_glyph, _ = subset_contours(donor, {end for i, end in enumerate(donor.endPtsOfContours)
+                                            if i not in top_ring})
+    ring = pathops.Path()
+    ring_glyph.draw(ring.getPen(), sans["glyf"])
+    cx, cy = center(ring.bounds)
+    scale = settings["ring_scale"]
+    ring = ring.transform(scale, 0, 0, scale, -scale * cx, -scale * cy)
+
+    angle = radians(settings["slash_angle"])
+    ux, uy = cos(angle), sin(angle)
+    dx = settings["ring_offset_x"]
+    half_stroke = thickness * settings["slash_weight_ratio"] / 2
+    ring_low = ring.transform(ux, -uy, uy, ux, 0, 0).bounds[1]
+    clearance_rise = (half_stroke + settings["clearance"] + 1 - ring_low - uy * dx) / ux
+    dy = ceil(max(settings["nominal_height"] / 2 - ring.bounds[3], clearance_rise))
+    half_length = (dx - ring.bounds[0] - half_stroke * uy) / ux
+
+    corners = ((-half_length, half_stroke), (half_length, half_stroke),
+               (half_length, -half_stroke), (-half_length, -half_stroke))
+    slash = polygon(tuple((cell / 2 + t * ux - n * uy, axis + t * uy + n * ux) for t, n in corners))
+    ring_glyph.coordinates = GlyphCoordinates((otRound(scale * (x - cx)), otRound(scale * (y - cy)))
+                                               for x, y in ring_glyph.coordinates)
+    install(font, "percent.ring", ring_glyph, 0)
+    install_outline(font, "percent.rule", slash, 0)
+    install_components(font, "percent", [
+        translated("percent.ring", cell / 2 - dx, axis + dy),
+        ("percent.ring", (-1, 0, 0, -1, otRound(cell / 2 + dx), axis - dy)),
+        translated("percent.rule"),
+    ], cell)
 
 
 class ArrowHead(NamedTuple):
@@ -288,5 +328,6 @@ def build_math(font, sans, recipe):
     settings = recipe["math_review"]
     thickness = build_signs(font, cell, axis, settings,
                             asterisk_scale=recipe["diamond_punctuation_review"]["diamond_scale"])
+    build_percent(font, sans, cell, axis, thickness, settings["percent"])
     build_arrows(font, sans, cell, axis, thickness, settings)
     register_operators(font)

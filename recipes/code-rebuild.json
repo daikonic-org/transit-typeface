@@ -113,6 +113,14 @@
     "tall_angle_height": 656,
     "multiply_height": 328,
     "asterisk_height": 364,
+    "percent": {
+      "ring_scale": 1.02,
+      "ring_offset_x": 118,
+      "nominal_height": 624,
+      "slash_angle": 24,
+      "slash_weight_ratio": 0.9,
+      "clearance": 10
+    },
     "tilde_height": 144,
     "tilde_extra_width": 28,
     "caret_width": 438,

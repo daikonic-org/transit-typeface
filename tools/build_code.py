@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from hashlib import sha256
 from html import escape
 import json
-from math import isclose
+from math import cos, isclose, radians, sin
 from pathlib import Path
 from unicodedata import normalize
 
@@ -293,6 +293,9 @@ def verify_math(font, path, recipe):
     assert [part.glyphName for part in parts] == [repeated + ".shaft", "operator.arrowHead", "operator.arrowHead"]
     comparison = font["glyf"]["lessequal"].components
     assert [part.glyphName for part in comparison] == ["less", "operator.comparisonRule"]
+    percent = settings["percent"]
+    angle = radians(percent["slash_angle"])
+    ux, uy = cos(angle), sin(angle)
     engine = hb.Font(hb.Face(path.read_bytes()))
     for weight in range(350, 501, 5):
         engine.set_variations({"wght": weight})
@@ -303,7 +306,7 @@ def verify_math(font, path, recipe):
             assert len(shaped) == 1 and shaped[0][:3] == [name, 0, expected], (weight, token, shaped)
             literal = shape(engine, token, FEATURES)
             assert [(row[0], row[2]) for row in literal] == [(cmap[ord(c)], cell) for c in token]
-        for character in "".join(ARROW_FAMILIES) + "+−×÷=≠<>≤≥*~":
+        for character in "".join(ARROW_FAMILIES) + "+−×÷=≠<>≤≥*~%":
             name = cmap[ord(character)]
             assert shape(engine, character, FEATURES)[0][2] == cell
             outline = shape_from_glyphs(glyphs, name)
@@ -311,6 +314,11 @@ def verify_math(font, path, recipe):
             assert 0 <= left < right <= cell and abs((top + bottom) / 2 - axis) <= 1, (weight, character)
             if character in "".join(ARROW_FAMILIES):
                 assert topology(outline) == (1, int(character in "⇔⇕")), (weight, character)
+        outlines = [p for p in raw_outline(glyphs, "percent").contours if p.clockwise]
+        lower_ring, stroke, upper_ring = (p.transform(ux, -uy, uy, ux, 0, 0).bounds
+                                          for p in sorted(outlines, key=lambda p: p.bounds[1] + p.bounds[3]))
+        assert min(stroke[1] - lower_ring[3], upper_ring[1] - stroke[3]) >= percent["clearance"], weight
+        assert topology(shape_from_glyphs(glyphs, "percent")) == (3, 2), weight
         for name, probe, count in (("equal", cell / 2, 2),
                                     (COMPARISONS["==="], cell, 3),
                                     (ARROWS["=>"], cell / 2, 2)):
