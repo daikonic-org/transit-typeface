@@ -26,8 +26,15 @@ def add_code_spacing(font, cell, install, *, triplet_offsets=None, edge_spacing=
             left, middle, right = names(text)
             rules.append(f"pos {left} {middle}' <{offset:d} 0 0 0> {right};")
         if edge_spacing:
+            glyph_order = set(font.getGlyphOrder())
             for label, members in edge_spacing["classes"].items():
-                placement += f"\n@{label} = [{' '.join(names(members))}];"
+                if isinstance(members, str):
+                    glyphs = names(members)
+                else:
+                    bases = names(members["characters"])
+                    variants = [base + suffix for base in bases for suffix in members["suffixes"]]
+                    glyphs = bases + [variant for variant in variants if variant in glyph_order]
+                placement += f"\n@{label} = [{' '.join(glyphs)}];"
             rules.append("lookup EdgeClassSpacing {")
             # Preserve the facing edges of the explicitly approved triplets.
             for text in sorted(locked):

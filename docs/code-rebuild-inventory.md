@@ -179,5 +179,8 @@ The `layout_review.edge_spacing` recipe maps each face to its classes and
 rules. Class members are Unicode characters and each rule records the
 three class names and a horizontal placement in design units. Existing
 `triplet_offsets` keep their approved positions when class rules overlap
-their context. The review recipe uses one upright rule and retains
+their context. The boundary review uses spaces, low punctuation and delimiters on
+either side of the letter. A class can use a character string or a
+`characters` record with `suffixes` for available forms such as
+`.hairline`. Each rule moves only its marked letter. The review keeps
 the existing `str` adjustment in both faces.
