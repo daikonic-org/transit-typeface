@@ -184,3 +184,24 @@ either side of the letter. A class can use a character string or a
 `characters` record with `suffixes` for available forms such as
 `.hairline`. Each rule moves only its marked letter. The review keeps
 the existing `str` adjustment in both faces.
+
+
+### Width class spacing review
+
+The width class review starts with the existing lowercase width
+classifier. It classifies the custom letters from their donor outlines
+and uses their finished drawings for shaping. Wide letters serve as
+neighbors and keep their horizontal positions. They remain available
+for a separate Texture Healing pass.
+
+Where the two neighbors belong to different classes, GPOS moves the
+middle glyph toward the narrower class. The recipe uses the class
+distance to choose a shift from 4, 8 or 12 design units at Normal width.
+The approved `str` placement and the boundary rules remain in effect.
+
+Generate the recipe from the boundary review recipe with
+
+```sh
+.venv/bin/python tools/code_width_spacing.py --recipe boundary.json \
+  --output-recipe width-classes.json --steps 4 8 12
+```

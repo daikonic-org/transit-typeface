@@ -55,8 +55,9 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
     if not hairlines:
         position_lifetime_ampersand(font)
+    spacing = settings.get("edge_spacing", {})
     add_code_spacing(font, cell, install, triplet_offsets=settings.get("triplet_offsets"),
-                     edge_spacing=settings.get("edge_spacing", {}).get(spacing_style))
+                     edge_spacing=spacing.get(spacing_style), anchors=spacing.get("fixed", ""))
 
 
 def angle_styles(rows):

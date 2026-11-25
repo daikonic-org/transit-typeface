@@ -46,15 +46,18 @@ def build_italic(font, recipe, family, *, version, spread_glyph=True):
     apply_slant(font, metric_sources, dotted=("i", "j"), variable_anchors=True, selected=selected)
     set_style(font, {"name": family, "stem": family.replace(" ", ""), "version": version})
     add_monospace_repeats(font)
-    add_features(font, """
+    fixed = recipe["layout_review"].get("edge_spacing", {}).get("fixed", "")
+    strong_underscore = " ".join(char for char in "mDM" if char not in fixed)
+    light_underscore = " ".join(char for char in "pxAHKNX" if char not in fixed)
+    add_features(font, f"""
         languagesystem DFLT dflt;
         languagesystem latn dflt;
-        feature kern {
+        feature kern {{
             pos at f' <24 0 0 0>;
-            pos underscore [m D M]' <20 0 0 0>;
-            pos underscore [p x A H K N X]' <8 0 0 0>;
+            pos underscore [{strong_underscore}]' <20 0 0 0>;
+            pos underscore [{light_underscore}]' <8 0 0 0>;
             pos underscore Z' <6 0 0 0>;
-        } kern;
+        }} kern;
     """)
     bounds = recipe["alphabet_review"]["line_metrics"]
     set_vertical_metrics(font, minimum_ascent=bounds["ascent"], maximum_descent=bounds["descent"])

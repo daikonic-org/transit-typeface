@@ -1,5 +1,11 @@
 """Keep the established Code optical spacing and contextual at-sign fitting."""
 
+from copy import copy
+from io import StringIO
+from itertools import product
+
+from fontTools.feaLib import ast
+from fontTools.feaLib.parser import Parser
 import uharfbuzz as hb
 
 from check_code_rebuild import shape
@@ -12,12 +18,50 @@ from specimens import ROOT
 PLACEMENT = ROOT / "trials/2026-11-16-code-hyphen-k/Positioning.fea"
 
 
-def add_code_spacing(font, cell, install, *, triplet_offsets=None, edge_spacing=None):
+def anchor_pair_positions(placement, glyph_order, anchored):
+    """Keep the other side of a legacy pair adjustment when one glyph is fixed."""
+    document = Parser(StringIO(placement), glyph_order).parse()
+
+    def options(expression, value):
+        members = expression.glyphSet()
+        fixed = [name for name in members if name in anchored]
+        if not fixed or value is None:
+            return [(expression, value)]
+        remaining = [name for name in members if name not in anchored]
+        stationary = copy(value)
+        stationary.xPlacement = stationary.yPlacement = 0
+        stationary.xPlaDevice = stationary.yPlaDevice = None
+        result = [(ast.GlyphClass(fixed), stationary)]
+        if remaining:
+            result.append((ast.GlyphClass(remaining), value))
+        return result
+
+    def visit(block):
+        statements = []
+        for statement in block.statements:
+            if isinstance(statement, ast.PairPosStatement):
+                left = options(statement.glyphs1, statement.valuerecord1)
+                right = options(statement.glyphs2, statement.valuerecord2)
+                statements.extend(ast.PairPosStatement(a, av, b, bv, statement.enumerated)
+                                  for (a, av), (b, bv) in product(left, right))
+            else:
+                if isinstance(statement, ast.Block):
+                    visit(statement)
+                statements.append(statement)
+        block.statements = statements
+
+    visit(document)
+    return document.asFea()
+
+
+def add_code_spacing(font, cell, install, *, triplet_offsets=None, edge_spacing=None, anchors=""):
     placement = PLACEMENT.read_text()
+    cmap = font.getBestCmap()
+    if anchors:
+        placement = anchor_pair_positions(placement, font.getGlyphOrder(),
+                                          {cmap[ord(char)] for char in anchors})
     locked = triplet_offsets or {}
     if locked or edge_spacing:
-        cmap = font.getBestCmap()
-
         def names(text):
             return [cmap[ord(char)] for char in text]
 
