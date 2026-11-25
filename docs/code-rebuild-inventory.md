@@ -112,8 +112,10 @@ WOFF2, editable TTX and visual proofs.
 ```
 
 `proofs/Code-Specimen.pdf` and its matching PNG show the named weights,
-widths, italics and shaping in code. The two proof viewers support comparing
-either axis and inspecting a single glyph.
+widths, italics and shaping in code. `proofs/Code-Glyph-Details.pdf` shows
+the full upper hook on `l`, enlarged upright `g` bowl and asterisk at all
+three weights. The two proof viewers support comparing either axis and
+inspecting a single glyph.
 
 Hairlining is on by default in the upright and can be disabled with `ss07`.
 Logic is enabled with `ss02`. Texture Healing is deferred along with the

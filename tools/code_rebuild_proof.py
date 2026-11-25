@@ -80,12 +80,32 @@ def proof(upright, italic, output):
            body + [panel.body() for panel in panels], width, height)
 
 
+def glyph_details(upright, output):
+    width, height = 1016, 508
+    panel = Panel("glyph-details", {"font": str(upright.resolve())})
+    body = [
+        rect(0, 0, width, height, BG),
+        label("Daikonic Transit Code", 30, 47, 29, bold=True),
+        label("Hook, bowl and asterisk · Upright at Normal width", 30, 74, 15, MUTED),
+    ]
+    for column, (weight, name) in enumerate(WEIGHTS.items()):
+        x = 30 + column * 322
+        body.append(rect(x, 104, 310, 294, "#101821"))
+        body.append(label(f"{name} {weight}", x + 17, 132, 14, MUTED, True))
+        for sample, baseline in (("l i j", 206), ("g a o", 290), ("* . + ×", 374)):
+            panel.text(sample, x + 17, baseline, 63, weight, CREAM)
+        panel.text("let area = w * h;", x + 17, 439, 17, weight, CREAM)
+        panel.text("/* glyph detail */", x + 17, 467, 17, weight, MUTED)
+    export(output / "Code-Glyph-Details.svg", body + [panel.body()], width, height)
+
+
 def build_package_proofs(package):
     out = package / "proofs"
     out.mkdir(parents=True, exist_ok=True)
     upright = package / "VF/DaikonicTransitCode-VF.ttf"
     italic = package / "VF/DaikonicTransitCode-Italic-VF.ttf"
     proof(upright, italic, out)
+    glyph_details(upright, out)
     for label, variant in (("upright", upright), ("italic", italic)):
         build_proof(variant, out / label, svg_only=True, interactive_axes=True)
 
