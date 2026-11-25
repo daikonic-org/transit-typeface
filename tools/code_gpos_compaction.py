@@ -1,7 +1,6 @@
-"""Build a local Code trial with GPOS-based operator advances and spread positioning."""
+"""Build a local Code trial for positioning rest and spread dots with GPOS."""
 
 from argparse import ArgumentParser
-from collections import defaultdict
 from copy import deepcopy
 from itertools import product
 import json
@@ -34,9 +33,11 @@ from system_italic import designspace
 from system_metrics import set_vertical_metrics
 
 
-FAMILY = "Daikonic Transit Code Positioning Trial"
+FAMILY = "Daikonic Transit Code Spread Trial"
 FEATURE = "ss08"
 DOT = "period.spread"
+OPERATOR_GLYPHS = sorted({name for group in (ARROWS, COMPARISONS, DIRECT, CONTEXT_PAIRS, LOOSE_NAMES)
+                          for name in group.values()})
 SAMPLE = (
     "const same = left === right;",
     "const b = left !== right && input >= min;",
@@ -50,18 +51,8 @@ SPREAD_CASES = ("...items", "[...items]", "f(...x)", "f(a, ...args)", "{...recor
 CONTROLS = ("wait... later", "1...2", "x...y", "f(... args)", "....items", "a ...b", "a...b")
 
 
-def add_compaction(font, recipe):
+def add_spread_positioning(font, recipe):
     cell = recipe["alphabet_review"]["cell"]
-    metrics = font["hmtx"]
-    changes = defaultdict(list)
-    for group in (ARROWS, COMPARISONS, DIRECT, CONTEXT_PAIRS, LOOSE_NAMES):
-        for token, name in group.items():
-            advance, side = metrics[name]
-            full = len(token) * cell
-            if advance < full:
-                changes[advance - full].append(name)
-                metrics[name] = full, side
-
     ellipsis = syntax_names(font)["..."]
     assert ellipsis + SPREAD_SUFFIX not in font["glyf"]
     pen = TTGlyphPen(font.getGlyphSet())
@@ -71,7 +62,7 @@ def add_compaction(font, recipe):
         font, ellipsis, f"sub {ellipsis}' lookup SpreadDots @SpreadOperand;", feature=FEATURE,
         definitions=[f"lookup SpreadDots {{ sub {ellipsis} by {DOT} {DOT} {DOT}; }} SpreadDots;"],
     )
-    label_stylistic_set(font, FEATURE, "Positioned Operator Compaction")
+    label_stylistic_set(font, FEATURE, "Positioned Rest and Spread")
 
     locations, model, default = designspace(font)
     placements = [spread_offsets(font.getGlyphSet(location=loc), cell, recipe["layout_review"])
@@ -83,9 +74,7 @@ def add_compaction(font, recipe):
     for i, values in enumerate(placement_columns, 1):
         lines.append(f"lookup SpreadPos{i} {{ pos {DOT} <{values[default]} 0 {advance - cell} 0>; }} SpreadPos{i};")
     rules = " ".join(f"{DOT}' lookup SpreadPos{i}" for i in range(1, 4))
-    lines.extend((f"feature {FEATURE} {{", f"pos {rules};",
-                  *(f"pos [{' '.join(names)}] {difference};" for difference, names in sorted(changes.items())),
-                  f"}} {FEATURE};"))
+    lines.append(f"feature {FEATURE} {{ pos {rules}; }} {FEATURE};")
 
     lookups = font["GPOS"].table.LookupList.Lookup
     first = len(lookups)
@@ -105,7 +94,6 @@ def add_compaction(font, recipe):
         table.ValueFormat |= 0x10
         table.Value.XPlaDevice = buildVarDevTable(first_data + index)
     append_layout_variations(font, builder.finish())
-    return [name for names in changes.values() for name in names]
 
 
 def positioned(rows):
@@ -135,7 +123,7 @@ def carets_at(font, location, names):
             if name in names}
 
 
-def verify(source, target, recipe, names):
+def verify(source, target, recipe):
     before, after = [hb.Font(hb.Face(p.read_bytes())) for p in (source, target)]
     with TTFont(source) as old, TTFont(target) as trial:
         tags = {r.FeatureTag for table in ("GSUB", "GPOS") for r in old[table].table.FeatureList.FeatureRecord}
@@ -157,22 +145,19 @@ def verify(source, target, recipe, names):
                 expected = shape(before, text, flags)
                 if any(row[0] == spread for row in expected):
                     continue
-                actual = shape(after, text, flags | {FEATURE: True})
-                assert actual == expected, (location, text, flags, actual, expected)
-                literal_grid = shape(after, text, flags)
-                if any(row[0] in names for row in actual):
-                    assert [r[:2] for r in literal_grid] == [r[:2] for r in actual]
-                    assert all(r[2] == otRound(new_glyphs[r[0]].width)
-                               for r in literal_grid if r[0] in names)
+                for enabled in (False, True):
+                    actual = shape(after, text, flags | {FEATURE: enabled})
+                    assert actual == expected, (location, text, flags, enabled, actual, expected)
                 checked += 1
-            for name in names:
+            for name in OPERATOR_GLYPHS:
+                assert old_glyphs[name].width == new_glyphs[name].width, (name, location)
                 old_shape, new_shape = [DecomposingRecordingPen(gs) for gs in (old_glyphs, new_glyphs)]
                 old_glyphs[name].draw(old_shape)
                 new_glyphs[name].draw(new_shape)
                 assert old_shape.value == new_shape.value, (name, location)
-            old_carets = carets_at(old, location, {*names, spread})
+            old_carets = carets_at(old, location, {*OPERATOR_GLYPHS, spread})
             expected_carets = old_carets.pop(spread)
-            assert old_carets == carets_at(trial, location, names)
+            assert old_carets == carets_at(trial, location, OPERATOR_GLYPHS)
             for text in SPREAD_CASES:
                 old_rows = shape(before, text, {})
                 new_rows = shape(after, text, {FEATURE: True})
@@ -198,14 +183,18 @@ def verify(source, target, recipe, names):
 def proof(output, config, target, original):
     engine = hb.Font(hb.Face(original.read_bytes()))
 
-    def expected(line, features):
-        return (sum(row[2] for row in shape(engine, line, {}))
-                if features[FEATURE] else len(line) * config["cell"])
+    with TTFont(original) as font:
+        spread = syntax_names(font)["..."] + SPREAD_SUFFIX
 
-    code_review_proof(output, config, "Code · Positioned compaction",
-                      "Regular 400 · The same operator drawings with two advance settings",
-                      SAMPLE, (("Positioning on · ss08", target, {FEATURE: True}),
-                               ("Positioning off · full input columns", target, {FEATURE: False})),
+    def expected(line, features):
+        rows = shape(engine, line, {})
+        saved = 0 if features[FEATURE] else sum(row[0] == spread for row in rows)
+        return sum(row[2] for row in rows) + saved * config["cell"]
+
+    code_review_proof(output, config, "Code · Positioned rest and spread",
+                      "Regular 400 · Only the spread spacing changes",
+                      SAMPLE, (("Positioning on · two cells for spread", target, {FEATURE: True}),
+                               ("Positioning off · three cells for spread", target, {FEATURE: False})),
                       expected_advance=expected)
 
 
@@ -220,7 +209,7 @@ def build(recipe, reference, output):
     report = {}
     config = recipe["alphabet_review"]
     for is_italic, font in ((False, upright), (True, italic)):
-        names = add_compaction(font, recipe)
+        add_spread_positioning(font, recipe)
         name_trial(font, FAMILY, variable=True)
         set_vertical_metrics(font, minimum_ascent=config["line_metrics"]["ascent"],
                              maximum_descent=config["line_metrics"]["descent"])
@@ -230,10 +219,10 @@ def build(recipe, reference, output):
         font.save(target)
         sanitize(font)
         original = reference / f"DaikonicTransitCode{title}-VF.ttf"
-        count = verify(original, target, recipe, names)
-        report[target.name] = {"shaping_cases": count, "positioned_ligatures": names}
+        count = verify(original, target, recipe)
+        report[target.name] = {"shaping_cases": count, "verified_operator_glyphs": OPERATOR_GLYPHS}
         if not is_italic:
-            panel = output / "Code-GPOS-Compaction.svg"
+            panel = output / "Code-GPOS-Spread.svg"
             proof(panel, config, target, original)
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     return panel
@@ -249,7 +238,7 @@ def main():
     panel = build(json.loads(RECIPE_PATH.read_text()), args.reference, args.output)
     if args.render:
         render(panel, scale=2)
-    print(f"Wrote the positioned compaction trial to {args.output}")
+    print(f"Wrote the positioned spread trial to {args.output}")
 
 
 if __name__ == "__main__":

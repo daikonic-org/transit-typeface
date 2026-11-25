@@ -122,18 +122,17 @@ Logic is enabled with `ss02`. Texture Healing is deferred along with the
 investigation of using OpenType positioning for texture and operator
 compaction.
 
-## GPOS compaction trial
+## GPOS rest and spread trial
 
-The separate Positioning Trial fonts have an opt-in `ss08` feature. In that
-trial, GSUB still selects the custom drawings for operators such as `===`.
-GPOS shortens their advance so the next character starts at the compacted
-cell. Rest and spread reuse three instances of the period drawing. GPOS
-positions the dots and sets their advances to a total of two cells.
+In the separate Spread Trial fonts, `ss08` positions three copies of the
+period drawing and gives rest and spread a total advance of two cells.
+Operators such as `===` retain their dedicated drawings and advances in
+the glyph metrics under both settings.
 
 ```sh
 .venv/bin/python tools/code_gpos_compaction.py \
   --reference .build/transit-code/package/VF \
-  --output .build/transit-code/gpos-compaction --render
+  --output .build/transit-code/gpos-spread --render
 ```
 
 The trial checks operator outlines, advances, offsets and carets against the
