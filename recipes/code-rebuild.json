@@ -125,6 +125,10 @@
     "angle_depth": 16,
     "angle_span": 60,
     "mixed_angle_shift": 30,
+    "scope_column_distance": 248,
+    "turbofish_inset": 18,
+    "access_dot_gap": 50,
+    "compact_strict_width": 512,
     "quoted_identifier_limit": 32,
     "lifetime_hook_bottom": 450
   },

@@ -150,7 +150,8 @@ def check(path):
     )
 
 
-def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None):
+def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
+                      scope="code.scope", scope_inset=(18, 50)):
     original_names = set(font.getGlyphOrder())
     use_lifetimes = "code.lifetimeOpen" in original_names
     if alias is None:
@@ -235,8 +236,8 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None):
             "ignore sub less' quotesingle @PairWord quotesingle;",
             "sub less' quotesingle @PairWord by less.pairIntent;",
         ))
-    if "code.scope" in original_names:
-        rules.append("sub code.scope less' by less.pairIntent;")
+    if scope in original_names:
+        rules.append(f"sub {scope} less' by less.pairIntent;")
     else:
         rules.append("sub colon colon less' by less.pairIntent;")
     for count in range(32):
@@ -286,10 +287,11 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None):
         for kind, final in sources.items():
             rules.append(f"sub {names[kind]} by {final};")
     rules += ["} FinishAnglePairs;", "} calt;"]
-    if "code.scope" in original_names and use_lifetimes:
+    if scope in original_names:
+        dx, dy = scope_inset
         rules += [
             "feature calt {",
-            "pos code.scope' <18 50 0 0> less.generic' <-18 0 0 0>;",
+            f"pos {scope}' <{dx} {dy} 0 0> less.generic' <{-dx} 0 0 0>;",
             "} calt;",
         ]
     add_features(font, "\n".join(rules))

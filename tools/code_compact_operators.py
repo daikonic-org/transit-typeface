@@ -153,22 +153,36 @@ def install_compact_scope(font, original):
             classes[name] = glyph_class
 
 
-def compact_access(glyphs, mark):
+def compact_access_parts(glyphs, mark, cell=CELL, *, min_dot_gap=0):
     symbol = shape_from_glyphs(glyphs, mark)
     period = shape_from_glyphs(glyphs, "period")
     tittle = min((contour.bounds for contour in symbol.contours), key=lambda box: box[3])
-    separation = 238
+    dot_width = (tittle[2] - tittle[0] + period.bounds[2] - period.bounds[0]) / 2
+    separation = max(238, dot_width + min_dot_gap)
     offset = (tittle[0] + tittle[2] - period.bounds[0] - period.bounds[2]) / 2 + separation
-    symbol.addPath(period.transform(1, 0, 0, 1, offset, 0))
-    left, _, right, _ = symbol.bounds
-    return symbol.transform(1, 0, 0, 1, (CELL - left - right) / 2, 0)
+    left = min(symbol.bounds[0], period.bounds[0] + offset)
+    right = max(symbol.bounds[2], period.bounds[2] + offset)
+    center = (cell - left - right) / 2
+    return [(mark, 1, 1, center, 0), ("period", 1, 1, center + offset, 0)]
+
+
+def compact_access(glyphs, mark):
+    parts = compact_access_parts(glyphs, mark)
+    result = pathops.Path()
+    for base, sx, sy, dx, dy in parts:
+        result.addPath(shape_from_glyphs(glyphs, base).transform(sx, 0, 0, sy, dx, dy))
+    return result
+
+
+def paired_offsets(path, distance, cell=CELL):
+    left, _, right, _ = path.bounds
+    first = (cell - left - right - distance) / 2
+    return first, first + distance
 
 
 def paired_ink(path, distance):
-    left, _, right, _ = path.bounds
-    first = (CELL - left - right - distance) / 2
     result = pathops.Path()
-    for offset in (first, first + distance):
+    for offset in paired_offsets(path, distance):
         result.addPath(path.transform(1, 0, 0, 1, offset, 0))
     return result
 
@@ -176,6 +190,61 @@ def paired_ink(path, distance):
 def delimiter_variants(names, order):
     return [name + suffix for name in names for suffix in ("", ".hairline")
             if name + suffix in order]
+
+
+def register_compact_context(font, comparisons, loose_glyphs, pairs, *, direct=None, cell=CELL):
+    comment, logical_or = pairs["//"][1], pairs["||"][1]
+    cmap = font.getBestCmap()
+    scope_rules = []
+    direct_rules = []
+    if direct:
+        scope = direct["::"]
+        scope_rules = [
+            f"lookup CompactScope {{ sub colon colon by {scope}; }} CompactScope;",
+            "lookup ScopeExactlyTwo {",
+            "ignore sub colon colon' colon, colon' colon colon;",
+            "sub colon' lookup CompactScope colon;",
+            "} ScopeExactlyTwo;",
+        ]
+        direct_rules.append("lookup ScopeExactlyTwo;")
+        for token in ("?.", "!."):
+            glyphs = " ".join(cmap[ord(character)] for character in token)
+            direct_rules.append(f"sub {glyphs} by {direct[token]};")
+    words = [cmap[ord(c)] for c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"]
+    # These variants may already have been selected by texture healing.
+    candidates = set(words)
+    words += [g for g in font.getGlyphOrder() if g.split(".")[0] in candidates and ".heal." in g]
+    order = set(font.getGlyphOrder())
+    closing = ("parenright", "bracketright", "braceright")
+    opening = ("parenleft", "bracketleft", "braceleft")
+    before = " ".join(words + delimiter_variants(closing, order))
+    after = " ".join(words + delimiter_variants(opening, order)
+                     + [name for name in ("exclam", "logicalnot") if name in order])
+    or_contexts = [
+        f"sub @OrLeft{' space' * l} bar' lookup CompactLogicalOr bar{' space' * r} @OrRight;"
+        for l in range(2) for r in range(2)
+    ]
+    add_features(font, "\n".join([
+        "languagesystem DFLT dflt;", "languagesystem latn dflt;",
+        f"@OrLeft = [{before}];", f"@OrRight = [{after}];",
+        f"lookup CompactLogicalOr {{ sub bar bar by {logical_or}; }} CompactLogicalOr;",
+        f"lookup CompactCommentSlash {{ sub slash slash by {comment}; }} CompactCommentSlash;",
+        *scope_rules,
+        "feature calt {",
+        "ignore sub slash slash' slash, slash' slash slash, colon slash' slash;",
+        "sub slash' lookup CompactCommentSlash slash;",
+        *or_contexts, *direct_rules,
+        "} calt;", f"feature {LOOSE} {{",
+        *(f"sub {comparisons[token]} by {name};" for token, name in loose_glyphs.items()),
+        f"}} {LOOSE};", "table GDEF {",
+        *(f"LigatureCaretByPos {name} {' '.join(map(str, caret_positions(token, cell)))};"
+          for token, name in loose_glyphs.items()),
+        *(f"LigatureCaretByPos {name} {cell // 2};"
+          for _, name, _ in pairs.values()),
+        *(f"LigatureCaretByPos {name} {cell // 2};" for name in (direct or {}).values()),
+        "} GDEF;",
+    ]))
+    label_stylistic_set(font, LOOSE, "Loose Equality")
 
 
 def build(source):
@@ -215,39 +284,7 @@ def build(source):
         from_paths(font, name, locations, paths, advance_for(token))
         font["GDEF"].table.GlyphClassDef.classDefs[name] = 2
 
-    cmap = font.getBestCmap()
-    words = [cmap[ord(c)] for c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"]
-    # These variants may already have been selected by texture healing.
-    candidates = set(words)
-    words += [g for g in font.getGlyphOrder() if g.split(".")[0] in candidates and ".heal." in g]
-    order = set(font.getGlyphOrder())
-    closing = ("parenright", "bracketright", "braceright")
-    opening = ("parenleft", "bracketleft", "braceleft")
-    before = " ".join(words + delimiter_variants(closing, order))
-    after = " ".join(words + delimiter_variants(opening, order)
-                     + [name for name in ("exclam", "logicalnot") if name in order])
-    or_contexts = [
-        f"sub @OrLeft{' space' * l} bar' lookup CompactLogicalOr bar{' space' * r} @OrRight;"
-        for l in range(2) for r in range(2)
-    ]
-    add_features(font, "\n".join([
-        "languagesystem DFLT dflt;", "languagesystem latn dflt;",
-        f"@OrLeft = [{before}];", f"@OrRight = [{after}];",
-        "lookup CompactLogicalOr { sub bar bar by code.logicalOr; } CompactLogicalOr;",
-        "lookup CompactCommentSlash { sub slash slash by code.commentSlash; } CompactCommentSlash;",
-        "feature calt {",
-        "ignore sub slash slash' slash, slash' slash slash, colon slash' slash;",
-        "sub slash' lookup CompactCommentSlash slash;",
-        *or_contexts,
-        "} calt;", f"feature {LOOSE} {{",
-        *(f"sub {COMPARISONS[token]} by {name};" for token, name in LOOSE_GLYPHS.items()),
-        f"}} {LOOSE};", "table GDEF {",
-        *(f"LigatureCaretByPos {name} {' '.join(map(str, caret_positions(token, CELL)))};"
-          for token, name in LOOSE_GLYPHS.items()),
-        *(f"LigatureCaretByPos {name} {caret_positions(token)[0]};"
-          for token, (_, name, _) in PAIRS.items()),
-        "} GDEF;",
-    ]))
+    register_compact_context(font, COMPARISONS, LOOSE_GLYPHS, PAIRS)
     ligatures = font["GDEF"].table.LigCaretList
     carets = dict(zip(ligatures.Coverage.glyphs, ligatures.LigGlyph))
     for token, name in TARGETS.items():
@@ -258,7 +295,6 @@ def build(source):
             value.Coordinate = position
     for name in ONE_CELL_CARETS:
         carets[name].CaretValue[0].Coordinate = CELL // 2
-    label_stylistic_set(font, LOOSE, "Loose Equality")
     return font
 
 

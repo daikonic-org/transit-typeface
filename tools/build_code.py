@@ -18,6 +18,7 @@ from audit import shape_from_glyphs, spans
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_at import build_at
+from code_compact_build import build_compact_glyphs, verify_compact
 from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
 from code_layout import align_pipe, build_layout, verify_layout
@@ -59,6 +60,26 @@ RUST_LIFETIME_SAMPLE = (
     "        return value;",
     "    }",
     "    fallback",
+    "}",
+)
+RUST_SCOPE_SAMPLE = (
+    "pub fn read(text: &str) -> Option<u32> {",
+    "    let parsed = text.trim().parse::<u32>();",
+    "    // Keep only successful parses.",
+    "    match parsed {",
+    "        Ok(value) => Some(value),",
+    "        Err(_) => None,",
+    "    }",
+    "}",
+)
+TYPESCRIPT_COMPACT_SAMPLE = (
+    "interface Row { id: number }",
+    "function pick(row?: Row): number {",
+    "    const id = row?.id;",
+    "    if (id == null || id != id) return -1;",
+    "    if (id === 0 || id !== 42) return row!.id;",
+    "    // Keep the reserved ID out.",
+    "    return 0;",
     "}",
 )
 
@@ -105,6 +126,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
                     build_math(master, sans, recipe)
             if stage == "Layout":
                 align_pipe(master, recipe["horizontal_punctuation_review"]["minus_center"])
+                build_compact_glyphs(master, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -512,6 +534,27 @@ def rust_lifetime_proof(candidate, output, config):
                       RUST_LIFETIME_SAMPLE, cuts, extra_keywords=("if",))
 
 
+def compact_operator_proofs(candidate, output, config):
+    features = {"calt": True, "liga": True, "kern": False}
+    rust = output / "Code-Rust-Scope.svg"
+    code_review_proof(
+        rust, config, "Rust · Scope and turbofish",
+        "Regular 400 · The scope separator and comment slashes each use one cell.",
+        RUST_SCOPE_SAMPLE, (("Contextual alternates on", candidate, features),
+                            ("Contextual alternates off", candidate, {**features, "calt": False})),
+        extra_keywords=("match",), extra_types=("u32",),
+    )
+    typescript = output / "Code-TypeScript-Compact-Operators.svg"
+    code_review_proof(
+        typescript, config, "TypeScript · Compact operators",
+        "Regular 400 · Access, comment and OR ligatures keep their one-cell forms in both settings.",
+        TYPESCRIPT_COMPACT_SAMPLE, (("Loose Equality off · default", candidate, features),
+                                   ("Loose Equality on", candidate, {**features, "ss06": True})),
+        extra_keywords=("interface", "function", "if", "null"), extra_types=("number",),
+    )
+    return rust, typescript
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
@@ -556,6 +599,7 @@ def main():
         if stage == "Layout":
             check["contextual_delimiters"] = verify_layout(built, candidate, recipe, check["weights"])
             check["rust_lifetimes"] = verify_lifetimes(built, candidate, config["cell"], check["weights"])
+            check["compact_operators"] = verify_compact(built, candidate, recipe, check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -599,6 +643,7 @@ def main():
             rust_panel = output / "Code-Rust-Lifetimes.svg"
             rust_lifetime_proof(candidate, rust_panel, config)
             panels.extend((context_panel, code_panel, rust_panel))
+            panels.extend(compact_operator_proofs(candidate, output, config))
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",

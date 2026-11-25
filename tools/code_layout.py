@@ -8,6 +8,7 @@ import uharfbuzz as hb
 
 from check_code_rebuild import shape
 from code_angle_pairs import ANGLE_CASES, build_angle_pairs
+from code_compact_build import SCOPE, build_compact_context
 from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
 from code_outlines import refresh_bounds
 from code_structural_fit import build_structural_angles
@@ -36,7 +37,9 @@ def build_layout(font, recipe):
         install(name, [(donor, 1, 1, 0, 0)], cell)
 
     build_lifetimes(font, cell, settings)
-    build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias)
+    build_compact_context(font, cell)
+    build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias,
+                      scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
     build_structural_angles(font, cell, depth, shift=settings["mixed_angle_shift"],
                             install_closer=install)
     activate_lifetime_hairlining(font)
@@ -84,7 +87,8 @@ def verify_layout(font, path, recipe, weights):
             for enabled in (True, False):
                 rows = shape(engine, text, {"calt": enabled})
                 assert angle_styles(rows) == (expected if enabled else [False] * len(expected)), (weight, text, rows)
-                assert sum(row[2] for row in rows) == len(text) * cell, (weight, text, rows)
+                cells = len(text) - (text.count("::") if enabled else 0)
+                assert sum(row[2] for row in rows) == cells * cell, (weight, text, rows)
         for text in mixed:
             rows = shape(engine, text, {})
             assert len(rows) == len(text) and all(row[2] == cell for row in rows), rows
