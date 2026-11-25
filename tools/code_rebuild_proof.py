@@ -11,7 +11,7 @@ from specimens import Panel
 
 
 WIDEST = "Il10O  flying  offset  tally  ke vi  @@"
-PUNCTUATION = "! ? *. , ; : ...  a <= b  p == q  a ->> b"
+PUNCTUATION = "! ? % *. , ; : ...  a <= b  p == q  a ->> b"
 RUST = (
     "fn render<'a>(items: &'a [Item]) -> Vec<&'a Item> {",
     "    items.iter().collect::<Vec<_>>()",
@@ -86,13 +86,13 @@ def glyph_details(upright, output):
     body = [
         rect(0, 0, width, height, BG),
         label("Daikonic Transit Code", 30, 47, 29, bold=True),
-        label("Hook, bowl and asterisk · Upright at Normal width", 30, 74, 15, MUTED),
+        label("Hook, bowl and punctuation · Upright at Normal width", 30, 74, 15, MUTED),
     ]
     for column, (weight, name) in enumerate(WEIGHTS.items()):
         x = 30 + column * 322
         body.append(rect(x, 104, 310, 294, "#101821"))
         body.append(label(f"{name} {weight}", x + 17, 132, 14, MUTED, True))
-        for sample, baseline in (("l i j", 206), ("g a o", 290), ("* . + ×", 374)):
+        for sample, baseline in (("l i j", 206), ("g a o", 290), ("* . + %", 374)):
             panel.text(sample, x + 17, baseline, 63, weight, CREAM)
         panel.text("let area = w * h;", x + 17, 439, 17, weight, CREAM)
         panel.text("/* glyph detail */", x + 17, 467, 17, weight, MUTED)
