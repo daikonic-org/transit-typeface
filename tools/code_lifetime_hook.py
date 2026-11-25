@@ -23,7 +23,7 @@ OPT_IN_SHIFT = (40, 45)
 PROOF = ROOT / "trials/2026-11-18-lifetime-designs/Lifetime-Extension.svg"
 
 
-def marker(gs):
+def marker(gs, *, bottom=490):
     # Retain the study's small footprint, with full-size l stem thickness.
     stem = spans(shape_from_glyphs(gs, "l"), 400, 1)[0]
     thickness = stem[1] - stem[0]
@@ -36,8 +36,8 @@ def marker(gs):
     pen.moveTo((right, 700))
     pen.lineTo((cx, 700))
     pen.curveTo((cx - k * radius, 700), (165, cy + k * radius), (165, cy))
-    pen.lineTo((165, 490))
-    pen.lineTo((165 + thickness, 490))
+    pen.lineTo((165, bottom))
+    pen.lineTo((165 + thickness, bottom))
     pen.lineTo((165 + thickness, cy))
     pen.curveTo(
         (165 + thickness, cy + k * inner),

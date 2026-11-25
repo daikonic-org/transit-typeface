@@ -225,7 +225,9 @@ def default_hairlining(font):
     """Run the existing hairline lookups with calt and allow an independent opt-out."""
     for tag in ("GSUB", "GPOS"):
         records = font[tag].table.FeatureList.FeatureRecord
-        hairline = next(r.Feature for r in records if r.FeatureTag == FEATURE)
+        hairline = next((r.Feature for r in records if r.FeatureTag == FEATURE), None)
+        if hairline is None:
+            continue
         for record in records:
             if record.FeatureTag == "calt":
                 feature = record.Feature

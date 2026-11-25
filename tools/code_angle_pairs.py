@@ -228,6 +228,8 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None):
     ]
     if use_lifetimes:
         rules.append("sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;")
+    elif "quotesingle.lifetime" in original_names:
+        rules.append("sub less' quotesingle.lifetime by less.pairIntent;")
     else:
         rules.extend((
             "ignore sub less' quotesingle @PairWord quotesingle;",

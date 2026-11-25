@@ -21,6 +21,7 @@ from code_at import build_at
 from code_delimiters import build_delimiters
 from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
 from code_layout import align_pipe, build_layout, verify_layout
+from code_lifetimes import verify_lifetimes
 from code_math import ARROW_FAMILIES, ARROWS, COMPARISONS, SYMBOL_SAMPLES, build_math
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
@@ -48,6 +49,16 @@ TYPESCRIPT_ALIGNMENT_SAMPLE = (
     "  const clampHigh = (n: T) => n >= max ? max : n;",
     '  if (min > max) throw new RangeError("min > max");',
     "  return min === max ? min : clampHigh(clampLow(value));",
+    "}",
+)
+RUST_LIFETIME_SAMPLE = (
+    "pub fn label<'a>(value: &'a str) -> &'a str {",
+    "    let prefix = 'a';",
+    '    let fallback: &\'static str = "unknown";',
+    "    if value.starts_with(prefix) {",
+    "        return value;",
+    "    }",
+    "    fallback",
     "}",
 )
 
@@ -456,36 +467,49 @@ def angle_context_detail(candidate, output, config, axis):
     write_comparison(output, width, height, rows, [panel])
 
 
-def typescript_operator_proof(candidate, reference, output, config, axis):
+def code_review_proof(output, config, title, subtitle, sample, cuts, *, axis=None, extra_keywords=(), extra_types=()):
     width, height = 1050, 744
     weight, size, leading = 400, 26, 28
     x = 58
     scale = size / config["units_per_em"]
-    assert x + max(map(len, TYPESCRIPT_ALIGNMENT_SAMPLE)) * config["cell"] * scale < width - 36
-    features = {
-        "calt": True, "liga": True, "kern": False,  # Shared shaping for the two cuts.
-        "ss02": False, "ss04": True, "ss06": False, "ss07": True,
-    }
+    assert x + max(map(len, sample)) * config["cell"] * scale < width - 36
     rows = [
         f'<rect width="{width}" height="{height}" fill="#0d1218"/>',
-        '<text x="36" y="48" font-size="31" font-weight="700" fill="#eeeddb">TypeScript · Operator alignment</text>',
-        '<text x="37" y="76" font-size="15" fill="#aebbc6">Regular 400 · Dotted guide marks the math axis.</text>',
+        f'<text x="36" y="48" font-size="31" font-weight="700" fill="#eeeddb">{escape(title)}</text>',
+        f'<text x="37" y="76" font-size="15" fill="#aebbc6">{escape(subtitle)}</text>',
     ]
     panels = []
-    for index, (label, font_path) in enumerate((("Published 1.042", reference), ("Rebuilt Code", candidate))):
+    for index, (label, font_path, features) in enumerate(cuts):
         y = 103 + index * 310
         rows.append(f'<rect x="36" y="{y}" width="978" height="282" rx="6" fill="#141c24" stroke="#2c3945"/>')
         rows.append(f'<text x="{x}" y="{y + 31}" font-size="16" font-weight="700" fill="#aebbc6">{label}</text>')
-        panel = Panel(f"typescript-{index}", {"font": str(font_path.resolve())})
-        for row, line in enumerate(TYPESCRIPT_ALIGNMENT_SAMPLE):
+        panel = Panel(f"review-{index}", {"font": str(font_path.resolve())})
+        for row, line in enumerate(sample):
             baseline = y + 65 + row * leading
-            center = baseline - axis * scale
-            rows.append(f'<path d="M{x} {center:.2f}H992" stroke="#344654" stroke-dasharray="2 5"/>')
+            if axis is not None:
+                center = baseline - axis * scale
+                rows.append(f'<path d="M{x} {center:.2f}H992" stroke="#344654" stroke-dasharray="2 5"/>')
             panel.text(line, x, baseline, size, weight, "#eeeddb", features=features)
-            highlight_code_line(panel, line, features, extra_keywords=("extends", "function", "if", "new", "throw"),
-                                extra_types=("number",))
+            highlight_code_line(panel, line, features, extra_keywords=extra_keywords, extra_types=extra_types)
         panels.append(panel)
     write_comparison(output, width, height, rows, panels)
+
+
+def typescript_operator_proof(candidate, reference, output, config, axis):
+    features = {"calt": True, "liga": True, "kern": False, "ss02": False, "ss04": True, "ss06": False, "ss07": True}
+    cuts = (("Published 1.042", reference, features), ("Rebuilt Code", candidate, features))
+    code_review_proof(output, config, "TypeScript · Operator alignment",
+                      "Regular 400 · Dotted guide marks the math axis.", TYPESCRIPT_ALIGNMENT_SAMPLE, cuts, axis=axis,
+                      extra_keywords=("extends", "function", "if", "new", "throw"), extra_types=("number",))
+
+
+def rust_lifetime_proof(candidate, output, config):
+    features = {"calt": True, "liga": True, "kern": False}
+    cuts = (("Hairlining on · default", candidate, features),
+            ("Hairlining off · left hook", candidate, {**features, "ss07": True}))
+    code_review_proof(output, config, "Rust · Lifetime markers",
+                      "Regular 400 · In both settings the character literal keeps its straight quotes.",
+                      RUST_LIFETIME_SAMPLE, cuts, extra_keywords=("if",))
 
 
 def main():
@@ -531,6 +555,7 @@ def main():
             check["operators"] = verify_math(built, candidate, recipe)
         if stage == "Layout":
             check["contextual_delimiters"] = verify_layout(built, candidate, recipe, check["weights"])
+            check["rust_lifetimes"] = verify_lifetimes(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -571,7 +596,9 @@ def main():
             angle_context_detail(candidate, context_panel, config, axis)
             code_panel = output / "Code-TypeScript-Operator-Alignment.svg"
             typescript_operator_proof(candidate, reference, code_panel, config, axis)
-            panels.extend((context_panel, code_panel))
+            rust_panel = output / "Code-Rust-Lifetimes.svg"
+            rust_lifetime_proof(candidate, rust_panel, config)
+            panels.extend((context_panel, code_panel, rust_panel))
     elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",

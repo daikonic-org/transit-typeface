@@ -53,6 +53,45 @@ RECIPE = json.loads((ROOT / "recipes/syntax-numeral-trial.json").read_text())
 TOKENS = RECIPE["code"]["ligatures"]
 
 
+
+def rust_lifetime_rules(cmap, quoted_identifier_limit, fused=None):
+    """Build the shared recognition rules before choosing the marker's drawing."""
+    starts = sorted(
+        {name for cp, name in cmap.items() if unicodedata.category(chr(cp)).startswith("L")}
+        | {"underscore"}
+    )
+    continues = {name for cp, name in cmap.items() if unicodedata.category(chr(cp))[0] in ("L", "N")}
+    continues.add("underscore")
+    openers = ["quotesingle"]
+    forms = ["sub quotesingle by quotesingle.lifetime;"]
+    if fused is not None:
+        continues.update(("dotlessi", "dotlessj"))
+        for token, prefix in (("<'", "less.generic"), ("&'", "ampersand")):
+            openers.append(fused[token])
+            forms.append(f"sub {fused[token]} by {prefix} quotesingle.lifetime;")
+    lines = [
+        "languagesystem DFLT dflt;",
+        "languagesystem latn dflt;",
+        "@LifetimeStart=[" + " ".join(starts) + "];",
+        "@LifetimeContinue=[" + " ".join(sorted(continues)) + "];",
+        "@LifetimeOpen=[" + " ".join(openers) + "];",
+        "lookup LifetimeForms {", *forms, "} LifetimeForms;",
+        "lookup RustLifetime {", "lookupflag IgnoreMarks;",
+    ]
+    # Protect quoted characters and identifiers before the positive lifetime rule.
+    for length in range(1, quoted_identifier_limit + 1):
+        middle = " ".join(["@LifetimeContinue"] * length)
+        lines.append(f"ignore sub @LifetimeOpen' {middle} quotesingle;")
+    lines += [
+        "ignore sub @LifetimeContinue quotesingle';",
+        "ignore sub quotesingle quotesingle';",
+        "sub @LifetimeOpen' lookup LifetimeForms @LifetimeStart;",
+        "} RustLifetime;",
+        "feature calt { lookup RustLifetime; } calt;",
+    ]
+    return lines, starts
+
+
 def polygon(points):
     p = pathops.Path()
     pen = p.getPen()
@@ -342,43 +381,8 @@ def code(font):
         ("code.lifetimeBorrow", "ampersand"),
     ]:
         compose(font, name, [(leader, 1, 1, lifetime["pair_leader_shift"], 0)], 600)
-    starts = sorted(
-        {
-            name
-            for cp, name in cmap.items()
-            if unicodedata.category(chr(cp)).startswith("L")
-        }
-        | {"underscore"}
-    )
-    continues = sorted(set(identifiers) | {"underscore"})
-    lines = [
-        "languagesystem DFLT dflt;",
-        "languagesystem latn dflt;",
-        "@LifetimeStart=[" + " ".join(starts) + "];",
-        "@LifetimeContinue=[" + " ".join(continues) + "];",
-        "@LifetimeOpen=[quotesingle " + mapping["<'"] + " " + mapping["&'"] + "];",
-        "lookup LifetimeForms {",
-        "sub quotesingle by quotesingle.lifetime;",
-        "sub " + mapping["<'"] + " by less.generic quotesingle.lifetime;",
-        "sub " + mapping["&'"] + " by ampersand quotesingle.lifetime;",
-        "} LifetimeForms;",
-        "lookup RustLifetime {",
-        "lookupflag IgnoreMarks;",
-    ]
-    # A finite font context can recognize common lifetime syntax, but cannot
-    # parse Rust. Protect quoted characters/identifiers before the positive rule.
-    for length in range(1, lifetime["quoted_identifier_limit"] + 1):
-        lines.append(
-            "ignore sub @LifetimeOpen' "
-            + " ".join(["@LifetimeContinue"] * length)
-            + " quotesingle;"
-        )
+    lines, starts = rust_lifetime_rules(cmap, lifetime["quoted_identifier_limit"], mapping)
     lines += [
-        "ignore sub @LifetimeContinue quotesingle';",
-        "ignore sub quotesingle quotesingle';",
-        "sub @LifetimeOpen' lookup LifetimeForms @LifetimeStart;",
-        "} RustLifetime;",
-        "feature calt { lookup RustLifetime; } calt;",
         "feature ss01 {",
         "lookup RustLifetime;",
         "sub quotesingle.lifetime by quotesingle.lifetime.compact;",

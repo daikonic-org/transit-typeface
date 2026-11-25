@@ -8,6 +8,7 @@ import uharfbuzz as hb
 
 from check_code_rebuild import shape
 from code_angle_pairs import ANGLE_CASES, build_angle_pairs
+from code_lifetimes import activate_lifetime_hairlining, build_lifetimes
 from code_outlines import refresh_bounds
 from code_structural_fit import build_structural_angles
 from font_feature_tools import append_glyph
@@ -34,9 +35,11 @@ def build_layout(font, recipe):
     def alias(name, donor):
         install(name, [(donor, 1, 1, 0, 0)], cell)
 
+    build_lifetimes(font, cell, settings)
     build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias)
     build_structural_angles(font, cell, depth, shift=settings["mixed_angle_shift"],
                             install_closer=install)
+    activate_lifetime_hairlining(font)
 
 
 def angle_styles(rows):

@@ -151,6 +151,8 @@ Run `.venv/bin/python tools/build_code.py --layout --output .build/code-from-san
 
 `Code-TypeScript-Operator-Alignment` places the same generic `clamp` function in 1.042 and the rebuild at Regular 400. Each line has a 300-unit math-axis guide. The proof uses ordinary comparisons and default ligature shaping with optional styling turned off, and colors the source after shaping.
 
+`Code-Rust-Lifetimes` shows the released lifetime treatment in rebuilt Rust code. It reuses the quote guards and hairline clearance rules. The marker keeps one cell. Default Hairlining adds a guide over the following letter, and its opt-out uses the left hook at the current `l` stem weight. The borrowed-reference `&` keeps its contextual inward position in both settings.
+
 - [ ] Parameterize the reusable stages to accept the candidate and stable glyph roles. Some current helpers take historical paths or assert exact old curve data. Keep those archival checks and reuse their shaping cases in the candidate comparison.
 - [ ] Wire base substitutions and mark attachment, then matched delimiters and Rust lifetimes, operator compaction and Logic, then texture and hairline variants. Use the release traces to establish lookup priority and preserve existing interactions, including mixed enclosures, turbofish and compact scope, logical-not and inequality, protected literals, and opt-out substitutions.
 - [ ] Rebuild variant substitutions, positioning and GDEF carets together. Check exact consumed cells, text clusters, following-character placement, and caret order. Measure positioning against the grid and require unchanged behavior for literal controls. For offsets affected by a redesigned outline, record the measured difference in the candidate report for review.

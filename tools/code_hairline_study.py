@@ -177,7 +177,7 @@ def scope(gs, outward=False):
     return joined(dots, rectangle(left + radius, 300 - half, right - radius, 300 + half))
 
 
-def lifetime_context(font, glyphs, feature="calt"):
+def lifetime_context(font, glyphs, feature="calt", *, markers=(MARKER, COMPACT)):
     targets = {
         name for cp, name in font.getBestCmap().items()
         if unicodedata.category(chr(cp)).startswith("L")
@@ -194,7 +194,7 @@ def lifetime_context(font, glyphs, feature="calt"):
     rules = [
         "languagesystem DFLT dflt;",
         "languagesystem latn dflt;",
-        f"@LifetimeMarker = [{MARKER} {COMPACT}];",
+        f"@LifetimeMarker = [{' '.join(markers)}];",
         f"@LifetimeTarget = [{' '.join(sorted(clearance))}];",
         f"@LifetimeMark = [{' '.join(marks)}];",
         f"feature {feature} {{",
@@ -202,7 +202,8 @@ def lifetime_context(font, glyphs, feature="calt"):
     ]
     for leader in LEADERS:
         group = sorted(name for name, variant in clearance.items() if variant == leader)
-        rules.append(f"sub @LifetimeMarker' [{' '.join(group)}] by {leader};")
+        if group:
+            rules.append(f"sub @LifetimeMarker' [{' '.join(group)}] by {leader};")
     rules.extend([f"sub @LifetimeMarker by {OVER};", f"}} {feature};"])
     add_features(font, "\n".join(rules))
     return clearance
