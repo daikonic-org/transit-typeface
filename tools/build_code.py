@@ -13,12 +13,13 @@ from fontTools.ttLib import TTFont
 from fontTools.varLib import build as build_variable
 import uharfbuzz as hb
 
-from audit import shape_from_glyphs
+from audit import shape_from_glyphs, spans
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT, shape
 from code_at import build_at
 from code_delimiters import build_delimiters
-from code_foundation import build_master, horizontal_mirror, scale_ink_width, width_class_scales
+from code_foundation import build_master, horizontal_mirror, sample_sans_weight, scale_ink_width, width_class_scales
+from code_math import ARROW_FAMILIES, ARROWS, COMPARISONS, SYMBOL_SAMPLES, build_math
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
     build_horizontal_punctuation, inherit_width_scales,
@@ -43,12 +44,13 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
     assert weights[anchor["code_weight"]] == anchor["sans_weight"]
     assert list(weights) == list(WEIGHTS)
     family = f"Daikonic Transit Code {stage} Review"
+    custom_letters = stage in ("Letters", "Operators")
 
     masters = {weight: build_master(source, weights[weight], weight, config) for weight in WEIGHTS}
     scales, stems, width_report = width_class_scales(masters, recipe)
     if stage != "Alphabet":
         width_report["deferred"] = width_report["deferred"].replace("r", "")
-    if stage == "Letters":
+    if custom_letters:
         letters = recipe["custom_lowercase_review"]
         followers = letters["width_followers"]
         inherit_width_scales(masters[400], scales, followers)
@@ -57,20 +59,23 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
         width_report["deferred"] = "".join(ch for ch in width_report["deferred"] if ch not in finished)
 
     for weight, master in masters.items():
-        if stage == "Letters":
+        if custom_letters:
             build_at(master, recipe)
         scale_ink_width(master, scales, stems[weight])
         if stage != "Alphabet":
             build_composed(master, recipe)
-    if stage == "Letters":
+    if custom_letters:
         build_custom_letters(masters.values(), recipe)
-        for master in masters.values():
+        for weight, master in masters.items():
             build_crossbar_letters(master, recipe)
             build_g(master, recipe)
             build_distinct_figures(master, recipe)
             build_horizontal_punctuation(master, recipe)
             build_diamond_punctuation(master, recipe)
             build_delimiters(master, recipe)
+            if stage == "Operators":
+                with sample_sans_weight(source, weights[weight]) as sans:
+                    build_math(master, sans, recipe)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -188,6 +193,48 @@ def verify_composed(font, path, cell, weights):
     return names
 
 
+def verify_math(font, path, recipe):
+    config = recipe["alphabet_review"]
+    axis = recipe["horizontal_punctuation_review"]["minus_center"]
+    settings = recipe["math_review"]
+    cell, pitch = config["cell"], settings["rule_pitch"]
+    tokens = COMPARISONS | ARROWS
+    cmap = font.getBestCmap()
+    engine = hb.Font(hb.Face(path.read_bytes()))
+    for weight in range(350, 501, 5):
+        engine.set_variations({"wght": weight})
+        glyphs = font.getGlyphSet(location={"wght": weight})
+        for token, name in tokens.items():
+            expected = cell if token in ("<=", ">=") else 2 * cell
+            shaped = shape(engine, token, {})
+            assert len(shaped) == 1 and shaped[0][:3] == [name, 0, expected], (weight, token, shaped)
+            literal = shape(engine, token, FEATURES)
+            assert [(row[0], row[2]) for row in literal] == [(cmap[ord(c)], cell) for c in token]
+        for character in "".join(ARROW_FAMILIES) + "+−×÷=≠<>≤≥*~":
+            name = cmap[ord(character)]
+            assert shape(engine, character, FEATURES)[0][2] == cell
+            left, bottom, right, top = shape_from_glyphs(glyphs, name).bounds
+            assert 0 <= left < right <= cell and abs((top + bottom) / 2 - axis) <= 1, (weight, character)
+        for name, probe, count in (("equal", cell / 2, 2),
+                                    (COMPARISONS["==="], cell, 3),
+                                    (ARROWS["=>"], cell / 2, 2)):
+            bars = spans(shape_from_glyphs(glyphs, name), probe, 0)
+            midpoints = [(bottom + top) / 2 for bottom, top in bars]
+            assert len(bars) == count and all(
+                abs(second - first - pitch) <= 1 for first, second in zip(midpoints, midpoints[1:])
+            ), (weight, name, bars)
+
+    caret_list = font["GDEF"].table.LigCaretList
+    carets = {name: [value.Coordinate for value in glyph.CaretValue]
+              for name, glyph in zip(caret_list.Coverage.glyphs, caret_list.LigGlyph, strict=True)}
+    for token, name in tokens.items():
+        advance = font["hmtx"][name][0]
+        assert carets[name] == [advance * i // len(token) for i in range(1, len(token))], token
+    return {"math_axis": axis, "bar_center_spacing": pitch, "ligature_carets": {
+        token: carets[name] for token, name in tokens.items()
+    }}
+
+
 def signed_units(delta):
     return f"{delta:+.0f}" if round(delta) else "0"
 
@@ -289,7 +336,8 @@ def write_comparison(output, width, height, rows, sheets):
     )
 
 
-def detail_comparison(candidate, reference, output, title, samples, subtitle="Published Code 1.042 above the candidate"):
+def detail_comparison(candidate, reference, output, title, samples, subtitle="Published Code 1.042 above the candidate",
+                      *, features=FEATURES):
     width = 1050
     row_height = 207 if reference else 134
     height = 123 + 3 * row_height
@@ -313,7 +361,7 @@ def detail_comparison(candidate, reference, output, title, samples, subtitle="Pu
         for panel, label, offset in samples_to_draw:
             rows.append(f'<text x="54" y="{y + offset}" font-size="13" fill="#415d62">{label}</text>')
             for x, _, sample in samples:
-                panel.text(sample, x, y + offset, 49, weight, "#153b40", features=FEATURES)
+                panel.text(sample, x, y + offset, 49, weight, "#153b40", features=features)
     write_comparison(output, width, height, rows, [panel for panel, _, _ in samples_to_draw])
 
 
@@ -324,6 +372,7 @@ def main():
     stages = parser.add_mutually_exclusive_group()
     stages.add_argument("--composed", action="store_true", help="also build the donor-derived review glyphs")
     stages.add_argument("--letters", action="store_true", help="add the custom lowercase review")
+    stages.add_argument("--operators", action="store_true", help="add the math signs and operator ligatures")
     parser.add_argument("--render", action="store_true", help="also write the comparison as PNG and PDF")
     args = parser.parse_args()
     recipe = json.loads(args.recipe.read_text())
@@ -332,7 +381,7 @@ def main():
     reference = ROOT / (recipe["fonts"]["code"] + "-VF.ttf")
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
-    stage = "Letters" if args.letters else "Composed" if args.composed else "Alphabet"
+    stage = "Operators" if args.operators else "Letters" if args.letters else "Composed" if args.composed else "Alphabet"
     candidate = output / f"DaikonicTransitCode{stage}Review-VF.ttf"
     with TTFont(source, recalcTimestamp=False) as sans:
         font, width_report = alphabet_font(sans, recipe, stage=stage)
@@ -350,6 +399,8 @@ def main():
         check["horizontal_mirrors"] = verify_mirrors(sans, built, config["cell"], check["weights"])
         if stage != "Alphabet":
             check["composed_components"] = verify_composed(built, candidate, config["cell"], check["weights"])
+        if stage == "Operators":
+            check["operators"] = verify_math(built, candidate, recipe)
         sanitize(built)
         report = {
             "source": str(source.relative_to(ROOT)), "source_sha256": sha256(source.read_bytes()).hexdigest(),
@@ -366,7 +417,23 @@ def main():
     panel = output / "Code-Alphabet-Comparison.svg"
     comparison(candidate, reference, panel, width_report, config["cell"], report["measurements"])
     panels = [panel]
-    if stage == "Composed":
+    if stage == "Operators":
+        math_panel = output / "Code-Math-Signs.svg"
+        detail_comparison(candidate, reference, math_panel, "Math signs",
+                          tuple(zip((166, 447, 720), ("Arithmetic", "Comparisons", "Other signs"), SYMBOL_SAMPLES)),
+                          "Published Code 1.042 above the candidate · shared math axis and bar weight")
+        arrow_panel = output / "Code-Math-Arrows.svg"
+        single, double = ARROW_FAMILIES
+        detail_comparison(candidate, reference, arrow_panel, "Arrows",
+                          ((166, "Single shafts", " ".join(single)), (525, "Double shafts", " ".join(double))))
+        ligature_panel = output / "Code-Operator-Ligatures.svg"
+        detail_comparison(candidate, reference, ligature_panel, "Operator ligatures",
+                          ((166, "Comparisons", "== === != !=="), (500, "Order", "<= >="),
+                           (613, "Arrows", "-> ->> => <- <<-")),
+                          "Published Code 1.042 above the candidate · default ligatures enabled",
+                          features={"calt": True, "liga": True, "kern": False})
+        panels.extend((math_panel, arrow_panel, ligature_panel))
+    elif stage == "Composed":
         composed_panel = output / "Code-Composed-Comparison.svg"
         detail_comparison(candidate, reference, composed_panel, "Composed glyphs",
                           ((166, "Stem and shoulder", "n r   ŕ ř"), (447, "Quantifiers", "A ∀   E ∃"),
