@@ -120,7 +120,7 @@ SYNTAX_DETAIL_SAMPLE = (
 )
 
 
-def alphabet_font(source, recipe, *, stage="Alphabet"):
+def alphabet_font(source, recipe, *, stage="Alphabet", spread_glyph=True):
     config = recipe["alphabet_review"]
     anchor = recipe["anchor"]
     weights = {int(weight): value for weight, value in config["weights"].items()}
@@ -163,7 +163,7 @@ def alphabet_font(source, recipe, *, stage="Alphabet"):
             if stage == "Layout":
                 align_pipe(master, recipe["horizontal_punctuation_review"]["minus_center"])
                 build_compact_glyphs(master, recipe)
-                build_syntax_glyphs(master, recipe)
+                build_syntax_glyphs(master, recipe, spread_glyph=spread_glyph)
 
     designspace = DesignSpaceDocument()
     designspace.addAxis(AxisDescriptor(name="Weight", tag="wght", minimum=350, default=400, maximum=500))
@@ -534,7 +534,8 @@ def angle_context_detail(candidate, output, config, axis):
     write_comparison(output, width, height, rows, [panel])
 
 
-def code_review_proof(output, config, title, subtitle, sample, cuts, *, axis=None, extra_keywords=(), extra_types=()):
+def code_review_proof(output, config, title, subtitle, sample, cuts, *, axis=None,
+                      extra_keywords=(), extra_types=(), expected_advance=None):
     width, height = 1050, 744
     weight, size, leading = 400, 26, 28
     x = 58
@@ -557,7 +558,9 @@ def code_review_proof(output, config, title, subtitle, sample, cuts, *, axis=Non
                 center = baseline - axis * scale
                 rows.append(f'<path d="M{x} {center:.2f}H992" stroke="#344654" stroke-dasharray="2 5"/>')
             panel.text(line, x, baseline, size, weight, "#eeeddb", features=features)
-            highlight_code_line(panel, line, features, extra_keywords=extra_keywords, extra_types=extra_types)
+            expected = expected_advance(line, features) if expected_advance is not None else None
+            highlight_code_line(panel, line, features, extra_keywords=extra_keywords, extra_types=extra_types,
+                                expected_advance=expected)
         panels.append(panel)
     write_comparison(output, width, height, rows, panels)
 

@@ -36,7 +36,14 @@ def hash_rails(outline, cell):
     return bands
 
 
-def build_syntax_glyphs(font, recipe):
+def spread_offsets(glyphs, cell, settings):
+    left, _, right, _ = raw_outline(glyphs, "period").bounds
+    pitch = right - left + settings["spread_dot_gap"]
+    end = 2 * cell - settings["spread_sidebearing"] - right
+    return [otRound(end - i * pitch) for i in (2, 1, 0)]
+
+
+def build_syntax_glyphs(font, recipe, *, spread_glyph=True):
     cell = recipe["alphabet_review"]["cell"]
     axis = recipe["horizontal_punctuation_review"]["minus_center"]
     cmap = font.getBestCmap()
@@ -62,12 +69,10 @@ def build_syntax_glyphs(font, recipe):
 
     install_components(font, names["..."], [place_period(cell * factor, period_y)
                                              for factor in (.7, 1.5, 2.3)], 3 * cell)
-    dot_left, _, dot_right, _ = outline("period").bounds
-    settings = recipe["layout_review"]
-    pitch = dot_right - dot_left + settings["spread_dot_gap"]
-    end = 2 * cell - settings["spread_sidebearing"] - dot_right
-    spread_parts = [translated("period", end - i * pitch) for i in (2, 1, 0)]
-    install_components(font, names["..."] + SPREAD_SUFFIX, spread_parts, 2 * cell)
+    if spread_glyph:
+        offsets = spread_offsets(glyphs, cell, recipe["layout_review"])
+        install_components(font, names["..."] + SPREAD_SUFFIX,
+                           [translated("period", x) for x in offsets], 2 * cell)
     for token in ("${", "$[", "$("):
         delimiter = cmap[ord(token[1])]
         dy = otRound(center(delimiter)[1] - center("dollar")[1])

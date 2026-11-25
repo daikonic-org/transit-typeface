@@ -137,7 +137,7 @@ def update_table(readme, marker, table):
     return pattern.sub(lambda _: replacement, readme)
 
 
-def highlight_code_line(panel, text, features, *, extra_keywords=(), extra_types=()):
+def highlight_code_line(panel, text, features, *, extra_keywords=(), extra_types=(), expected_advance=None):
     """Color the already-shaped glyphs; lexical runs never split font context."""
     assert text.isascii(), "The specimen uses ASCII source offsets."
     colors = ["#eeeddb"] * len(text)
@@ -173,7 +173,8 @@ def highlight_code_line(panel, text, features, *, extra_keywords=(), extra_types
     hb.shape(font, buffer, {**features, "tnum": False})
     names = [font.get_glyph_name(info.codepoint) for info in buffer.glyph_infos]
     actual = sum(pos.x_advance for pos in buffer.glyph_positions)
-    assert actual == expected_code_advance(instance, text, names), (text, features, actual, names)
+    expected = expected_code_advance(instance, text, names) if expected_advance is None else expected_advance
+    assert actual == expected, (text, features, actual, expected, names)
     element = ET.fromstring(panel.elements[-1])
     uses = list(element)
     assert len(uses) == len(buffer.glyph_infos)

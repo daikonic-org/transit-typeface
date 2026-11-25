@@ -28,7 +28,7 @@ def align_pipe(font, axis):
     refresh_bounds(font, "bar")
 
 
-def build_layout(font, recipe, *, hairlines=True):
+def build_layout(font, recipe, *, hairlines=True, spread_glyph=True):
     cell = recipe["alphabet_review"]["cell"]
     settings = recipe["layout_review"]
     depth = settings["angle_depth"]
@@ -50,7 +50,8 @@ def build_layout(font, recipe, *, hairlines=True):
                       scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
     build_structural_angles(font, cell, depth, features=("calt", "ss02"), shift=settings["mixed_angle_shift"],
                             install_closer=install)
-    build_spread_context(font)
+    if spread_glyph:
+        build_spread_context(font)
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
     if not hairlines:
         position_lifetime_ampersand(font)

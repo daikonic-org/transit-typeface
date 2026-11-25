@@ -121,3 +121,21 @@ Hairlining is on by default in the upright and can be disabled with `ss07`.
 Logic is enabled with `ss02`. Texture Healing is deferred along with the
 investigation of using OpenType positioning for texture and operator
 compaction.
+
+## GPOS compaction trial
+
+The separate Positioning Trial fonts have an opt-in `ss08` feature. In that
+trial, GSUB still selects the custom drawings for operators such as `===`.
+GPOS shortens their advance so the next character starts at the compacted
+cell. Rest and spread reuse three instances of the period drawing. GPOS
+positions the dots and sets their advances to a total of two cells.
+
+```sh
+.venv/bin/python tools/code_gpos_compaction.py \
+  --reference .build/transit-code/package/VF \
+  --output .build/transit-code/gpos-compaction --render
+```
+
+The trial checks operator outlines, advances, offsets and carets against the
+review build at five weights and five widths. The specimen shows the same
+code with positioning on and off.
