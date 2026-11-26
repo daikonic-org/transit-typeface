@@ -205,34 +205,42 @@ def proof(output, config, target, original, replacements):
                       expected_advance=expected)
 
 
-def build(recipe, reference, output):
+def layout_faces(recipe, *, spread_glyph):
     sans = ROOT / (recipe["fonts"]["sans"] + "-VF.ttf")
     with TTFont(sans, recalcTimestamp=False) as source:
-        upright, _ = alphabet_font(source, recipe, stage="Layout", spread_glyph=False)
+        upright, _ = alphabet_font(source, recipe, stage="Layout", spread_glyph=spread_glyph)
     italic = deepcopy(upright)
-    build_layout(upright, recipe, spread_glyph=False)
+    build_layout(upright, recipe, spread_glyph=spread_glyph)
     add_monospace_repeats(upright)
-    build_italic(italic, recipe, FAMILY, version="0.100", spread_glyph=False)
-    report = {}
+    build_italic(italic, recipe, FAMILY, version="0.100", spread_glyph=spread_glyph)
+    return (("upright", "", upright), ("italic", "-Italic", italic))
+
+
+def build(recipe, reference, output):
     config = recipe["alphabet_review"]
-    for is_italic, font in ((False, upright), (True, italic)):
+    spacing = recipe["layout_review"].get("edge_spacing", {})
+    if reference is None:
+        reference = output / "reference"
+        reference.mkdir(exist_ok=True)
+        for style, suffix, font in layout_faces(recipe, spread_glyph=True):
+            add_code_width(font, config["cell"], boundaries=spacing.get(style, {}).get("boundaries", ()))
+            font.save(reference / f"DaikonicTransitCode{suffix}-VF.ttf")
+    report = {}
+    for style, suffix, font in layout_faces(recipe, spread_glyph=False):
         replacements = add_lateral_positioning(font, recipe, FEATURE)
         add_spread_positioning(font, recipe, replacements)
         name_trial(font, FAMILY, variable=True)
         set_vertical_metrics(font, minimum_ascent=config["line_metrics"]["ascent"],
                              maximum_descent=config["line_metrics"]["descent"])
-        spacing = recipe["layout_review"].get("edge_spacing", {})
-        style = "italic" if is_italic else "upright"
         add_code_width(font, config["cell"], boundaries=spacing.get(style, {}).get("boundaries", ()))
         retire_lateral_drawings(font, replacements)
-        title = "-Italic" if is_italic else ""
-        target = output / f"{FAMILY.replace(' ', '')}{title}-VF.ttf"
+        target = output / f"{FAMILY.replace(' ', '')}{suffix}-VF.ttf"
         font.save(target)
         sanitize(font)
-        original = reference / f"DaikonicTransitCode{title}-VF.ttf"
+        original = reference / f"DaikonicTransitCode{suffix}-VF.ttf"
         count = verify(original, target, recipe, replacements)
         report[target.name] = {"shaping_cases": count, "positioned_components": replacements}
-        if not is_italic:
+        if style == "upright":
             panel = output / "Code-GPOS-Components.svg"
             proof(panel, config, target, original, replacements)
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
@@ -243,7 +251,8 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--recipe", type=Path, default=RECIPE_PATH)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--reference", required=True, type=Path, help="Directory holding the packaged Code VFs")
+    parser.add_argument("--reference", type=Path,
+                        help="Directory holding comparison VFs; defaults to rebuilding them from the recipe")
     parser.add_argument("--render", action="store_true")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)

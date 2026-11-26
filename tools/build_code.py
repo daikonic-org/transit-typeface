@@ -28,7 +28,7 @@ from code_logic_build import verify_logic
 from code_math import ARROW_FAMILIES, ARROWS, COMPARISONS, SYMBOL_SAMPLES, build_math
 from code_outlines import (
     SYMBOLS, build_composed, build_crossbar_letters, build_custom_letters, build_distinct_figures, build_g,
-    build_horizontal_punctuation, inherit_width_scales,
+    build_horizontal_punctuation, build_k, inherit_width_scales,
 )
 from code_punctuation import build_diamond_punctuation
 from code_spacing import verify_code_spacing
@@ -146,6 +146,8 @@ def alphabet_font(source, recipe, *, stage="Alphabet", spread_glyph=True):
         if custom_letters:
             build_at(master, recipe)
         scale_ink_width(master, scales, stems[weight])
+        if custom_letters and "k_ink_expansion" in config:
+            build_k(master, config["k_ink_expansion"], stems[weight])
         if stage != "Alphabet":
             build_composed(master, recipe)
     if custom_letters:

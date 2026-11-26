@@ -118,6 +118,13 @@ def map_attachment_anchors(font, projections):
                         move(anchor, name)
 
 
+def ink_columns(glyph, factor, stem_scale, stem, translate=0):
+    """Scale horizontal positions while compensating the stroke weight."""
+    correction = stem_compensation(glyph, stem)
+    return [x * factor + translate + dx * (factor - stem_scale)
+            for (x, _), (dx, _) in zip(glyph.coordinates, correction, strict=True)]
+
+
 def scale_ink_width(font, scales, stem):
     """Widen outlines using the shared stroke correction, keeping components reusable."""
     glyf = font["glyf"]
@@ -145,9 +152,7 @@ def scale_ink_width(font, scales, stem):
                 current_x, _ = component.transformPoint(center(outline_bounds(glyf[donor], glyf)))
                 part.x += otRound(desired_x - current_x)
         elif glyph.numberOfContours and (factor != 1 or stem_width_scale != 1):
-            correction = stem_compensation(glyph, stem)
-            xs = [transform.transformPoint((x, y))[0] + dx * (factor - stem_width_scale)
-                  for (x, y), (dx, _) in zip(glyph.coordinates, correction, strict=True)]
+            xs = ink_columns(glyph, factor, stem_width_scale, stem, transform.dx)
             shift = centers[name][0] - (min(xs) + max(xs)) / 2
             glyph.coordinates = GlyphCoordinates((otRound(x + shift), y)
                                                   for x, (_, y) in zip(xs, glyph.coordinates, strict=True))

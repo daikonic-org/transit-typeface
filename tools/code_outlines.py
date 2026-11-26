@@ -6,13 +6,14 @@ from math import pi, radians, sqrt, tan
 
 from fontTools.misc.bezierTools import calcQuadraticBounds, splitLine, splitQuadratic, splitQuadraticAtT
 from fontTools.misc.roundTools import otRound
+from fontTools.misc.transform import Transform
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates, OVERLAP_COMPOUND, flagOnCurve
 import pathops
 
 from audit import shape_from_glyphs, spans
-from code_foundation import center, map_attachment_anchors, outline_bounds
+from code_foundation import center, ink_columns, map_attachment_anchors, outline_bounds
 from code_receiver_shapes import HorizontalMapPen, remap
 from italic_returns import Segment, draw_segments, lower_arc, raw_outline
 
@@ -119,6 +120,33 @@ def component_users(font, donors):
     return [name for name in font.getGlyphOrder()
             if glyf[name].isComposite()
             and any(part.glyphName in donors for part in glyf[name].components)]
+
+
+def build_k(font, factor, stem):
+    """Extend the arms while preserving the left stem and the cell advance."""
+    glyf = font["glyf"]
+    glyph = glyf["k"]
+    left = outline_bounds(glyph, glyf)[0]
+    xs = ink_columns(glyph, factor, 1, stem)
+    shift = left - min(xs)
+    glyph.coordinates = GlyphCoordinates((otRound(x + shift), y)
+                                          for x, (_, y) in zip(xs, glyph.coordinates, strict=True))
+    refresh_bounds(font, "k")
+
+    projections = defaultdict(lambda: lambda x, y: (x, y))
+    projections["k"] = lambda x, y: (x * factor + shift, y)
+    for name in component_users(font, {"k"}):
+        base, *marks = glyf[name].components
+        assert base.glyphName == "k" and base.getComponentInfo()[1][:4] == (1, 0, 0, 1)
+        offset = shift + (1 - factor) * base.x
+        for mark in marks:
+            assert not font["hmtx"][mark.glyphName][0]
+            transform = Transform(*mark.getComponentInfo()[1])
+            x, _ = transform.transformPoint(center(outline_bounds(glyf[mark.glyphName], glyf)))
+            mark.x += otRound(x * factor + offset - x)
+        refresh_bounds(font, name)
+        projections[name] = lambda x, y, offset=offset: (x * factor + offset, y)
+    map_attachment_anchors(font, projections)
 
 
 def retain_joined_donors(font, donors, *, include_single_base=False):
