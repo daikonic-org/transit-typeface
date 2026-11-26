@@ -16,8 +16,7 @@ the inner a uses45%. Book nominal widths are76/71.2 for the outer loop and
 42.75/40.05 for the a. The construction uses an elliptical pen, preserving the
 family's slight directional compensation. Cubic approximation tolerance .025
 font units controls the varying-width stroke. The source centerline is explicit
-arcs/Bezier curves; compatible TTF points are derived from it. This supersedes
-the previous requirement to match o's weight, per the user's clarification.
+arcs and Bézier curves. The TrueType masters use compatible points derived from that centerline.
 
 Daikonic Transit Code Redrawn At Study: VF300–400/defaultBook350 plus Light,
 Book and Regular snapshots. Four binaries pass OpenType Sanitizer. At11weights,

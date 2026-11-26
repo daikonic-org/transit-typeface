@@ -27,7 +27,7 @@ sheet width, device scale factor 1.5 for PNG and exact SVG dimensions for PDF
 with zero margins and backgrounds enabled. This is local rendered evidence,
 not a cross-platform reading-performance test.
 
-## What was carried over from the recommendation
+## Weighting method
 
 - Anisotropic offset: horizontal expansion ratio 0.72 versus the control 1.0.
 - Sharp miter joins, limit 3, plus overlap removal through path operations.
@@ -41,10 +41,9 @@ the same arbitrary +34 to every family. Medium 500 targets 130 units between
 the 110-unit Regular and 150-unit SemiBold. Code retains its current calibration.
 The other targets are declared in `recipes/weights.json`.
 
-The pasted script required API and composite-glyph corrections; see
-[generation-audit.md](generation-audit.md). Its optional global width stretch
-and added tracking were excluded from this weighting-only comparison. Current
-advances, layout tables, and declared selected-glyph locks are retained.
+The comparison holds widths, advances, and layout tables constant. See the
+[historical outline and layout audit](generation-audit.md) for details on
+stroke offsets, composites, and interpolation.
 In particular, selected numerals, i/j/l, y, arrow glyphs and Code ligatures use
 the approved target-weight drawings. This trial does not reweight those locked
 shapes. It tests the remaining repertoire at every named weight.
