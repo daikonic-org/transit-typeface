@@ -93,7 +93,7 @@ def common_classes(font):
     return [f"@{name} = [{' '.join(glyphs)}];" for name, glyphs in groups.items()]
 
 
-def add_texture(font):
+def add_texture(font, *, shift_intermediate=False):
     receiver_drawings(font)
     quote_guard = ("ignore sub @SingleQuote @Receiver', @Receiver' @SingleQuote, "
                    "@SingleQuote @Donor @Receiver', @Receiver' @Donor @SingleQuote;")
@@ -113,13 +113,17 @@ def add_texture(font):
         "sub @Available @Receiver' by @ReceiverMiddle;",
         "sub @Receiver' @Available by @ReceiverMiddle;",
         "} ReceiverWidths;",
-        "lookup PlaceIntermediate {",
-        "ignore pos @Available @ReceiverMiddle' @Available;",
-        f"pos @Available @ReceiverMiddle' <-{HALF_WIDTH // 2} 0 0 0>;",
-        f"pos @ReceiverMiddle' <{HALF_WIDTH // 2} 0 0 0> @Available;",
-        "} PlaceIntermediate;",
     ]
-    calls = "lookup IsolatedPairs; lookup ReceiverWidths; lookup PlaceIntermediate;"
+    calls = "lookup IsolatedPairs; lookup ReceiverWidths;"
+    if shift_intermediate:
+        rules.extend([
+            "lookup PlaceIntermediate {",
+            "ignore pos @Available @ReceiverMiddle' @Available;",
+            f"pos @Available @ReceiverMiddle' <-{HALF_WIDTH // 2} 0 0 0>;",
+            f"pos @ReceiverMiddle' <{HALF_WIDTH // 2} 0 0 0> @Available;",
+            "} PlaceIntermediate;",
+        ])
+        calls += " lookup PlaceIntermediate;"
     restore = " ".join(f"sub [{letter}.texture.middle {letter}.texture.wide] by {letter};"
                        for letter in RECEIVERS)
     add_features(font, "\n".join([

@@ -7,7 +7,7 @@ from fontTools.ttLib.tables import otTables
 import uharfbuzz as hb
 
 from check_code_rebuild import shape
-from code_receiver_texture import add_texture
+from code_receiver_texture import FEATURE as TEXTURE_FEATURE, HALF_WIDTH, add_texture
 from code_weight_width_trial import WEIGHTS, name_trial
 from code_width import verify_width
 from release_metadata import stamp_release
@@ -48,12 +48,12 @@ def share_feature(font, table_name, source_tag, dest_tag):
                 language.ReqFeatureIndex = indexes[language.ReqFeatureIndex]
 
 
-def release_font(source, version, *, italic):
+def release_font(source, version, *, italic, shift_intermediate_texture=False):
     font = TTFont(source, recalcTimestamp=False)
     share_feature(font, "GSUB", "ss08", "calt")
     share_feature(font, "GPOS", "ss08", "kern")
     if not italic:
-        add_texture(font)
+        add_texture(font, shift_intermediate=shift_intermediate_texture)
     family = "Daikonic Transit Code"
     name_trial(font, family, variable=True)
     for instance in font["fvar"].instances:
@@ -66,20 +66,25 @@ def release_font(source, version, *, italic):
     return font
 
 
-def verify_release(font, path, prior):
+def verify_release(font, path, prior, *, shift_intermediate_texture=False):
     verify_width(font, 600)
     with TTFont(prior) as baseline:
         assert set(baseline.getBestCmap()) <= set(font.getBestCmap())
         for table in ("GSUB", "GPOS"):
             tags = lambda face: {r.FeatureTag for r in face[table].table.FeatureList.FeatureRecord}
-            assert tags(baseline) <= tags(font), (path, table)
+            retained = tags(baseline)
+            if table == "GPOS" and not shift_intermediate_texture:
+                retained.discard(TEXTURE_FEATURE)
+            assert retained <= tags(font), (path, table)
     engine = hb.Font(hb.Face(path.read_bytes()))
     italic = bool(font["OS/2"].fsSelection & 1)
+    shift = HALF_WIDTH // 2 if shift_intermediate_texture else 0
     textures = {
         "im": ("m.texture.wide", 0), "mi": ("m.texture.wide", 0),
-        "imi": ("m.texture.wide", 0), "imx": ("m.texture.middle", -9),
-        "xmi": ("m.texture.middle", 9), "xmx": ("m", 0),
+        "imi": ("m.texture.wide", 0), "imx": ("m.texture.middle", -shift),
+        "xmi": ("m.texture.middle", shift), "xmx": ("m", 0),
         "iwi": ("w.texture.wide", 0), ".w.": ("w.texture.wide", 0),
+        "namespace": ("m.texture.middle", -shift), "window": ("w.texture.middle", shift),
     }
     expected = {
         "::": 1, "?.": 1, "!.": 1, "//": 1, "<=": 1, ">=": 1,
@@ -95,10 +100,11 @@ def verify_release(font, path, prior):
         for sample, (glyph, offset) in textures.items():
             on, off = (shape(engine, sample, flags) for flags in ({}, {"ss04": True}))
             assert [row[2] for row in on] == [row[2] for row in off] == [cell] * len(sample)
+            index = next(i for i, row in enumerate(off) if row[0] in {"m", "w"})
+            assert off[index][4] == 0, (path, sample, off)
             if italic:
                 assert on == off
             else:
-                index = next(i for i, row in enumerate(off) if row[0] in {"m", "w"})
-                assert on[index][0] == glyph and on[index][4] - off[index][4] == offset, (path, sample)
+                assert on[index][0] == glyph and on[index][4] == offset, (path, sample)
                 assert shape(engine, sample, {"ss03": True, "ss04": True}) == off
                 assert all(".texture." not in row[0] for row in off)

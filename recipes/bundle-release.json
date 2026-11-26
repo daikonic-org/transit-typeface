@@ -27,7 +27,8 @@
       "font": "releases/1.1.0/code/VF/DaikonicTransitCode-VF.ttf",
       "italic_font": "releases/1.1.0/code/VF/DaikonicTransitCode-Italic-VF.ttf",
       "expected_static_faces": 18,
-      "rebuild_code": true
+      "rebuild_code": true,
+      "shift_intermediate_texture": true
     }
   },
   "notes": [

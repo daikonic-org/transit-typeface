@@ -253,7 +253,10 @@ def check():
             if settings.get("rebuild_code"):
                 from release_code import verify_release
 
-                verify_release(variable, path, ROOT / "releases/2026.11.20/code/VF" / filename)
+                verify_release(
+                    variable, path, ROOT / "releases/2026.11.20/code/VF" / filename,
+                    shift_intermediate_texture=settings.get("shift_intermediate_texture", False),
+                )
             elif key == "code" and not settings.get("reuse"):
                 from code_hairline_toggle import check_release
 

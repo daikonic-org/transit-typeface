@@ -30,7 +30,10 @@ def stage(key, settings, scratch, code_build=None):
         destination.mkdir(parents=True, exist_ok=True)
         for suffix in ("", "-Italic"):
             input_path = code_build / f"{FAMILY.replace(' ', '')}{suffix}-VF.ttf"
-            with release_font(input_path, settings["version"], italic=bool(suffix)) as font:
+            with release_font(
+                input_path, settings["version"], italic=bool(suffix),
+                shift_intermediate_texture=settings.get("shift_intermediate_texture", False),
+            ) as font:
                 font.save(destination / f"{stem}{suffix}-VF.ttf")
     elif settings.get("metadata_source"):
         destination.mkdir(parents=True, exist_ok=True)
