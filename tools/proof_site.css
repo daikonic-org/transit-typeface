@@ -117,3 +117,4 @@ input[type="checkbox"] { accent-color: var(--brand); }
   #glyph-proof tr { break-inside: avoid; }
   #glyph-proof h2 { break-after: avoid; }
 }
+#type-proof.texture-off .text-sample-value { font-feature-settings: "ss04" 1; }

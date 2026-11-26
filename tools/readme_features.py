@@ -15,11 +15,13 @@ from specimens import ROOT, DATA, Panel, specimen_families, weight_location
 from code_balance_study import bind
 from code_logic_shortcuts import COMMANDS, glyph_name
 from code_glyph_names import sequence_name
+from code_compact_build import CONTEXT_PAIRS, DIRECT, LOOSE_NAMES
+from code_math import ARROWS, COMPARISONS
 from code_compact_operators import CELL, LOOSE_GLYPHS, SAVED_CELL_GLYPHS
 
 OUT = ROOT / "specimens/features"
 ON = {"calt": True, "liga": True, "clig": True}
-OFF = {"calt": False, "liga": False, "clig": False}
+OFF = {"calt": False, "liga": False, "clig": False, "kern": False}
 # Each row defines its sample and actual feature switch once for both rendering
 # and README generation. Permanent designs use one Book-weight sample.
 FEATURES = {
@@ -43,7 +45,7 @@ FEATURES = {
             {"liga": True}, {"liga": False},
         ),
         (
-            "texture-healing", "Texture healing", "film x.m .w.",
+            "texture-healing", "Texture healing", "imi imx xmi xmx .w.",
             {"ss04": False}, {"ss04": True},
         ),
         (
@@ -94,7 +96,7 @@ FEATURES = {
             OFF,
         ),
         ("generics", "Comparison / generic context", "a<>b Vec<> Vec<Vec<T>>", ON, OFF),
-        ("optical", "Contextual optical placement", "ke Ke KE vi il", ON, OFF),
+        ("optical", "Contextual optical placement", "string extra text", ON, OFF),
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
 }
@@ -207,6 +209,7 @@ def code_comparison(font):
         )),
         ("TypeScript", (
             "const key = row?.id ?? row!.id;",
+            "const all = [...items, ...tail];",
             "const check = (x: number) =>",
             "    x === 0 || x != 1;",
         )),
@@ -265,29 +268,33 @@ def code_comparison(font):
             glyphs[enabled, language] = names
 
     required = {
-        "Rust": {
-            "code.notEqual", "code.logicalOr", "code.commentSlash", "code.scope.hairline",
-            "less.generic.hairline", "bar.delimiterOpen.hairline", "l_l",
-        },
-        "TypeScript": {
-            "code.notEqual.loose", "code.strictEqual.loose",
-            "code.syntax00", "code.syntax01", "code.fatArrow",
-        },
-        "Logic": {
-            "code.command.forall", "code.command.exists", "code.enclosureBox", "code.enclosureDiamond",
+        "Rust": (
+            COMPARISONS["!="], "bar.positioned", "slash.positioned",
+            DIRECT["::"], "less.generic.hairline", "bar.delimiterOpen.hairline", "l_l",
+            "m.texture.",
+        ),
+        "TypeScript": (
+            LOOSE_NAMES["!="], LOOSE_NAMES["==="], "question.positioned",
+            "exclam.positioned", ARROWS["=>"], "period.spread",
+        ),
+        "Logic": (
+            glyph_name(r"\forall"), glyph_name(r"\exists"),
+            "code.enclosureBox", "code.enclosureDiamond",
             "less.generic.hairline", "bracketleft.hairline",
             "code.logicBoxDiamond", "code.logicDiamondBox",
-        },
+        ),
     }
     for language, expected in required.items():
-        expected = {current_name(font, name) for name in expected}
         shown = glyphs[True, language] - glyphs[False, language]
-        assert expected <= shown, (language, expected - shown)
+        for name in expected:
+            if name.endswith(("positioned", ".", "spread")):
+                assert any(glyph.startswith(name) for glyph in shown), (language, name)
+            else:
+                assert current_name(font, name) in shown, (language, name, shown)
     for language in ("Rust", "TypeScript"):
         assert "logicalnot" not in glyphs[True, language]
     assert not any(name.endswith(".loose") for name in glyphs[True, "Rust"])
-    assert any(name.startswith(("m.heal.", "w.heal.")) for name in glyphs[True, "Rust"])
-    assert all(".heal." not in name for name in glyphs[False, "Rust"])
+    assert all(".texture." not in name for name in glyphs[False, "Rust"])
     assert any(name.startswith("quotesingle.lifetime.hairline") for name in glyphs[True, "Rust"])
     body.append(panel.body())
     return svg(
@@ -303,11 +310,34 @@ def current_name(font, name):
 
 
 def expected_code_advance(font, text, names):
-    loose_savings = {current_name(font, name): len(token) - 1 for token, name in LOOSE_GLYPHS.items()}
+    loose_savings = {current_name(font, name): len(token) - 1
+                     for token, name in LOOSE_GLYPHS.items()}
+    for token, name in LOOSE_NAMES.items():
+        loose_savings[current_name(font, name)] = len(token) - 1
     saved_glyphs = {current_name(font, name) for name in SAVED_CELL_GLYPHS}
+    saved_glyphs.update((COMPARISONS[t] for t in ("<=", ">=", "===", "!==")))
+    saved_glyphs.update((ARROWS[t] for t in ("->>", "<<-")))
+    saved_glyphs.update(CONTEXT_PAIRS.values())
     saved_glyphs.add("period_period_period.liga.spread")
-    saved = sum(loose_savings.get(name, int(name in saved_glyphs)) for name in names)
-    return CELL * (len(text) - saved)
+    # A compact pair remains two glyphs, each with a half-cell advance.
+    # A contextual spread remains three glyphs, together saving one cell.
+    half_cells = ("colon.positioned", "question.positioned", "exclam.positioned",
+                  "slash.positioned", "bar.positioned")
+    saved = 0
+    previous = ""
+    for name in names:
+        if name.startswith(half_cells) or name == DIRECT["::"]:
+            saved += CELL // 2
+        elif name.startswith("period.spread"):
+            saved += CELL // 3
+        elif name.startswith("period.positioned"):
+            # Access periods use the same adjustment as their preceding mark.
+            if previous.startswith(("question.positioned", "exclam.positioned")):
+                saved += CELL // 2
+        else:
+            saved += CELL * loose_savings.get(name, int(name in saved_glyphs))
+        previous = name
+    return CELL * len(text) - saved
 
 
 def main(check=False):

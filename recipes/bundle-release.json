@@ -1,62 +1,41 @@
 {
-  "version": "1.0.0",
-  "tag": "Transit-1.0.0",
+  "version": "1.1.0",
+  "tag": "Transit-1.1.0",
+  "include_proof_site": true,
   "families": [
     "sans",
-    "system"
+    "system",
+    "code"
   ],
-  "policy": "Publish Sans and System together as a stable release.",
   "typography": {
     "sans": {
-      "version": "1.0.0",
-      "font": "releases/1.0.0/sans/VF/DaikonicTransitSans-VF.ttf",
-      "italic_font": "releases/1.0.0/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
-      "approved_binary": true,
+      "version": "1.1.0",
+      "font": "releases/1.1.0/sans/VF/DaikonicTransitSans-VF.ttf",
+      "italic_font": "releases/1.1.0/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
       "expected_static_faces": 10,
-      "reviewed_inputs": {
-        "font": {
-          "sha256": "bad2e874ca12f75a1baaa78fcbf4d5625d547fb23432c396687a69ce43d39dd5",
-          "review": "releases/2026.11.22/sans/VF/DaikonicTransitSans-VF.ttf"
-        },
-        "italic_font": {
-          "sha256": "f9edbf82ddf96d2efe4b3a7c34dd1265e8478bfd217bd208cdc5bd35744da1e6",
-          "review": "releases/2026.11.22/sans/VF/DaikonicTransitSans-Italic-VF.ttf"
-        }
-      }
+      "metadata_source": "releases/1.0.0/sans/VF"
     },
     "system": {
-      "version": "1.0.0",
-      "font": "releases/1.0.0/system/VF/DaikonicTransitSystem-VF.ttf",
-      "italic_font": "releases/1.0.0/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
-      "approved_binary": true,
+      "version": "1.1.0",
+      "font": "releases/1.1.0/system/VF/DaikonicTransitSystem-VF.ttf",
+      "italic_font": "releases/1.1.0/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
       "expected_static_faces": 90,
-      "reviewed_inputs": {
-        "font": {
-          "sha256": "485bdb1b843ae8723015577f567fff635c229261dbd7efa45c94c54a511ea80e",
-          "review": "Pair Spacing Review"
-        },
-        "italic_font": {
-          "sha256": "8bc1eb2f6f81a7a391e4eb36f33445e591346b4a6e52480a114a1586ce4cefb1",
-          "review": "Italic G Spacing Review"
-        }
-      }
+      "metadata_source": "releases/1.0.0/system/VF"
     },
     "code": {
-      "version": "1.042",
-      "unhealed_font": "releases/2026.11.18.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "font": "releases/2026.11.20/code/VF/DaikonicTransitCode-VF.ttf",
-      "italic_font": "releases/2026.11.20/code/VF/DaikonicTransitCode-Italic-VF.ttf",
-      "previous": "1.042",
-      "operator_source": "releases/2026.11.19.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "default_hairlining": true,
-      "punctuation": true,
-      "reuse": true
+      "version": "1.1.0",
+      "font": "releases/1.1.0/code/VF/DaikonicTransitCode-VF.ttf",
+      "italic_font": "releases/1.1.0/code/VF/DaikonicTransitCode-Italic-VF.ttf",
+      "expected_static_faces": 18,
+      "rebuild_code": true
     }
   },
   "notes": [
-    "- **Sans** brings the curve-based upright and italic rebuild to 1.0.0, including the shared punctuation components and fitted repeated-letter ligatures.",
-    "- **System** derives its larger lowercase and shared components from rebuilt Sans. It includes calibrated optical sizing, a compensated 94\u2013108% width axis, and optional tabular figures.",
-    "- **System Italic** uses italic `q` as the spacing and kerning reference for cursive `g` and its accented forms.",
-    "- **Interactive proofs** let you type a sample, compare axes, and inspect individual glyphs in both families. [Try Daikonic Transit](https://daikonic-org.github.io/transit-typeface/)"
+    "- **Sans and System** carry forward the reviewed 1.0 outlines and layout with refreshed version, publisher and license metadata.",
+    "- **Code** is rebuilt from the current Sans masters. It includes class and boundary spacing, the wider lowercase `k`, and variable width from 94% to 108%.",
+    "- **Upright Code** uses three widths for `m` and `w`. A shared intermediate drawing shifts to either side through OpenType positioning. Enable `ss04` to turn Texture Healing off.",
+    "- **Code ligatures** preserve the approved component positioning and contextual two-cell rest/spread ellipsis. Fixed-grid software can retain source-column placement.",
+    "- **Interactive proofs** cover all three typefaces in upright and italic. [Try the fonts](https://daikonic-org.github.io/transit-typeface/).",
+    "- **License and attribution** are included in each download and embedded in the font files. The fonts are licensed under the SIL Open Font License 1.1 and retain the original Metropolitan Line notices."
   ]
 }

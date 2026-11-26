@@ -157,7 +157,7 @@ The selected 1.032 preview freezes the opening-quote lifetime and contextual pip
 
 `recipes/bundle-release.json` selects the families, source cuts, versions and tag for a stable release. `python tools/stage_typography.py` builds the selected variable fonts and updates the specimen selection.
 
-Regenerate the panels and README examples from that selection. Run `python tools/italic_texture_proofs.py releases/<version>/specimens --release` for the release-specific PNG, PDF and SVG proofs. Run `python tools/code_hairline_toggle.py releases/<version>/specimens --proof` to render the current Code Hairlining comparison. Then run `python tools/bundle_release.py build` to generate and validate the static TTF and OTF styles, TTC collections, WOFF2 and editable TTX. `python tools/bundle_release.py package` assembles and checks the format archives in `.dist/bundle/<version>/`.
+Regenerate the panels with `python tools/specimens.py` and `python tools/code_detail_specimen.py`, then update the README feature images with `python tools/readme_features.py`. Use `python tools/glyph_proof.py FONT OUTPUT` to generate printable glyph proofs. Run `python tools/bundle_release.py build` to generate and validate the named TTF and OTF styles, TTC collections, WOFF2 and editable source. `python tools/bundle_release.py package` assembles the archives and checksums in `.dist/bundle/<version>/`, including the interactive site used by the Pages workflow.
 
 The Fonts workflow runs `python tools/bundle_release.py check` against the committed artifacts. The SOURCE archive contains complete editable TTX for the current release. The native Code Glyphs and UFO sources capture Code 1.017.
 

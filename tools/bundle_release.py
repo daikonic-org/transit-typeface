@@ -21,6 +21,7 @@ from specimens import ROOT, specimen_families
 RECIPE = json.loads((ROOT / "recipes/bundle-release.json").read_text())
 OUT = ROOT / "releases" / RECIPE["version"]
 TABLES = ["glyf", "hmtx", "cmap", "GSUB", "GPOS", "GDEF", "name", "OS/2"]
+LICENSE_FILES = ("OFL.txt", "NOTICE.txt", "upstream/AUTHORS.txt", "upstream/OFL.txt", "upstream/PROVENANCE.json")
 
 
 def digest(path):
@@ -237,11 +238,23 @@ def check():
             assert variable["name"].getDebugName(16) == record["name"], filename
             assert variable["name"].getDebugName(5) == "Version " + record["version"], filename
             assert variable["head"].unitsPerEm == em, filename
+            if settings.get("metadata_source") or settings.get("rebuild_code"):
+                from release_metadata import verify_release_metadata
+
+                verify_release_metadata(variable, record)
+            if settings.get("metadata_source"):
+                with TTFont(ROOT / settings["metadata_source"] / filename) as prior_face:
+                    for tag in ("cmap", "glyf", "gvar", "hmtx", "GSUB", "GPOS", "GDEF", "fvar", "STAT"):
+                        assert prior_face.getTableData(tag) == variable.getTableData(tag), (filename, tag)
             sanitize(variable)
             check_repeated_stems(variable, path, key)
             if settings.get("sans_rebuild"):
                 check_sans_coverage(ROOT / settings["italic_font" if "-Italic" in filename else "font"], variable)
-            if key == "code" and not settings.get("reuse"):
+            if settings.get("rebuild_code"):
+                from release_code import verify_release
+
+                verify_release(variable, path, ROOT / "releases/2026.11.20/code/VF" / filename)
+            elif key == "code" and not settings.get("reuse"):
                 from code_hairline_toggle import check_release
 
                 reference = ROOT / settings["italic_font" if "-Italic" in filename else "font"]
@@ -296,6 +309,9 @@ def check():
                     )
             for tag in ("cmap", "hmtx", "GSUB", "GPOS", "GDEF"):
                 assert original.getTableData(tag) == otf.getTableData(tag), (filename, tag)
+            if settings.get("metadata_source") or settings.get("rebuild_code"):
+                verify_release_metadata(original, record)
+                verify_release_metadata(otf, record)
             assert original["post"].italicAngle == otf["CFF "].cff.topDictIndex[0].ItalicAngle
             sanitize(face)
         if settings.get("punctuation"):
@@ -313,7 +329,7 @@ def check():
         print(
             key, "TTC faces verified against individual TTFs and sanitized", flush=True
         )
-    if "code" in report["families"]:
+    if "code" in report["families"] and not RECIPE["typography"]["code"].get("rebuild_code"):
         from code_texture_healing import verify as verify_texture_healing
 
         verify_texture_healing(
@@ -448,12 +464,27 @@ def package():
                 for name in sorted((OUT / "specimens").rglob("*")):
                     if name.is_file():
                         z.write(name, Path(stem) / "specimens" / name.relative_to(OUT / "specimens"))
-            for name in ["OFL.txt", "NOTICE.txt", "README.md", "requirements.lock"]:
+            for name in (*LICENSE_FILES, "README.md", "requirements.lock"):
                 z.write(ROOT / name, Path(stem) / name)
             z.write(OUT / "manifest.json", Path(stem) / "manifest.json")
         with zipfile.ZipFile(path) as z:
             assert z.testzip() is None
             assert len(z.namelist()) == len(set(z.namelist()))
+        archives.append(path)
+    if RECIPE.get("include_proof_site"):
+        from proof_site import build_site
+
+        stem = "PROOF-" + suffix
+        path = destination / (stem + ".zip")
+        with tempfile.TemporaryDirectory() as directory:
+            proof = Path(directory) / stem
+            build_site(proof)
+            with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
+                for source in sorted(proof.rglob("*")):
+                    if source.is_file():
+                        z.write(source, source.relative_to(proof.parent))
+        with zipfile.ZipFile(path) as z:
+            assert z.testzip() is None
         archives.append(path)
     (destination / checksums).write_text(
         "".join(digest(p) + "  " + p.name + "\n" for p in archives)
@@ -471,7 +502,7 @@ def package():
         "- `?.`, `!.`, `::`, `//`, logical `||`, `<=` and `>=` advance one cell. The arrow and equality sets advance two cells by default.",
         "- **Loose Equality** (`ss06`) is off by default. It gives all four equality ligatures a one-cell advance and adds a tilde above the bars in `==` and `!=`.",
         "- These advances apply when an app follows font shaping. Fixed-grid editors and terminals can retain source-column placement.",
-        "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `" + checksums + "` covers all seven archives.",
+        "The **VF** and **WOFF2** packages include upright and italic variable fonts. **TTF** and **OTF** contain named styles, and **TTC** includes one collection per family. **SOURCE** contains editable TTX and a verified rebuild script. **SPECIMEN** includes PNG, PDF and outlined SVG proofs. `" + checksums + "` covers all download archives.",
         "Native Code Glyphs/UFO sources remain at 1.017; the full current drawings and layout are editable through the TTX source package.",
     ]
     if RECIPE["typography"].get("sans", {}).get("sans_rebuild"):
@@ -488,6 +519,8 @@ def package():
         ]
     if RECIPE.get("notes"):
         notes = [versions + ".", *RECIPE["notes"]] + [line for line in notes if line.startswith("The **VF**")]
+    if RECIPE.get("include_proof_site"):
+        notes.append("**PROOF** contains a local copy of the interactive proof, including all six variable faces and instructions for opening it.")
     (destination / "Release.md").write_text("\n\n".join(notes) + "\n")
     print(destination.relative_to(ROOT), flush=True)
 

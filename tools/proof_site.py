@@ -9,7 +9,7 @@ from string import Template
 
 from fontTools.ttLib import TTFont
 
-from bundle_release import RECIPE, ROOT, release_families, specimen_families
+from bundle_release import LICENSE_FILES, RECIPE, ROOT, release_families, specimen_families
 from glyph_proof import collect_inline_proof, viewer_sections
 
 
@@ -17,8 +17,9 @@ TOOLS = Path(__file__).resolve().parent
 EXAMPLES = {
     "sans": "Wayfinding",
     "system": "Legend",
-    "code": "fn tokens<'a>(input: &'a str) -> Vec<&'a str> {\n"
-            "    input.split_whitespace().collect::<Vec<_>>()\n}",
+    "code": "fn trim_width<'a>(input: &'a str) -> Vec<&'a str> {\n"
+            "    input.split_whitespace().collect::<Vec<_>>()\n}"
+            "\n\nimi  imx  xmi  xmx  iwi  .w.  minimum",
 }
 
 
@@ -28,8 +29,10 @@ def build_site(output, *, include_current_code=False):
     copyfile(TOOLS / "proof_site.css", assets / "proof-site.css")
     copyfile(TOOLS / "proof_site.js", assets / "proof-site.js")
     copyfile(TOOLS / "glyph_proof_compare.js", assets / "glyph-proof-compare.js")
-    for name in ("OFL.txt", "NOTICE.txt"):
-        copyfile(ROOT / name, output / name)
+    for name in LICENSE_FILES:
+        license_file = output / name
+        license_file.parent.mkdir(parents=True, exist_ok=True)
+        copyfile(ROOT / name, license_file)
     families = release_families()
     if include_current_code:
         families["code"] = specimen_families()["code"]
@@ -56,6 +59,11 @@ def build_site(output, *, include_current_code=False):
             label += " " + config["version"]
         selected = " selected" if key == "system" else ""
         choices.append(f'<option value="{key}"{selected}>{escape(label)}</option>')
+    (output / "README.txt").write_text(
+        "Daikonic Transit interactive proof\n\n"
+        "To open the downloaded proof, run python3 -m http.server 8000 from "
+        "this folder, then open http://localhost:8000 in your browser.\n"
+    )
     template = Template((TOOLS / "proof_site.html").read_text())
     (output / "index.html").write_text(template.substitute(
         choices="".join(choices), version=escape(RECIPE["version"]), tag=escape(RECIPE["tag"]),

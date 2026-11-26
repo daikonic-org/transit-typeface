@@ -1,15 +1,15 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/1.0.0/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "1e8ecf99421b204e6b900e8749f93544036883d9c6b27226b0090f01cdbe0d22",
+      "font": "releases/1.1.0/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "8c75be78bfc050a699580bb5c922aaa9bb5b320fd7cb03aee95419ec0b087334",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/1.0.0/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "94b6f5e9312b0fc8b484ebf2851e49c1d9d869803087b85e99d57e84b9908c9e",
+      "font": "releases/1.1.0/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "f80b417a699159d32b31f235ac34c7ad379e51b8e11aa300787305e22dffe0b3",
       "location": {
         "wght": 350,
         "opsz": 15.272720336914062,
@@ -17,8 +17,8 @@
       }
     },
     "code": {
-      "font": "releases/2026.11.20/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "6ed27a63b7a8ee37b134c84d9072facc5d2b57e410dad1ac6d512f1c124d10f7",
+      "font": "releases/1.1.0/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "c69f6811135a90df181b114bf376829923e923022ae566e2bb5502f43eb6604e",
       "location": {
         "wght": 350,
         "wdth": 100.0
@@ -97,7 +97,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -140,7 +141,7 @@
         ],
         [
           "l",
-          315,
+          323,
           0,
           0
         ],
@@ -394,13 +395,13 @@
         [
           "c",
           600,
-          0,
+          4,
           0
         ],
         [
           "o",
           600,
-          0,
+          -4,
           0
         ],
         [
@@ -430,13 +431,13 @@
         [
           "l",
           600,
-          0,
+          4,
           0
         ],
         [
           "e",
           600,
-          0,
+          -4,
           0
         ],
         [
@@ -486,31 +487,31 @@
         [
           "c",
           600,
-          0,
+          8,
           0
         ],
         [
           "o",
           600,
-          0,
+          4,
           0
         ],
         [
           "f",
           600,
-          0,
+          8,
           0
         ],
         [
           "f",
           600,
-          0,
+          -8,
           0
         ],
         [
           "e",
           600,
-          0,
+          -8,
           0
         ],
         [
@@ -528,25 +529,25 @@
         [
           "l",
           600,
-          0,
+          8,
           0
         ],
         [
           "e",
           600,
-          0,
+          -12,
           0
         ],
         [
           "t",
           600,
-          0,
+          -4,
           0
         ],
         [
           "t",
           600,
-          0,
+          4,
           0
         ],
         [
@@ -576,25 +577,25 @@
         [
           "e",
           600,
-          0,
+          12,
           0
         ],
         [
           "l",
           600,
-          0,
+          12,
           0
         ],
         [
           "l",
           600,
-          0,
+          -8,
           0
         ]
       ]
     },
     "code-texture-healing": {
-      "text": "film x.m .w.",
+      "text": "imi imx xmi xmx .w.",
       "on_features": {
         "ss04": false
       },
@@ -603,7 +604,13 @@
       },
       "on_shaping": [
         [
-          "f",
+          "i",
+          600,
+          -8,
+          0
+        ],
+        [
+          "m.texture.wide",
           600,
           0,
           0
@@ -615,13 +622,25 @@
           0
         ],
         [
-          "l.heal.left",
+          "space",
           600,
           0,
           0
         ],
         [
-          "m.heal.left",
+          "i",
+          600,
+          -8,
+          0
+        ],
+        [
+          "m.texture.middle",
+          600,
+          -9,
+          0
+        ],
+        [
+          "x",
           600,
           0,
           0
@@ -635,17 +654,41 @@
         [
           "x",
           600,
-          0,
+          -8,
           0
         ],
         [
-          "period",
+          "m.texture.middle",
+          600,
+          9,
+          0
+        ],
+        [
+          "i",
           600,
           0,
           0
         ],
         [
-          "m.heal.left",
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          -8,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
           600,
           0,
           0
@@ -663,7 +706,7 @@
           0
         ],
         [
-          "w.heal.both",
+          "w.texture.wide",
           600,
           0,
           0
@@ -677,7 +720,13 @@
       ],
       "off_shaping": [
         [
-          "f",
+          "i",
+          600,
+          -8,
+          0
+        ],
+        [
+          "m",
           600,
           0,
           0
@@ -689,13 +738,25 @@
           0
         ],
         [
-          "l",
+          "space",
           600,
           0,
           0
         ],
         [
+          "i",
+          600,
+          -8,
+          0
+        ],
+        [
           "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
           600,
           0,
           0
@@ -709,17 +770,41 @@
         [
           "x",
           600,
-          0,
+          -8,
           0
         ],
         [
-          "period",
+          "m",
           600,
           0,
           0
         ],
         [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          -8,
+          0
+        ],
+        [
           "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
           600,
           0,
           0
@@ -1041,19 +1126,19 @@
         [
           "p",
           600,
-          0,
+          8,
           0
         ],
         [
           "a",
           600,
-          0,
+          -4,
           0
         ],
         [
           "t",
           600,
-          0,
+          -16,
           0
         ],
         [
@@ -1063,27 +1148,33 @@
           0
         ],
         [
-          "colon_colon.liga.hairline",
-          600,
-          0,
+          "colon.positioned148",
+          300,
+          -124,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -176,
           0
         ],
         [
           "i",
           600,
-          0,
+          8,
           0
         ],
         [
           "t",
           600,
-          0,
+          -12,
           0
         ],
         [
           "e",
           600,
-          0,
+          -4,
           0
         ],
         [
@@ -1093,9 +1184,15 @@
           0
         ],
         [
-          "colon_colon.liga.hairline",
-          600,
-          18,
+          "colon.positioned148",
+          300,
+          -106,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -158,
           0
         ],
         [
@@ -1121,19 +1218,19 @@
         [
           "p",
           600,
-          0,
+          8,
           0
         ],
         [
           "a",
           600,
-          0,
+          -4,
           0
         ],
         [
           "t",
           600,
-          0,
+          -16,
           0
         ],
         [
@@ -1143,27 +1240,33 @@
           0
         ],
         [
+          "colon.positioned148",
+          300,
+          -124,
+          0
+        ],
+        [
           "colon_colon.liga",
-          600,
-          0,
+          300,
+          -176,
           0
         ],
         [
           "i",
           600,
-          0,
+          8,
           0
         ],
         [
           "t",
           600,
-          0,
+          -12,
           0
         ],
         [
           "e",
           600,
-          0,
+          -4,
           0
         ],
         [
@@ -1173,10 +1276,16 @@
           0
         ],
         [
+          "colon.positioned148",
+          300,
+          -106,
+          0
+        ],
+        [
           "colon_colon.liga",
-          600,
-          18,
-          50
+          300,
+          -158,
+          0
         ],
         [
           "less.generic",
@@ -1241,7 +1350,7 @@
         [
           "s",
           600,
-          0,
+          8,
           0
         ],
         [
@@ -1259,19 +1368,19 @@
         [
           "t",
           600,
-          0,
+          4,
           0
         ],
         [
           "i",
           600,
-          0,
+          8,
           0
         ],
         [
           "c",
           600,
-          0,
+          -8,
           0
         ],
         [
@@ -1333,7 +1442,7 @@
         [
           "s",
           600,
-          0,
+          8,
           0
         ],
         [
@@ -1351,19 +1460,19 @@
         [
           "t",
           600,
-          0,
+          4,
           0
         ],
         [
           "i",
           600,
-          0,
+          8,
           0
         ],
         [
           "c",
           600,
-          0,
+          -8,
           0
         ],
         [
@@ -1402,7 +1511,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -1587,13 +1697,20 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
-          "colon_colon.liga.hairline",
-          600,
-          18,
+          "colon.positioned148",
+          300,
+          -106,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -158,
           0
         ],
         [
@@ -1621,9 +1738,15 @@
           0
         ],
         [
-          "colon_colon.liga.hairline",
-          600,
-          18,
+          "colon.positioned148",
+          300,
+          -106,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -158,
           0
         ],
         [
@@ -1651,9 +1774,15 @@
           0
         ],
         [
-          "colon_colon.liga.hairline",
-          600,
-          18,
+          "colon.positioned148",
+          300,
+          -106,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -158,
           0
         ],
         [
@@ -1886,9 +2015,15 @@
           0
         ],
         [
-          "exclam_period.liga",
-          600,
-          0,
+          "exclam.positioned150",
+          300,
+          -118,
+          0
+        ],
+        [
+          "period.positioned151",
+          300,
+          -181,
           0
         ]
       ],
@@ -1960,9 +2095,15 @@
           0
         ],
         [
-          "exclam_period.liga",
-          600,
-          0,
+          "exclam.positioned150",
+          300,
+          -118,
+          0
+        ],
+        [
+          "period.positioned151",
+          300,
+          -181,
           0
         ]
       ]
@@ -1977,7 +2118,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2144,7 +2286,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2341,13 +2484,20 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
-          "colon_colon.liga.hairline",
-          600,
-          0,
+          "colon.positioned148",
+          300,
+          -124,
+          0
+        ],
+        [
+          "colon_colon.liga",
+          300,
+          -176,
           0
         ]
       ],
@@ -2376,13 +2526,20 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
-          "question_period.liga",
-          600,
-          0,
+          "question.positioned155",
+          300,
+          -63,
+          0
+        ],
+        [
+          "period.positioned156",
+          300,
+          -135,
           0
         ],
         [
@@ -2392,9 +2549,15 @@
           0
         ],
         [
-          "exclam_period.liga",
-          600,
-          0,
+          "exclam.positioned150",
+          300,
+          -118,
+          0
+        ],
+        [
+          "period.positioned151",
+          300,
+          -181,
           0
         ]
       ],
@@ -2441,7 +2604,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2536,7 +2700,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2637,13 +2802,26 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
-          "period_period_period.liga",
-          1800,
+          "period.positioned152",
+          600,
+          120,
+          0
+        ],
+        [
+          "period.positioned153",
+          600,
           0,
+          0
+        ],
+        [
+          "period.positioned154",
+          600,
+          -120,
           0
         ]
       ],
@@ -2678,7 +2856,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2773,7 +2952,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -2988,7 +3168,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -3054,7 +3235,7 @@
         [
           "s",
           600,
-          0,
+          8,
           0
         ],
         [
@@ -3072,19 +3253,19 @@
         [
           "t",
           600,
-          0,
+          4,
           0
         ],
         [
           "i",
           600,
-          0,
+          8,
           0
         ],
         [
           "c",
           600,
-          0,
+          -8,
           0
         ]
       ],
@@ -3197,7 +3378,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -3504,7 +3686,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -3532,21 +3715,21 @@
           0
         ],
         [
-          "m.heal.right",
+          "m.texture.middle",
           600,
-          0,
+          9,
           0
         ],
         [
-          "a.heal.right",
+          "a",
           600,
-          0,
+          8,
           0
         ],
         [
           "p",
           600,
-          0,
+          -8,
           0
         ],
         [
@@ -3761,7 +3944,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -3885,9 +4069,15 @@
           0
         ],
         [
-          "code.genericClose2.hairline",
-          1200,
-          0,
+          "greater.generic.hairline.positioned15",
+          600,
+          30,
+          0
+        ],
+        [
+          "greater.generic.hairline.positioned18",
+          600,
+          -30,
           0
         ]
       ],
@@ -4027,7 +4217,7 @@
       ]
     },
     "code-optical": {
-      "text": "ke Ke KE vi il",
+      "text": "string extra text",
       "on_features": {
         "calt": true,
         "liga": true,
@@ -4036,79 +4226,26 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
-          "k",
+          "s",
           600,
-          18,
+          8,
           0
         ],
         [
-          "e",
+          "t",
           600,
-          -18,
+          -16,
           0
         ],
         [
-          "space",
+          "r",
           600,
-          0,
-          0
-        ],
-        [
-          "K",
-          600,
-          18,
-          0
-        ],
-        [
-          "e",
-          600,
-          -18,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "K",
-          600,
-          18,
-          0
-        ],
-        [
-          "E",
-          600,
-          -18,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "v",
-          600,
-          18,
-          0
-        ],
-        [
-          "i",
-          600,
-          -18,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
+          12,
           0
         ],
         [
@@ -4118,7 +4255,79 @@
           0
         ],
         [
-          "l",
+          "n",
+          600,
+          -8,
+          0
+        ],
+        [
+          "g",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          8,
+          0
+        ],
+        [
+          "x",
+          600,
+          -4,
+          0
+        ],
+        [
+          "t",
+          600,
+          -8,
+          0
+        ],
+        [
+          "r",
+          600,
+          16,
+          0
+        ],
+        [
+          "a",
+          600,
+          -8,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          8,
+          0
+        ],
+        [
+          "e",
+          600,
+          8,
+          0
+        ],
+        [
+          "x",
+          600,
+          -4,
+          0
+        ],
+        [
+          "t",
           600,
           0,
           0
@@ -4126,61 +4335,19 @@
       ],
       "off_shaping": [
         [
-          "k",
+          "s",
           600,
           0,
           0
         ],
         [
-          "e",
+          "t",
           600,
           0,
           0
         ],
         [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "K",
-          600,
-          0,
-          0
-        ],
-        [
-          "e",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "K",
-          600,
-          0,
-          0
-        ],
-        [
-          "E",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "v",
+          "r",
           600,
           0,
           0
@@ -4192,19 +4359,79 @@
           0
         ],
         [
+          "n",
+          600,
+          0,
+          0
+        ],
+        [
+          "g",
+          600,
+          0,
+          0
+        ],
+        [
           "space",
           600,
           0,
           0
         ],
         [
-          "i",
+          "e",
           600,
           0,
           0
         ],
         [
-          "l",
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "r",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
           600,
           0,
           0
@@ -4221,7 +4448,8 @@
       "off_features": {
         "calt": false,
         "liga": false,
-        "clig": false
+        "clig": false,
+        "kern": false
       },
       "on_shaping": [
         [
@@ -4379,65 +4607,65 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "3adf22a84795ba2c0ef626e3f7454457bfec90422d66c11a9b91853237070c41",
-    "code-Features.svg": "ddd4ebc6359a602b37cac98df9d8361e8ebb539b2b685b4a28734f467baf40b4",
-    "code-access-off.svg": "15c439096cfb9c99a0eda5f9d0c2700189f72ce2929861a03194adf48922b16d",
-    "code-access-on.svg": "ea97a4cdc4a0173c06fc5a05d68fff662dafda6b37ea20de06b122455e894d61",
-    "code-arrows-off.svg": "2abbf0e58e53c5239a530a65eaab24d50c9c70d0d535c3948d0d67b74e7a1fff",
-    "code-arrows-on.svg": "d1995a557c8a28c2a0f04f6c2dbdfd62d47dc05536ff1607ba2e3662010f8091",
-    "code-assignment-off.svg": "c2471c60f4ce984320803352d8f259dff7838f6a7b24bf3b0c56b34b014e151c",
-    "code-assignment-on.svg": "36a6d1cefc96588c7e29259cbe578b009b20dff4276bd2ce9578a5e5e648197d",
-    "code-at-repeat-off.svg": "de9a4e4b38fbfaf1007153744edd36600b53219713b1d74ad26de7da17dfec04",
-    "code-at-repeat-on.svg": "2423506463835014bc29a2d07358e9ed0b74b4fcf163fd0ce8fce6038c99d092",
-    "code-command-box.svg": "bda52ccc3e71c5a5e67b6c37aaf7565a6b9c3c9a43ce08188d478fe3b61b9379",
-    "code-command-diamond.svg": "f6e705cb4ff3856db886fa52d55a4962e2ce47bfeb61129ef0b595aa49c6cf8f",
-    "code-command-exists.svg": "b63e9a5152898b3f1f9e5171f617e682303c1216f638a1331daf058decd337d9",
-    "code-command-forall.svg": "b2702758f590bcaaca7e7c346e55ed2df9eef4168e089d43e248202aa85a380a",
-    "code-command-not.svg": "bd23faaa76c604eed07ec024fc3a7d709a4afb8e09d770670582df41c8a4b5ee",
-    "code-comparisons-off.svg": "93e2175713b52ce06fba3ed6980b2cdcc16d9081648336437459c2688f54fa30",
-    "code-comparisons-on.svg": "b155bb431c637223775c081c455dad7a5bb61f6f61a55eff5b4a764b0872448b",
-    "code-ellipsis-off.svg": "ccb82458d289b528372cca81a4ba93f8829243f6bbcda025a3285fb1e6099d12",
-    "code-ellipsis-on.svg": "c32ff9fed431a64450d9475b6f7c1103eb0ff6ca7858bfbed4159585fc5fb30d",
-    "code-generics-off.svg": "760ced9c35d40b94b5a9f153f48b94cf13eb10bdb2b4b13bdad98a8968512451",
-    "code-generics-on.svg": "d7f9b8f02feb35743751ea9d460b7d3769544bc89efd82529f69abcc06eaf5be",
-    "code-hairline-delimiters-off.svg": "4beb6650a7de357cd0dd374402907be5c5408ff0181897261b43be0fda31d617",
-    "code-hairline-delimiters-on.svg": "34ff8dafafc05a5ffc7a8676a32ef300ecc9d88284a489b7070df1d1d99547c2",
-    "code-hairline-lifetimes-off.svg": "c6e5dab6717039c03eb4aa78666d7dfe5c716f3d487f46e858dbc750f49a019f",
-    "code-hairline-lifetimes-on.svg": "10f11c8f4e316aa135f4ece44a5c360939dc48ee03ea36febbf6fbcf5dea6946",
-    "code-hairline-scope-off.svg": "cd8b06a6c59c1a9812daf67d33a268f080f6b57989b8c84cdcf5c7a245b146a6",
-    "code-hairline-scope-on.svg": "812843d99251c2fbe248c178679983946c90adf4899f6df77e6e4210f88dc3cc",
-    "code-hashes-off.svg": "8065dc37f3711f6ef98bb4a9edd37541352642c1ef9a31c0e15c6bbb1192df16",
-    "code-hashes-on.svg": "8f70e7f73f4bced724f463debaadd346520b305716df8e64ec1e36ecbf381141",
-    "code-interpolation-off.svg": "d164c06fda397c601e6e6b52f8e4e752fafca17cc13c83f689e9763e7544875d",
-    "code-interpolation-on.svg": "b6201183b8b68662db1db58feba0dc47aefd3947ea248279e5033d829f130894",
-    "code-lifetime-literals-off.svg": "50fa063eb5f9561a2e59adcef885d6881b982db4e99c0373eec021f3f0a90638",
-    "code-lifetime-literals-on.svg": "44e1e27a29f0034782d9385bcadcb0805179bca6ed42c926aac5783faacced9d",
-    "code-lifetimes-off.svg": "056ce621e7975bd72b619b63c7db2c0f4995be9330635bd2034ffb585fe95b50",
-    "code-lifetimes-on.svg": "0ea83e9ba60ae4b5d3c5ec1c723d6adb841cee5d834b70e63b96d8622adb3443",
-    "code-logic-not-off.svg": "dd61a99190860bd30b891f5517fc8254713a6b7b797450a0058a4e4bec856197",
-    "code-logic-not-on.svg": "e9b17d89e284c63a4a8874696d7a39e628dc108f609f6937f93dcab3604510b4",
-    "code-logic-off.svg": "47aa4724274100da25cd59eeff443502e8ef488f48652ec0c20f42ab2abb0aa2",
-    "code-logic-on.svg": "6f0665b890337c2cfba19d0b2fabbb9639a204a61e317fae6bf1744c891c9589",
-    "code-logic-order-off.svg": "901425079209a4febc6e406c9bb6c3dce35853fa49a1955d624f3f1cc8b7aade",
-    "code-logic-order-on.svg": "ac1024b5642a76d70299e980a86b9159922ed3ecb53217e2c6c67f6b59d47f24",
-    "code-optical-off.svg": "58d9418633dd6ce52871cdc53942696569fe60d571396185553c32ee01f236b9",
-    "code-optical-on.svg": "8cfb29a3adae63c000bc1a8a2f364e1543d60f4fa8a97fe6431cc40d825c64b2",
-    "code-paired-stems-off.svg": "42f5810b6b64399756c86f7e7083dd5be4f0440089ec0013189a1bbd37f739f1",
-    "code-paired-stems-on.svg": "5ce155998ce45d2e288bded9eee53de56f0a58d210a6a4b898babff66317bfdc",
-    "code-pipe-delimiters-off.svg": "08c07011deec3e713eb40020894bba30b63d003d0ab79bb716c4aa56f77aba9f",
-    "code-pipe-delimiters-on.svg": "5c16d2445dcc7a2589a4722d3b02ac6b8f9b43b8359ab3db98a07d6abb4da54a",
-    "code-ranges-off.svg": "9b7a1583836f5a5220bb312e2b8e36af2b301d3d6104230a10c69c8bab297a78",
-    "code-ranges-on.svg": "f1a8f8f14b6cb8ee5eb0bd4b2253f42c04471c3b0d41d5ef3fc5a923d9f3c60c",
-    "code-rust-inference-off.svg": "46a49e3fed969c479f9551315bd51cfae5c6f91f6b0dc74fab18ec6e3fbcc492",
-    "code-rust-inference-on.svg": "f5197ecf5fc7218910d16063b60e55ff40279f643532e252b574f52ff6a15bdf",
-    "code-rust-turbofish-off.svg": "3ff9843aceb70954ab1e6caca7959901cf0e85a74a8a0166921cab404b139b42",
-    "code-rust-turbofish-on.svg": "898a864275ebb5e947ade24eb35468d23bcca35d4cc693d67fc44b48c26991f1",
-    "code-scope-off.svg": "305cbba8d89d533213edcac3fb89276554f976e971218ca7d130bf413751bad6",
-    "code-scope-on.svg": "983ba5a404279dfe1cf9df299e63836bd6ccf00802c161faa620de1cfb5f1a78",
-    "code-texture-healing-off.svg": "585303649ef57e4e20c5cbee8611032196a654ada822bef589eda8a922a85a6d",
-    "code-texture-healing-on.svg": "4f56ac10a06122f84e915d2b2805805ca3abd26bbd7e9293725174685656ad76",
-    "sans-Features.svg": "9efa5ff036d0e9c11838bbf477e3c6dab5290bf90e987b4264a4dfcc5e9b9d28",
-    "sans-hooks-off.svg": "891d154f27b92240ddfec399d5c96c0e1ec202f413fe511b0bfc1287c14ed874",
+    "Code-Characters.svg": "cfe185e5775becd9f96d9a04e2ab72f920db0a009335b987716b4789956f9579",
+    "code-Features.svg": "4d044e5cbab58a01af879bf6e17a4ce848d30378b0d8872a5b29af36d6c1ec87",
+    "code-access-off.svg": "0cade0818fd70fe9129ab4efcfc3ce8ba00975a186865ad13485d155e6701b9a",
+    "code-access-on.svg": "7ca63d447fca25b7c94ce2131639db433cd44f77b5dc1cdd9dba77bc55cc16df",
+    "code-arrows-off.svg": "14b7c229add60f2f680da8e0b02e3cc72639e8727381084c97f4e83efce791e0",
+    "code-arrows-on.svg": "907853b28e776bf07a9dfdbf0bda27b7a047a8345eae4d7d1e2c86916a9fd9bb",
+    "code-assignment-off.svg": "547057ebaf7696384ea58df8a9a56457b79dac39ec17a62853e834c22cc92ca6",
+    "code-assignment-on.svg": "778f67c52adb4ecadca751ec3a7dd3fbcb1bf5b68e46a3e2e9c8784b993ab1ee",
+    "code-at-repeat-off.svg": "aca5052ca86e95b292e28a61baafebb7ce1d4b27c69584dd12bb517abee85c1f",
+    "code-at-repeat-on.svg": "6764406b120e60f9af69f2b811b089461c76487ad5420dd03bc01c247e882de2",
+    "code-command-box.svg": "a6486497d1b612b04ee6c88afc8559f2b0ee819bf0d5197b30f224ba80c91315",
+    "code-command-diamond.svg": "4044a781b74f94e9c7cdfdbc17ddd24d90303b84ebc043530275416afcff3873",
+    "code-command-exists.svg": "d61508538cb1817d17c4611786a72cfa9ac74363221a4b9543bc63f0bf0c6f2c",
+    "code-command-forall.svg": "fcaae295726049423330f819a802e6966083ce7722a22ac9baa205ca6f16ac3a",
+    "code-command-not.svg": "4eabd243492184840602dc68718066ff0cb7be2df8d0388d9a78f350169feafa",
+    "code-comparisons-off.svg": "d552d285348d30764759df019ce07091bde2020f4115c2d119a53c41e7ca8c5b",
+    "code-comparisons-on.svg": "f94a3223a41d4626013b0a6c78a9316a3c6fdd361588f089b4c82e4b2d22347e",
+    "code-ellipsis-off.svg": "35e3ee35595fa6c1a6f293b6186821dabbddf4c2fed82b99c96b6506a6edabb8",
+    "code-ellipsis-on.svg": "d21538a8f263a8f43117f47f4c1cc130ef368d77da27fc27ca8f8917fb2b4f44",
+    "code-generics-off.svg": "b41ae5dff59dd4bed94321866448e43b3767469433ae7dd3229fd4a1a4186bf7",
+    "code-generics-on.svg": "e45ec37100360a64a2f0d5ca48885a0db27a1199d06982a4be15d9a39cf8611e",
+    "code-hairline-delimiters-off.svg": "2511dcf30071baafb940fb4b098eeed41110cf4c27187d8c1f90376f82bece46",
+    "code-hairline-delimiters-on.svg": "3a356fbb622ad881af65017b1119d92cc6a85bd3087129afcea32a2caf1ceccd",
+    "code-hairline-lifetimes-off.svg": "c9113a0c063d055e94565c6eefdaf5556dd2bf483dedc7bddfd2f7a2720016dd",
+    "code-hairline-lifetimes-on.svg": "7fe63cde6241165026b208428ab826b5f0c4afaa629d7d3924cd45beea865a06",
+    "code-hairline-scope-off.svg": "14d8116abaab6dd568231dc73563dc972ba7a1c7317a988b6c11675c14e04f2e",
+    "code-hairline-scope-on.svg": "aa1cde548359f04f1f6f51d773262ca55a9d46516d999a6cd69b5ee847052c92",
+    "code-hashes-off.svg": "6fc7934901b514485c257c8860c643d6137dc78227dc1315b679d89078055f75",
+    "code-hashes-on.svg": "a4bec5bce130d604aab0937cbe513be2349eed086429b741c70fe9082f1df882",
+    "code-interpolation-off.svg": "811334e3db1db752d05fc2b88469ba2d9be12d5992f6814ab05143810ba88597",
+    "code-interpolation-on.svg": "49a220b25c50d16002ce7196ceed0bf0394190d7561a949e63883ebed0114d22",
+    "code-lifetime-literals-off.svg": "d8862a46c0f953695263826569513fc2d6756d85c8ec0114a956d5a3e8d850b4",
+    "code-lifetime-literals-on.svg": "f29ef2550b1fe76b7edb5e85930b0c332e76eca5c9d3aab2f0b5a2e017ccc80e",
+    "code-lifetimes-off.svg": "9957da57eacfd1a0524b0935c70d855f37c74ba09b9c4643a0af49580c674587",
+    "code-lifetimes-on.svg": "6bd26514e6e8aae047a120cd14ecd8bdae38a60a0c91076eb370ed4392398d4a",
+    "code-logic-not-off.svg": "90a5674cd6f3c053ad576ffe789a0cee684028c977e26504a700323f9abee4c0",
+    "code-logic-not-on.svg": "ed9fa244f114c2d193296ea9cdf1bb0e57f08a3497cdf035b3389ca6e4d68b32",
+    "code-logic-off.svg": "f350243dd08a6fa9bb1bc00eb56793a739b80d29aa2d08fc379d4bed4db7c571",
+    "code-logic-on.svg": "64dd74436e5457bd1d16755df1aa9aec218c11c6b1baeaa81bc2124a72aacdbc",
+    "code-logic-order-off.svg": "f1ac43f8481a64a9ac5e82abb26340e00c715369b381a7c9cddc551b48f7d5a1",
+    "code-logic-order-on.svg": "949a6171fe88c7240afdee70b9fbb3e74e47259bb1202e11ba5a34c1e8d14b05",
+    "code-optical-off.svg": "f70ac3b20ba3d1e8936a73ffd4d87edc66d8c23506012d9c6ca3eb1ca65c48de",
+    "code-optical-on.svg": "8fb4fe01cd7b3c348342a09c4789a9feb089cd5f69bc87aafc15cd57e881bc6d",
+    "code-paired-stems-off.svg": "020fb962f36187b02a1bcc4c854b6722fb81ed80eebe1249acaccf2b1e58446e",
+    "code-paired-stems-on.svg": "a5bc18e1d80e79812d0feb85451020ada3fdf1b78e47be9bc4eae2867b92401e",
+    "code-pipe-delimiters-off.svg": "d42682f25ef2d8cd3b89cdea4997eca5e0e38550ad865563f36fc64956289488",
+    "code-pipe-delimiters-on.svg": "16f45927ee08b91b168893dbc66fdb39c48248a24df682102b7d34d4ca57f0a9",
+    "code-ranges-off.svg": "334454ae8f303efea5f7cbfa035da09fee2dcdab8febcea063dae6e14ae39378",
+    "code-ranges-on.svg": "a42ff5b3970a306882b628932c31c24f04b40feaa14a3a91c56df8adc46662e7",
+    "code-rust-inference-off.svg": "40d2730b3ea5036f87258aee93603e21e5c35a50f4097c8890f47fb72b61f0ca",
+    "code-rust-inference-on.svg": "272f6fe05777ef4d34bd44925caf84b887087e0c48e63dfc5319c5b740acfc79",
+    "code-rust-turbofish-off.svg": "ddc7fc3996d026bd6323cbefa9a024c76adb7e7400b8a64baeab479354ab6a11",
+    "code-rust-turbofish-on.svg": "49ae624d74ec9febeb67cb7e68c55647693224a7e93a808c4f3c4609de171f5e",
+    "code-scope-off.svg": "78ee4047e09be3c476c310550fd17bc25c312bc8aea21b540b174f5d1c5fade8",
+    "code-scope-on.svg": "4b6cb0d4f02d89d6b764e865a7f09c997aefde8ba9ad9ccce0e365f945597d37",
+    "code-texture-healing-off.svg": "75f4179fd1488b1642c8facbb14499d5e8c7ba282e61d46a019b42f93e1a43e2",
+    "code-texture-healing-on.svg": "cdbdef421529ab5541aebe755530d8fe00ff01b949ba3cda4b0aead899fb4f13",
+    "sans-Features.svg": "321f89b0666d9f1f5be7a3d4ef696f9139cd521cda7d2c0baa61c5c9a79c2952",
+    "sans-hooks-off.svg": "8871c3ff4764dda5bb012f5cace07877f987c78a99ecb964399c5f5fb7be3835",
     "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",
     "sans-standard-off.svg": "c16b127853b32545d65b7f0d2d3098935e245ffecfd35fa63a2436a67ddfde5b",
     "sans-standard-on.svg": "089ea74e6d911c56a3a0b5c674718249caa32d54f3b82cea1d8b99c12ccd7bdb",

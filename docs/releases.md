@@ -1,8 +1,8 @@
 # Release layout
 
-Sans and System 1.0.0 ship together, in upright and italic, with downloads grouped by format. The release includes complete editable TTX sources, a TTC per family, and specimens. System’s named styles combine five weights, three widths, and three optical sizes. [Release downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0)
+Sans, System and Code 1.1.0 ship together in upright and italic. The release includes variable TTF and WOFF2, named TTF and CFF OTF styles, a TTC for each family and complete editable TTX. The specimen archive includes PNG, PDF and SVG along with full glyph proof PDFs. The separate proof archive contains the interactive site and instructions for serving it locally. [Release downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0)
 
-The release recipe selects the reviewed variable fonts in `releases/1.0.0/`. Run `python tools/bundle_release.py build` to derive the distribution formats and `python tools/bundle_release.py package` to write the archives and checksums. The **Publish type proofs** workflow builds the live GitHub Pages proof from the selected release fonts. The Glyphs view filters the inline rows by group and glyph. [Interactive proofs](https://daikonic-org.github.io/transit-typeface/)
+The release recipe selects the fonts in `releases/1.1.0/`. Run `python tools/bundle_release.py build` to derive the distribution formats and `python tools/bundle_release.py package` to write the archives and checksums. The **Publish type proofs** workflow builds the same interactive proof for GitHub Pages. Select a family and style, type a sample at different axis settings, or filter the inline glyph rows. [Interactive proof](https://daikonic-org.github.io/transit-typeface/)
 
 ## Earlier release layout
 

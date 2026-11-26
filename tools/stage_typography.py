@@ -1,5 +1,6 @@
 """Stage the coordinated release's selected variable fonts."""
 
+from argparse import ArgumentParser
 import json
 from pathlib import Path
 import shutil
@@ -12,16 +13,33 @@ import code_compact_operators as operators
 from bundle_release import OUT, RECIPE
 import code_hairline_study as hairlines
 from code_hairline_toggle import build, default_hairlining, position_lifetime_ampersand, remove_lifetime_toggle, verify, verify_default
+from release_metadata import stamp_release
 from specimens import DATA, ROOT
 
 
-def stage(key, settings, scratch):
+def stage(key, settings, scratch, code_build=None):
     config = DATA["families"][key]
     stem = config["stem"]
     folder = OUT / key
     destination = folder / "VF"
     source = ROOT / settings["font"]
-    if settings.get("approved_binary"):
+    if settings.get("rebuild_code"):
+        from code_gpos_compaction import FAMILY
+        from release_code import release_font
+
+        destination.mkdir(parents=True, exist_ok=True)
+        for suffix in ("", "-Italic"):
+            input_path = code_build / f"{FAMILY.replace(' ', '')}{suffix}-VF.ttf"
+            with release_font(input_path, settings["version"], italic=bool(suffix)) as font:
+                font.save(destination / f"{stem}{suffix}-VF.ttf")
+    elif settings.get("metadata_source"):
+        destination.mkdir(parents=True, exist_ok=True)
+        for suffix in ("", "-Italic"):
+            input_path = ROOT / settings["metadata_source"] / f"{stem}{suffix}-VF.ttf"
+            with TTFont(input_path, recalcTimestamp=False) as font:
+                stamp_release(font, key, settings["version"])
+                font.save(destination / f"{stem}{suffix}-VF.ttf")
+    elif settings.get("approved_binary"):
         for label, suffix in (("font", "-VF.ttf"), ("italic_font", "-Italic-VF.ttf")):
             path = destination / (stem + suffix)
             assert path == ROOT / settings[label]
@@ -77,19 +95,33 @@ def stage(key, settings, scratch):
         verify(source, candidate, destination / (stem + "-VF.ttf"), aliases, release=True)
 
     selection = folder / "selection.json"
+    with TTFont(destination / f"{stem}-VF.ttf") as font:
+        weight_axis = next(axis for axis in font["fvar"].axes if axis.axisTag == "wght")
+        weight_range = [int(weight_axis.minValue), int(weight_axis.maxValue)]
     selection.write_text(json.dumps({
         "family": config["name"],
         "version": settings["version"],
         "status": "release",
-        "weight_range": [350, 500] if settings.get("punctuation") else [config["light"], config["heavy"]],
+        "weight_range": weight_range,
     }, indent=2) + "\n")
     return str(selection.relative_to(ROOT))
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--code-build", type=Path, help="Use an already verified Code rebuild")
+    args = parser.parse_args()
     with TemporaryDirectory() as tmp:
+        scratch = Path(tmp)
+        code_build = args.code_build
+        if not code_build and RECIPE["typography"].get("code", {}).get("rebuild_code"):
+            from code_gpos_compaction import build as build_code
+
+            code_build = scratch / "code"
+            code_build.mkdir()
+            build_code(json.loads((ROOT / "recipes/code-rebuild.json").read_text()), None, code_build)
         selections = {
-            key: stage(key, RECIPE["typography"][key], Path(tmp))
+            key: stage(key, RECIPE["typography"][key], scratch, code_build)
             for key in RECIPE["families"]
         }
     selection_path = ROOT / "specimens/font-selections.json"

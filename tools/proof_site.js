@@ -8,6 +8,8 @@ const glyphPicker = document.querySelector("#proof-glyph");
 const glyphFilters = document.querySelector("#glyph-filters");
 const gallery = document.querySelector("#glyph-proof");
 const typeProof = document.querySelector("#type-proof");
+const textureControl = document.querySelector("#texture-control");
+const textureToggle = document.querySelector("#proof-texture");
 const faceCache = new Map();
 const params = new URLSearchParams(location.search);
 let groups = {};
@@ -30,6 +32,9 @@ function visibleGroups() {
 function renderProof() {
   if (!comparison) return;
   const typing = proofMode.value === "text";
+  const textureAvailable = typing && selectedFace?.family === "code" && !selectedFace.italic;
+  textureControl.hidden = !textureAvailable;
+  typeProof.classList.toggle("texture-off", textureAvailable && !textureToggle.checked);
   typeProof.hidden = !typing;
   glyphFilters.hidden = gallery.hidden = typing;
   comparison.setTextMode(typing);
@@ -93,6 +98,7 @@ async function selectFace() {
 
 faceFamily.addEventListener("change", selectFace);
 italicToggle.addEventListener("change", selectFace);
+textureToggle.addEventListener("change", renderProof);
 groupPicker.addEventListener("change", updateGlyphs);
 glyphPicker.addEventListener("change", renderProof);
 gallery.addEventListener("click", event => {

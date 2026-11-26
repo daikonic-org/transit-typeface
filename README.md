@@ -4,9 +4,9 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 ![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-[Download Sans and System 1.0.0](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
+[Download Daikonic Transit 1.1.0](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
 
-Sans and System come in upright and italic. [Download Code 1.042](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-2026.11.20).
+All three typefaces come in upright and italic.
 
 The 9° italics use a single-storey `a`, a descending `f` and an open, single-storey `g`. Upright and italic include fitted `ff` and `tt` ligatures through `liga`. See the [italic letterforms](releases/2026.11.22/specimens/Italic-Letterforms.svg) and [paired stems](releases/2026.11.22/specimens/Paired-Stems.svg).
 
@@ -19,7 +19,7 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
-[Upright glyph proof](releases/1.0.0/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.0.0/specimens/Sans-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.0/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -41,7 +41,7 @@ An interface font for application navigation, controls, dashboards and short pas
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-[Upright glyph proof](releases/1.0.0/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.0.0/specimens/System-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.0/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/System-Italic-Glyph-Proof.pdf)
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -56,10 +56,9 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 
 - Three named weights: **Book, Regular and Medium**, with a variable weight range of 350–500. **Regular** is the default. The variable width range is 94–108%.
 - Fixed-width characters with [self-aligning ligatures](#self-aligning-ligatures) in upright Code.
-- Recalibrated point sizing in upright and italic. **12 pt** uses approximately the previous **11.5 pt** scale.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
 - Heavier, inward-set parentheses, brackets and braces for legibility, using one weight step above the surrounding text. Contextual pipe delimiters receive the same treatment. Extended brace pinches help distinguish `{}` from `()`.
-- Optical centering and contextual positioning for selected character pairs, preserving the fixed 600-unit character advance.
+- Class-based optical spacing within and at the edges of identifiers. Ordinary characters stay on the same grid, with 600 units per cell at standard width.
 - Variable accent attachment and stacking (`mark` / `mkmk`), zero-width combining marks, and consistent precomposed and decomposed accented forms.
 - A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
@@ -68,10 +67,12 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). The `&` in a recognized lifetime moves slightly toward the marker. Contextual matching preserves character literals such as `'a'` and `'_'`.
 - **Paired stems** (`liga`) for `ff`, `tt` and `ll` in upright and italic. The stems stay on the grid, with longer crossbars or hooks to balance the gaps. The foot of `i` aligns with the lowercase baseline.
 - Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
-- Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. Underscore drawings and all character advances stay intact.
-- Ligature caret positions for editors that support positioning the cursor inside a ligature.
+- Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. The scope pair takes one cell, and the generic delimiters keep their ordinary advances.
+- Glyphs drawn as ligatures provide caret positions where supported. Spacing-only sequences keep their separate characters, so editors can use the original text positions.
 
-Tall `<` and `>` appear only in matched delimiter pairs. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`), except explicit mixed square/angle enclosures, which force the tall form. Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
+Tall `<` and `>` appear in matched delimiter pairs and explicit mixed square/angle enclosures. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`), except explicit mixed square/angle enclosures, which force the tall form. Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
+
+[Upright glyph proof](releases/1.1.0/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/Code-Italic-Glyph-Proof.pdf)
 
 ### Symbol shortcuts
 
@@ -113,23 +114,23 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
 | Comparison / generic context<br><code>a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
-| Contextual optical placement<br><code>ke Ke KE vi il</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: ke Ke KE vi il"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: ke Ke KE vi il"> |
+| Contextual optical placement<br><code>string extra text</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: string extra text"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: string extra text"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
 
 ### Texture healing
 
-Upright Code uses contextual alternates to fit wider forms of `m` and `w` beside `a`, `i`, `j`, `l` and selected punctuation. Enable `ss04` to turn it off while keeping the other contextual features active. [Texture-healing specimen](releases/2026.11.19.1/specimens/Transit-Texture-Healing.svg)
+Upright Code uses standard, intermediate and wide forms of `m` and `w`. When a neighbor leaves room, OpenType positioning shifts the intermediate form toward that space. Two open sides, or a narrow neighbor at a word edge, allow the wide form. Enable `ss04` to turn Texture Healing off.
 
 <!-- code-texture-healing -->
 | Feature / input | On | Off |
 | --- | --- | --- |
-| Texture healing<br><code>film x.m .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: film x.m .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: film x.m .w."> |
+| Texture healing<br><code>imi imx xmi xmx .w.</code> | <img src="specimens/features/code-texture-healing-on.svg" width="460" alt="Texture healing on: imi imx xmi xmx .w."> | <img src="specimens/features/code-texture-healing-off.svg" width="460" alt="Texture healing off: imi imx xmi xmx .w."> |
 <!-- /code-texture-healing -->
 
 ### Hairlining
 
-Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is on by default. Enable `ss07` to turn it off. [Hairlining specimen](releases/2026.11.20/specimens/Code-Hairlines.svg)
+Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is on by default. Enable `ss07` to turn it off.
 
 <!-- code-hairlining -->
 | Feature / input | On | Off |
@@ -141,16 +142,15 @@ Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader
 
 ### Self-aligning ligatures
 
-Selected ligatures in upright Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
+Selected sequences in Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
 
 | Advance | Ligatures |
 | --- | --- |
+| Two cells in rest and spread expressions | `...items` and `[...items]` |
 | One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
 | Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `==`, `!=`, `===`, `!==` |
 
 **Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
-
-[![Loose Equality on and off, one-cell scope and turbofish, and one-cell optional access](releases/2026.11.20/specimens/Compact-Punctuation.svg)](releases/2026.11.20/specimens/Compact-Punctuation.svg)
 
 ### Code example
 
@@ -166,20 +166,21 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-Each typeface has its own version number. Choose the package for the format you need from the [release page](https://github.com/daikonic-org/transit-typeface/releases).
+Release 1.1.0 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0).
 
 | Package | Contents | Use |
 | --- | --- | --- |
-| **VF** | Variable TrueType fonts | Adjustable weights in applications that support variable fonts. System also includes width and optical size. |
-| **TTC** | One TrueType collection per family, containing all named static styles | Install all weights together, including System’s width and optical-size presets. |
+| **VF** | Variable TrueType fonts | Adjustable weights in applications that support variable fonts. System and Code also include width. System adds optical size. |
+| **TTC** | One TrueType collection per family, containing all named static styles | Install all weights together, including System and Code width presets and System optical-size presets. |
 | **OTF** | Static CFF OpenType fonts with the same glyphs, spacing and layout features | Desktop applications and publishing workflows that prefer CFF outlines. |
 | **TTF** | Individual static TrueType fonts | Applications that use separate font styles. |
 | **WOFF2** | Variable webfont and a CSS example | Websites and web applications. |
 | **SOURCE** | Complete editable TTX snapshots and portable rebuild scripts | Editing or building the typefaces. Historical native Glyphs/UFO/designspace sources remain in the repository at their documented versions; current TTX snapshots include every outline and layout feature. |
-| **SPECIMEN** | PNG, PDF and SVG specimens, plus the interactive proof | Previewing and comparing the designs. |
+| **SPECIMEN** | Matching PNG, PDF and SVG specimens, with full glyph proof PDFs | Previewing and comparing the designs. |
+| **PROOF** | Interactive proof for all three typefaces in upright and italic | Typing samples, inspecting glyphs and comparing axes in a browser. |
 | **SHA256SUMS** | Download checksums | Checking that an archive downloaded intact. |
 
-The Sans 1.0.0 TTC contains 10 upright and italic styles. The System TTC contains 90 styles across five weights, three widths, and three optical sizes in upright and italic. Archives that ship several typefaces use a separate folder for each family. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
+The collections contain 10 Sans, 90 System and 18 Code styles. All three include upright and italic. System covers five weights, three widths and three optical sizes. Code covers three weights and three widths. Archives that ship several typefaces use a separate folder for each family. The font-menu names are **Daikonic Transit Sans**, **Daikonic Transit System** and **Daikonic Transit Code**.
 
 Choose the variable font, the TTC collection or the individual static styles when installing a family. [Editor setup](docs/editor-setup.md) · [Source and build instructions](docs/build.md)
 
@@ -198,7 +199,7 @@ Development, scripting and documentation were assisted by OpenAI ChatGPT/Codex. 
 
 ## License
 
-The fonts are distributed under the [SIL Open Font License 1.1](OFL.txt). Original copyright and reserved-name notices are retained in [NOTICE.txt](NOTICE.txt).
+The fonts are distributed under the [SIL Open Font License 1.1](OFL.txt). The release archives and embedded font metadata include the OFL. See [NOTICE.txt](NOTICE.txt) and [source provenance](upstream/PROVENANCE.json) for the original copyright and reserved-name notices.
 
 ## Code editor setup
 
@@ -219,4 +220,4 @@ Install the Code variable TTFs in Font Book to choose any width from 94% to 108%
 
 The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.0.0)
+Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0)
