@@ -330,10 +330,12 @@ def json_for_script(value):
     return json.dumps(value).replace("<", "\\u003c")
 
 
-def viewer_sections():
+def viewer_sections(sample="Legend"):
     return {
         "base_style": Template((TEMPLATES / "glyph_proof_base.css").read_text()).substitute(width=WIDTH),
-        "sample_controls": (TEMPLATES / "glyph_proof_sample.html").read_text().rstrip(),
+        "sample_controls": Template((TEMPLATES / "glyph_proof_sample.html").read_text().rstrip()).substitute(
+            sample=escape(sample),
+        ),
     }
 
 
@@ -347,7 +349,7 @@ def collect_inline_proof(source):
     return groups, comparison
 
 
-def write_viewer(output, title, pages, pdfs, *, rows, comparison):
+def write_viewer(output, title, pages, pdfs, *, rows, comparison, sample="Legend"):
     first, first_label = pages[0]
     template = Template((TEMPLATES / "glyph_proof_viewer.html").read_text())
     options = "".join(f'<option value="{escape(page.name)}" data-title="{escape(label)}">{i}. {escape(label)}</option>'
@@ -359,7 +361,7 @@ def write_viewer(output, title, pages, pdfs, *, rows, comparison):
         rows=json_for_script(rows), header_y=ROW_TOP - DETAIL_HEADER_HEIGHT, detail_header=DETAIL_HEADER_HEIGHT,
         comparison=json_for_script(comparison),
         compare_script=(TEMPLATES / "glyph_proof_compare.js").read_text() if comparison else "",
-        **viewer_sections(),
+        **viewer_sections(sample),
     ))
 
 
@@ -402,13 +404,14 @@ def collect_proof(source, output, *, flagged=(), coordinates=None, interactive_a
     return f"{display} Glyph Proof", stem, pages, review_pages, rows, comparison
 
 
-def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False, interactive_axes=False):
+def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False, interactive_axes=False,
+                sample="Legend"):
     title, stem, pages, review_pages, rows, comparison = collect_proof(
         source, output, flagged=flagged, coordinates=coordinates, interactive_axes=interactive_axes,
     )
     all_pages = [*pages, *review_pages]
     if svg_only:
-        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison)
+        write_viewer(output, title, all_pages, [], rows=rows, comparison=comparison, sample=sample)
         return
     for page, _ in all_pages:
         render(page, scale=2, pdf=False)
@@ -419,7 +422,7 @@ def build_proof(source, output, *, flagged=(), coordinates=None, svg_only=False,
         review_pdf = output / f"{stem}-Flagged-Outlines.pdf"
         render_pdf([page for page, _ in review_pages], review_pdf, title=title.replace("Glyph Proof", "Flagged Outlines"))
         pdfs.append((review_pdf, "Review PDF"))
-    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison)
+    write_viewer(output, title, all_pages, pdfs, rows=rows, comparison=comparison, sample=sample)
 
 
 def main():
