@@ -6,6 +6,7 @@ import json
 import unicodedata
 
 from fontTools.ttLib import TTFont
+from fontTools.ttLib.tables import otTables
 
 from audit import shape_from_glyphs
 from code_boundary_spacing import identifier_glyphs
@@ -36,14 +37,27 @@ def metrics_map(font, alias, source):
 
 def inherited_positions(font, aliases):
     inherit_pair_positioning(font, aliases)
+
+    def replacements(coverage):
+        return {alias: source for source in coverage.glyphs for alias in aliases.get(source, ())}
+
     for lookup in font["GPOS"].table.LookupList.Lookup:
         for wrapped in lookup.SubTable:
             table = getattr(wrapped, "ExtSubTable", wrapped)
+            if isinstance(table, otTables.SinglePos):
+                coverage = table.Coverage
+                added = replacements(coverage)
+                if added:
+                    names = sorted(set(coverage.glyphs) | added.keys(), key=font.getGlyphID)
+                    if table.Format == 2:
+                        values = dict(zip(coverage.glyphs, table.Value, strict=True))
+                        table.Value = [values[added.get(name, name)] for name in names]
+                        table.ValueCount = len(names)
+                    coverage.glyphs = names
             for field in ("BacktrackCoverage", "InputCoverage", "LookAheadCoverage"):
                 for coverage in getattr(table, field, ()):
-                    names = set(coverage.glyphs)
                     coverage.glyphs = sorted(
-                        names | {alias for source in names for alias in aliases.get(source, ())},
+                        set(coverage.glyphs) | replacements(coverage).keys(),
                         key=font.getGlyphID,
                     )
 
