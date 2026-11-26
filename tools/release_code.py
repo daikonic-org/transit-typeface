@@ -67,7 +67,8 @@ def release_font(source, version, *, italic, shift_intermediate_texture=False,
     return font
 
 
-def verify_release(font, path, prior, *, shift_intermediate_texture=False):
+def verify_release(font, path, prior, *, shift_intermediate_texture=False,
+                   working_spacing=False):
     verify_width(font, 600)
     with TTFont(prior) as baseline:
         assert set(baseline.getBestCmap()) <= set(font.getBestCmap())
@@ -102,10 +103,24 @@ def verify_release(font, path, prior, *, shift_intermediate_texture=False):
             on, off = (shape(engine, sample, flags) for flags in ({}, {"ss04": True}))
             assert [row[2] for row in on] == [row[2] for row in off] == [cell] * len(sample)
             index = next(i for i, row in enumerate(off) if row[0] in {"m", "w"})
-            assert off[index][4] == 0, (path, sample, off)
+            if working_spacing:
+                assert [row[4:] for row in on] == [row[4:] for row in off], (path, sample)
+                offset = off[index][4]
+            else:
+                assert off[index][4] == 0, (path, sample, off)
             if italic:
                 assert on == off
             else:
                 assert on[index][0] == glyph and on[index][4] == offset, (path, sample)
                 assert shape(engine, sample, {"ss03": True, "ss04": True}) == off
                 assert all(".texture." not in row[0] for row in off)
+        if working_spacing:
+            offsets = lambda sample: [row[4] for row in shape(engine, sample, {})]
+            assert offsets("exit")[0] - offsets("hexit")[1] == 8
+            assert offsets("window")[-1] == -8 and offsets("window_width")[5] == 0
+            if width == 100:
+                assert offsets("windows")[-2] == 8 and offsets("sweep")[1] == -8
+            assert offsets("ex") == [8, -8]
+            assert offsets("command")[2:4] == [-8, 8 if italic else 12]
+            for letter in "vwy":
+                assert offsets("ni" + letter + "an")[1:4] == offsets("nixan")[1:4]

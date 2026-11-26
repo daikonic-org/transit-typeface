@@ -19,7 +19,8 @@ EXAMPLES = {
     "system": "Legend",
     "code": "fn trim_width<'a>(input: &'a str) -> Vec<&'a str> {\n"
             "    input.split_whitespace().collect::<Vec<_>>()\n}"
-            "\n\nimi  imx  xmi  xmx  iwi  .w.  minimum",
+            "\n\nexit  hexit  window  windows  sweep"
+            "\nimi  imx  xmi  xmx  iwi  .w.  minimum",
 }
 
 

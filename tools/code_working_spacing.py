@@ -6,6 +6,7 @@ from pathlib import Path
 
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT
+from code_boundary_spacing import identifier_glyphs
 from code_gpos_compaction import FAMILY as LAYOUT_FAMILY, build
 from code_width import verify_width
 from font_feature_tools import add_features
@@ -30,13 +31,15 @@ def apply_compact_classes(recipe, refinement):
         face["boundaries"] = sorted(kept + overrides)
 
 
-def add_wide_spacing(font, face, amount):
+def glyph_class(font, characters):
     cmap = font.getBestCmap()
-    classes = {}
-    for label, characters in face["classes"].items():
-        bases = {cmap[ord(char)] for char in characters}
-        classes[label] = " ".join(name for name in font.getGlyphOrder()
-                                  if name.partition(".texture.")[0] in bases)
+    bases = {cmap[ord(char)] for char in characters}
+    return " ".join(name for name in font.getGlyphOrder()
+                    if name.partition(".texture.")[0] in bases)
+
+
+def add_wide_spacing(font, face, amount):
+    classes = {label: glyph_class(font, chars) for label, chars in face["classes"].items()}
     shared = amount // 2
     add_features(font, "\n".join([
         "languagesystem DFLT dflt;",
@@ -58,26 +61,71 @@ def add_wide_spacing(font, face, amount):
     ]))
 
 
-def main():
-    parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--output", required=True, type=Path)
-    args = parser.parse_args()
+def add_directional_boundaries(font, settings):
+    convex_left = settings["convex_left"]
+    convex_right = settings["convex_right"]
+    concave_left = settings["concave_left"]
+    concave_right = settings["concave_right"]
+    amount = settings["shift"]
+    shared = amount // 2
+    continued = " ".join(sorted(identifier_glyphs(font)))
+    add_features(font, f"""
+        languagesystem DFLT dflt;
+        languagesystem latn dflt;
+        @Identifier = [{continued}];
+        @ConvexLeft = [{glyph_class(font, convex_left)}];
+        @ConvexRight = [{glyph_class(font, convex_right)}];
+        @ConcaveLeft = [{glyph_class(font, concave_left)}];
+        @ConcaveRight = [{glyph_class(font, concave_right)}];
+        @TouchLeft = [{glyph_class(font, convex_right + concave_right)}];
+        @TouchRight = [{glyph_class(font, convex_left + concave_left)}];
+        feature calt {{
+            lookup DirectionalStart {{
+                ignore pos @Identifier @TouchLeft' @TouchRight;
+                pos @ConvexRight' <{amount} 0 0 0> @ConcaveLeft @Identifier;
+                pos @ConcaveRight' <{amount} 0 0 0> @ConvexLeft @Identifier;
+                pos @ConvexRight' <{shared} 0 0 0> @ConcaveLeft;
+                pos @ConcaveRight' <{shared} 0 0 0> @ConvexLeft;
+            }} DirectionalStart;
+            lookup DirectionalEnd {{
+                ignore pos @TouchLeft @TouchRight' @Identifier;
+                pos @Identifier @ConvexRight @ConcaveLeft' <-{amount} 0 0 0>;
+                pos @Identifier @ConcaveRight @ConvexLeft' <-{amount} 0 0 0>;
+                pos @ConvexRight @ConcaveLeft' <-{shared} 0 0 0>;
+                pos @ConcaveRight @ConvexLeft' <-{shared} 0 0 0>;
+            }} DirectionalEnd;
+        }} calt;
+    """)
+
+
+def build_fonts(output, version, family=FAMILY, *, source=None):
     recipe = json.loads(RECIPE_PATH.read_text())
     refinement = json.loads(SPACING_PATH.read_text())
     apply_compact_classes(recipe, refinement)
-    source = args.output / "source"
-    source.mkdir(parents=True, exist_ok=True)
-    build(recipe, None, source)
+    output.mkdir(parents=True, exist_ok=True)
+    if source is None:
+        source = output / "source"
+        source.mkdir(exist_ok=True)
+        build(recipe, None, source)
     for style, suffix in (("upright", ""), ("italic", "-Italic")):
         raw = source / f"{LAYOUT_FAMILY.replace(' ', '')}{suffix}-VF.ttf"
-        target = args.output / f"{FAMILY.replace(' ', '')}{suffix}-VF.ttf"
+        target = output / f"{family.replace(' ', '')}{suffix}-VF.ttf"
         face = recipe["layout_review"]["edge_spacing"][style]
-        with release_font(raw, "1.1.0", italic=bool(suffix), family=FAMILY) as font:
+        with release_font(raw, version, italic=bool(suffix), family=family) as font:
             add_wide_spacing(font, face, refinement["wide_neighbor_shift"])
+            add_directional_boundaries(font, refinement["directional_boundaries"])
             sanitize(font)
             verify_width(font, recipe["alphabet_review"]["cell"])
             font.save(target)
         print(target, flush=True)
+
+
+def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--version", default="1.1.1")
+    args = parser.parse_args()
+    build_fonts(args.output, args.version)
 
 
 if __name__ == "__main__":

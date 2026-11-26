@@ -23,7 +23,11 @@ def stage(key, settings, scratch, code_build=None):
     folder = OUT / key
     destination = folder / "VF"
     source = ROOT / settings["font"]
-    if settings.get("rebuild_code"):
+    if settings.get("working_spacing"):
+        from code_working_spacing import build_fonts
+
+        build_fonts(destination, settings["version"], config["name"], source=code_build)
+    elif settings.get("rebuild_code"):
         from code_gpos_compaction import FAMILY
         from release_code import release_font
 
@@ -117,12 +121,18 @@ if __name__ == "__main__":
     with TemporaryDirectory() as tmp:
         scratch = Path(tmp)
         code_build = args.code_build
-        if not code_build and RECIPE["typography"].get("code", {}).get("rebuild_code"):
+        code_settings = RECIPE["typography"].get("code", {})
+        if not code_build and (code_settings.get("rebuild_code") or code_settings.get("working_spacing")):
             from code_gpos_compaction import build as build_code
 
             code_build = scratch / "code"
             code_build.mkdir()
-            build_code(json.loads((ROOT / "recipes/code-rebuild.json").read_text()), None, code_build)
+            recipe = json.loads((ROOT / "recipes/code-rebuild.json").read_text())
+            if code_settings.get("working_spacing"):
+                from code_working_spacing import SPACING_PATH, apply_compact_classes
+
+                apply_compact_classes(recipe, json.loads(SPACING_PATH.read_text()))
+            build_code(recipe, None, code_build)
         selections = {
             key: stage(key, RECIPE["typography"][key], scratch, code_build)
             for key in RECIPE["families"]

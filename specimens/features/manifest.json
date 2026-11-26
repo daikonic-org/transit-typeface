@@ -1,15 +1,15 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/1.1.0/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "8c75be78bfc050a699580bb5c922aaa9bb5b320fd7cb03aee95419ec0b087334",
+      "font": "releases/1.1.1/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "aa2d53b9705535193148eb956a313071678971c511a47ac152ba925f57f7e567",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/1.1.0/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "f80b417a699159d32b31f235ac34c7ad379e51b8e11aa300787305e22dffe0b3",
+      "font": "releases/1.1.1/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "130e442cda98201cc669cbdafa9055abae2de49d31f8b386ba1a063c503a293c",
       "location": {
         "wght": 350,
         "opsz": 15.272720336914062,
@@ -17,8 +17,8 @@
       }
     },
     "code": {
-      "font": "releases/1.1.0/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "c69f6811135a90df181b114bf376829923e923022ae566e2bb5502f43eb6604e",
+      "font": "releases/1.1.1/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "fbecffa9792a445dd87a911a7384b422c8f23ea360f34c0f92dd27ca7df52a86",
       "location": {
         "wght": 350,
         "wdth": 100.0
@@ -636,7 +636,7 @@
         [
           "m.texture.middle",
           600,
-          -9,
+          -8,
           0
         ],
         [
@@ -660,7 +660,7 @@
         [
           "m.texture.middle",
           600,
-          9,
+          8,
           0
         ],
         [
@@ -752,7 +752,7 @@
         [
           "m",
           600,
-          0,
+          -8,
           0
         ],
         [
@@ -776,7 +776,7 @@
         [
           "m",
           600,
-          0,
+          8,
           0
         ],
         [
@@ -1174,7 +1174,7 @@
         [
           "e",
           600,
-          -4,
+          -16,
           0
         ],
         [
@@ -1266,7 +1266,7 @@
         [
           "e",
           600,
-          -4,
+          -16,
           0
         ],
         [
@@ -3717,13 +3717,13 @@
         [
           "m.texture.middle",
           600,
-          9,
+          0,
           0
         ],
         [
           "a",
           600,
-          8,
+          20,
           0
         ],
         [
@@ -4275,7 +4275,7 @@
         [
           "e",
           600,
-          8,
+          16,
           0
         ],
         [
@@ -4607,8 +4607,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "cfe185e5775becd9f96d9a04e2ab72f920db0a009335b987716b4789956f9579",
-    "code-Features.svg": "4d044e5cbab58a01af879bf6e17a4ce848d30378b0d8872a5b29af36d6c1ec87",
+    "Code-Characters.svg": "433fe2f9ca0cefd201d277ebc2265be40df94e06409d785a988027b6cc8f3381",
+    "code-Features.svg": "de28814eefd2733032fb4278a35f8094a194e6c80c49792e0c2858a8c35fcbbd",
     "code-access-off.svg": "0cade0818fd70fe9129ab4efcfc3ce8ba00975a186865ad13485d155e6701b9a",
     "code-access-on.svg": "7ca63d447fca25b7c94ce2131639db433cd44f77b5dc1cdd9dba77bc55cc16df",
     "code-arrows-off.svg": "14b7c229add60f2f680da8e0b02e3cc72639e8727381084c97f4e83efce791e0",
@@ -4632,8 +4632,8 @@
     "code-hairline-delimiters-on.svg": "3a356fbb622ad881af65017b1119d92cc6a85bd3087129afcea32a2caf1ceccd",
     "code-hairline-lifetimes-off.svg": "c9113a0c063d055e94565c6eefdaf5556dd2bf483dedc7bddfd2f7a2720016dd",
     "code-hairline-lifetimes-on.svg": "7fe63cde6241165026b208428ab826b5f0c4afaa629d7d3924cd45beea865a06",
-    "code-hairline-scope-off.svg": "14d8116abaab6dd568231dc73563dc972ba7a1c7317a988b6c11675c14e04f2e",
-    "code-hairline-scope-on.svg": "aa1cde548359f04f1f6f51d773262ca55a9d46516d999a6cd69b5ee847052c92",
+    "code-hairline-scope-off.svg": "1efc163b35215037cac344fa5ed50e778d75b69184dc7427e01631954560b016",
+    "code-hairline-scope-on.svg": "d2ef33de49ef24752fb525dbb4792344924bd1ee463701a61afafc41a34d65d8",
     "code-hashes-off.svg": "6fc7934901b514485c257c8860c643d6137dc78227dc1315b679d89078055f75",
     "code-hashes-on.svg": "a4bec5bce130d604aab0937cbe513be2349eed086429b741c70fe9082f1df882",
     "code-interpolation-off.svg": "811334e3db1db752d05fc2b88469ba2d9be12d5992f6814ab05143810ba88597",
@@ -4649,11 +4649,11 @@
     "code-logic-order-off.svg": "f1ac43f8481a64a9ac5e82abb26340e00c715369b381a7c9cddc551b48f7d5a1",
     "code-logic-order-on.svg": "949a6171fe88c7240afdee70b9fbb3e74e47259bb1202e11ba5a34c1e8d14b05",
     "code-optical-off.svg": "f70ac3b20ba3d1e8936a73ffd4d87edc66d8c23506012d9c6ca3eb1ca65c48de",
-    "code-optical-on.svg": "8fb4fe01cd7b3c348342a09c4789a9feb089cd5f69bc87aafc15cd57e881bc6d",
+    "code-optical-on.svg": "7c981009d90e1fb2762288bf9dd1b943ae4b8d1f7b5e00579a8f0cd59b5d55b2",
     "code-paired-stems-off.svg": "020fb962f36187b02a1bcc4c854b6722fb81ed80eebe1249acaccf2b1e58446e",
     "code-paired-stems-on.svg": "a5bc18e1d80e79812d0feb85451020ada3fdf1b78e47be9bc4eae2867b92401e",
     "code-pipe-delimiters-off.svg": "d42682f25ef2d8cd3b89cdea4997eca5e0e38550ad865563f36fc64956289488",
-    "code-pipe-delimiters-on.svg": "16f45927ee08b91b168893dbc66fdb39c48248a24df682102b7d34d4ca57f0a9",
+    "code-pipe-delimiters-on.svg": "f7d1b76958c399fa2cba45e0e682a7582fe0cc1ee91289b9d75bf0f1ffd32b02",
     "code-ranges-off.svg": "334454ae8f303efea5f7cbfa035da09fee2dcdab8febcea063dae6e14ae39378",
     "code-ranges-on.svg": "a42ff5b3970a306882b628932c31c24f04b40feaa14a3a91c56df8adc46662e7",
     "code-rust-inference-off.svg": "40d2730b3ea5036f87258aee93603e21e5c35a50f4097c8890f47fb72b61f0ca",
@@ -4662,8 +4662,8 @@
     "code-rust-turbofish-on.svg": "49ae624d74ec9febeb67cb7e68c55647693224a7e93a808c4f3c4609de171f5e",
     "code-scope-off.svg": "78ee4047e09be3c476c310550fd17bc25c312bc8aea21b540b174f5d1c5fade8",
     "code-scope-on.svg": "4b6cb0d4f02d89d6b764e865a7f09c997aefde8ba9ad9ccce0e365f945597d37",
-    "code-texture-healing-off.svg": "75f4179fd1488b1642c8facbb14499d5e8c7ba282e61d46a019b42f93e1a43e2",
-    "code-texture-healing-on.svg": "cdbdef421529ab5541aebe755530d8fe00ff01b949ba3cda4b0aead899fb4f13",
+    "code-texture-healing-off.svg": "68ced4d77e8ff83e77adfbc1a4896a726cb0d516b332e999dd1e9fb94e90303b",
+    "code-texture-healing-on.svg": "5e392a2195c5376602249058ebba3b2a1b06e9caf7b76cb6ea63e4dc34bd41c7",
     "sans-Features.svg": "321f89b0666d9f1f5be7a3d4ef696f9139cd521cda7d2c0baa61c5c9a79c2952",
     "sans-hooks-off.svg": "8871c3ff4764dda5bb012f5cace07877f987c78a99ecb964399c5f5fb7be3835",
     "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",

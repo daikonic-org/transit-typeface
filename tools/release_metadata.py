@@ -1,5 +1,7 @@
 """Apply distribution names and licensing to the released font binaries."""
 
+from fontTools.misc.fixedTools import floatToFixedToFloat
+
 from specimens import ROOT
 
 
@@ -9,6 +11,12 @@ DESCRIPTIONS = {
     "system": "An interface typeface derived from Daikonic Transit Sans with optical size and width axes.",
     "code": "A monospaced typeface derived from Daikonic Transit Sans for source editors and terminals.",
 }
+
+
+def font_revision(version):
+    major, minor, *patch = version.split(".")
+    patch_revision = int(patch[0]) if patch else 0
+    return floatToFixedToFloat(float(f"{major}.{minor}") + patch_revision / 1000, 16)
 
 
 def stamp_release(font, family, version):
@@ -34,8 +42,7 @@ def stamp_release(font, family, version):
         names.setName(value, name_id, 0, 4, 0)
     font["OS/2"].achVendID = "    "
     font["OS/2"].fsType = 0
-    font["head"].fontRevision = float(".".join(version.split(".")[:2]))
-
+    font["head"].fontRevision = font_revision(version)
 
 
 def verify_release_metadata(font, record):
@@ -43,6 +50,7 @@ def verify_release_metadata(font, record):
     license_text = (ROOT / "OFL.txt").read_text().strip()
     assert names.getDebugName(0) == license_text.split("\n\n", 1)[0]
     assert names.getDebugName(5) == "Version " + record["version"]
+    assert font["head"].fontRevision == font_revision(record["version"])
     assert names.getDebugName(8) == "Daikonic Transit Project"
     assert names.getDebugName(13) == license_text
     assert names.getDebugName(14) == "https://openfontlicense.org/"

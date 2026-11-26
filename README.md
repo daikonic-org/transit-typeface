@@ -4,7 +4,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 ![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-[Download Daikonic Transit 1.1.0](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
+[Download Daikonic Transit 1.1.1](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.1) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
 
 All three typefaces come in upright and italic.
 
@@ -19,7 +19,7 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
-[Upright glyph proof](releases/1.1.0/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/Sans-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.1/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.1/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -41,7 +41,7 @@ An interface font for application navigation, controls, dashboards and short pas
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-[Upright glyph proof](releases/1.1.0/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/System-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.1/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.1/specimens/System-Italic-Glyph-Proof.pdf)
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -58,7 +58,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - Fixed-width characters with [self-aligning ligatures](#self-aligning-ligatures) in upright Code.
 - Distinct `I`, `l` and `1` forms, a diamond-dotted zero, enlarged lowercase and diamond punctuation.
 - Heavier, inward-set parentheses, brackets and braces for legibility, using one weight step above the surrounding text. Contextual pipe delimiters receive the same treatment. Extended brace pinches help distinguish `{}` from `()`.
-- Class-based optical spacing within and at the edges of identifiers. Ordinary characters stay on the same grid, with 600 units per cell at standard width.
+- Class-based optical spacing within identifiers. At their edges, matching convex and concave shapes can move inward, as in `exit` and `window`. Ordinary characters stay on the same grid, with 600 units per cell at standard width.
 - Variable accent attachment and stacking (`mark` / `mkmk`), zero-width combining marks, and consistent precomposed and decomposed accented forms.
 - A raised, full-width inline `_` aligned with the lowercase baseline for clearer `snake_case`, with a heavier stroke and gapless repeated underscores.
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
@@ -72,7 +72,7 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 
 Tall `<` and `>` appear in matched delimiter pairs and explicit mixed square/angle enclosures. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`), except explicit mixed square/angle enclosures, which force the tall form. Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
 
-[Upright glyph proof](releases/1.1.0/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.0/specimens/Code-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.1/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.1/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.1/specimens/Code-Identifier-Spacing.pdf)
 
 ### Symbol shortcuts
 
@@ -120,7 +120,7 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 
 ### Texture healing
 
-Upright Code uses standard, intermediate and wide forms of `m` and `w`. When a neighbor leaves room, OpenType positioning shifts the intermediate form toward that space. Two open sides, or a narrow neighbor at a word edge, allow the wide form. Enable `ss04` to turn Texture Healing off.
+Upright Code uses standard, intermediate and wide forms of `m` and `w`. A neighbor with extra space can select the intermediate form. Two open sides, or a narrow neighbor at a word edge, can select the wide form. Alternates follow the same contextual placement rules as their base letters. Enable `ss04` to turn Texture Healing off.
 
 <!-- code-texture-healing -->
 | Feature / input | On | Off |
@@ -166,7 +166,7 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-Release 1.1.0 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0).
+Release 1.1.1 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.1).
 
 | Package | Contents | Use |
 | --- | --- | --- |
@@ -220,4 +220,4 @@ Install the Code variable TTFs in Font Book to choose any width from 94% to 108%
 
 The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.0)
+Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.1)

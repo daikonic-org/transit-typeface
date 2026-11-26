@@ -212,7 +212,9 @@ The working cut places `v`, `w`, and `y` in Compact alongside `x`, with
 boundary offsets measured from their outlines. The wide `m` can move with
 the width-class rules. Its neighbors can move up to 12 additional design
 units away from it, with 6 units per letter when both move into the same
-gap. Cell advances stay fixed at each width.
+gap. A final pass matches convex and concave pairs at identifier edges.
+The outer letter moves inward by 8 design units. In two-letter pairs,
+both letters move inward by 4 units each. Cell advances stay fixed at each width.
 
 ```sh
 .venv/bin/python tools/code_working_spacing.py --output .build/code-spacing

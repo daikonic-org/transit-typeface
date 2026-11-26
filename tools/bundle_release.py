@@ -256,6 +256,7 @@ def check():
                 verify_release(
                     variable, path, ROOT / "releases/2026.11.20/code/VF" / filename,
                     shift_intermediate_texture=settings.get("shift_intermediate_texture", False),
+                    working_spacing=settings.get("working_spacing", False),
                 )
             elif key == "code" and not settings.get("reuse"):
                 from code_hairline_toggle import check_release

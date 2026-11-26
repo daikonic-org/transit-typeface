@@ -1,6 +1,13 @@
 {
   "compact": "vwy",
   "wide_neighbor_shift": 12,
+  "directional_boundaries": {
+    "convex_left": "adeoq",
+    "convex_right": "beop",
+    "concave_left": "lvwxy",
+    "concave_right": "kvwxy",
+    "shift": 8
+  },
   "boundaries": {
     "upright": [
       ["a", "v", 8, -8],
