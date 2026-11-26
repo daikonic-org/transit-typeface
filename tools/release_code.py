@@ -48,20 +48,21 @@ def share_feature(font, table_name, source_tag, dest_tag):
                 language.ReqFeatureIndex = indexes[language.ReqFeatureIndex]
 
 
-def release_font(source, version, *, italic, shift_intermediate_texture=False):
+def release_font(source, version, *, italic, shift_intermediate_texture=False,
+                 family="Daikonic Transit Code"):
     font = TTFont(source, recalcTimestamp=False)
     share_feature(font, "GSUB", "ss08", "calt")
     share_feature(font, "GPOS", "ss08", "kern")
     if not italic:
         add_texture(font, shift_intermediate=shift_intermediate_texture)
-    family = "Daikonic Transit Code"
     name_trial(font, family, variable=True)
+    stem = family.replace(" ", "")
     for instance in font["fvar"].instances:
         style = WEIGHTS[instance.coordinates["wght"]]
         if italic:
             style = "Italic" if style == "Regular" else f"{style} Italic"
         instance.subfamilyNameID = font["name"].addName(style)
-        instance.postscriptNameID = font["name"].addName(f"DaikonicTransitCode-{style.replace(' ', '')}")
+        instance.postscriptNameID = font["name"].addName(f"{stem}-{style.replace(' ', '')}")
     stamp_release(font, "code", version)
     return font
 

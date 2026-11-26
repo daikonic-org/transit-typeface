@@ -205,3 +205,15 @@ Generate the recipe from the boundary review recipe with
 .venv/bin/python tools/code_width_spacing.py --recipe boundary.json \
   --output-recipe width-classes.json --steps 4 8 12
 ```
+
+### Working identifier spacing
+
+The working cut places `v`, `w`, and `y` in Compact alongside `x`, with
+boundary offsets measured from their outlines. The wide `m` can move with
+the width-class rules. Its neighbors can move up to 12 additional design
+units away from it, with 6 units per letter when both move into the same
+gap. Cell advances stay fixed at each width.
+
+```sh
+.venv/bin/python tools/code_working_spacing.py --output .build/code-spacing
+```
