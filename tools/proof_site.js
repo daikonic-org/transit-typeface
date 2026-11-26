@@ -32,7 +32,7 @@ function visibleGroups() {
 function renderProof() {
   if (!comparison) return;
   const typing = proofMode.value === "text";
-  const textureAvailable = typing && selectedFace?.family === "code" && !selectedFace.italic;
+  const textureAvailable = typing && selectedFace?.family === "code";
   textureControl.hidden = !textureAvailable;
   typeProof.classList.toggle("texture-off", textureAvailable && !textureToggle.checked);
   typeProof.hidden = !typing;

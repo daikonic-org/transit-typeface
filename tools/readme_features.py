@@ -45,7 +45,7 @@ FEATURES = {
             {"liga": True}, {"liga": False},
         ),
         (
-            "texture-healing", "Texture healing", "imi imx xmi xmx .w.",
+            "texture-healing", "Texture healing", "imi imx xmi xmx .w. IMI IWI",
             {"ss04": False}, {"ss04": True},
         ),
         (

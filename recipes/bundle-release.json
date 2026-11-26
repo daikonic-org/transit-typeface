@@ -1,6 +1,6 @@
 {
-  "version": "1.1.1",
-  "tag": "Transit-1.1.1",
+  "version": "1.1.2",
+  "tag": "Transit-1.1.2",
   "include_proof_site": true,
   "families": [
     "sans",
@@ -9,33 +9,34 @@
   ],
   "typography": {
     "sans": {
-      "version": "1.1.1",
-      "font": "releases/1.1.1/sans/VF/DaikonicTransitSans-VF.ttf",
-      "italic_font": "releases/1.1.1/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
+      "version": "1.1.2",
+      "font": "releases/1.1.2/sans/VF/DaikonicTransitSans-VF.ttf",
+      "italic_font": "releases/1.1.2/sans/VF/DaikonicTransitSans-Italic-VF.ttf",
       "expected_static_faces": 10,
-      "metadata_source": "releases/1.1.0/sans/VF"
+      "metadata_source": "releases/1.1.1/sans/VF"
     },
     "system": {
-      "version": "1.1.1",
-      "font": "releases/1.1.1/system/VF/DaikonicTransitSystem-VF.ttf",
-      "italic_font": "releases/1.1.1/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
+      "version": "1.1.2",
+      "font": "releases/1.1.2/system/VF/DaikonicTransitSystem-VF.ttf",
+      "italic_font": "releases/1.1.2/system/VF/DaikonicTransitSystem-Italic-VF.ttf",
       "expected_static_faces": 90,
-      "metadata_source": "releases/1.1.0/system/VF"
+      "metadata_source": "releases/1.1.1/system/VF"
     },
     "code": {
-      "version": "1.1.1",
-      "font": "releases/1.1.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "italic_font": "releases/1.1.1/code/VF/DaikonicTransitCode-Italic-VF.ttf",
+      "version": "1.1.2",
+      "font": "releases/1.1.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "italic_font": "releases/1.1.2/code/VF/DaikonicTransitCode-Italic-VF.ttf",
       "expected_static_faces": 18,
       "rebuild_code": true,
-      "working_spacing": true
+      "working_spacing": true,
+      "capital_spacing_source": "releases/1.1.1/code/VF"
     }
   },
   "notes": [
-    "- **Code** uses Compact spacing for `v`, `w`, and `y` alongside `x`. The wide `m` can move within its cell, and its neighbors have more room to adjust.",
-    "- At identifier edges, a convex and concave pair can fit closer together. The `e` in `exit` and the final `w` in `window` move inward. The adjustment keeps character advances fixed.",
-    "- Upright Code keeps three Texture Healing widths for `m` and `w`. Each alternate follows the same spacing rules as its base letter. Enable `ss04` to turn Texture Healing off.",
-    "- **Sans and System** carry forward their 1.1.0 outlines and layout.",
+    "- **Code** widens `P`, `S`, and `L` with stroke compensation, extends the leg of `R`, opens the upper bowl of `B`, and insets the upper arm of `K`.",
+    "- Interior capitals anchor smart spacing in identifiers such as `HTTPServer` and `ParseResponse`. At identifier edges, `R` and `K` fit rounded lowercase, and `I` can tuck inward. These adjustments keep character advances fixed.",
+    "- Texture Healing adds intermediate and wide `M` and `W` in upright and italic Code. Upright also has lowercase `m` and `w` alternates. Enable `ss04` to turn Texture Healing off.",
+    "- **Sans and System** carry forward their 1.1.1 outlines and layout.",
     "- All three families include upright and italic styles, print specimens, and a browser proof. [Interactive proof](https://daikonic-org.github.io/transit-typeface/).",
     "- The fonts are licensed under the SIL Open Font License 1.1. Each archive contains the original Metropolitan Line notices and source attribution."
   ]

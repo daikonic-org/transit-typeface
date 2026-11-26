@@ -98,7 +98,7 @@ def add_directional_boundaries(font, settings):
     """)
 
 
-def build_fonts(output, version, family=FAMILY, *, source=None):
+def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=False):
     recipe = json.loads(RECIPE_PATH.read_text())
     refinement = json.loads(SPACING_PATH.read_text())
     apply_compact_classes(recipe, refinement)
@@ -114,6 +114,10 @@ def build_fonts(output, version, family=FAMILY, *, source=None):
         with release_font(raw, version, italic=bool(suffix), family=family) as font:
             add_wide_spacing(font, face, refinement["wide_neighbor_shift"])
             add_directional_boundaries(font, refinement["directional_boundaries"])
+            if capital_spacing:
+                from code_capital_spacing import apply_capital_spacing
+
+                apply_capital_spacing(font, wider=True, smart=True)
             sanitize(font)
             verify_width(font, recipe["alphabet_review"]["cell"])
             font.save(target)
@@ -124,8 +128,9 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--version", default="1.1.1")
+    parser.add_argument("--capital-spacing", action="store_true")
     args = parser.parse_args()
-    build_fonts(args.output, args.version)
+    build_fonts(args.output, args.version, capital_spacing=args.capital_spacing)
 
 
 if __name__ == "__main__":

@@ -219,3 +219,8 @@ both letters move inward by 4 units each. Cell advances stay fixed at each width
 ```sh
 .venv/bin/python tools/code_working_spacing.py --output .build/code-spacing
 ```
+
+The 1.1.2 [capital spacing pass](../tools/code_capital_spacing.py) adds
+wider `P`, `S`, and `L`, refines `B`, `R`, and `K`, and uses
+interior capitals as anchors for mixed-case positioning. It also adds
+uppercase `M` and `W` texture forms in both styles.

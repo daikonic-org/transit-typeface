@@ -20,7 +20,9 @@ EXAMPLES = {
     "code": "fn trim_width<'a>(input: &'a str) -> Vec<&'a str> {\n"
             "    input.split_whitespace().collect::<Vec<_>>()\n}"
             "\n\nexit  hexit  window  windows  sweep"
-            "\nimi  imx  xmi  xmx  iwi  .w.  minimum",
+            "\nimi  imx  xmi  xmx  iwi  .w.  minimum"
+            "\n\nHTTPServer  ParseResponse  Read  Key  Index  fileI"
+            "\nIMI  IWI  WiW  MMM  WWW",
 }
 
 

@@ -1,15 +1,15 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/1.1.1/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "aa2d53b9705535193148eb956a313071678971c511a47ac152ba925f57f7e567",
+      "font": "releases/1.1.2/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "51f8351e8982417a44409d20b84bd7bb63012ec8a06215c8dacd495bb0501d2c",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/1.1.1/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "130e442cda98201cc669cbdafa9055abae2de49d31f8b386ba1a063c503a293c",
+      "font": "releases/1.1.2/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "251e809be3f6f262fb63f0ffe5c509a5310b06d329d0c9f45de164de5cfbe154",
       "location": {
         "wght": 350,
         "opsz": 15.272720336914062,
@@ -17,8 +17,8 @@
       }
     },
     "code": {
-      "font": "releases/1.1.1/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "fbecffa9792a445dd87a911a7384b422c8f23ea360f34c0f92dd27ca7df52a86",
+      "font": "releases/1.1.2/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "2713c293535adddd791f96957e6d03388453ea9729c4f98cf035a26a031861ba",
       "location": {
         "wght": 350,
         "wdth": 100.0
@@ -595,7 +595,7 @@
       ]
     },
     "code-texture-healing": {
-      "text": "imi imx xmi xmx .w.",
+      "text": "imi imx xmi xmx .w. IMI IWI",
       "on_features": {
         "ss04": false
       },
@@ -716,6 +716,54 @@
           600,
           0,
           0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          12,
+          0
+        ],
+        [
+          "M.texture.wide",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          -12,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          12,
+          0
+        ],
+        [
+          "W.texture.wide",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          -12,
+          0
         ]
       ],
       "off_shaping": [
@@ -831,6 +879,54 @@
           "period",
           600,
           0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          12,
+          0
+        ],
+        [
+          "M",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          -12,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          12,
+          0
+        ],
+        [
+          "W",
+          600,
+          0,
+          0
+        ],
+        [
+          "I",
+          600,
+          -12,
           0
         ]
       ]
@@ -4607,8 +4703,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "433fe2f9ca0cefd201d277ebc2265be40df94e06409d785a988027b6cc8f3381",
-    "code-Features.svg": "de28814eefd2733032fb4278a35f8094a194e6c80c49792e0c2858a8c35fcbbd",
+    "Code-Characters.svg": "3508d252becb5db9079fd65892a71bfe17eab1903d9ee458a39a13f58c71d6bd",
+    "code-Features.svg": "a65ff86703af8371644f41a4e79111160be83ed8c066a3b91668906d20d206c6",
     "code-access-off.svg": "0cade0818fd70fe9129ab4efcfc3ce8ba00975a186865ad13485d155e6701b9a",
     "code-access-on.svg": "7ca63d447fca25b7c94ce2131639db433cd44f77b5dc1cdd9dba77bc55cc16df",
     "code-arrows-off.svg": "14b7c229add60f2f680da8e0b02e3cc72639e8727381084c97f4e83efce791e0",
@@ -4662,8 +4758,8 @@
     "code-rust-turbofish-on.svg": "49ae624d74ec9febeb67cb7e68c55647693224a7e93a808c4f3c4609de171f5e",
     "code-scope-off.svg": "78ee4047e09be3c476c310550fd17bc25c312bc8aea21b540b174f5d1c5fade8",
     "code-scope-on.svg": "4b6cb0d4f02d89d6b764e865a7f09c997aefde8ba9ad9ccce0e365f945597d37",
-    "code-texture-healing-off.svg": "68ced4d77e8ff83e77adfbc1a4896a726cb0d516b332e999dd1e9fb94e90303b",
-    "code-texture-healing-on.svg": "5e392a2195c5376602249058ebba3b2a1b06e9caf7b76cb6ea63e4dc34bd41c7",
+    "code-texture-healing-off.svg": "b0c38ee61c6fdfd06e0f67d514eaf5f7594112a531657dfaed59afa2472fae40",
+    "code-texture-healing-on.svg": "509390c46efb095708cccfe2c967a4948b5d0432e5672b06ba6eac2e718647a2",
     "sans-Features.svg": "321f89b0666d9f1f5be7a3d4ef696f9139cd521cda7d2c0baa61c5c9a79c2952",
     "sans-hooks-off.svg": "8871c3ff4764dda5bb012f5cace07877f987c78a99ecb964399c5f5fb7be3835",
     "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",

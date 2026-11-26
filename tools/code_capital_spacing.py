@@ -451,13 +451,18 @@ def add_spacing(font, *, edge_fit=False, smart=False):
     }
 
 
+def apply_capital_spacing(font, *, wider=False, smart=False):
+    if wider:
+        widen_compact_capitals(font)
+    donors = texture_donors(font)
+    add_texture(font, donors)
+    spacing = add_spacing(font, edge_fit=wider, smart=smart)
+    return spacing | {"texture_donors": {"".join(key): values for key, values in donors.items()}}
+
+
 def build(source, target, *, wider=False, smart=False):
     with TTFont(source, recalcTimestamp=False) as font:
-        if wider:
-            widen_compact_capitals(font)
-        donors = texture_donors(font)
-        add_texture(font, donors)
-        spacing = add_spacing(font, edge_fit=wider, smart=smart)
+        report = apply_capital_spacing(font, wider=wider, smart=smart)
         family = FAMILY + " Wide Trial" if wider else FAMILY
         if smart:
             family += " Smart"
@@ -467,7 +472,7 @@ def build(source, target, *, wider=False, smart=False):
         verify_width(font, CELL)
         sanitize(font)
         font.save(target)
-    return spacing | {"texture_donors": {"".join(key): values for key, values in donors.items()}}
+    return report
 
 
 def verify(source, target, *, wider=False, smart=False):
@@ -558,7 +563,7 @@ def verify(source, target, *, wider=False, smart=False):
                         location, sample, before, after)
 
 
-def comparison_specimen(before, after, style, output, *, smart=False):
+def comparison_specimen(before, after, style, output, *, smart=False, versions=None):
     paper, ink, dark = "#f7f5ee", "#182b31", "#171e22"
     width, height = 1340, 830
     page = [
@@ -570,6 +575,9 @@ def comparison_specimen(before, after, style, output, *, smart=False):
     ]
     columns = ((40, before, "Before · Previous spacing trial" if smart else "Before · Previous uppercase trial"),
                (710, after, "After · Smart kerning trial" if smart else "After · Revised capitals"))
+    if versions:
+        columns = tuple((x, font, f"{label.partition(' · ')[0]} · {version}")
+                        for (x, font, label), version in zip(columns, versions, strict=True))
     for x, _, label in columns:
         page.append(f'<text x="{x}" y="129" font-size="21" font-weight="700" fill="{ink}">{label}</text>')
     page.append('</g><path d="M670 113V655" stroke="#d6ddd7"/>')

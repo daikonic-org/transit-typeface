@@ -26,7 +26,8 @@ def stage(key, settings, scratch, code_build=None):
     if settings.get("working_spacing"):
         from code_working_spacing import build_fonts
 
-        build_fonts(destination, settings["version"], config["name"], source=code_build)
+        build_fonts(destination, settings["version"], config["name"], source=code_build,
+                    capital_spacing=bool(settings.get("capital_spacing_source")))
     elif settings.get("rebuild_code"):
         from code_gpos_compaction import FAMILY
         from release_code import release_font
