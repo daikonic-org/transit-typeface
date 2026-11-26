@@ -24,6 +24,7 @@ from code_crossbar_alignment import profile
 from code_foundation import ink_columns
 from code_receiver_texture import FEATURE, HALF_WIDTH, LANGUAGES, OFF_FEATURE, inherited_positions
 from code_width import verify_width
+from code_working_spacing import SPACING_PATH
 from font_feature_tools import add_features, append_glyph, expanded_variations, label_stylistic_set
 from glyph_proof import build_proof
 from render_svg import render, render_pdf
@@ -45,6 +46,7 @@ DONORS = ascii_letters + ".,:;!?()[]{}"
 TEXTURE_GAP = 108
 SPACING_GAP = 68
 BOUNDARY_SHIFT = 12
+CONCAVE_CAPITALS = "RK"
 STRESS_LOCATIONS = tuple(
     {"wght": weight, "wdth": width}
     for weight, width in product((350, 375, 400, 450, 500), (94, 97, 100, 104, 108))
@@ -66,6 +68,13 @@ COMPACT_SAMPLES = (
     "Ĺ  Ľ  Ķ  Ŕ  Ś    Bind  Pick  List  Task  objK",
     "type SqlRow = ParseResult<SQL, URL>;",
     "return SPLIT_PATHS ? parseSQL(rows) : LOG_LEVEL;",
+)
+SMART_SAMPLES = (
+    "HTTPServer  ParseResponse  Index  itemI",
+    "Read  Key  Item  fileI  Task  objK",
+    "P  R  K  I    HTTP  eRe  IO  eI",
+    "class HTTPServer extends ParseResponse {}",
+    "const itemI = new Index(Read, Key);",
 )
 
 
@@ -300,7 +309,7 @@ def spacing_classes(font, *, edge_fit):
     return dict(classes), dict(mixed)
 
 
-def add_spacing(font, *, edge_fit=False):
+def add_spacing(font, *, edge_fit=False, smart=False):
     ordinary, mixed = spacing_classes(font, edge_fit=edge_fit)
     classes = ordinary | mixed
     labels = {key: f"@CapFit{key[0]}{int(key[1])}{key[2]}" for key in classes}
@@ -314,22 +323,27 @@ def add_spacing(font, *, edge_fit=False):
         for left, right in product(mixed, repeat=2)
         if left[0] == "Right" and right[0] == "Left" and left[1] != right[1]
     }
-    pairs_to_classes = defaultdict(set)
-    measured = pairs | edge_pairs
-    for left, right in measured:
-        for a, b in product(classes[left], classes[right]):
-            pairs_to_classes[a, b].add((left, right))
-    all_names = sorted({name for pair in pairs_to_classes for name in pair})
+    glyph_gaps = {
+        (a, b): float("inf")
+        for left, right in pairs
+        for a, b in product(classes[left], classes[right])
+    }
+    all_names = sorted({name for pair in glyph_gaps for name in pair})
     for rows in profiles(font, all_names, STRESS_LOCATIONS):
-        for (a, b), pair_classes in pairs_to_classes.items():
-            clearance = min(gaps(rows[a], rows[b]), default=0)
-            for pair in pair_classes:
-                measured[pair] = min(measured[pair], clearance)
+        for a, b in glyph_gaps:
+            glyph_gaps[a, b] = min(glyph_gaps[a, b], min(gaps(rows[a], rows[b]), default=0))
+
+    def clearance(left, right):
+        return min(glyph_gaps[a, b] for a, b in product(left, right))
+
+    def lookup(name, rows):
+        return f"lookup {name} {{\n" + "\n".join(rows) + f"\n}} {name};"
+
     rules = {"Trailing": [], "Leading": []}
     boundary = {"Start": [], "End": []}
     moved = {}
     for left, right in pairs:
-        gap = measured[left, right]
+        gap = clearance(classes[left], classes[right])
         contraction = 20 if gap >= SPACING_GAP + 20 else 12 if gap >= SPACING_GAP + 12 else 0
         if not contraction:
             continue
@@ -343,49 +357,110 @@ def add_spacing(font, *, edge_fit=False):
     assert moved
     for left, right in edge_pairs:
         # Reserve the largest possible existing class contraction as well.
-        if measured[left, right] >= 56 + 20 + BOUNDARY_SHIFT:
+        if clearance(classes[left], classes[right]) >= 56 + 20 + BOUNDARY_SHIFT:
             a, b = labels[left], labels[right]
             if left[1]:
                 boundary["Start"].append(f"pos {a}' <{BOUNDARY_SHIFT} 0 0 0> {b};")
             else:
                 boundary["End"].append(f"pos {a} {b}' <-{BOUNDARY_SHIFT} 0 0 0>;")
-    boundary_classes, boundary_rules = [], []
-    if any(boundary.values()):
+    boundary_classes, boundary_rules, interior = [], [], []
+    if edge_fit:
+        caps = names_with_alternates(font, ascii_uppercase)
+        lowercase = names_with_alternates(font, ascii_lowercase)
         boundary_classes = [
             f"@CapContinue = [{' '.join(sorted(identifier_glyphs(font)))}];",
-            f"@CapUpper = [{' '.join(names_with_alternates(font, ascii_uppercase))}];",
-            f"@CapLower = [{' '.join(names_with_alternates(font, ascii_lowercase))}];",
+            f"@CapUpper = [{' '.join(caps)}];",
+            f"@CapLower = [{' '.join(lowercase)}];",
         ]
-        guards = {"Start": "@CapContinue @CapUpper' @CapLower",
-                  "End": "@CapLower @CapUpper' @CapContinue"}
-        boundary_rules = [f"lookup CapEdge{edge} {{\nignore pos {guards[edge]};\n"
-                          + "\n".join(rows) + f"\n}} CapEdge{edge};"
+        guard_neighbors = "@CapLower"
+        if smart:
+            boundary_classes.append(f"@CapLetters = [{' '.join(caps + lowercase)}];")
+            guard_neighbors = "@CapLetters"
+            for rows in rules.values():
+                if rows:
+                    rows.insert(0, "ignore pos @CapContinue @CapUpper' @CapContinue;")
+
+            def safe_neighbors(cap, neighbors, *, cap_first, minimum):
+                return [name for name in neighbors
+                        if glyph_gaps[(cap, name) if cap_first else (name, cap)] >= minimum]
+
+            # A measured exception for exposed I and the open side of R/K.
+            # Put these before the ordinary edge rules so a cap moves only once.
+            directions = json.loads(SPACING_PATH.read_text())["directional_boundaries"]
+            rounded = names_with_alternates(font, directions["convex_left"])
+            for direction, cap_first in (("Start", True), ("End", False)):
+                direct = []
+                specs = [("I", caps + lowercase)]
+                if cap_first:
+                    specs.extend((cap, rounded) for cap in CONCAVE_CAPITALS)
+                for cap, neighbors in specs:
+                    safe = safe_neighbors(cap, neighbors, cap_first=cap_first, minimum=78)
+                    if safe:
+                        others = "[" + " ".join(safe) + "]"
+                        if cap_first:
+                            direct.append(f"pos {cap}' <{BOUNDARY_SHIFT} 0 0 0> {others};")
+                        else:
+                            direct.append(f"pos {others} {cap}' <-{BOUNDARY_SHIFT} 0 0 0>;")
+                boundary[direction][:0] = direct
+
+            # Every interior capital is a wide anchor. Group capitals by how
+            # much clearance they can safely give up to a lowercase glyph.
+            for direction, cap_first in (("After", True), ("Before", False)):
+                groups = defaultdict(list)
+                for char in ascii_lowercase:
+                    neighbors = names_with_alternates(font, char)
+                    distant, open_gaps = [], []
+                    for cap in caps:
+                        size = min(glyph_gaps[(cap, name) if cap_first else (name, cap)]
+                                   for name in neighbors)
+                        if size >= 125:
+                            distant.append(cap)
+                        elif size >= 95:
+                            open_gaps.append(cap)
+                    for names, shift in ((distant, 16), (open_gaps, 10)):
+                        if names:
+                            groups[tuple(names), shift].extend(neighbors)
+                rows = []
+                for (names, shift), neighbors in groups.items():
+                    anchors, lower = (f"[{' '.join(group)}]" for group in (names, neighbors))
+                    if cap_first:
+                        rows.append(f"pos @CapContinue {anchors} {lower}' <-{shift} 0 0 0>;")
+                    else:
+                        rows.append(f"pos {lower}' <{shift} 0 0 0> {anchors} @CapContinue;")
+                if rows:
+                    interior.append(lookup(f"CapInterior{direction}", rows))
+        guards = {"Start": f"@CapContinue @CapUpper' {guard_neighbors}",
+                  "End": f"{guard_neighbors} @CapUpper' @CapContinue"}
+        boundary_rules = [lookup(f"CapEdge{edge}", [f"ignore pos {guards[edge]};", *rows])
                           for edge, rows in boundary.items() if rows]
     add_features(font, "\n".join([
         *LANGUAGES,
         *(f"{labels[key]} = [{' '.join(names)}];" for key, names in classes.items()),
         *boundary_classes,
         "feature calt {",
-        *(f"lookup {name}CapFit {{\n" + "\n".join(rows) + f"\n}} {name}CapFit;"
-          for name, rows in rules.items() if rows),
+        *(lookup(f"{name}CapFit", rows) for name, rows in rules.items() if rows),
         *boundary_rules,
+        *interior,
         "} calt;",
     ]))
     return {
         "classes": {labels[key].lstrip("@"): names for key, names in classes.items()},
         "contractions": moved,
         "boundary_rules": boundary,
+        "interior_rules": interior,
     }
 
 
-def build(source, target, *, wider=False):
+def build(source, target, *, wider=False, smart=False):
     with TTFont(source, recalcTimestamp=False) as font:
         if wider:
             widen_compact_capitals(font)
         donors = texture_donors(font)
         add_texture(font, donors)
-        spacing = add_spacing(font, edge_fit=wider)
+        spacing = add_spacing(font, edge_fit=wider, smart=smart)
         family = FAMILY + " Wide Trial" if wider else FAMILY
+        if smart:
+            family += " Smart"
         for record in font["name"].names:
             name = record.toUnicode().replace("Daikonic Transit Code", family)
             record.string = name.replace("DaikonicTransitCode", family.replace(" ", "")).encode(record.getEncoding())
@@ -395,7 +470,7 @@ def build(source, target, *, wider=False):
     return spacing | {"texture_donors": {"".join(key): values for key, values in donors.items()}}
 
 
-def verify(source, target, *, wider=False):
+def verify(source, target, *, wider=False, smart=False):
     baseline, candidate = [hb.Font(hb.Face(path.read_bytes())) for path in (source, target)]
     with TTFont(source) as original, TTFont(target) as font:
         assert original.getBestCmap() == font.getBestCmap()
@@ -453,19 +528,37 @@ def verify(source, target, *, wider=False):
                 end = shape(candidate, "objK", {})[-1][4]
                 inside_end = shape(candidate, "objK_", {})[-2][4]
                 assert (start - inside_start, end - inside_end) == (BOUNDARY_SHIFT, -BOUNDARY_SHIFT), location
-            for pair in map("".join, product(ascii_letters, repeat=2)):
-                if pair.islower():
+            if smart:
+                for text, index, moved in (("Read", 0, 12), ("Key", 0, 12), ("Index", 0, 12),
+                                            ("itemI", -1, -12), ("ParseResponse", 6, -16),
+                                            ("HTTPServer", 5, -10)):
+                    run = shape(candidate, text, {})
+                    prior = shape(baseline, text, {})[index]
+                    direction = 1 if moved > 0 else -1
+                    assert direction * (run[index][4] - prior[4]) >= abs(moved), (location, text, run)
+                anchor = shape(candidate, "ParseResponse", {})[5]
+                assert anchor[0] == "R" and anchor[4] == 0
+
+            def clearances(edges, run):
+                return [
+                    min(gaps(edges[left[0]], edges[right[0]])) + right[4] - left[4]
+                    for left, right in zip(run, run[1:])
+                ]
+
+            for a, b in product(ascii_letters, repeat=2):
+                if a.islower() and b.islower():
                     continue
-                before = shape(baseline, pair, {})
-                after = shape(candidate, pair, {})
-                minimum = []
-                for edges, (left, right) in ((baseline_edges, before), (rows, after)):
-                    local = gaps(edges[left[0]], edges[right[0]])
-                    minimum.append(min(local) + right[4] - left[4])
-                assert minimum[1] >= min(minimum[0], 16) - 1, (location, pair, minimum)
+                samples = [a + b]
+                if smart and a.isupper() != b.isupper():
+                    samples.append("n" + a + b if a.isupper() else a + b + "n")
+                for sample in samples:
+                    before = clearances(baseline_edges, shape(baseline, sample, {}))
+                    after = clearances(rows, shape(candidate, sample, {}))
+                    assert all(new >= min(old, 16) - 1 for old, new in zip(before, after, strict=True)), (
+                        location, sample, before, after)
 
 
-def comparison_specimen(before, after, style, output):
+def comparison_specimen(before, after, style, output, *, smart=False):
     paper, ink, dark = "#f7f5ee", "#182b31", "#171e22"
     width, height = 1340, 830
     page = [
@@ -475,13 +568,13 @@ def comparison_specimen(before, after, style, output):
         f'<text x="40" y="42" font-size="15" fill="#526971">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
         f'<text x="40" y="86" font-size="34" font-weight="700" fill="{ink}">Capitals before and after</text>',
     ]
-    columns = ((40, before, "Before · Previous uppercase trial"),
-               (710, after, "After · Revised capitals"))
+    columns = ((40, before, "Before · Previous spacing trial" if smart else "Before · Previous uppercase trial"),
+               (710, after, "After · Smart kerning trial" if smart else "After · Revised capitals"))
     for x, _, label in columns:
         page.append(f'<text x="{x}" y="129" font-size="21" font-weight="700" fill="{ink}">{label}</text>')
     page.append('</g><path d="M670 113V655" stroke="#d6ddd7"/>')
     settings = ((350, 100, "Book 350"), (400, 100, "Regular 400"), (500, 94, "Medium Narrow 500"))
-    samples = (*COMPACT_SAMPLES[:2], "B  P  R  K  S  L    BR  RK  SL")
+    samples = SMART_SAMPLES[:3] if smart else (*COMPACT_SAMPLES[:2], "B  P  R  K  S  L    BR  RK  SL")
     for index, (weight, width_axis, label) in enumerate(settings):
         top = 150 + 169 * index
         page.extend([
@@ -501,7 +594,9 @@ def comparison_specimen(before, after, style, output):
         state = label.partition(" · ")[0]
         page.append(f'<text x="{x}" y="697" font-family="Arial" font-size="15" fill="#a8c3c4">{state} · Editor samples at 16 px</text>')
         panel = Panel(f"compare-editor-{col}", {"font": font.resolve(), "axes": {"wdth": 100}})
-        for line, sample in enumerate((*COMPACT_SAMPLES[-2:], COMPACT_SAMPLES[3], COMPACT_SAMPLES[4])):
+        text = (*SMART_SAMPLES[3:], *SMART_SAMPLES[:2]) if smart else (
+            *COMPACT_SAMPLES[-2:], COMPACT_SAMPLES[3], COMPACT_SAMPLES[4])
+        for line, sample in enumerate(text):
             panel.text(sample, x, 728 + line * 24, 16, 400, "#eeefeb")
         page.append(panel.body())
     destination = output / f"Code-Capitals-{style.title()}.svg"
@@ -555,22 +650,28 @@ def main():
     parser.add_argument("--proofs", action="store_true")
     parser.add_argument("--widen-compact-caps", action="store_true",
                         help="try revised B, K, P, R, S, and L and inward mixed-case edge fitting")
+    parser.add_argument("--smart-cap-kerning", action="store_true",
+                        help="treat interior capitals as wide anchors and fit R, K, and I at edges")
     args = parser.parse_args()
+    if args.smart_cap_kerning and not args.widen_compact_caps:
+        parser.error("--smart-cap-kerning requires --widen-compact-caps")
     args.output.mkdir(parents=True, exist_ok=True)
     report, pages = {}, []
     wider = args.widen_compact_caps
-    samples = COMPACT_SAMPLES if wider else SAMPLES
+    smart = args.smart_cap_kerning
+    samples = SMART_SAMPLES if smart else COMPACT_SAMPLES if wider else SAMPLES
+    variation = ("WideTrial" if wider else "") + ("Smart" if smart else "")
     for style, suffix in STYLES.items():
         source = args.source / f"DaikonicTransitCode{suffix}"
-        target = args.output / f"{STEM}{'WideTrial' if wider else ''}{suffix}"
-        report[style] = build(source, target, wider=wider)
-        verify(source, target, wider=wider)
+        target = args.output / f"{STEM}{variation}{suffix}"
+        report[style] = build(source, target, wider=wider, smart=smart)
+        verify(source, target, wider=wider, smart=smart)
         print(target, flush=True)
         if args.proofs:
             if wider:
-                before = args.output / f"{STEM}{suffix}"
-                build(source, before)
-                pages.append(comparison_specimen(before, target, style, args.output))
+                before = args.output / f"{STEM}{'WideTrial' if smart else ''}{suffix}"
+                build(source, before, wider=smart)
+                pages.append(comparison_specimen(before, target, style, args.output, smart=smart))
             else:
                 pages.append(specimen(target, style, args.output, samples, "Uppercase spacing"))
             build_proof(target, args.output / style, svg_only=True, interactive_axes=True,
