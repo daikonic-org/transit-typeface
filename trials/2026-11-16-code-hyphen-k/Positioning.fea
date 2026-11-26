@@ -13,7 +13,6 @@ languagesystem DFLT dflt;
 
 feature calt {
       lookup KRound {
-        pos k <18 0 0 0> e <-18 0 0 0>;
         pos K <18 0 0 0> e <-18 0 0 0>;
         pos K <18 0 0 0> E <-18 0 0 0>;
       } KRound;

@@ -679,7 +679,8 @@ def main():
             check["syntax_ligatures"] = verify_syntax(built, candidate, recipe, check["weights"])
             check["rest_spread"] = verify_spread(built, candidate, recipe, check["weights"])
             check["hairlining"] = verify_hairlining(built, candidate, check["weights"])
-            check["spacing"] = verify_code_spacing(candidate, config["cell"])
+            spacing = recipe["layout_review"].get("edge_spacing", {})
+            check["spacing"] = verify_code_spacing(candidate, config["cell"], anchors=spacing.get("fixed", ""))
             check["logic"] = verify_logic(built, candidate, config["cell"], check["weights"])
         sanitize(built)
         report = {

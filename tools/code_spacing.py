@@ -106,13 +106,15 @@ def add_code_spacing(font, cell, install, *, triplet_offsets=None, edge_spacing=
     """)
 
 
-def verify_code_spacing(path, cell):
+def verify_code_spacing(path, cell, *, anchors=""):
     engine = hb.Font(hb.Face(path.read_bytes()))
     for weight in range(350, 501, 25):
         engine.set_variations({"wght": weight})
         for sample in ("ke", "Ke", "KE", "vi", "iv"):
             rows = shape(engine, sample, {})
-            assert [row[4] for row in rows] == [18, -18], (sample, rows)
+            expected = [0 if sample == "ke" or char in anchors else offset
+                        for char, offset in zip(sample, (18, -18), strict=True)]
+            assert [row[4] for row in rows] == expected, (sample, rows)
             assert [row[2] for row in rows] == [cell, cell], (sample, rows)
             assert all(row[4] == 0 for row in shape(engine, sample, {"calt": False}))
         for sample in ("@@", "@@@"):
