@@ -465,7 +465,51 @@ def verify(source, target, *, wider=False):
                 assert minimum[1] >= min(minimum[0], 16) - 1, (location, pair, minimum)
 
 
-def specimen(source, target, style, output, samples, title, *, wider=False):
+def comparison_specimen(before, after, style, output):
+    paper, ink, dark = "#f7f5ee", "#182b31", "#171e22"
+    width, height = 1340, 830
+    page = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" role="img">',
+        f'<rect width="{width}" height="{height}" fill="{paper}"/>',
+        '<g font-family="Arial, sans-serif">',
+        f'<text x="40" y="42" font-size="15" fill="#526971">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
+        f'<text x="40" y="86" font-size="34" font-weight="700" fill="{ink}">Capitals before and after</text>',
+    ]
+    columns = ((40, before, "Before · Previous uppercase trial"),
+               (710, after, "After · Revised capitals"))
+    for x, _, label in columns:
+        page.append(f'<text x="{x}" y="129" font-size="21" font-weight="700" fill="{ink}">{label}</text>')
+    page.append('</g><path d="M670 113V655" stroke="#d6ddd7"/>')
+    settings = ((350, 100, "Book 350"), (400, 100, "Regular 400"), (500, 94, "Medium Narrow 500"))
+    samples = (*COMPACT_SAMPLES[:2], "B  P  R  K  S  L    BR  RK  SL")
+    for index, (weight, width_axis, label) in enumerate(settings):
+        top = 150 + 169 * index
+        page.extend([
+            f'<path d="M40 {top}H1300" stroke="#d6ddd7"/>',
+            f'<text x="40" y="{top+25}" font-family="Arial" font-size="15" fill="#526971">{label}</text>',
+        ])
+        for col, (x, font, _) in enumerate(columns):
+            panel = Panel(f"compare-{index}-{col}", {"font": font.resolve(), "axes": {"wdth": width_axis}})
+            for line, sample in enumerate(samples):
+                panel.text(sample, x, top + 59 + line * 38, (24, 24, 32)[line], weight, ink)
+            page.append(panel.body())
+    page.extend([
+        f'<rect y="664" width="{width}" height="166" fill="{dark}"/>',
+        '<path d="M670 684V804" stroke="#3f5359"/>',
+    ])
+    for col, (x, font, label) in enumerate(columns):
+        state = label.partition(" · ")[0]
+        page.append(f'<text x="{x}" y="697" font-family="Arial" font-size="15" fill="#a8c3c4">{state} · Editor samples at 16 px</text>')
+        panel = Panel(f"compare-editor-{col}", {"font": font.resolve(), "axes": {"wdth": 100}})
+        for line, sample in enumerate((*COMPACT_SAMPLES[-2:], COMPACT_SAMPLES[3], COMPACT_SAMPLES[4])):
+            panel.text(sample, x, 728 + line * 24, 16, 400, "#eeefeb")
+        page.append(panel.body())
+    destination = output / f"Code-Capitals-{style.title()}.svg"
+    destination.write_text("".join(page) + "</svg>\n")
+    return destination
+
+
+def specimen(target, style, output, samples, title):
     paper, ink, dark = "#f7f5ee", "#182b31", "#171e22"
     page = [
         '<svg xmlns="http://www.w3.org/2000/svg" width="940" height="810" viewBox="0 0 940 810" role="img">',
@@ -486,19 +530,10 @@ def specimen(source, target, style, output, samples, title, *, wider=False):
         ])
         panel.text(samples[0], 40, top + 54, 27, weight, ink)
         panel.text(samples[1], 40, top + 87, 27, weight, ink)
-        if wider:
-            comparison = Panel(f"current{index}", {"font": source.resolve(), "axes": {"wdth": width}})
-            for x, selected in ((40, comparison), (475, panel)):
-                selected.text("B P R K S L · BR RK SL", x, top + 128, 27, weight, ink,
-                              features={"calt": False})
-            page.append(comparison.body())
-            labels = ((40, "Current outlines"), (475, "Adjusted outlines"))
-        else:
-            for x, features in ((40, {}), (475, {OFF_FEATURE: True})):
-                panel.text("IMI IWI WIM MMM WWW MiWiM", x, top + 128, 26, weight, ink,
-                           features=features)
-            labels = ((40, "Texture healing on"), (475, "Texture healing off"))
-        for x, text in labels:
+        for x, features in ((40, {}), (475, {OFF_FEATURE: True})):
+            panel.text("IMI IWI WIM MMM WWW MiWiM", x, top + 128, 26, weight, ink,
+                       features=features)
+        for x, text in ((40, "Texture healing on"), (475, "Texture healing off")):
             page.append(f'<text x="{x}" y="{top+149}" font-family="Arial" font-size="12" fill="#526971">{text}</text>')
         page.append(panel.body())
     page.append(f'<rect y="663" width="940" height="147" fill="{dark}"/>')
@@ -525,7 +560,6 @@ def main():
     report, pages = {}, []
     wider = args.widen_compact_caps
     samples = COMPACT_SAMPLES if wider else SAMPLES
-    title = "Compact capitals and boundary spacing" if wider else "Uppercase spacing"
     for style, suffix in STYLES.items():
         source = args.source / f"DaikonicTransitCode{suffix}"
         target = args.output / f"{STEM}{'WideTrial' if wider else ''}{suffix}"
@@ -533,7 +567,12 @@ def main():
         verify(source, target, wider=wider)
         print(target, flush=True)
         if args.proofs:
-            pages.append(specimen(source, target, style, args.output, samples, title, wider=wider))
+            if wider:
+                before = args.output / f"{STEM}{suffix}"
+                build(source, before)
+                pages.append(comparison_specimen(before, target, style, args.output))
+            else:
+                pages.append(specimen(target, style, args.output, samples, "Uppercase spacing"))
             build_proof(target, args.output / style, svg_only=True, interactive_axes=True,
                         sample="\n".join(samples))
     if pages:
