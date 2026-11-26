@@ -57,7 +57,7 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
         position_lifetime_ampersand(font)
     spacing = settings.get("edge_spacing", {})
     add_code_spacing(font, cell, install, triplet_offsets=settings.get("triplet_offsets"),
-                     edge_spacing=spacing.get(spacing_style), anchors=spacing.get("fixed", ""))
+                     edge_spacing=spacing.get(spacing_style))
 
 
 def angle_styles(rows):
