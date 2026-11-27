@@ -41,7 +41,6 @@ def build_delimiter_rails(font, settings, tokens):
     metrics = font["hmtx"]
     classes = font["GDEF"].table.GlyphClassDef.classDefs
     aliases = {}
-    plain_parentheses = settings.get("delimiter_revision", False)
 
     def register(base, parts):
         alternate = base + ".hairline"
@@ -53,8 +52,6 @@ def build_delimiter_rails(font, settings, tokens):
         aliases[base] = alternate
 
     for pair in (*PAIRS, ("less.generic", "greater.generic")):
-        if plain_parentheses and pair == ("parenleft", "parenright"):
-            continue
         for index, base in enumerate(pair):
             stroke = base + ".rail"
             forms = [polygon(delimiter_rail(gs, base, opening=index == 0, shifted=True)[0])
@@ -62,7 +59,7 @@ def build_delimiter_rails(font, settings, tokens):
             from_paths(font, stroke, locations, forms, 0)
             register(base, [(name, (1, 0, 0, 1, 0, 0)) for name in (base, stroke)])
 
-    derived = [tokens[token] for token in (("${", "$[") if plain_parentheses else ("${", "$[", "$("))]
+    derived = [tokens[token] for token in ("${", "$[", "$(") if tokens[token] in glyf]
     derived.extend(name for name in font.getGlyphOrder() if name.startswith("code.genericClose"))
     for base in derived:
         parts = [part.getComponentInfo() for part in glyf[base].components]

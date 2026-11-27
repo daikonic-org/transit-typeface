@@ -121,22 +121,26 @@ def build_syntax_context(font, cell, *, plain_parentheses=False):
     names = syntax_names(font)
     if plain_parentheses:
         del names["$("]
-        glyphs = font.getGlyphSet()
-        _, bottom, _, top = raw_outline(glyphs, "parenleft").bounds
-        _, dollar_bottom, _, dollar_top = raw_outline(glyphs, "dollar").bounds
-        dy = otRound((bottom + top - dollar_bottom - dollar_top) / 2)
-        _, _, _, inset, _ = interpolation_parts("parenleft", cell, dy)[0]
-        add_features(font, f"""
-            languagesystem DFLT dflt;
-            languagesystem latn dflt;
-            feature calt {{
-                pos dollar' <{inset} {dy} 0 0> parenleft' <-{inset} 0 0 0>;
-            }} calt;
-        """)
     classes = font["GDEF"].table.GlyphClassDef.classDefs
     for name in names.values():
         classes[name] = 2
     register_syntax_tokens(font, names, cell)
+
+
+def position_dollar_parenthesis(font, cell):
+    glyphs = font.getGlyphSet()
+    _, bottom, _, top = raw_outline(glyphs, "parenleft").bounds
+    _, dollar_bottom, _, dollar_top = raw_outline(glyphs, "dollar").bounds
+    dy = otRound((bottom + top - dollar_bottom - dollar_top) / 2)
+    _, _, _, inset, _ = interpolation_parts("parenleft", cell, dy)[0]
+    parens = " ".join(name for name in ("parenleft", "parenleft.hairline") if name in glyphs)
+    add_features(font, f"""
+        languagesystem DFLT dflt;
+        languagesystem latn dflt;
+        feature calt {{
+            pos dollar' <{inset} {dy} 0 0> [{parens}]' <-{inset} 0 0 0>;
+        }} calt;
+    """)
 
 
 def verify_syntax(font, path, recipe, weights):

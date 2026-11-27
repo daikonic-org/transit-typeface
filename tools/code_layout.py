@@ -17,7 +17,7 @@ from code_outlines import refresh_bounds
 from code_spacing import add_code_spacing
 from code_spread import build_spread_context
 from code_structural_fit import build_structural_angles
-from code_syntax_build import build_syntax_context
+from code_syntax_build import build_syntax_context, position_dollar_parenthesis
 from font_feature_tools import append_glyph
 from italic_returns import raw_outline
 
@@ -54,6 +54,8 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
     if spread_glyph:
         build_spread_context(font)
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
+    if revised:
+        position_dollar_parenthesis(font, cell)
     if not hairlines:
         position_lifetime_ampersand(font)
     spacing = settings.get("edge_spacing", {})

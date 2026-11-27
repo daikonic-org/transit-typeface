@@ -18,6 +18,7 @@ from check_code_rebuild import STYLES, shape
 from code_boundary_spacing import identifier_glyphs
 from code_foundation import ink_columns
 from code_hairline_study import MARKER
+from code_hairline_toggle import OFF_FEATURE
 from code_layout import angle_styles
 from code_math import BIDIRECTIONAL_ARROWS
 from font_feature_tools import add_features, expanded_variations
@@ -132,8 +133,16 @@ def verify(source, path):
     before, after = [hb.Font(hb.Face(p.read_bytes())) for p in (source, path)]
     prior, font = TTFont(source), TTFont(path)
     glyphs = set(font.getGlyphOrder())
-    assert {name for name in glyphs if name.startswith(("parenleft", "parenright", MARKER))} == {
-        "parenleft", "parenright", MARKER}
+    upright = not font["OS/2"].fsSelection & 1
+    parentheses = {"parenleft", "parenright"}
+    expected = parentheses | {MARKER}
+    if upright:
+        for base in parentheses:
+            rail = base + ".rail"
+            alias = base + ".hairline"
+            expected.update((rail, alias))
+            assert font["glyf"][alias].getComponentNames(font["glyf"]) == [base, rail]
+    assert {name for name in glyphs if name.startswith(("parenleft", "parenright", MARKER))} == expected
     pairs = {
         "<'a>": [True, True], "<'a'>": [True, True], "<x>": [True, True],
         "a<b>c": [True, True], "Vec<Vec<T>>": [True] * 4,
@@ -162,7 +171,13 @@ def verify(source, path):
         assert amp[1][2] - amp[1][0] > amp[0][2] - amp[0][0] + 12, location
         for sample in controls:
             assert shape(before, sample, {}) == shape(after, sample, {}), (location, sample)
-        for flags in ({}, {"ss07": True}):
+        for sample in ("()", "f((x))", "map(a, b)", "$(x)"):
+            plain = shape(after, sample, {OFF_FEATURE: True})
+            active = shape(after, sample, {})
+            assert all(not row[0].endswith(".hairline") for row in plain), (location, sample, plain)
+            assert active == [[name + ".hairline" if upright and name in parentheses else name, *rest]
+                              for name, *rest in plain], (location, sample, active, plain)
+        for flags in ({}, {OFF_FEATURE: True}):
             for token, name in BIDIRECTIONAL_ARROWS.items():
                 rows = shape(after, token + "x", flags)
                 assert [row[:3] for row in rows] == [[name, 0, 2 * cell], ["x", 3, cell]], (location, rows)
@@ -175,9 +190,6 @@ def verify(source, path):
                 assert angle_styles(rows) == expected, (location, sample, rows)
                 advance = sum(row[2] for row in shape(before, sample, flags))
                 assert sum(row[2] for row in rows) == advance, (location, sample, rows)
-            rows = shape(after, "$(x)", flags)
-            assert [row[0] for row in rows] == ["dollar", "parenleft", "x", "parenright"], rows
-            assert rows[0][4] > 0 > rows[1][4] and all(row[2] == cell for row in rows), rows
             for sample in lifetimes:
                 rows = shape(after, sample, flags)
                 x = 0
@@ -194,6 +206,9 @@ def verify(source, path):
                 assert all(abs(pathops.op(hook, p, pathops.PathOp.INTERSECTION).area) < 1
                            for name, hook in paths if name == MARKER
                            for other, p in paths if other != MARKER and len(p)), (location, sample, rows)
+        rows = shape(after, "$(x)", {OFF_FEATURE: True})
+        assert [row[0] for row in rows] == ["dollar", "parenleft", "x", "parenright"], rows
+        assert rows[0][4] > 0 > rows[1][4] and all(row[2] == cell for row in rows), rows
     print(path.name, "verified at 25 axis settings", flush=True)
 
 
