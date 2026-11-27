@@ -72,6 +72,8 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 
 Matched angle delimiters are tall, including empty and nested pairs such as `Vec<>T` and `Vec<Vec<>>`. An empty pair with a space on both sides, as in `a <> b`, uses short angles. Unmatched angles also stay short. Contextual matching supports up to 16 nesting levels and 60 non-mark glyphs per pair.
 
+Adjacent opening or closing delimiters fit closer together in nested expressions such as `(({x}))` and `([{x}])`. Each delimiter keeps its cell advance.
+
 [Upright glyph proof](releases/1.1.3/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.3/specimens/Code-Identifier-Spacing.pdf) · [Capital spacing proof](releases/1.1.3/specimens/Code-Capital-Spacing.pdf) · [Delimiter, arrow and lifetime proof](releases/1.1.3/specimens/Code-Delimiters.pdf)
 
 ### Symbol shortcuts
@@ -104,8 +106,10 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="460" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="460" alt="Scope separator off: ::"> |
 | Optional / non-null access<br><code>?. !.</code> | <img src="specimens/features/code-access-on.svg" width="460" alt="Optional / non-null access on: ?. !."> | <img src="specimens/features/code-access-off.svg" width="460" alt="Optional / non-null access off: ?. !."> |
 | Interpolation / expansion<br><code>${ $[ $(</code> | <img src="specimens/features/code-interpolation-on.svg" width="460" alt="Interpolation / expansion on: ${ $[ $("> | <img src="specimens/features/code-interpolation-off.svg" width="460" alt="Interpolation / expansion off: ${ $[ $("> |
+| Nested delimiters<br><code>((x)) [[x]] {{x}} ([{x}])</code> | <img src="specimens/features/code-nested-delimiters-on.svg" width="460" alt="Nested delimiters on: ((x)) [[x]] {{x}} ([{x}])"> | <img src="specimens/features/code-nested-delimiters-off.svg" width="460" alt="Nested delimiters off: ((x)) [[x]] {{x}} ([{x}])"> |
 | Ranges and dot assignment<br><code>.. .= ..=</code> | <img src="specimens/features/code-ranges-on.svg" width="460" alt="Ranges and dot assignment on: .. .= ..="> | <img src="specimens/features/code-ranges-off.svg" width="460" alt="Ranges and dot assignment off: .. .= ..="> |
 | Three-character ellipsis<br><code>...</code> | <img src="specimens/features/code-ellipsis-on.svg" width="460" alt="Three-character ellipsis on: ..."> | <img src="specimens/features/code-ellipsis-off.svg" width="460" alt="Three-character ellipsis off: ..."> |
+| Rest and spread<br><code>[...items]  f(...args)</code> | <img src="specimens/features/code-spread-on.svg" width="460" alt="Rest and spread on: [...items]  f(...args)"> | <img src="specimens/features/code-spread-off.svg" width="460" alt="Rest and spread off: [...items]  f(...args)"> |
 | Assignment / turnstiles<br><code>:= &#124;= &#124;-</code> | <img src="specimens/features/code-assignment-on.svg" width="460" alt="Assignment / turnstiles on: := &#124;= &#124;-"> | <img src="specimens/features/code-assignment-off.svg" width="460" alt="Assignment / turnstiles off: := &#124;= &#124;-"> |
 | Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="460" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="460" alt="Hash groups off: ## ### #### ##### ######"> |
 | Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="460" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="460" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
@@ -145,11 +149,12 @@ Upright Code adds 22-unit outer echoes to parentheses, brackets, braces, paired 
 
 ### Self-aligning ligatures
 
-Selected sequences in Code use one fewer cell and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
+Selected sequences in Code use fewer cells and pull following text left in the same shaped run. For example, in `parse::<Vec<T>>()`, `::` takes one cell and the tall `<` starts in the next cell. The text and character order stay the same. Editors and terminals that place text on a fixed grid may retain the original source columns.
 
 | Advance | Ligatures |
 | --- | --- |
-| Two cells in rest and spread expressions | `...items` and `[...items]` |
+| One cell for spread immediately after `[` | The three dots in `[...items]` |
+| Two cells in other rest and spread expressions | The three dots in `...items` and `f(...args)` |
 | One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
 | Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `<->`, `<=>`, `==`, `!=`, `===`, `!==` |
 

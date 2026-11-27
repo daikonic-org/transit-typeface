@@ -24,11 +24,11 @@ from code_gpos_lateral import (
     retire_lateral_drawings, split_advance,
 )
 from code_math import ARROWS, COMPARISONS
-from code_spread import register_spread_context
-from code_syntax_build import SPREAD_SUFFIX, spread_offsets, syntax_names
+from code_spread import bracket_openers, register_spread_context
+from code_syntax_build import BRACKET_SPREAD_SUFFIX, SPREAD_SUFFIX, spread_offsets, syntax_names
 from code_weight_width_trial import name_trial
 from code_width import add_code_width
-from font_feature_tools import append_glyph, label_stylistic_set
+from font_feature_tools import add_features, append_glyph, label_stylistic_set
 from render_svg import render
 from repeated_stems import add_monospace_repeats
 from specimens import ROOT
@@ -74,11 +74,28 @@ def add_spread_positioning(font, recipe, replacements):
                             definitions=definitions, marked=marked)
 
     locations, model, default = designspace(font)
-    placements = [spread_offsets(font.getGlyphSet(location=loc), cell, recipe["layout_review"])
-                  for loc in locations]
-    values = dict(zip(DOTS, component_positions(2 * cell, [cell] * len(DOTS), placements), strict=True))
+    layout = recipe["layout_review"]
+    masters = [font.getGlyphSet(location=loc) for loc in locations]
+    nominal = [cell] * len(DOTS)
+    placements = [spread_offsets(gs, cell, layout) for gs in masters]
+    positions = tuple(component_positions(2 * cell, nominal, placements))
+    values = dict(zip(DOTS, positions, strict=True))
     label_stylistic_set(font, FEATURE, "Positioned Ligature Components")
     add_horizontal_positions(font, model, default, values, FEATURE)
+    if layout.get("delimiter_revision"):
+        compact = [spread_offsets(gs, cell, layout, bracket=True) for gs in masters]
+        parts = []
+        for dot, (advance, offsets), (full_advance, full_offsets) in zip(
+            DOTS, component_positions(cell, nominal, compact), positions, strict=True
+        ):
+            dx, = {new - old for new, old in zip(offsets, full_offsets, strict=True)}
+            parts.append(f"{dot}' <{dx} 0 {advance - full_advance} 0>")
+        add_features(font, "\n".join([
+            "languagesystem DFLT dflt;", "languagesystem latn dflt;",
+            f"feature {FEATURE} {{",
+            f"pos [{bracket_openers(font)}] {' '.join(parts)};",
+            f"}} {FEATURE};",
+        ]))
 
 
 def positioned(rows):
@@ -137,8 +154,11 @@ def verify(source, target, recipe, replacements):
                  for flags in item["states"].values()}
         cases.update((text, ()) for text in (*SAMPLE, *CONTROLS, *SPREAD_CASES))
         assert old.getBestCmap() == trial.getBestCmap()
-        spread = syntax_names(old)["..."] + SPREAD_SUFFIX
-        assert spread not in trial["glyf"] and all(dot in trial["glyf"] for dot in DOTS)
+        ellipsis = syntax_names(old)["..."]
+        spread = ellipsis + SPREAD_SUFFIX
+        bracket_spread = ellipsis + BRACKET_SPREAD_SUFFIX
+        assert all(name not in trial["glyf"] for name in (spread, bracket_spread))
+        assert all(dot in trial["glyf"] for dot in DOTS)
         fixed_operators = set(OPERATOR_GLYPHS) - replacements.keys()
         caret_glyphs = set(trial["GDEF"].table.LigCaretList.Coverage.glyphs)
         assert caret_glyphs.isdisjoint(replacements)
@@ -148,7 +168,8 @@ def verify(source, target, recipe, replacements):
             else:
                 assert name not in trial["glyf"], name
             assert caret_glyphs.isdisjoint(aliases), name
-        replacements = replacements | {spread: DOTS}
+        spread_forms = {name: DOTS for name in (spread, bracket_spread) if name in old["glyf"]}
+        replacements = replacements | spread_forms
         checked = 0
         for weight, width in product(recipe["sample_coordinates"]["wght"], recipe["sample_coordinates"]["wdth"]):
             location = {"wght": weight, "wdth": width}
@@ -178,8 +199,9 @@ def verify(source, target, recipe, replacements):
             for text in SPREAD_CASES:
                 new_rows = shape(after, text, {FEATURE: True})
                 dots = [row[2] for row in new_rows if row[0] in DOTS]
-                expected_dots = split_advance(2 * cell, len(DOTS))
-                assert dots == expected_dots * (len(dots) // len(DOTS)), (weight, width, text, dots)
+                expected_dots = [step for name, _, advance, *_ in shape(before, text, {})
+                                 if name in spread_forms for step in split_advance(advance, len(DOTS))]
+                assert dots == expected_dots, (weight, width, text, dots)
                 assert any(row[0] in DOTS for row in new_rows)
                 assert all(row[0] not in DOTS for row in shape(after, text, {FEATURE: False}))
                 checked += 1
@@ -190,8 +212,9 @@ def proof(output, config, target, original, replacements):
     engine = hb.Font(hb.Face(original.read_bytes()))
 
     with TTFont(original) as font:
-        spread = syntax_names(font)["..."] + SPREAD_SUFFIX
-    counts = {name: len(aliases) for name, aliases in replacements.items()} | {spread: len(DOTS)}
+        ellipsis = syntax_names(font)["..."]
+    counts = {name: len(aliases) for name, aliases in replacements.items()}
+    counts.update({ellipsis + suffix: len(DOTS) for suffix in (SPREAD_SUFFIX, BRACKET_SPREAD_SUFFIX)})
 
     def expected(line, features):
         rows = shape(engine, line, {})

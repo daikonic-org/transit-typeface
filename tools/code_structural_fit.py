@@ -2,6 +2,7 @@
 
 from pathlib import Path
 from itertools import product
+from fontTools.misc.roundTools import otRound
 from fontTools.ttLib import TTFont
 from font_feature_tools import compose, add_features
 from audit import shape_from_glyphs
@@ -21,6 +22,7 @@ INTERPOLATION = {
     "code.syntax03": "bracketleft",
     "code.syntax04": "parenleft",
 }
+LANGUAGES = ("languagesystem DFLT dflt;", "languagesystem latn dflt;")
 
 
 def interpolation_parts(delimiter, cell=600, dollar_y=-50):
@@ -41,8 +43,7 @@ def separate_enclosures(font):
 
 def mixed_angle_rules(features, shift, *, promote_unpaired=True):
     lines = [
-        "languagesystem DFLT dflt;",
-        "languagesystem latn dflt;",
+        *LANGUAGES,
         "lookup SeparateMixedAngles {",
         "sub less' bracketleft by less.generic;",
         "sub bracketleft less' by less.generic;",
@@ -73,18 +74,45 @@ def mixed_angle_rules(features, shift, *, promote_unpaired=True):
     return lines
 
 
-def generic_closer_rules(font, cell, depth, install_closer):
+def nested_offsets(count, shift):
+    extent = min(shift * (count - 1), 3 * shift)
+    return tuple(extent - 2 * extent * i / (count - 1) for i in range(count))
+
+
+def position_nested_delimiters(font, depth, shift):
+    """Fit contiguous opening or closing runs within their existing advances."""
+    order = font.getGlyphOrder()
+    lines = [*LANGUAGES]
+    for side, names in (
+        ("Open", ("parenleft", "braceleft", "bracketleft", "less.generic")),
+        ("Close", ("parenright", "braceright", "bracketright", "greater.generic")),
+    ):
+        members = [name + suffix for name in names for suffix in ("", ".hairline") if name + suffix in order]
+        glyph_class = "@Nested" + side
+        lines.append(f"{glyph_class} = [{' '.join(members)}];")
+        lines.append(f"lookup FitNested{side} {{")
+        for count in range(depth, 1, -1):
+            sequence = " ".join([f"{glyph_class}'"] * count)
+            lines.append(f"ignore pos {glyph_class} {sequence}, {sequence} {glyph_class};")
+            positions = " ".join(f"{glyph_class}' <{otRound(dx)} 0 0 0>" for dx in nested_offsets(count, shift))
+            lines.append(f"pos {positions};")
+        lines.append(f"}} FitNested{side};")
+    for feature in ("calt", "ss02"):
+        lines.append(f"feature {feature} {{ lookup FitNestedOpen; lookup FitNestedClose; }} {feature};")
+    add_features(font, "\n".join(lines))
+
+
+def generic_closer_rules(font, cell, depth, install_closer, shift=30):
     for count in range(2, depth + 1):
-        extent = min(30 * (count - 1), 90)
         parts = [
             (
                 "greater.generic",
                 1,
                 1,
-                cell * i + extent - 2 * extent * i / (count - 1),
+                cell * i + dx,
                 0,
             )
-            for i in range(count)
+            for i, dx in enumerate(nested_offsets(count, shift))
         ]
         name = f"code.genericClose{count}"
         if install_closer is None:
@@ -112,8 +140,8 @@ def generic_closer_rules(font, cell, depth, install_closer):
 
 def build_structural_angles(font, cell, depth, *, features=("calt",), shift=30, install_closer=None,
                             promote_unpaired=True):
-    lines = mixed_angle_rules(features, shift, promote_unpaired=promote_unpaired)
-    lines.extend(generic_closer_rules(font, cell, depth, install_closer))
+    lines = mixed_angle_rules(features, shift, promote_unpaired=promote_unpaired) if features else list(LANGUAGES)
+    lines.extend(generic_closer_rules(font, cell, depth, install_closer, shift))
     add_features(font, "\n".join(lines))
 
 

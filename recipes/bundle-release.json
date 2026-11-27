@@ -35,6 +35,8 @@
   },
   "notes": [
     "- **Code delimiters** use shared parenthesis outlines with contextual spacing for `$(`. Upright parentheses include the default hairline echoes, which `ss07` disables.",
+    "- **Nested delimiters** tighten adjacent opening or closing forms, including mixed runs such as `([{x}])`. Each delimiter keeps its cell advance.",
+    "- **Bracketed spread** fits the three dots in `[...items]` into one cell and pulls the operand and following text left by another cell.",
     "- **Matched angles** use tall forms in generic text such as `Vec<>T` and `Vec<Vec<>>`. A space on each side of an empty pair, as in `a <> b`, selects the short forms.",
     "- **Bidirectional arrows** add `<->` and `<=>`. Each advances two cells, and the double shaft matches the gap in `=`.",
     "- **Rust lifetimes** use a left-hook bar over the next character, with more vertical clearance above tall letters and accents. Code also widens the ampersand.",

@@ -224,11 +224,13 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
     ]
     if paired:
-        # Resolve spaced comparisons first so an enclosing pair can cross them.
+        # Resolve spaced operators before matching nested angle delimiters.
         rules += [
-            "lookup MatchSpacedEmptyPairs { lookupflag IgnoreMarks;",
+            "lookup MatchSpacedAngleOperators { lookupflag IgnoreMarks;",
             "sub @PairSpace less' lookup ShortLeft0 greater' lookup ShortRight0 @PairSpace;",
-            "} MatchSpacedEmptyPairs;",
+            "sub @PairSpace less' lookup ShortLeft0 less' lookup ShortLeft0 @PairSpace;",
+            "sub @PairSpace greater' lookup ShortRight0 greater' lookup ShortRight0 @PairSpace;",
+            "} MatchSpacedAngleOperators;",
         ]
     if not paired:
         rules += [

@@ -6,7 +6,7 @@ import uharfbuzz as hb
 
 from check_code_rebuild import shape
 from code_compact_operators import delimiter_variants
-from code_syntax_build import SPREAD_SUFFIX, syntax_names
+from code_syntax_build import BRACKET_SPREAD_SUFFIX, SPREAD_SUFFIX, syntax_names
 from font_feature_tools import add_features
 from italic_returns import raw_outline
 
@@ -14,12 +14,26 @@ from italic_returns import raw_outline
 def build_spread_context(font):
     ellipsis = syntax_names(font)["..."]
     spread = ellipsis + SPREAD_SUFFIX
-    advance = font["hmtx"][spread][0]
-    font["GDEF"].table.GlyphClassDef.classDefs[spread] = 2
+    bracket = ellipsis + BRACKET_SPREAD_SUFFIX
+    forms = [spread, bracket] if bracket in font["glyf"] else [spread]
+    classes = font["GDEF"].table.GlyphClassDef.classDefs
+    definitions, rules, carets = [], [], []
+    for name in forms:
+        classes[name] = 2
+        width = font["hmtx"][name][0]
+        carets.append(f"LigatureCaretByPos {name} {width // 3} {2 * width // 3};")
+    if bracket in forms:
+        definitions.append(f"@SpreadBracket = [{bracket_openers(font)}];")
+        rules.append(f"sub @SpreadBracket {ellipsis}' @SpreadOperand by {bracket};")
+    rules.append(f"sub {ellipsis}' @SpreadOperand by {spread};")
     register_spread_context(
-        font, ellipsis, f"sub {ellipsis}' @SpreadOperand by {spread};",
-        extra=[f"table GDEF {{ LigatureCaretByPos {spread} {advance // 3} {2 * advance // 3}; }} GDEF;"],
+        font, ellipsis, "\n".join(rules), definitions=definitions,
+        extra=["table GDEF {", *carets, "} GDEF;"],
     )
+
+
+def bracket_openers(font):
+    return " ".join(delimiter_variants(("bracketleft",), font["glyf"]))
 
 
 def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions=(), extra=(), marked=None):

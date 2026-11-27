@@ -21,6 +21,7 @@ from code_hairline_study import MARKER
 from code_hairline_toggle import OFF_FEATURE
 from code_layout import angle_styles
 from code_math import BIDIRECTIONAL_ARROWS
+from code_structural_fit import nested_offsets
 from font_feature_tools import add_features, expanded_variations
 from render_svg import render, render_pdf
 from sans_baseline_trial import build_variations, install
@@ -36,6 +37,7 @@ HEIGHT_STEP = 24
 HOOK_LIFT = 24
 LINES = (
     "f((x))  map(a, b)  $(value)",
+    "([{x}])  Vec<[{T}]>  [[...items]]",
     "a & b  &'a  &'static  &'T",
     "'a  'g  'i  'l  'T  'Á  'a'",
     "<'a>  <x>  <'a'>  Vec<Vec<T>>",
@@ -129,6 +131,44 @@ def apply_delimiter_revision(font):
     position_hooks(font)
 
 
+def positioned_paths(glyphs, rows):
+    origin = 0
+    paths = []
+    for name, _, advance, _, dx, dy in rows:
+        path = shape_from_glyphs(glyphs, name)
+        paths.append((name, path.transform(translateX=origin + dx, translateY=dy)))
+        origin += advance
+    return paths
+
+
+def verify_delimiter_spacing(engine, glyphs, location, flags):
+    width = location["wdth"]
+    cell = width * 6
+    for left, right in (("((", "))"), ("[[", "]]"), ("{{", "}}"),
+                        ("([{", "}])"), ("<[{", "}]>"), ("(((([", "]))))")):
+        sample = left + "x" + right
+        rows = shape(engine, sample, flags)
+        positions = [otRound(dx * width / 100) for dx in nested_offsets(len(left), 30)]
+        for edge in (rows[:len(left)], rows[-len(right):]):
+            assert all(abs(row[4] - dx) <= 1 for row, dx in zip(edge, positions, strict=True)), (
+                location, sample, rows)
+        assert all(row[2] == cell for row in rows), (location, sample, rows)
+        paths = positioned_paths(glyphs, rows)
+        assert all(abs(pathops.op(a, b, pathops.PathOp.INTERSECTION).area) < 1
+                   for (_, a), (_, b) in zip(paths, paths[1:])), (location, sample)
+    for sample, saved in (("[...items]", 2), ("[[...rest]]", 2), ("[...more]", 2),
+                          ("[ ...items]", 1), ("...items", 1), ("f(...x)", 1),
+                          ("[...]", 0), ("[…items]", 0)):
+        rows = shape(engine, sample, flags)
+        assert sum(row[2] for row in rows) == (len(sample) - saved) * cell, (location, sample, rows)
+        if saved == 2:
+            first = sample.index(".")
+            assert [row[2] for row in rows[first:first + 3]] == [cell // 3] * 3
+            paths = positioned_paths(glyphs, rows)[first - 1:first + 4]
+            assert all(abs(pathops.op(a, b, pathops.PathOp.INTERSECTION).area) < 1
+                       for (_, a), (_, b) in zip(paths, paths[1:])), (location, sample)
+
+
 def verify(source, path):
     before, after = [hb.Font(hb.Face(p.read_bytes())) for p in (source, path)]
     prior, font = TTFont(source), TTFont(path)
@@ -151,6 +191,7 @@ def verify(source, path):
         "a<>b": [True, True], "Vec<>T": [True, True], "Vec<>_item": [True, True],
         "vec<>": [True, True], "vec::<>": [True, True],
         "a <> b": [False, False], "a\u00a0<>\u00a0b": [False, False],
+        "a << b >> c": [False] * 4,
         "a<> b": [True, True], "a <>b": [True, True], "Vec< >": [True, True],
         "Vec< <> >": [True, False, False, True],
         "<x": [False], "x>": [False], "[<x": [False],
@@ -180,6 +221,7 @@ def verify(source, path):
             assert active == [[name + ".hairline" if upright and name in parentheses else name, *rest]
                               for name, *rest in plain], (location, sample, active, plain)
         for flags in ({}, {OFF_FEATURE: True}):
+            verify_delimiter_spacing(after, new, location, flags)
             for token, name in BIDIRECTIONAL_ARROWS.items():
                 rows = shape(after, token + "x", flags)
                 assert [row[:3] for row in rows] == [[name, 0, 2 * cell], ["x", 3, cell]], (location, rows)
@@ -194,13 +236,9 @@ def verify(source, path):
                 assert sum(row[2] for row in rows) == advance, (location, sample, rows)
             for sample in lifetimes:
                 rows = shape(after, sample, flags)
-                x = 0
-                paths = []
-                for name, _, advance, _, dx, dy in rows:
-                    p = shape_from_glyphs(new, name)
-                    paths.append((name, p.transform(translateX=x + dx, translateY=dy)))
-                    x += advance
-                assert x == sum(row[2] for row in shape(before, sample, flags)), (location, sample)
+                paths = positioned_paths(new, rows)
+                assert sum(row[2] for row in rows) == sum(row[2] for row in shape(before, sample, flags)), (
+                    location, sample)
                 hook_index = next(i for i, (name, _) in enumerate(paths) if name == MARKER)
                 letter_top = paths[hook_index + 1][1].bounds[3]
                 gap = bar_bottom + rows[hook_index][5] - letter_top
@@ -216,9 +254,9 @@ def verify(source, path):
 
 def proof(output, source, target, style, *, target_label="Delimiter trial"):
     parts = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="600" viewBox="0 0 1220 600">',
-        '<rect width="1220" height="600" fill="#f7f5ee"/>',
-        '<path d="M610 102V565" stroke="#d6ddd7"/>',
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="650" viewBox="0 0 1220 650">',
+        '<rect width="1220" height="650" fill="#f7f5ee"/>',
+        '<path d="M610 102V615" stroke="#d6ddd7"/>',
         '<g font-family="Arial,sans-serif" fill="#182b31">',
         f'<text x="36" y="38" font-size="15">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
         '<text x="36" y="76" font-size="31" font-weight="700">Delimiters, arrows and Rust lifetimes</text>',

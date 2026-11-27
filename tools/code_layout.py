@@ -16,7 +16,7 @@ from code_logic_build import build_logic
 from code_outlines import refresh_bounds
 from code_spacing import add_code_spacing
 from code_spread import build_spread_context
-from code_structural_fit import build_structural_angles
+from code_structural_fit import build_structural_angles, position_nested_delimiters
 from code_syntax_build import build_syntax_context, position_dollar_parenthesis
 from font_feature_tools import append_glyph
 from italic_returns import raw_outline
@@ -49,13 +49,15 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
     build_logic(font, cell, install)
     build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias,
                       scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0), paired=revised)
-    build_structural_angles(font, cell, depth, features=("calt", "ss02"), shift=settings["mixed_angle_shift"],
+    shift = settings["mixed_angle_shift"]
+    build_structural_angles(font, cell, depth, features=() if revised else ("calt", "ss02"), shift=shift,
                             install_closer=install, promote_unpaired=not revised)
     if spread_glyph:
         build_spread_context(font)
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
     if revised:
         position_dollar_parenthesis(font, cell)
+        position_nested_delimiters(font, depth, shift)
     if not hairlines:
         position_lifetime_ampersand(font)
     spacing = settings.get("edge_spacing", {})

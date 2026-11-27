@@ -20,6 +20,7 @@ from syntax_numeral_study import TOKENS, register_syntax_tokens
 REBUILT_TOKENS = {token: f"code.syntax{index:02d}" for index, token in enumerate(TOKENS)
                   if token not in ("?.", "!.", "<'", "&'")}
 SPREAD_SUFFIX = ".spread"
+BRACKET_SPREAD_SUFFIX = SPREAD_SUFFIX + ".bracket"
 
 
 def syntax_names(font):
@@ -37,10 +38,10 @@ def hash_rails(outline, cell):
     return bands
 
 
-def spread_offsets(glyphs, cell, settings):
+def spread_offsets(glyphs, cell, settings, *, bracket=False):
     left, _, right, _ = raw_outline(glyphs, "period").bounds
-    pitch = right - left + settings["spread_dot_gap"]
-    end = 2 * cell - settings["spread_sidebearing"] - right
+    pitch = right - left + settings["bracket_spread_dot_gap" if bracket else "spread_dot_gap"]
+    end = (cell if bracket else 2 * cell) - settings["spread_sidebearing"] - right
     return [otRound(end - i * pitch) for i in (2, 1, 0)]
 
 
@@ -71,9 +72,14 @@ def build_syntax_glyphs(font, recipe, *, spread_glyph=True):
     install_components(font, names["..."], [place_period(cell * factor, period_y)
                                              for factor in (.7, 1.5, 2.3)], 3 * cell)
     if spread_glyph:
-        offsets = spread_offsets(glyphs, cell, recipe["layout_review"])
+        layout = recipe["layout_review"]
+        offsets = spread_offsets(glyphs, cell, layout)
         install_components(font, names["..."] + SPREAD_SUFFIX,
                            [translated("period", x) for x in offsets], 2 * cell)
+        if layout.get("delimiter_revision"):
+            offsets = spread_offsets(glyphs, cell, layout, bracket=True)
+            install_components(font, names["..."] + BRACKET_SPREAD_SUFFIX,
+                               [translated("period", x) for x in offsets], cell)
     for token in ("${", "$[", "$("):
         if token == "$(" and recipe["layout_review"].get("delimiter_revision"):
             continue

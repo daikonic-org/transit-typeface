@@ -81,8 +81,9 @@ def build_delimiter_rails(font, settings, tokens):
         f"feature {FEATURE} {{",
     ]
     shift = settings["mixed_angle_shift"]
-    for left, right in MIXED:
-        lines.append(f"pos {aliases[left]}' <{shift} 0 0 0> {aliases[right]}' <-{shift} 0 0 0>;")
+    if not settings.get("delimiter_revision"):
+        for left, right in MIXED:
+            lines.append(f"pos {aliases[left]}' <{shift} 0 0 0> {aliases[right]}' <-{shift} 0 0 0>;")
     inset = settings["turbofish_inset"]
     lines.append(f"pos {SCOPE}' <{inset} 0 0 0> {aliases['less.generic']}' <-{inset} 0 0 0>;")
     lines.extend((f"}} {FEATURE};", "table GDEF {"))

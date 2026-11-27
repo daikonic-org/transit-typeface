@@ -18,7 +18,7 @@
     },
     "code": {
       "font": "releases/1.1.3/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "6764a11b896f688b58e86865afe6d9e88dbdd8193c0d877fe4b466aff2bcfae9",
+      "sha256": "53e27fd33d233d2675793de68385c6a306901a57a5d57185df1268b0e5bdd838",
       "location": {
         "wght": 350,
         "wdth": 100.0
@@ -1690,13 +1690,13 @@
         [
           "less.generic.hairline",
           600,
-          -18,
+          12,
           0
         ],
         [
           "bracketleft.hairline",
           600,
-          0,
+          -30,
           0
         ],
         [
@@ -2670,6 +2670,324 @@
         ]
       ]
     },
+    "code-nested-delimiters": {
+      "text": "((x)) [[x]] {{x}} ([{x}])",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false,
+        "kern": false
+      },
+      "on_shaping": [
+        [
+          "parenleft.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "parenleft.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "parenright.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "bracketleft.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "bracketright.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "braceleft.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceright.hairline",
+          600,
+          30,
+          0
+        ],
+        [
+          "braceright.hairline",
+          600,
+          -30,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft.hairline",
+          600,
+          60,
+          0
+        ],
+        [
+          "bracketleft.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft.hairline",
+          600,
+          -60,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceright.hairline",
+          600,
+          60,
+          0
+        ],
+        [
+          "bracketright.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright.hairline",
+          600,
+          -60,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceright",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "x",
+          600,
+          0,
+          0
+        ],
+        [
+          "braceright",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
     "code-ranges": {
       "text": ".. .= ..=",
       "on_features": {
@@ -2820,6 +3138,288 @@
         ],
         [
           "period",
+          600,
+          0,
+          0
+        ]
+      ]
+    },
+    "code-spread": {
+      "text": "[...items]  f(...args)",
+      "on_features": {
+        "calt": true,
+        "liga": true,
+        "clig": true
+      },
+      "off_features": {
+        "calt": false,
+        "liga": false,
+        "clig": false,
+        "kern": false
+      },
+      "on_shaping": [
+        [
+          "bracketleft.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "period.spread1",
+          200,
+          -285,
+          0
+        ],
+        [
+          "period.spread2",
+          200,
+          -262,
+          0
+        ],
+        [
+          "period.spread3",
+          200,
+          -239,
+          0
+        ],
+        [
+          "i",
+          600,
+          8,
+          0
+        ],
+        [
+          "t",
+          600,
+          -12,
+          0
+        ],
+        [
+          "e",
+          600,
+          -16,
+          0
+        ],
+        [
+          "m",
+          600,
+          8,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "period.spread1",
+          400,
+          175,
+          0
+        ],
+        [
+          "period.spread2",
+          400,
+          68,
+          0
+        ],
+        [
+          "period.spread3",
+          400,
+          -39,
+          0
+        ],
+        [
+          "a",
+          600,
+          8,
+          0
+        ],
+        [
+          "r",
+          600,
+          -4,
+          0
+        ],
+        [
+          "g",
+          600,
+          16,
+          0
+        ],
+        [
+          "s",
+          600,
+          -8,
+          0
+        ],
+        [
+          "parenright.hairline",
+          600,
+          0,
+          0
+        ]
+      ],
+      "off_shaping": [
+        [
+          "bracketleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "i",
+          600,
+          0,
+          0
+        ],
+        [
+          "t",
+          600,
+          0,
+          0
+        ],
+        [
+          "e",
+          600,
+          0,
+          0
+        ],
+        [
+          "m",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "bracketright",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "f",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenleft",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "period",
+          600,
+          0,
+          0
+        ],
+        [
+          "a",
+          600,
+          0,
+          0
+        ],
+        [
+          "r",
+          600,
+          0,
+          0
+        ],
+        [
+          "g",
+          600,
+          0,
+          0
+        ],
+        [
+          "s",
+          600,
+          0,
+          0
+        ],
+        [
+          "parenright",
           600,
           0,
           0
@@ -4623,8 +5223,8 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "c2e168381f4742f3478638c13911d58539e3e8a9d0f0e1f17764dc9a340d8430",
-    "code-Features.svg": "b783a656b72f612b90ed50667c7b4e4080fbd33885aa9e40683e7af845a246b7",
+    "Code-Characters.svg": "65dca66a9cc4eb44a9f1257630949663b1133aa9bf242bb1b00d04a25aa8981a",
+    "code-Features.svg": "caba21cf0a7f60434b0fb9903ac32a8ed2f6deb5f6fd58934c77eabb4c672af9",
     "code-access-off.svg": "0cade0818fd70fe9129ab4efcfc3ce8ba00975a186865ad13485d155e6701b9a",
     "code-access-on.svg": "3ec352bcd13b84f90da3ff8c321de92901775a6c81a995e7b45ae6c66bced3d3",
     "code-arrows-off.svg": "f7a1f110fcd297bda324ea0a1537812ee434fe3a495ff7127b956eb624d48e97",
@@ -4662,6 +5262,8 @@
     "code-logic-on.svg": "64dd74436e5457bd1d16755df1aa9aec218c11c6b1baeaa81bc2124a72aacdbc",
     "code-logic-order-off.svg": "62c435e1e76dcea91bfce8c958235c779766ae87a807c5c77682cb4e3ddf5ae4",
     "code-logic-order-on.svg": "949a6171fe88c7240afdee70b9fbb3e74e47259bb1202e11ba5a34c1e8d14b05",
+    "code-nested-delimiters-off.svg": "da42daf90b196457ae571e963ed3a4467744deced7d45bb8bfd9f8ec7505e02b",
+    "code-nested-delimiters-on.svg": "643da37a6175bcb4147722c665431d346b3233c7b37d24668627c91973ad68b2",
     "code-optical-off.svg": "f70ac3b20ba3d1e8936a73ffd4d87edc66d8c23506012d9c6ca3eb1ca65c48de",
     "code-optical-on.svg": "7c981009d90e1fb2762288bf9dd1b943ae4b8d1f7b5e00579a8f0cd59b5d55b2",
     "code-paired-stems-off.svg": "020fb962f36187b02a1bcc4c854b6722fb81ed80eebe1249acaccf2b1e58446e",
@@ -4673,9 +5275,11 @@
     "code-rust-inference-off.svg": "40d2730b3ea5036f87258aee93603e21e5c35a50f4097c8890f47fb72b61f0ca",
     "code-rust-inference-on.svg": "5a91fa2c3f70d4f4271a252941403972347019d1d4f3293915c62f42bb99da5d",
     "code-rust-turbofish-off.svg": "ddc7fc3996d026bd6323cbefa9a024c76adb7e7400b8a64baeab479354ab6a11",
-    "code-rust-turbofish-on.svg": "051bb89d55df68955538d016e50bfb1a70ecdac13fe1e6574738950f9118b2ad",
+    "code-rust-turbofish-on.svg": "8c41fdbc5d8c56e0582a8a26bb9f9328724cacbe0610b99125e87a1082086e15",
     "code-scope-off.svg": "78ee4047e09be3c476c310550fd17bc25c312bc8aea21b540b174f5d1c5fade8",
     "code-scope-on.svg": "4b113f0035bcee4648b31eb85ffce9b8a49b13718895963010848d9bfe8ada28",
+    "code-spread-off.svg": "afebc26b1972a7fa23842dce8675222866f298c8b5b73bb4530ffbdd60014678",
+    "code-spread-on.svg": "ce3ae8368e962454e6b863d26bf45f324c603849e0161583b78fe3f5b1d9b9ab",
     "code-texture-healing-off.svg": "b0c38ee61c6fdfd06e0f67d514eaf5f7594112a531657dfaed59afa2472fae40",
     "code-texture-healing-on.svg": "14ca48c0e3219eee2e5d09ddf7ef150d46ba7c0569b096628df234bd57974e0f",
     "sans-Features.svg": "321f89b0666d9f1f5be7a3d4ef696f9139cd521cda7d2c0baa61c5c9a79c2952",
