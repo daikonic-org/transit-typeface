@@ -4,7 +4,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 ![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-[Download Daikonic Transit 1.1.3](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
+[Download Daikonic Transit 1.1.4](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.4) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
 
 All three typefaces come in upright and italic.
 
@@ -19,7 +19,7 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
-[Upright glyph proof](releases/1.1.3/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/Sans-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.4/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.4/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -41,7 +41,7 @@ An interface font for application navigation, controls, dashboards and short pas
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-[Upright glyph proof](releases/1.1.3/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/System-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.4/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.4/specimens/System-Italic-Glyph-Proof.pdf)
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -74,7 +74,9 @@ Matched angle delimiters are tall, including empty and nested pairs such as `Vec
 
 Adjacent opening or closing delimiters fit closer together in nested expressions such as `(({x}))` and `([{x}])`. Each delimiter keeps its cell advance.
 
-[Upright glyph proof](releases/1.1.3/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.3/specimens/Code-Identifier-Spacing.pdf) · [Capital spacing proof](releases/1.1.3/specimens/Code-Capital-Spacing.pdf) · [Delimiter, arrow and lifetime proof](releases/1.1.3/specimens/Code-Delimiters.pdf)
+The three dots in rest and spread expressions advance two cells. After a comma or opening delimiter, their spacing balances the gaps from the punctuation to the operand. A leading space lets the dots use a wider rhythm while keeping the space's advance.
+
+[Upright glyph proof](releases/1.1.4/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.4/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.4/specimens/Code-Identifier-Spacing.pdf) · [Capital spacing proof](releases/1.1.4/specimens/Code-Capital-Spacing.pdf) · [Delimiter, arrow and lifetime proof](releases/1.1.4/specimens/Code-Delimiters.pdf) · [Rest and spread proof](releases/1.1.4/specimens/Code-Spread.pdf)
 
 ### Symbol shortcuts
 
@@ -109,7 +111,7 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Nested delimiters<br><code>((x)) [[x]] {{x}} ([{x}])</code> | <img src="specimens/features/code-nested-delimiters-on.svg" width="460" alt="Nested delimiters on: ((x)) [[x]] {{x}} ([{x}])"> | <img src="specimens/features/code-nested-delimiters-off.svg" width="460" alt="Nested delimiters off: ((x)) [[x]] {{x}} ([{x}])"> |
 | Ranges and dot assignment<br><code>.. .= ..=</code> | <img src="specimens/features/code-ranges-on.svg" width="460" alt="Ranges and dot assignment on: .. .= ..="> | <img src="specimens/features/code-ranges-off.svg" width="460" alt="Ranges and dot assignment off: .. .= ..="> |
 | Three-character ellipsis<br><code>...</code> | <img src="specimens/features/code-ellipsis-on.svg" width="460" alt="Three-character ellipsis on: ..."> | <img src="specimens/features/code-ellipsis-off.svg" width="460" alt="Three-character ellipsis off: ..."> |
-| Rest and spread<br><code>[...items]  f(...args)</code> | <img src="specimens/features/code-spread-on.svg" width="460" alt="Rest and spread on: [...items]  f(...args)"> | <img src="specimens/features/code-spread-off.svg" width="460" alt="Rest and spread off: [...items]  f(...args)"> |
+| Rest and spread<br><code>[...items]  f(x,...rest)  f(x, ...rest)</code> | <img src="specimens/features/code-spread-on.svg" width="460" alt="Rest and spread on: [...items]  f(x,...rest)  f(x, ...rest)"> | <img src="specimens/features/code-spread-off.svg" width="460" alt="Rest and spread off: [...items]  f(x,...rest)  f(x, ...rest)"> |
 | Assignment / turnstiles<br><code>:= &#124;= &#124;-</code> | <img src="specimens/features/code-assignment-on.svg" width="460" alt="Assignment / turnstiles on: := &#124;= &#124;-"> | <img src="specimens/features/code-assignment-off.svg" width="460" alt="Assignment / turnstiles off: := &#124;= &#124;-"> |
 | Hash groups<br><code>## ### #### ##### ######</code> | <img src="specimens/features/code-hashes-on.svg" width="460" alt="Hash groups on: ## ### #### ##### ######"> | <img src="specimens/features/code-hashes-off.svg" width="460" alt="Hash groups off: ## ### #### ##### ######"> |
 | Rust lifetime marker<br><code>&amp;&#x27;a &lt;&#x27;a&gt; &#x27;static</code> | <img src="specimens/features/code-lifetimes-on.svg" width="460" alt="Rust lifetime marker on: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> | <img src="specimens/features/code-lifetimes-off.svg" width="460" alt="Rust lifetime marker off: &amp;&#x27;a &lt;&#x27;a&gt; &#x27;static"> |
@@ -153,8 +155,7 @@ Selected sequences in Code use fewer cells and pull following text left in the s
 
 | Advance | Ligatures |
 | --- | --- |
-| One cell for spread immediately after `[` | The three dots in `[...items]` |
-| Two cells in other rest and spread expressions | The three dots in `...items` and `f(...args)` |
+| Two cells in rest and spread expressions | The three dots in `[...items]`, `f(x,...rest)`, and `f(x, ...rest)` |
 | One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
 | Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `<->`, `<=>`, `==`, `!=`, `===`, `!==` |
 
@@ -174,7 +175,7 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-Release 1.1.3 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3).
+Release 1.1.4 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.4).
 
 | Package | Contents | Use |
 | --- | --- | --- |
@@ -228,4 +229,4 @@ Install the Code variable TTFs in Font Book to choose any width from 94% to 108%
 
 The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3)
+Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.4)

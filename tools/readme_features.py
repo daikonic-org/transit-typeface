@@ -74,7 +74,7 @@ FEATURES = {
         ("nested-delimiters", "Nested delimiters", "((x)) [[x]] {{x}} ([{x}])", ON, OFF),
         ("ranges", "Ranges and dot assignment", ".. .= ..=", ON, OFF),
         ("ellipsis", "Three-character ellipsis", "...", ON, OFF),
-        ("spread", "Rest and spread", "[...items]  f(...args)", ON, OFF),
+        ("spread", "Rest and spread", "[...items]  f(x,...rest)  f(x, ...rest)", ON, OFF),
         ("assignment", "Assignment / turnstiles", ":= |= |-", ON, OFF),
         ("hashes", "Hash groups", "## ### #### ##### ######", ON, OFF),
         ("lifetimes", "Rust lifetime marker", "&'a <'a> 'static", ON, OFF),
@@ -324,14 +324,11 @@ def expected_code_advance(font, text, names):
                   "slash.positioned", "bar.positioned")
     saved = 0
     previous = ""
-    bracket_spread = False
     for name in names:
         if name.startswith(half_cells) or name == DIRECT["::"]:
             saved += CELL // 2
         elif name.startswith("period.spread"):
-            if name == "period.spread1":
-                bracket_spread = previous.removesuffix(".hairline") == "bracketleft"
-            saved += CELL // 3 * (2 if bracket_spread else 1)
+            saved += CELL // 3
         elif name.startswith("period.positioned"):
             # Access periods use the same adjustment as their preceding mark.
             if previous.startswith(("question.positioned", "exclam.positioned")):

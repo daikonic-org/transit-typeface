@@ -19,14 +19,14 @@ The System heading uses Book 350, matching its default UI weight.
 
 ## Current font cuts
 
-The current specimens show Sans, System and Code 1.1.3.
-The [Sans upright glyph proof](../releases/1.1.3/specimens/Sans-Upright-Glyph-Proof.pdf)
-and [Sans italic glyph proof](../releases/1.1.3/specimens/Sans-Italic-Glyph-Proof.pdf)
+The current specimens show Sans, System and Code 1.1.4.
+The [Sans upright glyph proof](../releases/1.1.4/specimens/Sans-Upright-Glyph-Proof.pdf)
+and [Sans italic glyph proof](../releases/1.1.4/specimens/Sans-Italic-Glyph-Proof.pdf)
 show every named weight.
 
 [Code detail sheet PNG](TransitCode-Details.png) · [Code detail sheet PDF](TransitCode-Details.pdf)
 shows all three Code weights with email and decorator samples, repeated `@` fitting,
-`snake_case`, delimiters, spacing pairs and arrow and comparison ligatures. The [Code feature table](features/code-Features.pdf) compares contextual and coding features on and off. The [code samples](features/Code-Characters.pdf) show those settings in Rust, TypeScript and logic. The [delimiter, arrow and lifetime proof](../releases/1.1.3/specimens/Code-Delimiters.pdf) shows the revised forms in upright and italic.
+`snake_case`, delimiters, spacing pairs and arrow and comparison ligatures. The [Code feature table](features/code-Features.pdf) compares contextual and coding features on and off. The [code samples](features/Code-Characters.pdf) show those settings in Rust, TypeScript and logic. The [delimiter, arrow and lifetime proof](../releases/1.1.4/specimens/Code-Delimiters.pdf) shows the revised forms in upright and italic. The [rest and spread proof](../releases/1.1.4/specimens/Code-Spread.pdf) includes cases with a leading space.
 
 The font selection is explicit in font-selections.json; manifest.json records
 versions and exact source hashes. PNG/PDF/SVG exports share the same composition.

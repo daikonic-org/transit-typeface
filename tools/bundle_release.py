@@ -261,7 +261,7 @@ def check():
                 if settings.get("delimiter_revision"):
                     from code_delimiter_revision import RELEASE, verify
 
-                    verify(RELEASE / filename, path)
+                    verify(RELEASE / filename, path, even_spread=settings.get("even_spread", False))
                 elif settings.get("capital_spacing_source"):
                     from code_capital_spacing import verify
 

@@ -24,7 +24,7 @@ EXAMPLES = {
             "\n\nHTTPServer  ParseResponse  Read  Key  Index  fileI"
             "\nIMI  IWI  WiW  MMM  WWW"
             "\n\nVec<>T  a <> b  Vec<Vec<>>  f((x))"
-            "\n([{x}])  [[...items]]  f(...args)"
+            "\n([{x}])  [[...items]]  f(x,...rest)  f(x, ...rest)"
             "\n->  <-  <->  =>  <=>",
 }
 
