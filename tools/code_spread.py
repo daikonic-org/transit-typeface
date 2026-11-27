@@ -1,14 +1,75 @@
 """Set a two-cell ellipsis before an adjacent rest or spread operand."""
 
 import unicodedata
+from statistics import quantiles
+from string import ascii_lowercase
 
+from fontTools.misc.roundTools import otRound
 import uharfbuzz as hb
 
 from check_code_rebuild import shape
 from code_compact_operators import delimiter_variants
+from code_crossbar_alignment import profile
 from code_syntax_build import BRACKET_SPREAD_SUFFIX, SPREAD_SUFFIX, syntax_names
-from font_feature_tools import add_features
+from font_feature_tools import add_features, master_locations
 from italic_returns import raw_outline
+
+
+SPREAD_PREFIXES = "([{,"
+
+
+def ink_edge(glyphs, name, y, side):
+    """Sample the facing edge at the dots' centerline."""
+    edges = profile(glyphs, name)
+    level = min(edges, key=lambda level: abs(level - y))
+    return edges[level][side]
+
+
+def fit_spread_boundaries(font, dots, feature):
+    """Balance the dot row between a prefix and a representative lowercase edge."""
+    cmap = font.getBestCmap()
+    spaces = sorted({cmap[cp] for cp in (9, 32, 0xA0) if cp in cmap})
+    blank = f"[{' '.join(spaces)}]"
+    prefixes = delimiter_variants((cmap[ord(ch)] for ch in SPREAD_PREFIXES), font["glyf"])
+    _, locations = master_locations(font)
+    masters = []
+    count = len(dots)
+    for location in locations:
+        glyphs = font.getGlyphSet(location=location)
+        cell = glyphs["period"].width
+        left, bottom, right, top = raw_outline(glyphs, "period").bounds
+        diameter = right - left
+        level = otRound((bottom + top) / 2)
+        # Prefer a stem-like leading edge so the row leaves clearance for closer operands.
+        leading = [ink_edge(glyphs, cmap[ord(ch)], level, 0) for ch in ascii_lowercase]
+        operand = 2 * cell + quantiles(leading, n=4)[0]
+        edges = {name: ink_edge(glyphs, name, level, 1) - cell for name in prefixes}
+        edges[None] = diameter / 2 - cell / count
+        coordinate = ",".join(f"{tag}={value:g}" for tag, value in location.items())
+        masters.append((coordinate, cell, diameter, operand, edges))
+
+    def positions(prefix, extra_cells):
+        values = [[] for _ in dots]
+        for coordinate, cell, diameter, operand, edges in masters:
+            edge = edges[prefix] - extra_cells * cell
+            gap = (operand - edge - count * diameter) / (count + 1)
+            for i, shifts in enumerate(values):
+                target = edge + (i + 1) * gap + (i + .5) * diameter
+                shift = otRound(target - (2 * i + 1) * cell / count)
+                shifts.append(f"{coordinate}:{shift}")
+        return " ".join(f"{dot}' <({' '.join(shifts)}) 0 0 0>"
+                        for dot, shifts in zip(dots, values, strict=True))
+
+    lines = ["languagesystem DFLT dflt;", "languagesystem latn dflt;", "lookup FitSpreadBoundary {"]
+    for name in prefixes:
+        lines.append(f"pos {name} {blank} {positions(name, 1)};")
+        lines.append(f"pos {name} {positions(name, 0)};")
+    # A leading blank without a recognized prefix can still lend one cell of ink space.
+    lines.append(f"pos {blank} {positions(None, 1)};")
+    lines.append("} FitSpreadBoundary;")
+    for tag in ("kern", feature):
+        lines.append(f"feature {tag} {{ lookup FitSpreadBoundary; }} {tag};")
+    add_features(font, "\n".join(lines), variable=True)
 
 
 def build_spread_context(font):
@@ -42,7 +103,7 @@ def register_spread_context(font, ellipsis, rule, *, feature="calt", definitions
     operands.update(cmap[ord(ch)] for ch in "_$([{\"'`")
     order = set(font.getGlyphOrder())
     operands.update(delimiter_variants((cmap[ord(ch)] for ch in "([{"), order))
-    prefixes = set(delimiter_variants((cmap[ord(ch)] for ch in "([{,"), order))
+    prefixes = set(delimiter_variants((cmap[ord(ch)] for ch in SPREAD_PREFIXES), order))
     spaces = {cmap[cp] for cp in (9, 32, 0xA0) if cp in cmap}
     blockers = sorted(order - prefixes - spaces)
     marked = marked or f"{ellipsis}'"

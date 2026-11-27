@@ -7,10 +7,11 @@ from pathlib import Path
 from bundle_release import sanitize
 from check_code_rebuild import RECIPE_PATH, ROOT
 from code_boundary_spacing import identifier_glyphs
-from code_gpos_compaction import FAMILY as LAYOUT_FAMILY, build
+from code_gpos_compaction import DOTS, FEATURE, FAMILY as LAYOUT_FAMILY, build
 from code_width import verify_width
 from font_feature_tools import add_features
 from release_code import release_font
+from code_spread import fit_spread_boundaries
 
 
 FAMILY = "Daikonic Transit Code Spacing Review"
@@ -127,6 +128,8 @@ def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=
                 from code_delimiter_revision import apply_delimiter_revision
 
                 apply_delimiter_revision(font)
+            if even_spread:
+                fit_spread_boundaries(font, DOTS, FEATURE)
             sanitize(font)
             verify_width(font, recipe["alphabet_review"]["cell"])
             font.save(target)

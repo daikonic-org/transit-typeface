@@ -11,6 +11,7 @@ from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 from fontTools.varLib.models import VariationModel, normalizeLocation
 from fontTools.misc.roundTools import otRound
 from fontTools.varLib.iup import iup_delta
+from fontTools.varLib.varStore import NO_VARIATION_INDEX
 
 
 def inherit_pair_positioning(font, aliases, *, replace=False, lookup_indices=None):
@@ -304,10 +305,29 @@ def append_variation_rows(original, appended):
     original.VarDataCount = len(original.VarData)
 
 
-def add_features(font, fea, prepend=False):
+def add_features(font, fea, prepend=False, *, variable=False):
     scratch = TTFont()
     scratch.setGlyphOrder(font.getGlyphOrder())
+    if variable:
+        for tag in ("fvar", "avar"):
+            if tag in font:
+                scratch[tag] = deepcopy(font[tag])
     addOpenTypeFeaturesFromString(scratch, fea)
+    if variable and "GDEF" in scratch:
+        store = getattr(scratch["GDEF"].table, "VarStore", None)
+        if store is not None:
+            previous = getattr(font["GDEF"].table, "VarStore", None)
+            offset = (len(previous.VarData) << 16) if previous is not None else 0
+            tables = [scratch[tag].table for tag in ("GDEF", "GPOS") if tag in scratch]
+            indices = set()
+            for table in tables:
+                table.collect_device_varidxes(indices)
+            mapping = {index: index + offset for index in indices if index != NO_VARIATION_INDEX}
+            mapping[NO_VARIATION_INDEX] = NO_VARIATION_INDEX
+            visited = set()
+            for table in tables:
+                table.remap_device_varidxes(mapping, done=visited)
+            append_layout_variations(font, store)
     for tag in ("GSUB", "GPOS"):
         if tag not in scratch:
             continue

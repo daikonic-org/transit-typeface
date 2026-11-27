@@ -21,6 +21,7 @@ from code_hairline_study import MARKER
 from code_hairline_toggle import OFF_FEATURE
 from code_layout import angle_styles
 from code_math import BIDIRECTIONAL_ARROWS
+from code_spread import SPREAD_PREFIXES
 from code_structural_fit import nested_offsets
 from font_feature_tools import add_features, expanded_variations
 from render_svg import render, render_pdf
@@ -47,10 +48,11 @@ LINES = (
     "fn read<'a>(x: &'a T) -> &'a T { x }",
 )
 SPREAD_LINES = (
-    "f(...rest)  f(value,...rest)",
+    "f(x,...rest)  f(x, ...rest)",
     "(...rest)  ,...rest  [...rest]",
-    "[[...items]]  {...record}",
-    "f(value, ...rest)  ...rest",
+    "( ...rest)  , ...rest  [ ...rest]",
+    "{...rest}   { ...rest}",
+    "[[...items]]  ...rest",
     "wait... later  [...]  […rest]",
 )
 
@@ -175,7 +177,7 @@ def verify_delimiter_spacing(engine, glyphs, location, flags, *, even_spread=Fal
             dots = rows[first:first + 3]
             assert [row[2] for row in dots] == [(3 - saved) * cell // 3] * 3
             paths = positioned_paths(glyphs, rows)
-            if even_spread:
+            if even_spread and first == 0:
                 start = sum(row[2] for row in rows[:first])
                 for index, (_, path) in enumerate(paths[first:first + 3]):
                     left, _, right, _ = path.bounds
@@ -184,6 +186,29 @@ def verify_delimiter_spacing(engine, glyphs, location, flags, *, even_spread=Fal
             paths = paths[max(first - 1, 0):first + 4]
             assert all(abs(pathops.op(a, b, pathops.PathOp.INTERSECTION).area) < 1
                        for (_, a), (_, b) in zip(paths, paths[1:])), (location, sample)
+    if even_spread:
+        verify_spread_boundaries(engine, glyphs, location, flags)
+
+
+def verify_spread_boundaries(engine, glyphs, location, flags):
+    cell = location["wdth"] * 6
+    for prefix, blank in product(SPREAD_PREFIXES, ("", " ")):
+        sample = prefix + blank + "...rest"
+        first = 1 + len(blank)
+        rows = shape(engine, sample, flags)
+        assert [row[2] for row in rows[:first]] == [cell] * first, (location, sample, rows)
+        assert [row[2] for row in rows[first:first + 3]] == [2 * cell // 3] * 3, (location, sample, rows)
+        assert sum(row[2] for row in rows) == (len(sample) - 1) * cell
+        paths = [path for _, path in positioned_paths(glyphs, rows)]
+        first_dot, second_dot, last_dot = [path.bounds for path in paths[first:first + 3]]
+        level = (first_dot[1] + first_dot[3]) / 2
+        leading = spans(paths[0], level, 1)[-1][1]
+        trailing = spans(paths[first + 3], level, 1)[0][0]
+        gaps = (first_dot[0] - leading, second_dot[0] - first_dot[2],
+                last_dot[0] - second_dot[2], trailing - last_dot[2])
+        assert max(gaps) - min(gaps) <= 26, (location, sample, gaps)
+        assert ((first_dot[0] + first_dot[2]) / 2 < first * cell) == bool(blank), (
+            location, sample, first_dot)
 
 
 def verify(source, path, *, even_spread=False):
@@ -314,7 +339,8 @@ def main():
         if args.even_spread:
             published = ROOT / "releases/1.1.3/code/VF" / source.name
             pages.append(proof(output, published, trial, style, source_label="1.1.3",
-                               target_label="Two-cell spread", title="Rest and spread spacing", lines=SPREAD_LINES))
+                               target_label="Balanced two-cell spread", title="Rest and spread spacing",
+                               lines=SPREAD_LINES))
         else:
             pages.append(proof(output, source, trial, style))
     render_pdf(pages, output / ("Code-Spread.pdf" if args.even_spread else "Code-Delimiters.pdf"))
