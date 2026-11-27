@@ -258,7 +258,11 @@ def check():
                     shift_intermediate_texture=settings.get("shift_intermediate_texture", False),
                     working_spacing=settings.get("working_spacing", False),
                 )
-                if settings.get("capital_spacing_source"):
+                if settings.get("delimiter_revision"):
+                    from code_delimiter_revision import RELEASE, verify
+
+                    verify(RELEASE / filename, path)
+                elif settings.get("capital_spacing_source"):
                     from code_capital_spacing import verify
 
                     verify(ROOT / settings["capital_spacing_source"] / filename, path, wider=True, smart=True)

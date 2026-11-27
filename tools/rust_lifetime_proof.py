@@ -6,30 +6,32 @@ from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.pens.svgPathPen import SVGPathPen
 from specimens import ROOT, DATA, Panel, specimen_families
 from code_balance_study import bind
+from export_otf import STYLES
 
 
 def main():
     cfg = specimen_families()["code"]
     vf = TTFont(ROOT / cfg["font"])
     parts = []
-    for row, (w, label) in enumerate([(300, "Light"), (350, "Book"), (400, "Regular")]):
+    weights = sorted({instance.coordinates["wght"] for instance in vf["fvar"].instances})
+    for row, w in enumerate(weights):
         f = instantiateVariableFont(deepcopy(vf), {"wght": w}, inplace=True)
         for col, (title, enabled) in enumerate(
-            [("Normal / ss01 off", False), ("Extended / ss01 on", True)]
+            [("Contextual hooks", True), ("Contextual alternates off", False)]
         ):
             p = Panel(f"rust-{w}-{col}", DATA["families"]["code"])
             bind(p, f)
             x = 25 + 650 * col
             y = 40 + row * 250
-            p.text(label + " / " + title, x, y, 20, 400, "#194454")
+            p.text(STYLES[w] + " / " + title, x, y, 20, 400, "#194454")
             p.text(
-                "&'a  <'a, 'b>  'static",
+                "&'a  <'i, 'T>  'static",
                 x,
                 y + 70,
                 36,
                 400,
                 "#101712",
-                features={"calt": True, "ss01": enabled},
+                features={"calt": enabled},
                 max_width=610,
             )
             p.text(
@@ -39,7 +41,7 @@ def main():
                 25,
                 400,
                 "#101712",
-                features={"calt": True, "ss01": enabled},
+                features={"calt": enabled},
                 max_width=610,
             )
             p.text(
@@ -49,7 +51,7 @@ def main():
                 24,
                 400,
                 "#101712",
-                features={"calt": True, "ss01": enabled},
+                features={"calt": enabled},
                 max_width=610,
             )
             parts.append(p.body())

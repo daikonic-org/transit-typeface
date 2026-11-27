@@ -4,7 +4,7 @@ Three companion typefaces for text, interfaces and code. Daikonic Transit brings
 
 ![Daikonic Transit Sans, System and Code](specimens/Transit-Family.png)
 
-[Download Daikonic Transit 1.1.2](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.2) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
+[Download Daikonic Transit 1.1.3](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3) · [Open interactive proofs](https://daikonic-org.github.io/transit-typeface/) · [Browse specimens](specimens/)
 
 All three typefaces come in upright and italic.
 
@@ -19,7 +19,7 @@ A proportional font for identity, headings, signage and editorial text, and the 
 - Standard `fi` and `fl` ligatures, plus custom `ai` and `li` combinations. A curved hook beneath the `i` and a separating band of whitespace connect the forms optically. The `ai` keeps ordinary spacing; `li` uses a matching stem gap.
 - Shared diamond details and the Transit arrow family.
 
-[Upright glyph proof](releases/1.1.2/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.2/specimens/Sans-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.3/specimens/Sans-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/Sans-Italic-Glyph-Proof.pdf)
 
 The samples below use the actual Book font, with the listed feature enabled or disabled.
 
@@ -41,7 +41,7 @@ An interface font for application navigation, controls, dashboards and short pas
 - `fi` and `fl` ligatures. `ai` and `li` remain separate letters for interface text.
 - The shared diamond details and arrow family, with lowercase proportions and spacing tailored to the System design.
 
-[Upright glyph proof](releases/1.1.2/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.2/specimens/System-Italic-Glyph-Proof.pdf)
+[Upright glyph proof](releases/1.1.3/specimens/System-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/System-Italic-Glyph-Proof.pdf)
 
 <!-- system-features -->
 | Feature / input | On | Off |
@@ -64,15 +64,15 @@ A monospace font with coding-friendly glyphs, ligatures and optically adjusted p
 - A wider hyphen and vertically balanced operators and punctuation for inline code.
 - A distinct two-storey `@` with an open, rounded wrap and contextual fitting for repeated `@` symbols.
 - Arrow, comparison, scope, access, interpolation, range, assignment, turnstile, hash-group and Rust-lifetime ligatures. Contextual alternates also provide taller generic delimiters and repeated-`@` fitting. Enable font ligatures (`calt` / `liga`) in your editor; the text itself is unchanged.
-- A left-hook marker for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). The `&` in a recognized lifetime moves slightly toward the marker. Contextual matching preserves character literals such as `'a'` and `'_'`.
+- A left-hook bar for Rust lifetimes and labels (`&'a`, `<'a>`, `'static`). It extends over the next character and rises for taller letters and accents. The `&` moves slightly toward the marker. Contextual matching preserves character literals such as `'a'` and `'_'`.
 - **Paired stems** (`liga`) for `ff`, `tt` and `ll` in upright and italic. The stems stay on the grid, with longer crossbars or hooks to balance the gaps. The foot of `i` aligns with the lowercase baseline.
-- Optional **Logic (`ss02`)** enclosure ligatures: `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` remain separate, tightly fitted glyphs with tall angles, with or without Logic. Empty nested `[<>]` renders as box then diamond (`[]<>`); `<[]>` renders as diamond then box (`<>[]`). Logic also renders prefix `!` as `¬`; inequality, optional-access punctuation, postfix/macros and simple quoted bangs retain their usual forms. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
+- Optional **Logic (`ss02`)** enclosure ligatures for `<>` and `[]`. Matched mixed enclosures such as `<[T]>` and `[<T>]` use separate, tightly fitted glyphs with tall angles. Empty nested `[<>]` renders as box then diamond (`[]<>`). The reverse order applies to `<[]>`. Logic renders prefix `!` as `¬`, with the usual forms for inequality, optional access, postfix operators, macros and quoted bangs. Unicode `∀`, `∃` and `¬` are available directly. Off by default.
 - Rust inference forms `<'_>`, `<_>` and `<[_]>` use matched generic delimiters. Turbofish `::<...>` also establishes generic context; its colon pair is optically fitted and centered beside the tall opening angle. Incomplete `::<` keeps a short angle. The scope pair takes one cell, and the generic delimiters keep their ordinary advances.
 - Glyphs drawn as ligatures provide caret positions where supported. Spacing-only sequences keep their separate characters, so editors can use the original text positions.
 
-Tall `<` and `>` appear in matched delimiter pairs and explicit mixed square/angle enclosures. Ordinary `<>` and `a<>b` stay short; type-name contexts such as `Vec<>` and `Vec<T>` use two tall delimiters. Nested generic pairs inherit the outer generic style (`Vec<vec<a>>`), while unmatched angles stay short (`Vec<T`, `T>`), except explicit mixed square/angle enclosures, which force the tall form. Matching supports up to 16 nesting levels and 60 non-mark glyphs per pair, using the capital-containing identifier heuristic rather than parsing source code.
+Matched angle delimiters are tall, including empty and nested pairs such as `Vec<>T` and `Vec<Vec<>>`. An empty pair with a space on both sides, as in `a <> b`, uses short angles. Unmatched angles also stay short. Contextual matching supports up to 16 nesting levels and 60 non-mark glyphs per pair.
 
-[Upright glyph proof](releases/1.1.2/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.2/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.2/specimens/Code-Identifier-Spacing.pdf) · [Capital spacing proof](releases/1.1.2/specimens/Code-Capital-Spacing.pdf)
+[Upright glyph proof](releases/1.1.3/specimens/Code-Upright-Glyph-Proof.pdf) · [Italic glyph proof](releases/1.1.3/specimens/Code-Italic-Glyph-Proof.pdf) · [Identifier spacing proof](releases/1.1.3/specimens/Code-Identifier-Spacing.pdf) · [Capital spacing proof](releases/1.1.3/specimens/Code-Capital-Spacing.pdf) · [Delimiter, arrow and lifetime proof](releases/1.1.3/specimens/Code-Delimiters.pdf)
 
 ### Symbol shortcuts
 
@@ -99,7 +99,7 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Rust inference placeholders<br><code>&lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;</code> | <img src="specimens/features/code-rust-inference-on.svg" width="460" alt="Rust inference placeholders on: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> | <img src="specimens/features/code-rust-inference-off.svg" width="460" alt="Rust inference placeholders off: &lt;&#x27;_&gt; &lt;_&gt; &lt;[_]&gt;"> |
 | Rust turbofish<br><code>::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;</code> | <img src="specimens/features/code-rust-turbofish-on.svg" width="460" alt="Rust turbofish on: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> | <img src="specimens/features/code-rust-turbofish-off.svg" width="460" alt="Rust turbofish off: ::&lt;T&gt; ::&lt;_&gt; ::&lt;[_]&gt;"> |
 | Logical negation / ss02<br><code>!p !!p != !== !.</code> | <img src="specimens/features/code-logic-not-on.svg" width="460" alt="Logical negation / ss02 on: !p !!p != !== !."> | <img src="specimens/features/code-logic-not-off.svg" width="460" alt="Logical negation / ss02 off: !p !!p != !== !."> |
-| Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;-"> |
+| Arrows<br><code>-&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;- &lt;-&gt; &lt;=&gt;</code> | <img src="specimens/features/code-arrows-on.svg" width="460" alt="Arrows on: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;- &lt;-&gt; &lt;=&gt;"> | <img src="specimens/features/code-arrows-off.svg" width="460" alt="Arrows off: -&gt; -&gt;&gt; =&gt; &lt;- &lt;&lt;- &lt;-&gt; &lt;=&gt;"> |
 | Comparisons<br><code>== === != !== &lt;= &gt;=</code> | <img src="specimens/features/code-comparisons-on.svg" width="460" alt="Comparisons on: == === != !== &lt;= &gt;="> | <img src="specimens/features/code-comparisons-off.svg" width="460" alt="Comparisons off: == === != !== &lt;= &gt;="> |
 | Scope separator<br><code>::</code> | <img src="specimens/features/code-scope-on.svg" width="460" alt="Scope separator on: ::"> | <img src="specimens/features/code-scope-off.svg" width="460" alt="Scope separator off: ::"> |
 | Optional / non-null access<br><code>?. !.</code> | <img src="specimens/features/code-access-on.svg" width="460" alt="Optional / non-null access on: ?. !."> | <img src="specimens/features/code-access-off.svg" width="460" alt="Optional / non-null access off: ?. !."> |
@@ -113,7 +113,7 @@ On and Off show the same text rendered in Code Book, with contextual/ligature fe
 | Logic / ss02<br><code>&lt;&gt; []</code> | <img src="specimens/features/code-logic-on.svg" width="460" alt="Logic / ss02 on: &lt;&gt; []"> | <img src="specimens/features/code-logic-off.svg" width="460" alt="Logic / ss02 off: &lt;&gt; []"> |
 | Empty nested Logic order / ss02<br><code>[&lt;&gt;] &lt;[]&gt;</code> | <img src="specimens/features/code-logic-order-on.svg" width="460" alt="Empty nested Logic order / ss02 on: [&lt;&gt;] &lt;[]&gt;"> | <img src="specimens/features/code-logic-order-off.svg" width="460" alt="Empty nested Logic order / ss02 off: [&lt;&gt;] &lt;[]&gt;"> |
 | Contextual pipe delimiters<br><code>&#124;x&#124; map(&#124;x&#124; x) a &#124; b</code> | <img src="specimens/features/code-pipe-delimiters-on.svg" width="460" alt="Contextual pipe delimiters on: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> | <img src="specimens/features/code-pipe-delimiters-off.svg" width="460" alt="Contextual pipe delimiters off: &#124;x&#124; map(&#124;x&#124; x) a &#124; b"> |
-| Comparison / generic context<br><code>a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a&lt;&gt;b Vec&lt;&gt; Vec&lt;Vec&lt;T&gt;&gt;"> |
+| Comparison / generic context<br><code>a &lt;&gt; b Vec&lt;&gt;T Vec&lt;Vec&lt;T&gt;&gt;</code> | <img src="specimens/features/code-generics-on.svg" width="460" alt="Comparison / generic context on: a &lt;&gt; b Vec&lt;&gt;T Vec&lt;Vec&lt;T&gt;&gt;"> | <img src="specimens/features/code-generics-off.svg" width="460" alt="Comparison / generic context off: a &lt;&gt; b Vec&lt;&gt;T Vec&lt;Vec&lt;T&gt;&gt;"> |
 | Contextual optical placement<br><code>string extra text</code> | <img src="specimens/features/code-optical-on.svg" width="460" alt="Contextual optical placement on: string extra text"> | <img src="specimens/features/code-optical-off.svg" width="460" alt="Contextual optical placement off: string extra text"> |
 | Repeated at-symbol fitting<br><code>@@ @@@</code> | <img src="specimens/features/code-at-repeat-on.svg" width="460" alt="Repeated at-symbol fitting on: @@ @@@"> | <img src="specimens/features/code-at-repeat-off.svg" width="460" alt="Repeated at-symbol fitting off: @@ @@@"> |
 <!-- /code-features -->
@@ -134,14 +134,13 @@ Code uses standard, intermediate and wide forms of `M` and `W` in upright and it
 
 ### Hairlining
 
-Upright Code adds 22-unit outer echoes to delimiters and a diamond with a leader over the next cell for Rust lifetimes. The outer echoes include paired pipes and tall generic angles. Hairlining is on by default. Enable `ss07` to turn it off.
+Upright Code adds 22-unit outer echoes to parentheses, brackets, braces, paired pipes and tall generic angles at normal width. Hairlining is on by default. Enable `ss07` to turn it off. Rust lifetime hooks are part of contextual alternates (`calt`).
 
 <!-- code-hairlining -->
 | Feature / input | On | Off |
 | --- | --- | --- |
 | Delimiters<br><code>&#124;w&#124; (x) [x] {x}  a &#124; b</code> | <img src="specimens/features/code-hairline-delimiters-on.svg" width="460" alt="Delimiters on: &#124;w&#124; (x) [x] {x}  a &#124; b"> | <img src="specimens/features/code-hairline-delimiters-off.svg" width="460" alt="Delimiters off: &#124;w&#124; (x) [x] {x}  a &#124; b"> |
 | Scope and generics<br><code>path::item::&lt;T&gt;</code> | <img src="specimens/features/code-hairline-scope-on.svg" width="460" alt="Scope and generics on: path::item::&lt;T&gt;"> | <img src="specimens/features/code-hairline-scope-off.svg" width="460" alt="Scope and generics off: path::item::&lt;T&gt;"> |
-| Rust lifetime markers<br><code>&amp;&#x27;a &#x27;static &#x27;a&#x27;</code> | <img src="specimens/features/code-hairline-lifetimes-on.svg" width="460" alt="Rust lifetime markers on: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> | <img src="specimens/features/code-hairline-lifetimes-off.svg" width="460" alt="Rust lifetime markers off: &amp;&#x27;a &#x27;static &#x27;a&#x27;"> |
 <!-- /code-hairlining -->
 
 ### Self-aligning ligatures
@@ -152,7 +151,7 @@ Selected sequences in Code use one fewer cell and pull following text left in th
 | --- | --- |
 | Two cells in rest and spread expressions | `...items` and `[...items]` |
 | One cell | `::`, `?.`, `!.`, `//`, logical <code>&#124;&#124;</code>, `<=`, `>=` |
-| Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `==`, `!=`, `===`, `!==` |
+| Two cells | `->`, `<-`, `->>`, `<<-`, `=>`, `<->`, `<=>`, `==`, `!=`, `===`, `!==` |
 
 **Loose Equality** (`ss06`, off by default) gives `==`, `!=`, `===`, and `!==` one cell each. The first two draw with a tilde above the equals bars. In `!=`, the slash crosses the bars below the tilde.
 
@@ -170,7 +169,7 @@ Optical-size trials for Sans and Code add `opsz` 10–36 while preserving the ex
 
 ## Downloads and release packages
 
-Release 1.1.2 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.2).
+Release 1.1.3 includes Sans, System and Code. Choose your format from the [release page](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3).
 
 | Package | Contents | Use |
 | --- | --- | --- |
@@ -224,4 +223,4 @@ Install the Code variable TTFs in Font Book to choose any width from 94% to 108%
 
 The Code TTC includes Book, Regular, and Medium in Narrow (94%), standard (100%), and Wide (108%), with matching italics. Choose **Daikonic Transit Code** in a font picker and select a style such as **Book Narrow** or **Regular Wide**. [WezTerm and Zed setup](docs/editor-setup.md)
 
-Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.2)
+Choose the System variable TTFs to adjust width continuously, or use the TTC for named Narrow and Wide styles at each weight and optical size. [System width downloads](https://github.com/daikonic-org/transit-typeface/releases/tag/Transit-1.1.3)

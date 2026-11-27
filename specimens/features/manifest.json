@@ -1,15 +1,15 @@
 {
   "sources": {
     "sans": {
-      "font": "releases/1.1.2/sans/VF/DaikonicTransitSans-VF.ttf",
-      "sha256": "51f8351e8982417a44409d20b84bd7bb63012ec8a06215c8dacd495bb0501d2c",
+      "font": "releases/1.1.3/sans/VF/DaikonicTransitSans-VF.ttf",
+      "sha256": "74e6965769fe979d9e97d8eb81c607e722fb0afa0ef490404dadc3f87cfffde1",
       "location": {
         "wght": 350
       }
     },
     "system": {
-      "font": "releases/1.1.2/system/VF/DaikonicTransitSystem-VF.ttf",
-      "sha256": "251e809be3f6f262fb63f0ffe5c509a5310b06d329d0c9f45de164de5cfbe154",
+      "font": "releases/1.1.3/system/VF/DaikonicTransitSystem-VF.ttf",
+      "sha256": "a9a25d81b681a341acdb74852de1d698156d66c0c51fe1b9f9cf521d43946f29",
       "location": {
         "wght": 350,
         "opsz": 15.272720336914062,
@@ -17,8 +17,8 @@
       }
     },
     "code": {
-      "font": "releases/1.1.2/code/VF/DaikonicTransitCode-VF.ttf",
-      "sha256": "2713c293535adddd791f96957e6d03388453ea9729c4f98cf035a26a031861ba",
+      "font": "releases/1.1.3/code/VF/DaikonicTransitCode-VF.ttf",
+      "sha256": "6764a11b896f688b58e86865afe6d9e88dbdd8193c0d877fe4b466aff2bcfae9",
       "location": {
         "wght": 350,
         "wdth": 100.0
@@ -1403,200 +1403,6 @@
         ]
       ]
     },
-    "code-hairline-lifetimes": {
-      "text": "&'a 'static 'a'",
-      "on_features": {
-        "ss05": true
-      },
-      "off_features": {
-        "ss05": false,
-        "ss07": true
-      },
-      "on_shaping": [
-        [
-          "ampersand",
-          600,
-          40,
-          0
-        ],
-        [
-          "quotesingle.lifetime.hairlineOver",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle.lifetime.hairlineOver",
-          600,
-          0,
-          0
-        ],
-        [
-          "s",
-          600,
-          8,
-          0
-        ],
-        [
-          "t",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "t",
-          600,
-          4,
-          0
-        ],
-        [
-          "i",
-          600,
-          8,
-          0
-        ],
-        [
-          "c",
-          600,
-          -8,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle",
-          600,
-          0,
-          0
-        ]
-      ],
-      "off_shaping": [
-        [
-          "ampersand",
-          600,
-          40,
-          0
-        ],
-        [
-          "quotesingle.lifetime",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle.lifetime",
-          600,
-          0,
-          0
-        ],
-        [
-          "s",
-          600,
-          8,
-          0
-        ],
-        [
-          "t",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "t",
-          600,
-          4,
-          0
-        ],
-        [
-          "i",
-          600,
-          8,
-          0
-        ],
-        [
-          "c",
-          600,
-          -8,
-          0
-        ],
-        [
-          "space",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle",
-          600,
-          0,
-          0
-        ],
-        [
-          "a",
-          600,
-          0,
-          0
-        ],
-        [
-          "quotesingle",
-          600,
-          0,
-          0
-        ]
-      ]
-    },
     "code-rust-inference": {
       "text": "<'_> <_> <[_]>",
       "on_features": {
@@ -1618,10 +1424,10 @@
           0
         ],
         [
-          "quotesingle.lifetime.hairlineOver",
+          "quotesingle.lifetime",
           600,
           0,
-          0
+          24
         ],
         [
           "underscore",
@@ -2205,7 +2011,7 @@
       ]
     },
     "code-arrows": {
-      "text": "-> ->> => <- <<-",
+      "text": "-> ->> => <- <<- <-> <=>",
       "on_features": {
         "calt": true,
         "liga": true,
@@ -2268,6 +2074,30 @@
         ],
         [
           "less_less_hyphen.liga",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less_hyphen_greater.liga",
+          1200,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less_equal_greater.liga",
           1200,
           0,
           0
@@ -2366,6 +2196,54 @@
         ],
         [
           "hyphen",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "hyphen",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
+          "less",
+          600,
+          0,
+          0
+        ],
+        [
+          "equal",
+          600,
+          0,
+          0
+        ],
+        [
+          "greater",
           600,
           0,
           0
@@ -2729,9 +2607,15 @@
           0
         ],
         [
-          "dollar_parenleft.liga.hairline",
-          1200,
-          0,
+          "dollar",
+          600,
+          35,
+          -38
+        ],
+        [
+          "parenleft.hairline",
+          600,
+          -35,
           0
         ]
       ],
@@ -3275,10 +3159,10 @@
           0
         ],
         [
-          "quotesingle.lifetime.hairlineOver",
+          "quotesingle.lifetime",
           600,
           0,
-          0
+          24
         ],
         [
           "a",
@@ -3299,10 +3183,10 @@
           0
         ],
         [
-          "quotesingle.lifetime.hairlineOver",
+          "quotesingle.lifetime",
           600,
           0,
-          0
+          24
         ],
         [
           "a",
@@ -3323,10 +3207,10 @@
           0
         ],
         [
-          "quotesingle.lifetime.hairlineOver",
+          "quotesingle.lifetime",
           600,
           0,
-          0
+          24
         ],
         [
           "s",
@@ -3485,10 +3369,10 @@
           0
         ],
         [
-          "quotesingle.lifetime.hairlineOver",
+          "quotesingle.lifetime",
           600,
           0,
-          0
+          24
         ],
         [
           "a",
@@ -3650,13 +3534,13 @@
       ],
       "off_shaping": [
         [
-          "less",
+          "less.generic.hairline",
           600,
           0,
           0
         ],
         [
-          "greater",
+          "greater.generic.hairline",
           600,
           0,
           0
@@ -4031,7 +3915,7 @@
       ]
     },
     "code-generics": {
-      "text": "a<>b Vec<> Vec<Vec<T>>",
+      "text": "a <> b Vec<>T Vec<Vec<T>>",
       "on_features": {
         "calt": true,
         "liga": true,
@@ -4051,6 +3935,12 @@
           0
         ],
         [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
           "less",
           600,
           0,
@@ -4058,6 +3948,12 @@
         ],
         [
           "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
           600,
           0,
           0
@@ -4100,6 +3996,12 @@
         ],
         [
           "greater.generic.hairline",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
           600,
           0,
           0
@@ -4185,6 +4087,12 @@
           0
         ],
         [
+          "space",
+          600,
+          0,
+          0
+        ],
+        [
           "less",
           600,
           0,
@@ -4192,6 +4100,12 @@
         ],
         [
           "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "space",
           600,
           0,
           0
@@ -4234,6 +4148,12 @@
         ],
         [
           "greater",
+          600,
+          0,
+          0
+        ],
+        [
+          "T",
           600,
           0,
           0
@@ -4703,16 +4623,16 @@
     }
   },
   "files": {
-    "Code-Characters.svg": "3508d252becb5db9079fd65892a71bfe17eab1903d9ee458a39a13f58c71d6bd",
-    "code-Features.svg": "a65ff86703af8371644f41a4e79111160be83ed8c066a3b91668906d20d206c6",
+    "Code-Characters.svg": "c2e168381f4742f3478638c13911d58539e3e8a9d0f0e1f17764dc9a340d8430",
+    "code-Features.svg": "b783a656b72f612b90ed50667c7b4e4080fbd33885aa9e40683e7af845a246b7",
     "code-access-off.svg": "0cade0818fd70fe9129ab4efcfc3ce8ba00975a186865ad13485d155e6701b9a",
-    "code-access-on.svg": "7ca63d447fca25b7c94ce2131639db433cd44f77b5dc1cdd9dba77bc55cc16df",
-    "code-arrows-off.svg": "14b7c229add60f2f680da8e0b02e3cc72639e8727381084c97f4e83efce791e0",
-    "code-arrows-on.svg": "907853b28e776bf07a9dfdbf0bda27b7a047a8345eae4d7d1e2c86916a9fd9bb",
+    "code-access-on.svg": "3ec352bcd13b84f90da3ff8c321de92901775a6c81a995e7b45ae6c66bced3d3",
+    "code-arrows-off.svg": "f7a1f110fcd297bda324ea0a1537812ee434fe3a495ff7127b956eb624d48e97",
+    "code-arrows-on.svg": "486703b69648b20ac6e976836681e22dc4a4f8ec857a0b56e7c837c8d772f1ac",
     "code-assignment-off.svg": "547057ebaf7696384ea58df8a9a56457b79dac39ec17a62853e834c22cc92ca6",
-    "code-assignment-on.svg": "778f67c52adb4ecadca751ec3a7dd3fbcb1bf5b68e46a3e2e9c8784b993ab1ee",
+    "code-assignment-on.svg": "d6ac4f0795d320dd7d7054d189ec0f6441ec27e33dde8b6c4b744a9eac22e106",
     "code-at-repeat-off.svg": "aca5052ca86e95b292e28a61baafebb7ce1d4b27c69584dd12bb517abee85c1f",
-    "code-at-repeat-on.svg": "6764406b120e60f9af69f2b811b089461c76487ad5420dd03bc01c247e882de2",
+    "code-at-repeat-on.svg": "3a69bcce90b62f7cff7afae2cf0372110f2a504126861dce59aafbf38b2c08e9",
     "code-command-box.svg": "a6486497d1b612b04ee6c88afc8559f2b0ee819bf0d5197b30f224ba80c91315",
     "code-command-diamond.svg": "4044a781b74f94e9c7cdfdbc17ddd24d90303b84ebc043530275416afcff3873",
     "code-command-exists.svg": "d61508538cb1817d17c4611786a72cfa9ac74363221a4b9543bc63f0bf0c6f2c",
@@ -4721,45 +4641,43 @@
     "code-comparisons-off.svg": "d552d285348d30764759df019ce07091bde2020f4115c2d119a53c41e7ca8c5b",
     "code-comparisons-on.svg": "f94a3223a41d4626013b0a6c78a9316a3c6fdd361588f089b4c82e4b2d22347e",
     "code-ellipsis-off.svg": "35e3ee35595fa6c1a6f293b6186821dabbddf4c2fed82b99c96b6506a6edabb8",
-    "code-ellipsis-on.svg": "d21538a8f263a8f43117f47f4c1cc130ef368d77da27fc27ca8f8917fb2b4f44",
-    "code-generics-off.svg": "b41ae5dff59dd4bed94321866448e43b3767469433ae7dd3229fd4a1a4186bf7",
-    "code-generics-on.svg": "e45ec37100360a64a2f0d5ca48885a0db27a1199d06982a4be15d9a39cf8611e",
-    "code-hairline-delimiters-off.svg": "2511dcf30071baafb940fb4b098eeed41110cf4c27187d8c1f90376f82bece46",
-    "code-hairline-delimiters-on.svg": "3a356fbb622ad881af65017b1119d92cc6a85bd3087129afcea32a2caf1ceccd",
-    "code-hairline-lifetimes-off.svg": "c9113a0c063d055e94565c6eefdaf5556dd2bf483dedc7bddfd2f7a2720016dd",
-    "code-hairline-lifetimes-on.svg": "7fe63cde6241165026b208428ab826b5f0c4afaa629d7d3924cd45beea865a06",
-    "code-hairline-scope-off.svg": "1efc163b35215037cac344fa5ed50e778d75b69184dc7427e01631954560b016",
-    "code-hairline-scope-on.svg": "d2ef33de49ef24752fb525dbb4792344924bd1ee463701a61afafc41a34d65d8",
+    "code-ellipsis-on.svg": "8d88495f488f7ab49c6637929544b2f931d8dfe7f1f98603ee1e03a277a7bf90",
+    "code-generics-off.svg": "29b3ed3f9546b992c428313da7799794e82023914b76aad052db6c4d9a5b01d4",
+    "code-generics-on.svg": "6da6ce3c90049331e29d577e9ad7ec0eaae38f4dc468b66cdea92366ade9a30c",
+    "code-hairline-delimiters-off.svg": "3984520887c65c9e3e2f29fbc92a3bf7237fdf80ae5128f9ad857cb96a590c5c",
+    "code-hairline-delimiters-on.svg": "2b293cf90ce63f1970c1dca6a9ac305b162a59c66747b5430fc83d676ebb7166",
+    "code-hairline-scope-off.svg": "e9f0279ca3589f0f340494eb3ea0a7c2f906a02512d1bd062a8f8293295bc15c",
+    "code-hairline-scope-on.svg": "63218b8e3c3979eccade6541890b96d3bdc426fcb8e7493914b35dd705fdda6e",
     "code-hashes-off.svg": "6fc7934901b514485c257c8860c643d6137dc78227dc1315b679d89078055f75",
-    "code-hashes-on.svg": "a4bec5bce130d604aab0937cbe513be2349eed086429b741c70fe9082f1df882",
+    "code-hashes-on.svg": "add904cab5b4feefd5bcbb53e2ba167b0546cf69d3657d26ff9a083d91f1d51d",
     "code-interpolation-off.svg": "811334e3db1db752d05fc2b88469ba2d9be12d5992f6814ab05143810ba88597",
-    "code-interpolation-on.svg": "49a220b25c50d16002ce7196ceed0bf0394190d7561a949e63883ebed0114d22",
-    "code-lifetime-literals-off.svg": "d8862a46c0f953695263826569513fc2d6756d85c8ec0114a956d5a3e8d850b4",
-    "code-lifetime-literals-on.svg": "f29ef2550b1fe76b7edb5e85930b0c332e76eca5c9d3aab2f0b5a2e017ccc80e",
-    "code-lifetimes-off.svg": "9957da57eacfd1a0524b0935c70d855f37c74ba09b9c4643a0af49580c674587",
-    "code-lifetimes-on.svg": "6bd26514e6e8aae047a120cd14ecd8bdae38a60a0c91076eb370ed4392398d4a",
-    "code-logic-not-off.svg": "90a5674cd6f3c053ad576ffe789a0cee684028c977e26504a700323f9abee4c0",
-    "code-logic-not-on.svg": "ed9fa244f114c2d193296ea9cdf1bb0e57f08a3497cdf035b3389ca6e4d68b32",
-    "code-logic-off.svg": "f350243dd08a6fa9bb1bc00eb56793a739b80d29aa2d08fc379d4bed4db7c571",
+    "code-interpolation-on.svg": "67adde3c6dd2e241a6c27b3893e4e3435da4476145432ef2b07fbb04b5f40e1f",
+    "code-lifetime-literals-off.svg": "bb7e201ad01554d66662125aea559782be6f05dc01d5bc986ae72c3859d927bc",
+    "code-lifetime-literals-on.svg": "6e5037732684c63c1939690829a5617fc6fd2be68c77106d6a16534c5e3ddd40",
+    "code-lifetimes-off.svg": "1157cbaf4bedd694d59a3b94c0d02274bc23b363bde78eb800ec30b898c6f27a",
+    "code-lifetimes-on.svg": "458774d698665c497b0b35cbd186b5e52efc7f854f6bebcf24270dba1886aae5",
+    "code-logic-not-off.svg": "8bbf7a1f432c6a6d68a3660186667299a69b0bd8c16538fe28bc7f4c99f27e10",
+    "code-logic-not-on.svg": "597beafd172a5a6df497991311b86d2eb72a5b25e482e4e369560cd45939e119",
+    "code-logic-off.svg": "374bd289e0a788137bdf9a830d81f9691ec68b9f6c4c7198f66b61fc576c8161",
     "code-logic-on.svg": "64dd74436e5457bd1d16755df1aa9aec218c11c6b1baeaa81bc2124a72aacdbc",
-    "code-logic-order-off.svg": "f1ac43f8481a64a9ac5e82abb26340e00c715369b381a7c9cddc551b48f7d5a1",
+    "code-logic-order-off.svg": "62c435e1e76dcea91bfce8c958235c779766ae87a807c5c77682cb4e3ddf5ae4",
     "code-logic-order-on.svg": "949a6171fe88c7240afdee70b9fbb3e74e47259bb1202e11ba5a34c1e8d14b05",
     "code-optical-off.svg": "f70ac3b20ba3d1e8936a73ffd4d87edc66d8c23506012d9c6ca3eb1ca65c48de",
     "code-optical-on.svg": "7c981009d90e1fb2762288bf9dd1b943ae4b8d1f7b5e00579a8f0cd59b5d55b2",
     "code-paired-stems-off.svg": "020fb962f36187b02a1bcc4c854b6722fb81ed80eebe1249acaccf2b1e58446e",
-    "code-paired-stems-on.svg": "a5bc18e1d80e79812d0feb85451020ada3fdf1b78e47be9bc4eae2867b92401e",
+    "code-paired-stems-on.svg": "e775b8fa84b912fc3ebf41d68af6fe78f3ed57a4153a5f9565eee00d6a45880b",
     "code-pipe-delimiters-off.svg": "d42682f25ef2d8cd3b89cdea4997eca5e0e38550ad865563f36fc64956289488",
-    "code-pipe-delimiters-on.svg": "f7d1b76958c399fa2cba45e0e682a7582fe0cc1ee91289b9d75bf0f1ffd32b02",
+    "code-pipe-delimiters-on.svg": "d9a021446a5cac3ebb810ca2858c32bd5dcfc7fce1aa0f676bb92ba5e0eccc0d",
     "code-ranges-off.svg": "334454ae8f303efea5f7cbfa035da09fee2dcdab8febcea063dae6e14ae39378",
-    "code-ranges-on.svg": "a42ff5b3970a306882b628932c31c24f04b40feaa14a3a91c56df8adc46662e7",
+    "code-ranges-on.svg": "3aa0d151416af6e9dbeb0adb166f339bfaaf482702920ed7352ca04ac24b6dca",
     "code-rust-inference-off.svg": "40d2730b3ea5036f87258aee93603e21e5c35a50f4097c8890f47fb72b61f0ca",
-    "code-rust-inference-on.svg": "272f6fe05777ef4d34bd44925caf84b887087e0c48e63dfc5319c5b740acfc79",
+    "code-rust-inference-on.svg": "5a91fa2c3f70d4f4271a252941403972347019d1d4f3293915c62f42bb99da5d",
     "code-rust-turbofish-off.svg": "ddc7fc3996d026bd6323cbefa9a024c76adb7e7400b8a64baeab479354ab6a11",
-    "code-rust-turbofish-on.svg": "49ae624d74ec9febeb67cb7e68c55647693224a7e93a808c4f3c4609de171f5e",
+    "code-rust-turbofish-on.svg": "051bb89d55df68955538d016e50bfb1a70ecdac13fe1e6574738950f9118b2ad",
     "code-scope-off.svg": "78ee4047e09be3c476c310550fd17bc25c312bc8aea21b540b174f5d1c5fade8",
-    "code-scope-on.svg": "4b6cb0d4f02d89d6b764e865a7f09c997aefde8ba9ad9ccce0e365f945597d37",
+    "code-scope-on.svg": "4b113f0035bcee4648b31eb85ffce9b8a49b13718895963010848d9bfe8ada28",
     "code-texture-healing-off.svg": "b0c38ee61c6fdfd06e0f67d514eaf5f7594112a531657dfaed59afa2472fae40",
-    "code-texture-healing-on.svg": "509390c46efb095708cccfe2c967a4948b5d0432e5672b06ba6eac2e718647a2",
+    "code-texture-healing-on.svg": "14ca48c0e3219eee2e5d09ddf7ef150d46ba7c0569b096628df234bd57974e0f",
     "sans-Features.svg": "321f89b0666d9f1f5be7a3d4ef696f9139cd521cda7d2c0baa61c5c9a79c2952",
     "sans-hooks-off.svg": "8871c3ff4764dda5bb012f5cace07877f987c78a99ecb964399c5f5fb7be3835",
     "sans-hooks-on.svg": "25ac0b9a13030705d233368fc8867c3a5acf593fe9cc12fe230f8ca6cd5833f5",

@@ -22,7 +22,9 @@ EXAMPLES = {
             "\n\nexit  hexit  window  windows  sweep"
             "\nimi  imx  xmi  xmx  iwi  .w.  minimum"
             "\n\nHTTPServer  ParseResponse  Read  Key  Index  fileI"
-            "\nIMI  IWI  WiW  MMM  WWW",
+            "\nIMI  IWI  WiW  MMM  WWW"
+            "\n\nVec<>T  a <> b  Vec<Vec<>>  f((x))"
+            "\n->  <-  <->  =>  <=>",
 }
 
 

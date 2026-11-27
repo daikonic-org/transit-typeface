@@ -44,7 +44,7 @@ Merge these font settings into existing configuration, rather than replacing oth
 
 ## Optional Code features
 
-Upright Code enables **Hairlining** by default. To turn it off, enable `ss07=1` in WezTerm, `'ss07' on` in VS Code, or `"ss07": true` in Zed. The hairline set includes the diamond Rust lifetime form.
+Upright Code enables delimiter **Hairlining** by default. To turn it off, enable `ss07=1` in WezTerm, `'ss07' on` in VS Code, or `"ss07": true` in Zed. Rust lifetime hooks use contextual alternates (`calt`).
 
 **Logic (`ss02`)** is optional in upright and italic. It joins `<>` and `[]`. Mixed `<[` / `]>` and `[<` / `>]` use separate, tightly fitted glyphs and forced tall angles.
 

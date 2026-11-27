@@ -27,7 +27,8 @@ def stage(key, settings, scratch, code_build=None):
         from code_working_spacing import build_fonts
 
         build_fonts(destination, settings["version"], config["name"], source=code_build,
-                    capital_spacing=bool(settings.get("capital_spacing_source")))
+                    capital_spacing=bool(settings.get("capital_spacing_source")),
+                    delimiter_revision=settings.get("delimiter_revision", False))
     elif settings.get("rebuild_code"):
         from code_gpos_compaction import FAMILY
         from release_code import release_font
@@ -129,6 +130,8 @@ if __name__ == "__main__":
             code_build = scratch / "code"
             code_build.mkdir()
             recipe = json.loads((ROOT / "recipes/code-rebuild.json").read_text())
+            if code_settings.get("delimiter_revision"):
+                recipe["layout_review"]["delimiter_revision"] = True
             if code_settings.get("working_spacing"):
                 from code_working_spacing import SPACING_PATH, apply_compact_classes
 

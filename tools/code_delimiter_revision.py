@@ -157,7 +157,9 @@ def verify(source, path):
         "Vec<\nx>": [False, False], "Vec<" + "t" * 60 + ">": [True, True],
         "Vec<" + "t" * 61 + ">": [False, False],
     }
-    controls = ("a <= b >= c", "a <- b -> c", "'a'", "'_'", "'💡'")
+    controls = ("a <= b >= c", "a <- b -> c", "'a'", "'_'", "'💡'",
+                "HTTPServer ParseResponse Read Key Index fileI IMI IWI",
+                "window windows exit sweep namespace",)
     lifetimes = ("'a", "'static", "'l", "'i", "'T", "'Á", "'f\u0301", "'Q\u0308", "'_", "'ff", "&'a",
                  "&'T", "<'a>", "Vec<'l>", "use<'a, 'T>")
     for weight, width in product((350, 375, 400, 450, 500), (94, 97, 100, 104, 108)):
@@ -212,7 +214,7 @@ def verify(source, path):
     print(path.name, "verified at 25 axis settings", flush=True)
 
 
-def proof(output, source, target, style):
+def proof(output, source, target, style, *, target_label="Delimiter trial"):
     parts = [
         '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="600" viewBox="0 0 1220 600">',
         '<rect width="1220" height="600" fill="#f7f5ee"/>',
@@ -222,7 +224,7 @@ def proof(output, source, target, style):
         '<text x="36" y="76" font-size="31" font-weight="700">Delimiters, arrows and Rust lifetimes</text>',
         '</g>',
     ]
-    for col, (file, title) in enumerate(((source, "Before · 1.1.2"), (target, "After · Delimiter trial"))):
+    for col, (file, title) in enumerate(((source, "Before · 1.1.2"), (target, f"After · {target_label}"))):
         x = 36 + 610 * col
         parts.append(f'<text x="{x}" y="125" fill="#526971" font-size="19" font-family="Arial">{title}</text>')
         panel = Panel(f"delim{col}", {"font": file.resolve()})

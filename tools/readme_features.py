@@ -16,7 +16,8 @@ from code_balance_study import bind
 from code_logic_shortcuts import COMMANDS, glyph_name
 from code_glyph_names import sequence_name
 from code_compact_build import CONTEXT_PAIRS, DIRECT, LOOSE_NAMES
-from code_math import ARROWS, COMPARISONS
+from code_hairline_study import MARKER
+from code_math import ARROWS, BIDIRECTIONAL_ARROWS, COMPARISONS
 from code_compact_operators import CELL, LOOSE_GLYPHS, SAVED_CELL_GLYPHS
 
 OUT = ROOT / "specimens/features"
@@ -56,10 +57,6 @@ FEATURES = {
             "hairline-scope", "Scope and generics", "path::item::<T>",
             {"ss05": True}, {"ss05": False, "ss07": True},
         ),
-        (
-            "hairline-lifetimes", "Rust lifetime markers", "&'a 'static 'a'",
-            {"ss05": True}, {"ss05": False, "ss07": True},
-        ),
         ("rust-inference", "Rust inference placeholders", "<'_> <_> <[_]>", ON, OFF),
         ("rust-turbofish", "Rust turbofish", "::<T> ::<_> ::<[_]>", ON, OFF),
         (
@@ -69,7 +66,7 @@ FEATURES = {
             {**ON, "ss02": True},
             {**ON, "ss02": False},
         ),
-        ("arrows", "Arrows", "-> ->> => <- <<-", ON, OFF),
+        ("arrows", "Arrows", "-> ->> => <- <<- <-> <=>", ON, OFF),
         ("comparisons", "Comparisons", "== === != !== <= >=", ON, OFF),
         ("scope", "Scope separator", "::", ON, OFF),
         ("access", "Optional / non-null access", "?. !.", ON, OFF),
@@ -95,7 +92,7 @@ FEATURES = {
             ON,
             OFF,
         ),
-        ("generics", "Comparison / generic context", "a<>b Vec<> Vec<Vec<T>>", ON, OFF),
+        ("generics", "Comparison / generic context", "a <> b Vec<>T Vec<Vec<T>>", ON, OFF),
         ("optical", "Contextual optical placement", "string extra text", ON, OFF),
         ("at-repeat", "Repeated at-symbol fitting", "@@ @@@", ON, OFF),
     ],
@@ -295,7 +292,7 @@ def code_comparison(font):
         assert "logicalnot" not in glyphs[True, language]
     assert not any(name.endswith(".loose") for name in glyphs[True, "Rust"])
     assert all(".texture." not in name for name in glyphs[False, "Rust"])
-    assert any(name.startswith("quotesingle.lifetime.hairline") for name in glyphs[True, "Rust"])
+    assert MARKER in glyphs[True, "Rust"] and MARKER not in glyphs[False, "Rust"]
     body.append(panel.body())
     return svg(
         "".join(body),
@@ -316,7 +313,7 @@ def expected_code_advance(font, text, names):
         loose_savings[current_name(font, name)] = len(token) - 1
     saved_glyphs = {current_name(font, name) for name in SAVED_CELL_GLYPHS}
     saved_glyphs.update((COMPARISONS[t] for t in ("<=", ">=", "===", "!==")))
-    saved_glyphs.update((ARROWS[t] for t in ("->>", "<<-")))
+    saved_glyphs.update(name for token, name in (ARROWS | BIDIRECTIONAL_ARROWS).items() if len(token) == 3)
     saved_glyphs.update(CONTEXT_PAIRS.values())
     saved_glyphs.add("period_period_period.liga.spread")
     # A compact pair remains two glyphs, each with a half-cell advance.
