@@ -32,10 +32,11 @@ AMPERSAND_GAIN = 18
 HOOK_END = 1.60
 CLEARANCE = 18
 HEIGHT_STEP = 24
+HOOK_LIFT = 24
 LINES = (
     "f((x))  map(a, b)  $(value)",
     "a & b  &'a  &'static  &'T",
-    "'a  'g  'l  'T  'Á  'a'",
+    "'a  'g  'i  'l  'T  'Á  'a'",
     "<'a>  <x>  <'a'>  Vec<Vec<T>>",
     "<>    a <> b    a<>b    Vec<>T",
     "vec<>  Vec<Vec<>>  Vec< <> >",
@@ -101,13 +102,12 @@ def position_hooks(font):
                 targets[name] = max(pen.bounds[3], targets.get(name, 0))
     heights = {}
     for name, top in targets.items():
-        rise = max(0, ceil((top + CLEARANCE - lowest_bar) / HEIGHT_STEP) * HEIGHT_STEP)
-        if rise:
-            heights.setdefault(rise, []).append(name)
+        rise = HOOK_LIFT + max(0, ceil((top + CLEARANCE - lowest_bar) / HEIGHT_STEP) * HEIGHT_STEP)
+        heights.setdefault(rise, []).append(name)
 
     # Decomposed accents can sit above the precomposed cap. Use the same
     # highest group with a little more clearance for the combining form.
-    marked_rise = max(heights, default=0) + HEIGHT_STEP * 2
+    marked_rise = max(heights) + HEIGHT_STEP * 2
     rules = [
         "languagesystem DFLT dflt;", "languagesystem latn dflt;",
         f"@HookTarget = [{' '.join(sorted(targets))}];",
@@ -149,7 +149,7 @@ def verify(source, path):
         "Vec<" + "t" * 61 + ">": [False, False],
     }
     controls = ("a <= b >= c", "a <- b -> c", "'a'", "'_'", "'💡'")
-    lifetimes = ("'a", "'static", "'l", "'T", "'Á", "'f\u0301", "'Q\u0308", "'_", "'ff", "&'a",
+    lifetimes = ("'a", "'static", "'l", "'i", "'T", "'Á", "'f\u0301", "'Q\u0308", "'_", "'ff", "&'a",
                  "&'T", "<'a>", "Vec<'l>", "use<'a, 'T>")
     for weight, width in product((350, 375, 400, 450, 500), (94, 97, 100, 104, 108)):
         location = {"wght": weight, "wdth": width}
@@ -157,6 +157,7 @@ def verify(source, path):
             engine.set_variations(location)
         cell = width * 6
         old, new = [f.getGlyphSet(location=location) for f in (prior, font)]
+        (bar_bottom, _), = spans(shape_from_glyphs(new, MARKER), 1.5 * cell, 0)
         amp = [shape_from_glyphs(gs, "ampersand").bounds for gs in (old, new)]
         assert amp[1][2] - amp[1][0] > amp[0][2] - amp[0][0] + 12, location
         for sample in controls:
@@ -186,7 +187,10 @@ def verify(source, path):
                     paths.append((name, p.transform(translateX=x + dx, translateY=dy)))
                     x += advance
                 assert x == sum(row[2] for row in shape(before, sample, flags)), (location, sample)
-                assert any(name == MARKER for name, _ in paths), (location, sample)
+                hook_index = next(i for i, (name, _) in enumerate(paths) if name == MARKER)
+                letter_top = paths[hook_index + 1][1].bounds[3]
+                gap = bar_bottom + rows[hook_index][5] - letter_top
+                assert gap >= CLEARANCE + HOOK_LIFT, (location, sample, gap)
                 assert all(abs(pathops.op(hook, p, pathops.PathOp.INTERSECTION).area) < 1
                            for name, hook in paths if name == MARKER
                            for other, p in paths if other != MARKER and len(p)), (location, sample, rows)
