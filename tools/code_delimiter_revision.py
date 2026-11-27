@@ -1,4 +1,4 @@
-"""Proof Code's shared parentheses, wider ampersand, and extended lifetime hook."""
+"""Proof Code's revised delimiters, bidirectional arrows, and lifetime hooks."""
 
 from argparse import ArgumentParser
 from copy import deepcopy
@@ -19,6 +19,7 @@ from code_boundary_spacing import identifier_glyphs
 from code_foundation import ink_columns
 from code_hairline_study import MARKER
 from code_layout import angle_styles
+from code_math import BIDIRECTIONAL_ARROWS
 from font_feature_tools import add_features, expanded_variations
 from render_svg import render, render_pdf
 from sans_baseline_trial import build_variations, install
@@ -37,7 +38,8 @@ LINES = (
     "'a  'g  'l  'T  'Á  'a'",
     "<'a>  <x>  <'a'>  Vec<Vec<T>>",
     "<>  Vec<>  a<>b  Vec<Vec<>>",
-    "Vec<>()  Vec<>T  <->  <=>  a < b",
+    "Vec<>()  Vec<>T  a < b",
+    "->  <-  <->  =>  <=>  ->>  <<-",
     "fn read<'a>(x: &'a T) -> &'a T { x }",
 )
 
@@ -143,7 +145,7 @@ def verify(source, path):
         "Vec<\nx>": [False, False], "Vec<" + "t" * 60 + ">": [True, True],
         "Vec<" + "t" * 61 + ">": [False, False],
     }
-    controls = ("<->", "<=>", "a <= b >= c", "a <- b -> c", "'a'", "'_'", "'💡'")
+    controls = ("a <= b >= c", "a <- b -> c", "'a'", "'_'", "'💡'")
     lifetimes = ("'a", "'static", "'l", "'T", "'Á", "'f\u0301", "'Q\u0308", "'_", "'ff", "&'a",
                  "&'T", "<'a>", "Vec<'l>", "use<'a, 'T>")
     for weight, width in product((350, 375, 400, 450, 500), (94, 97, 100, 104, 108)):
@@ -157,6 +159,13 @@ def verify(source, path):
         for sample in controls:
             assert shape(before, sample, {}) == shape(after, sample, {}), (location, sample)
         for flags in ({}, {"ss07": True}):
+            for token, name in BIDIRECTIONAL_ARROWS.items():
+                rows = shape(after, token + "x", flags)
+                assert [row[:3] for row in rows] == [[name, 0, 2 * cell], ["x", 3, cell]], (location, rows)
+                literal = shape(after, token, flags | {"liga": False, "calt": False})
+                assert [(row[0], row[2]) for row in literal] == [
+                    (font.getBestCmap()[ord(char)], cell) for char in token
+                ], (location, literal)
             for sample, expected in pairs.items():
                 rows = shape(after, sample, flags)
                 assert angle_styles(rows) == expected, (location, sample, rows)
@@ -183,12 +192,12 @@ def verify(source, path):
 
 def proof(output, source, target, style):
     parts = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="550" viewBox="0 0 1220 550">',
-        '<rect width="1220" height="550" fill="#f7f5ee"/>',
-        '<path d="M610 102V515" stroke="#d6ddd7"/>',
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="600" viewBox="0 0 1220 600">',
+        '<rect width="1220" height="600" fill="#f7f5ee"/>',
+        '<path d="M610 102V565" stroke="#d6ddd7"/>',
         '<g font-family="Arial,sans-serif" fill="#182b31">',
         f'<text x="36" y="38" font-size="15">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
-        '<text x="36" y="76" font-size="31" font-weight="700">Delimiters and Rust lifetimes</text>',
+        '<text x="36" y="76" font-size="31" font-weight="700">Delimiters, arrows and Rust lifetimes</text>',
         '</g>',
     ]
     for col, (file, title) in enumerate(((source, "Before · 1.1.2"), (target, "After · Delimiter trial"))):

@@ -31,6 +31,7 @@ ARROWS = {
     "->": "hyphen_greater.liga", "->>": "hyphen_greater_greater.liga",
     "<-": "less_hyphen.liga", "<<-": "less_less_hyphen.liga", "=>": "equal_greater.liga",
 }
+BIDIRECTIONAL_ARROWS = {"<->": "less_hyphen_greater.liga", "<=>": "less_equal_greater.liga"}
 
 
 def translated(name, x=0, y=0):
@@ -271,7 +272,7 @@ def install_arrow(font, name, head, bands, advance, axis, length, *, paired=Fals
     install_components(font, name, parts, advance)
 
 
-def build_arrows(font, sans, cell, axis, thickness, settings):
+def build_arrows(font, sans, cell, axis, thickness, settings, *, bidirectional=False):
     source_name = sans.getBestCmap()[ord("→")]
     slopes = arrow_slopes(raw_outline(sans.getGlyphSet(), source_name))
     standard = arrow_head(font, "operator.arrowHead", slopes, settings["arrow_height"] / 2, thickness)
@@ -300,14 +301,20 @@ def build_arrows(font, sans, cell, axis, thickness, settings):
     install_arrow(font, ARROWS["->>"], standard, single_bands, advance, axis, length, gap=pitch - thickness)
     for token, source_token in (("<-", "->"), ("<<-", "->>")):
         install_components(font, ARROWS[token], [(ARROWS[source_token], reflect(advance))], advance)
+    if bidirectional:
+        for name, bands in zip(BIDIRECTIONAL_ARROWS.values(), (single_bands, double_bands), strict=True):
+            install_arrow(font, name, standard, bands, advance, axis, length, paired=True)
 
 
-def register_operators(font):
+def register_operators(font, *, bidirectional=False):
     cmap = font.getBestCmap()
     gdef = font["GDEF"].table
     carets = {}
     rules = []
-    for token, name in (COMPARISONS | ARROWS).items():
+    operators = COMPARISONS | ARROWS
+    if bidirectional:
+        operators.update(BIDIRECTIONAL_ARROWS)
+    for token, name in operators.items():
         sequence = " ".join(cmap[ord(char)] for char in token)
         rules.append(f"sub {sequence} by {name};")
         gdef.GlyphClassDef.classDefs[name] = 2
@@ -326,8 +333,9 @@ def build_math(font, sans, recipe):
     cell = recipe["alphabet_review"]["cell"]
     axis = recipe["horizontal_punctuation_review"]["minus_center"]
     settings = recipe["math_review"]
+    bidirectional = recipe["layout_review"].get("delimiter_revision", False)
     thickness = build_signs(font, cell, axis, settings,
                             asterisk_scale=recipe["diamond_punctuation_review"]["diamond_scale"])
     build_percent(font, sans, cell, axis, thickness, settings["percent"])
-    build_arrows(font, sans, cell, axis, thickness, settings)
-    register_operators(font)
+    build_arrows(font, sans, cell, axis, thickness, settings, bidirectional=bidirectional)
+    register_operators(font, bidirectional=bidirectional)
