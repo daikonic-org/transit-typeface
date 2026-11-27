@@ -225,6 +225,19 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
         "feature calt {",
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
     ]
+    if paired:
+        # Mark an empty type argument list as a completed depth-zero pair.
+        # The main matcher can then cross it when resolving an outer pair.
+        empty = "less' lookup TallLeft0 greater' lookup TallRight0"
+        prefix = scope if scope in original_names else "colon colon"
+        rules += [
+            "lookup MatchEmptyTypePairs { lookupflag IgnoreMarks;",
+            "ignore sub less' greater' @PairWord;",
+            f"sub {prefix} {empty};",
+            *("sub " + " ".join(["@PairCapital", *(["@PairWord"] * count), empty]) + ";"
+              for count in range(32)),
+            "} MatchEmptyTypePairs;",
+        ]
     if not paired:
         rules += [
             "lookup TypePairIntent { lookupflag IgnoreMarks;",

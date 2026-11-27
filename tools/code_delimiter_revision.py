@@ -36,7 +36,8 @@ LINES = (
     "a & b  &'a  &'static  &'T",
     "'a  'g  'l  'T  'Á  'a'",
     "<'a>  <x>  <'a'>  Vec<Vec<T>>",
-    "<>  Vec<>  <->  <=>  a < b",
+    "<>  Vec<>  a<>b  Vec<Vec<>>",
+    "Vec<>()  Vec<>T  <->  <=>  a < b",
     "fn read<'a>(x: &'a T) -> &'a T { x }",
 )
 
@@ -134,8 +135,11 @@ def verify(source, path):
     pairs = {
         "<'a>": [True, True], "<'a'>": [True, True], "<x>": [True, True],
         "a<b>c": [True, True], "Vec<Vec<T>>": [True] * 4,
-        "Vec<Vec<>>": [True, False, False, True], "<>": [False, False],
-        "Vec<>": [False, False], "<x": [False], "x>": [False], "[<x": [False],
+        "Vec<Vec<>>": [True] * 4, "<>": [False, False], "<>T": [False, False],
+        "Vec<>": [True, True], "HashMap<>()": [True, True], "Vec<>.new": [True, True],
+        "a<>b": [False, False], "Vec<>T": [False, False], "Vec<>_item": [False, False],
+        "vec<>": [False, False], "vec::<>": [True, True],
+        "<x": [False], "x>": [False], "[<x": [False],
         "Vec<\nx>": [False, False], "Vec<" + "t" * 60 + ">": [True, True],
         "Vec<" + "t" * 61 + ">": [False, False],
     }
@@ -156,7 +160,8 @@ def verify(source, path):
             for sample, expected in pairs.items():
                 rows = shape(after, sample, flags)
                 assert angle_styles(rows) == expected, (location, sample, rows)
-                assert sum(row[2] for row in rows) == len(sample) * cell, (location, sample, rows)
+                advance = sum(row[2] for row in shape(before, sample, flags))
+                assert sum(row[2] for row in rows) == advance, (location, sample, rows)
             rows = shape(after, "$(x)", flags)
             assert [row[0] for row in rows] == ["dollar", "parenleft", "x", "parenright"], rows
             assert rows[0][4] > 0 > rows[1][4] and all(row[2] == cell for row in rows), rows
@@ -178,9 +183,9 @@ def verify(source, path):
 
 def proof(output, source, target, style):
     parts = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="500" viewBox="0 0 1220 500">',
-        '<rect width="1220" height="500" fill="#f7f5ee"/>',
-        '<path d="M610 102V465" stroke="#d6ddd7"/>',
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="550" viewBox="0 0 1220 550">',
+        '<rect width="1220" height="550" fill="#f7f5ee"/>',
+        '<path d="M610 102V515" stroke="#d6ddd7"/>',
         '<g font-family="Arial,sans-serif" fill="#182b31">',
         f'<text x="36" y="38" font-size="15">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
         '<text x="36" y="76" font-size="31" font-weight="700">Delimiters and Rust lifetimes</text>',
