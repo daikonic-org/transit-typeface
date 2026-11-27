@@ -175,16 +175,6 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
             alias(names[kind], original)
         markers.append(names)
     cmap = font.getBestCmap()
-    words = sorted(
-        {name for cp, name in cmap.items() if chr(cp).isalnum() or chr(cp) == "_"}
-    )
-    capitals = sorted(
-        {
-            name
-            for cp, name in cmap.items()
-            if unicodedata.category(chr(cp)) in ("Lu", "Lt")
-        }
-    )
     # Unresolved angles block a match. Only completed lower-level pairs may be
     # crossed, so malformed input cannot lend a tall angle to an unmatched one.
     ordinary = original_names - {
@@ -198,9 +188,17 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
     rules = [
         "languagesystem DFLT dflt;",
         "languagesystem latn dflt;",
-        "@PairWord=[" + " ".join(words) + "];",
-        "@PairCapital=[" + " ".join(capitals) + "];",
     ]
+    if paired:
+        spaces = sorted({name for cp, name in cmap.items() if unicodedata.category(chr(cp)) == "Zs"})
+        rules.append("@PairSpace=[" + " ".join(spaces) + "];")
+    else:
+        words = sorted({name for cp, name in cmap.items() if chr(cp).isalnum() or chr(cp) == "_"})
+        capitals = sorted({name for cp, name in cmap.items() if unicodedata.category(chr(cp)) in ("Lu", "Lt")})
+        rules += [
+            "@PairWord=[" + " ".join(words) + "];",
+            "@PairCapital=[" + " ".join(capitals) + "];",
+        ]
     tall_openers = ["less" if paired else "less.pairIntent"]
     if use_lifetimes:
         tall_openers += ["code.lifetimeOpen", "code.lifetimeOpen.short"]
@@ -226,17 +224,11 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
     ]
     if paired:
-        # Mark an empty type argument list as a completed depth-zero pair.
-        # The main matcher can then cross it when resolving an outer pair.
-        empty = "less' lookup TallLeft0 greater' lookup TallRight0"
-        prefix = scope if scope in original_names else "colon colon"
+        # Resolve spaced comparisons first so an enclosing pair can cross them.
         rules += [
-            "lookup MatchEmptyTypePairs { lookupflag IgnoreMarks;",
-            "ignore sub less' greater' @PairWord;",
-            f"sub {prefix} {empty};",
-            *("sub " + " ".join(["@PairCapital", *(["@PairWord"] * count), empty]) + ";"
-              for count in range(32)),
-            "} MatchEmptyTypePairs;",
+            "lookup MatchSpacedEmptyPairs { lookupflag IgnoreMarks;",
+            "sub @PairSpace less' lookup ShortLeft0 greater' lookup ShortRight0 @PairSpace;",
+            "} MatchSpacedEmptyPairs;",
         ]
     if not paired:
         rules += [
@@ -268,10 +260,9 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
         rules += [f"lookup MatchAnglePairs{depth} {{", "lookupflag IgnoreMarks;"]
         for count in range(span_limit + 1):
             middle = " ".join([f"@PairBody{depth}'"] * count)
-            if not paired or count:
-                rules.append(f"sub {opener_class}' lookup TallLeft{depth} "
-                             + middle + f" greater' lookup TallRight{depth};")
-            if not paired or not count:
+            rules.append(f"sub {opener_class}' lookup TallLeft{depth} "
+                         + middle + f" greater' lookup TallRight{depth};")
+            if not paired:
                 rules.append(f"sub less' lookup ShortLeft{depth} "
                              + middle + f" greater' lookup ShortRight{depth};")
         rules.append(f"}} MatchAnglePairs{depth};")
