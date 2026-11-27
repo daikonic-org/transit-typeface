@@ -38,8 +38,16 @@ def hash_rails(outline, cell):
     return bands
 
 
+def uses_bracket_spread(settings):
+    """Keep the published 1.1.3 bracket layout reproducible."""
+    return settings.get("delimiter_revision") and not settings.get("even_spread")
+
+
 def spread_offsets(glyphs, cell, settings, *, bracket=False):
     left, _, right, _ = raw_outline(glyphs, "period").bounds
+    if settings.get("even_spread"):
+        center = (left + right) / 2
+        return [otRound(cell * factor - center) for factor in (1 / 3, 1, 5 / 3)]
     pitch = right - left + settings["bracket_spread_dot_gap" if bracket else "spread_dot_gap"]
     end = (cell if bracket else 2 * cell) - settings["spread_sidebearing"] - right
     return [otRound(end - i * pitch) for i in (2, 1, 0)]
@@ -76,7 +84,7 @@ def build_syntax_glyphs(font, recipe, *, spread_glyph=True):
         offsets = spread_offsets(glyphs, cell, layout)
         install_components(font, names["..."] + SPREAD_SUFFIX,
                            [translated("period", x) for x in offsets], 2 * cell)
-        if layout.get("delimiter_revision"):
+        if uses_bracket_spread(layout):
             offsets = spread_offsets(glyphs, cell, layout, bracket=True)
             install_components(font, names["..."] + BRACKET_SPREAD_SUFFIX,
                                [translated("period", x) for x in offsets], cell)

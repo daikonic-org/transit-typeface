@@ -99,12 +99,14 @@ def add_directional_boundaries(font, settings):
 
 
 def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=False,
-                delimiter_revision=False):
+                delimiter_revision=False, even_spread=False):
     recipe = json.loads(RECIPE_PATH.read_text())
     refinement = json.loads(SPACING_PATH.read_text())
     apply_compact_classes(recipe, refinement)
     if delimiter_revision:
         recipe["layout_review"]["delimiter_revision"] = True
+    if even_spread:
+        recipe["layout_review"]["even_spread"] = True
     output.mkdir(parents=True, exist_ok=True)
     if source is None:
         source = output / "source"

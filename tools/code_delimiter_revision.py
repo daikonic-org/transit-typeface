@@ -46,6 +46,13 @@ LINES = (
     "->  <-  <->  =>  <=>  ->>  <<-",
     "fn read<'a>(x: &'a T) -> &'a T { x }",
 )
+SPREAD_LINES = (
+    "f(...rest)  f(value,...rest)",
+    "(...rest)  ,...rest  [...rest]",
+    "[[...items]]  {...record}",
+    "f(value, ...rest)  ...rest",
+    "wait... later  [...]  […rest]",
+)
 
 
 def draw(glyphs, name):
@@ -141,7 +148,7 @@ def positioned_paths(glyphs, rows):
     return paths
 
 
-def verify_delimiter_spacing(engine, glyphs, location, flags):
+def verify_delimiter_spacing(engine, glyphs, location, flags, *, even_spread=False):
     width = location["wdth"]
     cell = width * 6
     for left, right in (("((", "))"), ("[[", "]]"), ("{{", "}}"),
@@ -156,20 +163,30 @@ def verify_delimiter_spacing(engine, glyphs, location, flags):
         paths = positioned_paths(glyphs, rows)
         assert all(abs(pathops.op(a, b, pathops.PathOp.INTERSECTION).area) < 1
                    for (_, a), (_, b) in zip(paths, paths[1:])), (location, sample)
-    for sample, saved in (("[...items]", 2), ("[[...rest]]", 2), ("[...more]", 2),
-                          ("[ ...items]", 1), ("...items", 1), ("f(...x)", 1),
+    bracket_savings = 1 if even_spread else 2
+    for sample, saved in (("[...items]", bracket_savings), ("[[...rest]]", bracket_savings),
+                          ("[...more]", bracket_savings), ("f(x,...rest)", 1), (",...rest", 1),
+                          ("[ ...items]", 1), ("...items", 1), ("f(...rest)", 1),
                           ("[...]", 0), ("[…items]", 0)):
         rows = shape(engine, sample, flags)
         assert sum(row[2] for row in rows) == (len(sample) - saved) * cell, (location, sample, rows)
-        if saved == 2:
+        if saved:
             first = sample.index(".")
-            assert [row[2] for row in rows[first:first + 3]] == [cell // 3] * 3
-            paths = positioned_paths(glyphs, rows)[first - 1:first + 4]
+            dots = rows[first:first + 3]
+            assert [row[2] for row in dots] == [(3 - saved) * cell // 3] * 3
+            paths = positioned_paths(glyphs, rows)
+            if even_spread:
+                start = sum(row[2] for row in rows[:first])
+                for index, (_, path) in enumerate(paths[first:first + 3]):
+                    left, _, right, _ = path.bounds
+                    target = start + (2 * index + 1) * cell / 3
+                    assert abs((left + right) / 2 - target) <= 2, (location, sample, index, path.bounds)
+            paths = paths[max(first - 1, 0):first + 4]
             assert all(abs(pathops.op(a, b, pathops.PathOp.INTERSECTION).area) < 1
                        for (_, a), (_, b) in zip(paths, paths[1:])), (location, sample)
 
 
-def verify(source, path):
+def verify(source, path, *, even_spread=False):
     before, after = [hb.Font(hb.Face(p.read_bytes())) for p in (source, path)]
     prior, font = TTFont(source), TTFont(path)
     glyphs = set(font.getGlyphOrder())
@@ -221,7 +238,7 @@ def verify(source, path):
             assert active == [[name + ".hairline" if upright and name in parentheses else name, *rest]
                               for name, *rest in plain], (location, sample, active, plain)
         for flags in ({}, {OFF_FEATURE: True}):
-            verify_delimiter_spacing(after, new, location, flags)
+            verify_delimiter_spacing(after, new, location, flags, even_spread=even_spread)
             for token, name in BIDIRECTIONAL_ARROWS.items():
                 rows = shape(after, token + "x", flags)
                 assert [row[:3] for row in rows] == [[name, 0, 2 * cell], ["x", 3, cell]], (location, rows)
@@ -252,21 +269,23 @@ def verify(source, path):
     print(path.name, "verified at 25 axis settings", flush=True)
 
 
-def proof(output, source, target, style, *, target_label="Delimiter trial"):
+def proof(output, source, target, style, *, target_label="Delimiter trial",
+          source_label="1.1.2", title="Delimiters, arrows and Rust lifetimes", lines=LINES):
+    height = 242 + 51 * (len(lines) - 1)
     parts = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="650" viewBox="0 0 1220 650">',
-        '<rect width="1220" height="650" fill="#f7f5ee"/>',
-        '<path d="M610 102V615" stroke="#d6ddd7"/>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="{height}" viewBox="0 0 1220 {height}">',
+        f'<rect width="1220" height="{height}" fill="#f7f5ee"/>',
+        f'<path d="M610 102V{height - 35}" stroke="#d6ddd7"/>',
         '<g font-family="Arial,sans-serif" fill="#182b31">',
         f'<text x="36" y="38" font-size="15">DAIKONIC TRANSIT CODE · {style.upper()}</text>',
-        '<text x="36" y="76" font-size="31" font-weight="700">Delimiters, arrows and Rust lifetimes</text>',
+        f'<text x="36" y="76" font-size="31" font-weight="700">{title}</text>',
         '</g>',
     ]
-    for col, (file, title) in enumerate(((source, "Before · 1.1.2"), (target, f"After · {target_label}"))):
+    for col, (file, label) in enumerate(((source, f"Before · {source_label}"), (target, f"After · {target_label}"))):
         x = 36 + 610 * col
-        parts.append(f'<text x="{x}" y="125" fill="#526971" font-size="19" font-family="Arial">{title}</text>')
+        parts.append(f'<text x="{x}" y="125" fill="#526971" font-size="19" font-family="Arial">{label}</text>')
         panel = Panel(f"delim{col}", {"font": file.resolve()})
-        for i, text in enumerate(LINES):
+        for i, text in enumerate(lines):
             panel.text(text, x, 177 + 51 * i, 25, 400, "#182b31")
         parts.append(panel.body())
     dest = output / f"Code-Delimiters-{style.title()}.svg"
@@ -280,17 +299,25 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
     parser.add_argument("--code-build", type=Path)
+    parser.add_argument("--even-spread", action="store_true", help="proof equal dot spacing over two cells")
     args = parser.parse_args()
     output = args.output
-    build_fonts(output, "1.1.2", FAMILY, source=args.code_build, capital_spacing=True,
-                delimiter_revision=True)
+    family = "Daikonic Transit Code Spread Review" if args.even_spread else FAMILY
+    build_fonts(output, "1.1.3" if args.even_spread else "1.1.2", family,
+                source=args.code_build, capital_spacing=True, delimiter_revision=True,
+                even_spread=args.even_spread)
     pages = []
     for style, suffix in STYLES.items():
         source = RELEASE / ("DaikonicTransitCode" + suffix)
-        trial = output / (FAMILY.replace(" ", "") + suffix)
-        verify(source, trial)
-        pages.append(proof(output, source, trial, style))
-    render_pdf(pages, output / "Code-Delimiters.pdf")
+        trial = output / (family.replace(" ", "") + suffix)
+        verify(source, trial, even_spread=args.even_spread)
+        if args.even_spread:
+            published = ROOT / "releases/1.1.3/code/VF" / source.name
+            pages.append(proof(output, published, trial, style, source_label="1.1.3",
+                               target_label="Two-cell spread", title="Rest and spread spacing", lines=SPREAD_LINES))
+        else:
+            pages.append(proof(output, source, trial, style))
+    render_pdf(pages, output / ("Code-Spread.pdf" if args.even_spread else "Code-Delimiters.pdf"))
     for page in pages:
         render(page, scale=2, pdf=False)
 

@@ -25,7 +25,7 @@ from code_gpos_lateral import (
 )
 from code_math import ARROWS, COMPARISONS
 from code_spread import bracket_openers, register_spread_context
-from code_syntax_build import BRACKET_SPREAD_SUFFIX, SPREAD_SUFFIX, spread_offsets, syntax_names
+from code_syntax_build import BRACKET_SPREAD_SUFFIX, SPREAD_SUFFIX, spread_offsets, syntax_names, uses_bracket_spread
 from code_weight_width_trial import name_trial
 from code_width import add_code_width
 from font_feature_tools import add_features, append_glyph, label_stylistic_set
@@ -49,7 +49,7 @@ SAMPLE = (
     "let value = T::item::<Vec<U>>();",
     "let bits = a || b; // Preserve the grid",
 )
-SPREAD_CASES = ("...items", "[...items]", "f(...x)", "f(a, ...args)", "{...record}",
+SPREAD_CASES = ("...items", "[...items]", "f(...rest)", "f(a,...rest)", "f(a, ...args)", "{...record}",
                 "[...['a']]", "...é", "f(...x, ...y)")
 CONTROLS = ("wait... later", "1...2", "x...y", "f(... args)", "....items", "a ...b", "a...b",
             "((x)) [[x]] {{x}}", "a >> b", "https://host", "map(|| x)", "a | b", "a:::b",
@@ -82,7 +82,7 @@ def add_spread_positioning(font, recipe, replacements):
     values = dict(zip(DOTS, positions, strict=True))
     label_stylistic_set(font, FEATURE, "Positioned Ligature Components")
     add_horizontal_positions(font, model, default, values, FEATURE)
-    if layout.get("delimiter_revision"):
+    if uses_bracket_spread(layout):
         compact = [spread_offsets(gs, cell, layout, bracket=True) for gs in masters]
         parts = []
         for dot, (advance, offsets), (full_advance, full_offsets) in zip(

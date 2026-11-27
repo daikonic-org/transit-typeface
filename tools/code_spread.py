@@ -76,8 +76,13 @@ def verify_spread(font, path, recipe, weights):
         ink = raw_outline(gs, spread)
         bounds = [contour.bounds for contour in ink.contours]
         assert len(bounds) == 3
-        assert all(abs(next_dot[0] - dot[2] - gap) <= 1 for dot, next_dot in zip(bounds, bounds[1:]))
-        assert abs(2 * cell - bounds[-1][2] - sidebearing) <= 1
+        if settings.get("even_spread"):
+            centers = [(left + right) / 2 for left, _, right, _ in bounds]
+            assert all(abs(center - factor * cell) <= 1
+                       for center, factor in zip(centers, (1 / 3, 1, 5 / 3), strict=True))
+        else:
+            assert all(abs(next_dot[0] - dot[2] - gap) <= 1 for dot, next_dot in zip(bounds, bounds[1:]))
+            assert abs(2 * cell - bounds[-1][2] - sidebearing) <= 1
         for sample in cases:
             active = shape(engine, sample, {})
             literal = shape(engine, sample, {"calt": False})
