@@ -32,6 +32,7 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
     cell = recipe["alphabet_review"]["cell"]
     settings = recipe["layout_review"]
     depth = settings["angle_depth"]
+    revised = settings.get("delimiter_revision", False)
 
     def install(name, parts, advance):
         pen = TTGlyphPen(font.getGlyphSet())
@@ -44,12 +45,12 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
 
     build_lifetimes(font, cell, settings)
     build_compact_context(font, cell)
-    build_syntax_context(font, cell)
+    build_syntax_context(font, cell, plain_parentheses=revised)
     build_logic(font, cell, install)
     build_angle_pairs(font, depth, settings["angle_span"], cell, alias=alias,
-                      scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0))
+                      scope=SCOPE, scope_inset=(settings["turbofish_inset"], 0), paired=revised)
     build_structural_angles(font, cell, depth, features=("calt", "ss02"), shift=settings["mixed_angle_shift"],
-                            install_closer=install)
+                            install_closer=install, promote_unpaired=not revised)
     if spread_glyph:
         build_spread_context(font)
     build_hairlining(font, cell, settings, delimited_rails=hairlines)
@@ -63,7 +64,7 @@ def build_layout(font, recipe, *, hairlines=True, spread_glyph=True, spacing_sty
 def angle_styles(rows):
     styles = []
     for name, *_ in rows:
-        name = name.removesuffix(".hairline")
+        name = name.partition(".positioned")[0].removesuffix(".hairline")
         if name in ("less", "greater"):
             styles.append(False)
         elif name in ("less.generic", "greater.generic"):

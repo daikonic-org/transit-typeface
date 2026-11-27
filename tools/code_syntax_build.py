@@ -12,6 +12,7 @@ from code_glyph_names import sequence_name
 from code_math import fit_box, translated
 from code_outlines import equal_bars, install_components, install_outline, polygon
 from code_structural_fit import interpolation_parts
+from font_feature_tools import add_features
 from italic_returns import raw_outline
 from syntax_numeral_study import TOKENS, register_syntax_tokens
 
@@ -74,6 +75,8 @@ def build_syntax_glyphs(font, recipe, *, spread_glyph=True):
         install_components(font, names["..."] + SPREAD_SUFFIX,
                            [translated("period", x) for x in offsets], 2 * cell)
     for token in ("${", "$[", "$("):
+        if token == "$(" and recipe["layout_review"].get("delimiter_revision"):
+            continue
         delimiter = cmap[ord(token[1])]
         dy = otRound(center(delimiter)[1] - center("dollar")[1])
         parts = interpolation_parts(delimiter, cell, dy)
@@ -114,8 +117,22 @@ def build_syntax_glyphs(font, recipe, *, spread_glyph=True):
             install_components(font, name, hashes + bridges, count * cell)
 
 
-def build_syntax_context(font, cell):
+def build_syntax_context(font, cell, *, plain_parentheses=False):
     names = syntax_names(font)
+    if plain_parentheses:
+        del names["$("]
+        glyphs = font.getGlyphSet()
+        _, bottom, _, top = raw_outline(glyphs, "parenleft").bounds
+        _, dollar_bottom, _, dollar_top = raw_outline(glyphs, "dollar").bounds
+        dy = otRound((bottom + top - dollar_bottom - dollar_top) / 2)
+        _, _, _, inset, _ = interpolation_parts("parenleft", cell, dy)[0]
+        add_features(font, f"""
+            languagesystem DFLT dflt;
+            languagesystem latn dflt;
+            feature calt {{
+                pos dollar' <{inset} {dy} 0 0> parenleft' <-{inset} 0 0 0>;
+            }} calt;
+        """)
     classes = font["GDEF"].table.GlyphClassDef.classDefs
     for name in names.values():
         classes[name] = 2

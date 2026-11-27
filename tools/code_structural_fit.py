@@ -39,7 +39,7 @@ def separate_enclosures(font):
     )
 
 
-def mixed_angle_rules(features, shift):
+def mixed_angle_rules(features, shift, *, promote_unpaired=True):
     lines = [
         "languagesystem DFLT dflt;",
         "languagesystem latn dflt;",
@@ -50,8 +50,9 @@ def mixed_angle_rules(features, shift):
         "sub greater' bracketright by greater.generic;",
         "} SeparateMixedAngles;",
     ]
-    for feature in features:
-        lines.append(f"feature {feature} {{ lookup SeparateMixedAngles; }} {feature};")
+    if promote_unpaired:
+        for feature in features:
+            lines.append(f"feature {feature} {{ lookup SeparateMixedAngles; }} {feature};")
     pairs = [
         ("less.generic", "bracketleft"),
         ("bracketleft", "less.generic"),
@@ -109,8 +110,9 @@ def generic_closer_rules(font, cell, depth, install_closer):
     return lines
 
 
-def build_structural_angles(font, cell, depth, *, features=("calt",), shift=30, install_closer=None):
-    lines = mixed_angle_rules(features, shift)
+def build_structural_angles(font, cell, depth, *, features=("calt",), shift=30, install_closer=None,
+                            promote_unpaired=True):
+    lines = mixed_angle_rules(features, shift, promote_unpaired=promote_unpaired)
     lines.extend(generic_closer_rules(font, cell, depth, install_closer))
     add_features(font, "\n".join(lines))
 

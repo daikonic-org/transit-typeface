@@ -98,10 +98,13 @@ def add_directional_boundaries(font, settings):
     """)
 
 
-def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=False):
+def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=False,
+                delimiter_revision=False):
     recipe = json.loads(RECIPE_PATH.read_text())
     refinement = json.loads(SPACING_PATH.read_text())
     apply_compact_classes(recipe, refinement)
+    if delimiter_revision:
+        recipe["layout_review"]["delimiter_revision"] = True
     output.mkdir(parents=True, exist_ok=True)
     if source is None:
         source = output / "source"
@@ -118,6 +121,10 @@ def build_fonts(output, version, family=FAMILY, *, source=None, capital_spacing=
                 from code_capital_spacing import apply_capital_spacing
 
                 apply_capital_spacing(font, wider=True, smart=True)
+            if delimiter_revision:
+                from code_delimiter_revision import apply_delimiter_revision
+
+                apply_delimiter_revision(font)
             sanitize(font)
             verify_width(font, recipe["alphabet_review"]["cell"])
             font.save(target)

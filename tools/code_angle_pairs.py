@@ -151,14 +151,15 @@ def check(path):
 
 
 def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
-                      scope="code.scope", scope_inset=(18, 50)):
+                      scope="code.scope", scope_inset=(18, 50), paired=False):
     original_names = set(font.getGlyphOrder())
     use_lifetimes = "code.lifetimeOpen" in original_names
     if alias is None:
         def alias(name, donor):
             compose(font, name, [(donor, 1, 1, 0, 0)], cell, metric_source=donor)
 
-    alias("less.pairIntent", "less")
+    if not paired:
+        alias("less.pairIntent", "less")
     sources = {
         "shortLeft": "less", "shortRight": "greater",
         "tallLeft": "less.generic", "tallRight": "greater.generic",
@@ -200,7 +201,7 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
         "@PairWord=[" + " ".join(words) + "];",
         "@PairCapital=[" + " ".join(capitals) + "];",
     ]
-    tall_openers = ["less.pairIntent"]
+    tall_openers = ["less" if paired else "less.pairIntent"]
     if use_lifetimes:
         tall_openers += ["code.lifetimeOpen", "code.lifetimeOpen.short"]
     opener_class = "[" + " ".join(tall_openers) + "]"
@@ -223,46 +224,47 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
     rules += [
         "feature calt {",
         "lookup ResetAngles { sub less.generic by less; sub greater.generic by greater; } ResetAngles;",
-        "lookup TypePairIntent { lookupflag IgnoreMarks;",
-        "sub less' underscore greater by less.pairIntent;",
-        "sub less' bracketleft underscore bracketright greater by less.pairIntent;",
     ]
-    if use_lifetimes:
-        rules.append("sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;")
-    elif "quotesingle.lifetime" in original_names:
-        rules.append("sub less' quotesingle.lifetime by less.pairIntent;")
-    else:
-        rules.extend((
-            "ignore sub less' quotesingle @PairWord quotesingle;",
-            "sub less' quotesingle @PairWord by less.pairIntent;",
-        ))
-    if scope in original_names:
-        rules.append(f"sub {scope} less' by less.pairIntent;")
-    else:
-        rules.append("sub colon colon less' by less.pairIntent;")
-    for count in range(32):
-        middle = " ".join(["@PairWord"] * count)
+    if not paired:
         rules += [
-            "sub @PairCapital " + middle + " less' by less.pairIntent;",
-            "sub less' " + middle + " @PairCapital by less.pairIntent;",
+            "lookup TypePairIntent { lookupflag IgnoreMarks;",
+            "sub less' underscore greater by less.pairIntent;",
+            "sub less' bracketleft underscore bracketright greater by less.pairIntent;",
         ]
-    rules.append("} TypePairIntent;")
+        if use_lifetimes:
+            rules.append("sub less' [quotesingle.lifetime quotesingle.lifetime.compact] by less.pairIntent;")
+        elif "quotesingle.lifetime" in original_names:
+            rules.append("sub less' quotesingle.lifetime by less.pairIntent;")
+        else:
+            rules.extend((
+                "ignore sub less' quotesingle @PairWord quotesingle;",
+                "sub less' quotesingle @PairWord by less.pairIntent;",
+            ))
+        if scope in original_names:
+            rules.append(f"sub {scope} less' by less.pairIntent;")
+        else:
+            rules.append("sub colon colon less' by less.pairIntent;")
+        for count in range(32):
+            middle = " ".join(["@PairWord"] * count)
+            rules += [
+                "sub @PairCapital " + middle + " less' by less.pairIntent;",
+                "sub less' " + middle + " @PairCapital by less.pairIntent;",
+            ]
+        rules.append("} TypePairIntent;")
     for depth in range(depth_limit):
         rules += [f"lookup MatchAnglePairs{depth} {{", "lookupflag IgnoreMarks;"]
         for count in range(span_limit + 1):
             middle = " ".join([f"@PairBody{depth}'"] * count)
-            rules += [
-                f"sub {opener_class}' lookup TallLeft{depth} "
-                + middle
-                + f" greater' lookup TallRight{depth};",
-                f"sub less' lookup ShortLeft{depth} "
-                + middle
-                + f" greater' lookup ShortRight{depth};",
-            ]
+            if not paired or count:
+                rules.append(f"sub {opener_class}' lookup TallLeft{depth} "
+                             + middle + f" greater' lookup TallRight{depth};")
+            if not paired or not count:
+                rules.append(f"sub less' lookup ShortLeft{depth} "
+                             + middle + f" greater' lookup ShortRight{depth};")
         rules.append(f"}} MatchAnglePairs{depth};")
     # Inherit a generic parent's style top-down. The parent's closing marker
     # is excluded from its body class, preventing style from leaking outside.
-    for depth in reversed(range(1, depth_limit)):
+    for depth in (() if paired else reversed(range(1, depth_limit))):
         left = [m[k] for m in markers[:depth] for k in ("shortLeft", "shortRight")]
         right = [m[k] for m in markers[:depth] for k in ("tallLeft", "tallRight")]
         parent = markers[depth]
@@ -280,7 +282,9 @@ def build_angle_pairs(font, depth_limit, span_limit, cell=600, *, alias=None,
                 + "];"
             )
         rules.append(f"}} InheritPairStyle{depth};")
-    rules += ["lookup FinishAnglePairs {", "sub less.pairIntent by less;"]
+    rules.append("lookup FinishAnglePairs {")
+    if not paired:
+        rules.append("sub less.pairIntent by less;")
     if use_lifetimes:
         rules.append("sub code.lifetimeOpen by code.lifetimeOpen.short;")
     for names in markers:

@@ -240,7 +240,7 @@ def default_hairlining(font):
         for name in sorted(glyphs)
         if name.endswith(".hairline") and name.removesuffix(".hairline") in glyphs
     ]
-    rules.extend(f"sub {name} by {study.MARKER};" for name in study.LEADERS)
+    rules.extend(f"sub {name} by {study.MARKER};" for name in study.LEADERS if name in glyphs)
     add_features(font, "\n".join([
         "languagesystem DFLT dflt;", "languagesystem latn dflt;",
         f"feature {OFF_FEATURE} {{", *rules, f"}} {OFF_FEATURE};",

@@ -13,10 +13,10 @@ from code_crossbar_alignment import profile
 from font_feature_tools import add_features, feature_subtables
 
 
-def identifier_glyphs(font):
+def identifier_glyphs(font, *, contextual=False):
     names = {name for cp, name in font.getBestCmap().items() if ('a' + chr(cp)).isidentifier()}
     names |= {name for name in font.getGlyphOrder() if name.partition('.')[0] in names}
-    ligatures = [table.ligatures for _, table in feature_subtables(font)
+    ligatures = [table.ligatures for _, table in feature_subtables(font, contextual=contextual)
                  if hasattr(table, "ligatures")]
     for lookup in ligatures:
         for first, rows in lookup.items():

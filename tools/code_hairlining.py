@@ -9,7 +9,10 @@ from check_code_rebuild import shape
 from code_bar_delimiters import add_bar_delimiters
 from code_compact_build import SCOPE
 from code_hairline_study import HAIRLINE, PAIRS, delimiter_rail, polygon
-from code_hairline_toggle import BAR_CLOSE, BAR_OPEN, FEATURE, OFF_FEATURE, PAIRS as MIXED
+from code_hairline_toggle import (
+    BAR_CLOSE, BAR_OPEN, FEATURE, OFF_FEATURE, PAIRS as MIXED,
+    default_hairlining, position_lifetime_ampersand,
+)
 from code_lifetimes import activate_lifetime_hairlining
 from code_syntax_build import syntax_names
 from font_feature_tools import add_features, append_glyph, from_paths, master_locations
@@ -21,7 +24,14 @@ def build_hairlining(font, cell, settings, *, delimited_rails=True):
     add_bar_delimiters(font, settings["bar_delimiters"], tokens, cell, scope=SCOPE)
     if delimited_rails:
         build_delimiter_rails(font, settings, tokens)
-        activate_lifetime_hairlining(font)
+        if settings.get("delimiter_revision"):
+            from font_feature_tools import label_stylistic_set
+
+            label_stylistic_set(font, FEATURE, "Hairline delimiters")
+            default_hairlining(font)
+            position_lifetime_ampersand(font)
+        else:
+            activate_lifetime_hairlining(font)
 
 
 def build_delimiter_rails(font, settings, tokens):
@@ -31,6 +41,7 @@ def build_delimiter_rails(font, settings, tokens):
     metrics = font["hmtx"]
     classes = font["GDEF"].table.GlyphClassDef.classDefs
     aliases = {}
+    plain_parentheses = settings.get("delimiter_revision", False)
 
     def register(base, parts):
         alternate = base + ".hairline"
@@ -42,6 +53,8 @@ def build_delimiter_rails(font, settings, tokens):
         aliases[base] = alternate
 
     for pair in (*PAIRS, ("less.generic", "greater.generic")):
+        if plain_parentheses and pair == ("parenleft", "parenright"):
+            continue
         for index, base in enumerate(pair):
             stroke = base + ".rail"
             forms = [polygon(delimiter_rail(gs, base, opening=index == 0, shifted=True)[0])
@@ -49,7 +62,7 @@ def build_delimiter_rails(font, settings, tokens):
             from_paths(font, stroke, locations, forms, 0)
             register(base, [(name, (1, 0, 0, 1, 0, 0)) for name in (base, stroke)])
 
-    derived = [tokens[token] for token in ("${", "$[", "$(")]
+    derived = [tokens[token] for token in (("${", "$[") if plain_parentheses else ("${", "$[", "$("))]
     derived.extend(name for name in font.getGlyphOrder() if name.startswith("code.genericClose"))
     for base in derived:
         parts = [part.getComponentInfo() for part in glyf[base].components]

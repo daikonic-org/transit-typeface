@@ -20,8 +20,9 @@ def build_lifetimes(font, cell, settings):
     masters = [font.getGlyphSet(location=location) for location in locations]
     from_paths(font, MARKER, locations,
                [marker(gs, bottom=settings["lifetime_hook_bottom"]) for gs in masters], cell)
-    for name, height in LEADERS.items():
-        from_paths(font, name, locations, [lifetime(gs, height) for gs in masters], cell)
+    if not settings.get("delimiter_revision"):
+        for name, height in LEADERS.items():
+            from_paths(font, name, locations, [lifetime(gs, height) for gs in masters], cell)
     lines, _ = rust_lifetime_rules(font.getBestCmap(), settings["quoted_identifier_limit"])
     add_features(font, "\n".join(lines))
 
