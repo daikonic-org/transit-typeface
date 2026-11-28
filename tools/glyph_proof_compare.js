@@ -1,4 +1,4 @@
-function createAxisComparison(config, svg, refresh) {
+function createAxisComparison(config, svg, refresh, {scrollLines = false} = {}) {
   const {family, axes, codepoints, guides, centerStyle, upm, labelWidth, fontSize, margin,
          baselineOffset, headerY, detailHeader, pageWidth, pageHeight} = config;
   const toolbar = document.querySelector("#axis-controls");
@@ -158,6 +158,10 @@ function createAxisComparison(config, svg, refresh) {
         caption.textContent = label;
         const text = document.createElement("p");
         text.className = "text-sample-value";
+        if (scrollLines) {
+          text.classList.add("scroll-lines");
+          text.tabIndex = 0;
+        }
         text.dir = "auto";
         text.textContent = sampleText.value;
         setLocation(text, {...location, [axis.value]: value});

@@ -81,7 +81,7 @@ async function selectFace() {
     groupPicker.replaceChildren(new Option("All groups", ""),
       ...Object.keys(groups).map(title => new Option(title, title)));
     if (Object.hasOwn(groups, selectedGroup)) groupPicker.value = selectedGroup;
-    comparison = createAxisComparison(data.comparison, null, renderProof);
+    comparison = createAxisComparison(data.comparison, null, renderProof, {scrollLines: family === "code"});
     updateGlyphs();
     const url = new URL(location.href);
     url.searchParams.set("family", family);
